@@ -53,3 +53,4 @@ CTestTestfile.cmake
 
 # custom
 **/bin/**
+**/build/**
