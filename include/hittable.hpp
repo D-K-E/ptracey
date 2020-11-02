@@ -32,7 +32,6 @@ double get_pdf_surface(point3 dir, vec3 normal, double dist,
 
   return distance_squared / (cosine * area);
 }
-
 class hittable {
 public:
   shared_ptr<material> mat_ptr;
@@ -50,7 +49,6 @@ public:
     return vec3(1, 0, 0);
   }
 };
-
 class flip_face : public hittable {
 public:
   flip_face(shared_ptr<hittable> p) : ptr(p) {}
@@ -74,7 +72,6 @@ public:
 public:
   shared_ptr<hittable> ptr;
 };
-
 class translate : public hittable {
 public:
   translate(shared_ptr<hittable> p,
@@ -92,7 +89,6 @@ public:
   shared_ptr<hittable> ptr;
   vec3 offset;
 };
-
 bool translate::hit(const ray &r, double t_min,
                     double t_max, hit_record &rec) const {
   ray moved_r(r.origin() - offset, r.direction(), r.time());
@@ -104,7 +100,6 @@ bool translate::hit(const ray &r, double t_min,
 
   return true;
 }
-
 bool translate::bounding_box(double time0, double time1,
                              aabb &output_box) const {
   if (!ptr->bounding_box(time0, time1, output_box))
@@ -115,7 +110,6 @@ bool translate::bounding_box(double time0, double time1,
 
   return true;
 }
-
 class rotate_y : public hittable {
 public:
   rotate_y(shared_ptr<hittable> p, double angle);
@@ -136,7 +130,6 @@ public:
   bool hasbox;
   aabb bbox;
 };
-
 rotate_y::rotate_y(shared_ptr<hittable> p, double angle)
     : ptr(p) {
   auto radians = degrees_to_radians(angle);
@@ -172,7 +165,6 @@ rotate_y::rotate_y(shared_ptr<hittable> p, double angle)
 
   bbox = aabb(min, max);
 }
-
 bool rotate_y::hit(const ray &r, double t_min, double t_max,
                    hit_record &rec) const {
   auto origin = r.origin();

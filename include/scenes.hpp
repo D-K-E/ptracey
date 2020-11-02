@@ -180,11 +180,12 @@ hittable_list cornell_box() {
   auto green =
       make_shared<lambertian>(color(.12, .45, .15));
   auto light =
-      make_shared<diffuse_light>(color(15, 15, 15));
+      make_shared<diffuse_light>(color(15.0, 15.0, 15.0));
 
-  objects.add(
-      make_shared<yz_rect>(0, 555, 0, 555, 555, green));
-  objects.add(make_shared<yz_rect>(0, 555, 0, 555, 0, red));
+  objects.add(make_shared<yz_rect>(0.0, 555.0, 0.0, 555.0,
+                                   555.0, green));
+  objects.add(make_shared<yz_rect>(0.0, 555.0, 0.0, 555.0,
+                                   0.0, red));
   objects.add(
       make_shared<xz_rect>(213, 343, 227, 332, 554, light));
   objects.add(

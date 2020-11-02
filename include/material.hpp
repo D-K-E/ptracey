@@ -25,7 +25,7 @@ public:
   virtual double
   scattering_pdf(const ray &r_in, const hit_record &rec,
                  const ray &scattered) const {
-    return 1;
+    return 0.0;
   }
 };
 class lambertian : public material {
@@ -148,6 +148,8 @@ public:
     srec.specular_ray =
         ray(rec.p, random_in_unit_sphere(), r_in.time());
     srec.attenuation = albedo->value(rec.u, rec.v, rec.p);
+    srec.is_specular = true;
+    srec.pdf_ptr = nullptr;
     return true;
   }
 

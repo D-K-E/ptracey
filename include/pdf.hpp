@@ -29,7 +29,7 @@ public:
 class hittable_pdf : public pdf {
 public:
   hittable_pdf(shared_ptr<hittable> p, const point3 &origin)
-      : ptr(p), o(origin) {}
+      : o(origin), ptr(p) {}
 
   double value(const vec3 &direction) const override {
     return ptr->pdf_value(o, direction);
