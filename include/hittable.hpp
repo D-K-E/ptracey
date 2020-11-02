@@ -73,6 +73,7 @@ public:
 };
 class translate : public hittable {
 public:
+  translate() {}
   translate(shared_ptr<hittable> p,
             const vec3 &displacement)
       : ptr(p), offset(displacement) {}

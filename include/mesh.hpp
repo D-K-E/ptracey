@@ -5,7 +5,7 @@
 #include <hittable_list.hpp>
 #include <info.hpp>
 #include <material.hpp>
-#include <matrix.hpp>
+//#include <matrix.hpp>
 #include <ray.hpp>
 #include <triangle.hpp>
 #include <vec3.hpp>
@@ -54,15 +54,14 @@ class model : public hittable {
 public:
   shared_ptr<hittable> meshes;
   hittable_list list;
-  Matrix transMat;
+  // Matrix transMat;
 
-  model(std::string mpath) : transMat(identityMatrix()) {
-    loadModel(mpath);
-  }
-  model(std::string mpath, const Matrix &transM)
-      : transMat(transM) {
-    loadModel(mpath);
-  }
+  model(std::string mpath) { loadModel(mpath); }
+  // model(std::string mpath //,
+  //      // const Matrix &transM
+  //      ) {
+  //  loadModel(mpath);
+  //}
   void loadModel(std::string mpath) {
 
     Assimp::Importer importer;
@@ -111,7 +110,7 @@ public:
         vec[0] = msh->mVertices[index].x;
         vec[1] = msh->mVertices[index].y;
         vec[2] = msh->mVertices[index].z;
-        vec = transMat * vec;
+        // vec = transMat * vec;
         tri_points.push_back(vec);
       }
       shared_ptr<hittable> tri = make_shared<triangle>(

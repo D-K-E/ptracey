@@ -7,6 +7,7 @@
 #include <mesh.hpp>
 #include <moving_sphere.hpp>
 #include <sphere.hpp>
+
 hittable_list cornell_box_restlife() {
   hittable_list objects;
 
