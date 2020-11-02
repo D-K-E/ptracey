@@ -121,7 +121,7 @@ int main() {
   // World
 
   hittable_list world;
-  int choice = 7;
+  int choice = 9;
   camera cam;
   int image_height;
   color background;
