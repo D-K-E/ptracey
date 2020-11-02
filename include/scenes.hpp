@@ -186,8 +186,8 @@ hittable_list cornell_box() {
                                    555.0, green));
   objects.add(make_shared<yz_rect>(0.0, 555.0, 0.0, 555.0,
                                    0.0, red));
-  objects.add(
-      make_shared<xz_rect>(213, 343, 227, 332, 554, light));
+  objects.add(make_shared<flip_face>(make_shared<xz_rect>(
+      213, 343, 227, 332, 554, light)));
   objects.add(
       make_shared<xz_rect>(0, 555, 0, 555, 555, white));
   objects.add(
@@ -223,8 +223,8 @@ hittable_list cornell_smoke() {
   objects.add(
       make_shared<yz_rect>(0, 555, 0, 555, 555, green));
   objects.add(make_shared<yz_rect>(0, 555, 0, 555, 0, red));
-  objects.add(
-      make_shared<xz_rect>(113, 443, 127, 432, 554, light));
+  objects.add(make_shared<flip_face>(make_shared<xz_rect>(
+      113, 443, 127, 432, 554, light)));
   objects.add(
       make_shared<xz_rect>(0, 555, 0, 555, 555, white));
   objects.add(

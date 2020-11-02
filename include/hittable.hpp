@@ -25,7 +25,6 @@ struct hit_record {
 
 double get_pdf_surface(point3 dir, vec3 normal, double dist,
                        double area) {
-  // for polygon like surfaces
   auto distance_squared =
       dist * dist * dir.length_squared();
   double cosine = fabs(dot(dir, normal) / dir.length());

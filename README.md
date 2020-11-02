@@ -65,3 +65,5 @@ glass sphere"/>
 <img src="image/im3.png" alt="perlin noise spheres"/>
 <img src="image/im4.png" alt="image texture earth mapped to circle"/>
 <img src="image/im5.png" alt="perlin noise with rectangle light"/>
+<img src="image/im6.png" alt="cornell box with box rotations"/>
+<img src="image/im7.png" alt="cornell box with smoke boxes"/>
