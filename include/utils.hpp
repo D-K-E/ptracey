@@ -1,5 +1,6 @@
 #pragma once
 #include <external.hpp>
+#include <sstream>
 using std::shared_ptr;
 using std::make_shared;
 using std::sqrt;
@@ -34,3 +35,18 @@ inline double clamp(double x, double min, double max) {
     return max;
   return x;
 }
+inline double interp(double t, double s1, double s2) {
+  // interpolate
+  return (1 - t) * s1 + t * s2;
+}
+
+#define D_CHECK(call)                                      \
+  {                                                        \
+    bool res = call;                                       \
+    if (!res) {                                            \
+      std::stringstream txt;                               \
+      txt << #call << " :: " << res << " :: " << __FILE__  \
+          << " :: " << __LINE__ << std::endl;              \
+      throw std::runtime_error(txt.str());                 \
+    }                                                      \
+  }

@@ -194,3 +194,6 @@ inline vec3 random_to_sphere(double radius,
 
   return vec3(x, y, z);
 }
+
+//
+

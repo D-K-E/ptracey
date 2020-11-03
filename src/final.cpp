@@ -1,8 +1,8 @@
+//
 #include <camera.hpp>
 #include <color.hpp>
 #include <external.hpp>
 #include <hittable_list.hpp>
-#include <material.hpp>
 #include <ray.hpp>
 #include <scenes.hpp>
 #include <utils.hpp>
@@ -121,7 +121,7 @@ int main() {
   // World
 
   hittable_list world;
-  int choice = 9;
+  int choice = 10;
   camera cam;
   int image_height;
   color background;

@@ -1,12 +1,17 @@
 #pragma once
+//
 #include <aarect.hpp>
 #include <box.hpp>
 #include <bvh.hpp>
 #include <camera.hpp>
+#include <hittable.hpp>
+#include <hittable_list.hpp>
 #include <mediumc.hpp>
 #include <mesh.hpp>
 #include <moving_sphere.hpp>
+#include <ray.hpp>
 #include <sphere.hpp>
+#include <vec3.hpp>
 
 hittable_list cornell_box_restlife() {
   hittable_list objects;
@@ -45,7 +50,6 @@ hittable_list cornell_box_restlife() {
 
   return objects;
 }
-
 hittable_list random_scene() {
   hittable_list world;
 
@@ -109,7 +113,6 @@ hittable_list random_scene() {
   return hittable_list(
       make_shared<bvh_node>(world, 0.0, 1.0));
 }
-
 hittable_list two_spheres() {
   hittable_list objects;
 
@@ -125,7 +128,6 @@ hittable_list two_spheres() {
 
   return objects;
 }
-
 hittable_list two_perlin_spheres() {
   hittable_list objects;
 
@@ -139,7 +141,6 @@ hittable_list two_perlin_spheres() {
 
   return objects;
 }
-
 hittable_list earth() {
   auto earth_texture =
       make_shared<image_texture>("media/earthmap.jpg");
@@ -150,7 +151,6 @@ hittable_list earth() {
 
   return hittable_list(globe);
 }
-
 hittable_list simple_light() {
   hittable_list objects;
 
@@ -171,7 +171,6 @@ hittable_list simple_light() {
 
   return objects;
 }
-
 hittable_list cornell_box() {
   hittable_list objects;
 
@@ -210,7 +209,6 @@ hittable_list cornell_box() {
 
   return objects;
 }
-
 hittable_list cornell_smoke() {
   hittable_list objects;
 
@@ -250,7 +248,6 @@ hittable_list cornell_smoke() {
 
   return objects;
 }
-
 hittable_list final_scene_nextweek() {
   hittable_list boxes1;
   auto ground =
@@ -306,7 +303,7 @@ hittable_list final_scene_nextweek() {
                                            color(1, 1, 1)));
 
   auto emat = make_shared<lambertian>(
-      make_shared<image_texture>("earthmap.jpg"));
+      make_shared<image_texture>("media/earthmap.jpg"));
   objects.add(make_shared<sphere>(point3(400, 200, 400),
                                   100, emat));
   auto pertext = make_shared<noise_texture>(0.1);
@@ -330,10 +327,18 @@ hittable_list final_scene_nextweek() {
 
   return objects;
 }
-
 hittable_list model_test() {
-
-  // model back(
+  matrix modelMat =
+      scale_translate(point3(278, 278, -2), vec3(0.2));
+  std::string modelpath = "media/models/kedi.obj";
+  shared_ptr<hittable> cat =
+      make_shared<model>(modelpath, modelMat);
+  hittable_list objects;
+  auto light = make_shared<diffuse_light>(color(15));
+  objects.add(make_shared<flip_face>(make_shared<xz_rect>(
+      213, 343, 227, 332, 554, light)));
+  objects.add(cat);
+  return objects;
 }
 
 void choose_scene(int choice, camera &cam,
@@ -349,7 +354,7 @@ void choose_scene(int choice, camera &cam,
   background = color(0, 0, 0);
 
   switch (choice) {
-  case 1:
+  case 1: {
     world = random_scene();
     background = color(0.70, 0.80, 1.00);
     lookfrom = point3(13, 2, 3);
@@ -357,41 +362,45 @@ void choose_scene(int choice, camera &cam,
     vfov = 20.0;
     aperture = 0.1;
     break;
+  }
 
-  case 2:
+  case 2: {
     world = two_spheres();
     background = color(0.70, 0.80, 1.00);
     lookfrom = point3(13, 2, 3);
     lookat = point3(0, 0, 0);
     vfov = 20.0;
     break;
+  }
 
-  case 3:
+  case 3: {
     world = two_perlin_spheres();
     background = color(0.70, 0.80, 1.00);
     lookfrom = point3(13, 2, 3);
     lookat = point3(0, 0, 0);
     vfov = 20.0;
     break;
+  }
 
-  case 4:
+  case 4: {
     world = earth();
     background = color(0.70, 0.80, 1.00);
     lookfrom = point3(0, 0, 12);
     lookat = point3(0, 0, 0);
     vfov = 20.0;
     break;
+  }
 
-  case 5:
+  case 5: {
     world = simple_light();
     samples_per_pixel = 400;
     lookfrom = point3(26, 3, 6);
     lookat = point3(0, 2, 0);
     vfov = 20.0;
     break;
+  }
 
-  default:
-  case 6:
+  case 6: {
     world = cornell_box();
     aspect_ratio = 1.0;
     image_width = 600;
@@ -399,8 +408,9 @@ void choose_scene(int choice, camera &cam,
     lookfrom = point3(278, 278, -800);
     lookat = point3(278, 278, 0);
     break;
+  }
 
-  case 7:
+  case 7: {
     world = cornell_smoke();
     aspect_ratio = 1.0;
     image_width = 600;
@@ -408,8 +418,9 @@ void choose_scene(int choice, camera &cam,
     lookfrom = point3(278, 278, -800);
     lookat = point3(278, 278, 0);
     break;
+  }
 
-  case 8:
+  case 8: {
     world = cornell_box_restlife();
     aspect_ratio = 1.0;
     image_width = 600;
@@ -417,15 +428,34 @@ void choose_scene(int choice, camera &cam,
     lookfrom = point3(278, 278, -800);
     lookat = point3(278, 278, 0);
     break;
+  }
 
-  case 9:
-    world = final_scene_nextweek();
+  case 9: {
+    hittable_list world2 = final_scene_nextweek();
+    shared_ptr<hittable> wh =
+        make_shared<bvh_node>(world2, 0.0, 1.0);
+    world = hittable_list(wh);
     aspect_ratio = 1.0;
-    image_width = 800;
-    samples_per_pixel = 1000;
+    image_width = 600;
+    samples_per_pixel = 500;
     lookfrom = point3(478, 278, -600);
     lookat = point3(278, 278, 0);
     break;
+  }
+
+  case 10: {
+    world = model_test();
+    aspect_ratio = 1.0;
+    image_width = 600;
+    samples_per_pixel = 100;
+    lookfrom = point3(278, 278, -800);
+    lookat = point3(278, 278, 0);
+
+    lookfrom = point3(26, 3, -6);
+    lookat = point3(0, 2, 3);
+    vfov = 20.0;
+    break;
+  }
   }
 
   // Camera

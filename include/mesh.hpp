@@ -1,11 +1,11 @@
 #pragma once
+
 #include <bvh.hpp>
 #include <external.hpp>
 #include <hittable.hpp>
 #include <hittable_list.hpp>
-#include <info.hpp>
 #include <material.hpp>
-//#include <matrix.hpp>
+#include <matrix.hpp>
 #include <ray.hpp>
 #include <triangle.hpp>
 #include <vec3.hpp>
@@ -49,19 +49,19 @@ public:
     return list.random(o);
   }
 };
-
 class model : public hittable {
 public:
   shared_ptr<hittable> meshes;
   hittable_list list;
-  // Matrix transMat;
+  matrix transMat;
 
-  model(std::string mpath) { loadModel(mpath); }
-  // model(std::string mpath //,
-  //      // const Matrix &transM
-  //      ) {
-  //  loadModel(mpath);
-  //}
+  model(std::string mpath) : transMat(identityMatrix()) {
+    loadModel(mpath);
+  }
+  model(std::string mpath, const matrix &transM)
+      : transMat(transM) {
+    loadModel(mpath);
+  }
   void loadModel(std::string mpath) {
 
     Assimp::Importer importer;
@@ -80,7 +80,6 @@ public:
     list = hittable_list(ms);
     meshes = make_shared<bvh_node>(list, 0.0, 1.0);
   }
-
   void processNode(aiNode *node, const aiScene *scene,
                    int node_id,
                    std::vector<shared_ptr<hittable>> &ms) {
@@ -110,7 +109,7 @@ public:
         vec[0] = msh->mVertices[index].x;
         vec[1] = msh->mVertices[index].y;
         vec[2] = msh->mVertices[index].z;
-        // vec = transMat * vec;
+        vec = transMat * vec;
         tri_points.push_back(vec);
       }
       shared_ptr<hittable> tri = make_shared<triangle>(

@@ -1,10 +1,10 @@
 #pragma once
-#include <external.hpp>
+#include <aarect.hpp>
 #include <hittable.hpp>
 #include <hittable_list.hpp>
+#include <material.hpp>
 #include <ray.hpp>
 #include <vec3.hpp>
-#include <aarect.hpp>
 
 class box : public hittable {
 public:
