@@ -1,9 +1,12 @@
 #pragma once
+#include <cmath>
 #include <external.hpp>
 #include <sstream>
 using std::shared_ptr;
 using std::make_shared;
 using std::sqrt;
+using std::make_pair;
+using std::isnan;
 
 double random_double() {
   static std::uniform_real_distribution<double>

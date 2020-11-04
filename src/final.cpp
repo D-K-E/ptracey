@@ -59,6 +59,12 @@ struct InnerParams {
   int endx;
   hittable_list scene;
   color background;
+  InnerParams(int sx, int ex, const camera &c, int imw,
+              int imh, int ps, int d,
+              const hittable_list &hs, const color &b)
+      : startx(sx), endx(ex), cam(c), imwidth(imw),
+        imheight(imh), psample(ps), mdepth(d), scene(hs),
+        background(b) {}
 };
 
 struct InnerRet {
@@ -108,6 +114,19 @@ InnerRet innerLoop(InnerParams params) {
   return ret;
 }
 
+void fill_imvec(InnerRet ret, immat &imvec,
+                int image_height) {
+  immat img = ret.img;
+  int startx = ret.startx;
+  int endx = ret.endx;
+  int xrange = endx - startx;
+  for (int i = 0; i < xrange; i++) {
+    for (int j = 0; j < image_height; j++) {
+      imvec[i + startx][j] = img[i][j];
+    }
+  }
+}
+
 int main() {
   auto start = std::chrono::high_resolution_clock::now();
 
@@ -146,29 +165,24 @@ int main() {
   for (int t = 0; t < THREAD_NB; t++) {
     int startx = wslicelen * t;
     int endx = fmin(startx + wslicelen, image_width);
-    InnerParams params;
-    params.startx = startx;
-    params.endx = endx;
-    params.cam = cam;
-    params.imwidth = image_width;
-    params.imheight = image_height;
-    params.psample = samples_per_pixel;
-    params.mdepth = max_depth;
-    params.scene = world;
-    params.background = background;
-    futures[t] = std::async(&innerLoop, params);
+    InnerParams params(startx, endx, cam, image_width,
+                       image_height, samples_per_pixel,
+                       max_depth, world, background);
+    if (THREAD_NB > 1)
+      futures[t] = std::async(&innerLoop, params);
   }
-  for (auto &f : futures) {
-    InnerRet ret = f.get();
-    immat img = ret.img;
-    int startx = ret.startx;
-    int endx = ret.endx;
-    int xrange = endx - startx;
-    for (int i = 0; i < xrange; i++) {
-      for (int j = 0; j < image_height; j++) {
-        imvec[i + startx][j] = img[i][j];
-      }
+  if (THREAD_NB > 1) {
+    for (auto &f : futures) {
+      InnerRet ret = f.get();
+      fill_imvec(ret, imvec, image_height);
     }
+  } else {
+    InnerParams params(0, wslicelen, cam, image_width,
+                       image_height, samples_per_pixel,
+                       max_depth, world, background);
+
+    InnerRet ret = innerLoop(params);
+    fill_imvec(ret, imvec, image_height);
   }
   for (int j = image_height - 1; j >= 0; j -= 1) {
     std::cerr << "\rKalan Tarama Çizgisi:" << ' ' << j
@@ -179,11 +193,10 @@ int main() {
     }
   }
   auto stop = std::chrono::high_resolution_clock::now();
-  auto duration =
-      std::chrono::duration_cast<std::chrono::microseconds>(
-          stop - start);
+  std::chrono::duration<double> elapsed = stop - start;
 
-  std::cerr << "duration" << std::endl;
+  std::cerr << "duration: " << elapsed.count()
+            << std::endl;
 
   std::cerr << "\nDone.\n";
 }

@@ -15,41 +15,32 @@ public:
       : p0(_p0), p1(_p1), p2(_p2), mat_ptr(mat) {}
   bool hit(const ray &r, double t_min, double t_max,
            hit_record &rec) const override {
-    double tval;
-    auto A = p0.x() - p1.x();
-    auto B = p0.y() - p1.y();
-    auto C = p0.z() - p1.z();
-    auto D = p0.x() - p2.x();
-    auto E = p0.y() - p2.y();
-    auto F = p0.z() - p2.z();
-    auto G = r.direction().x();
-    auto H = r.direction().y();
-    auto I = r.direction().z();
-    auto J = p0.x() - r.origin().x();
-    auto K = p0.y() - r.origin().y();
-    auto L = p0.z() - r.origin().z();
-    auto EIHF = E * I - H * F;
-    auto GFDI = G * F - D * I;
-    auto DHEG = D * H - E * G;
-    auto denom = (A * EIHF + B * GFDI + C * DHEG);
-    auto beta = (J * EIHF + K * GFDI + L * DHEG) / denom;
-    if (beta <= 0.0 || beta >= 1.0)
-      return false;
-    auto AKJB = A * K - J * B;
-    auto JCAL = J * C - A * L;
-    auto BLKC = B * L - K * C;
-    auto gamma = (I * AKJB + H * JCAL + G * BLKC) / denom;
-    if (gamma <= 0.0 || beta + gamma >= 1.0)
-      return false;
-    tval = -(F * AKJB + E * JCAL + D * BLKC) / denom;
-    if (tval >= t_min && tval <= t_max) {
+    auto edge1 = p1 - p0;
+    auto edge2 = p2 - p0;
+    auto point_vec = cross(r.direction(), edge2);
+    auto det = dot(edge1, point_vec);
+    auto invDet = 1.0 / det;
+    auto distVec = r.origin() - p0;
+    auto u = dot(distVec, point_vec) * invDet;
 
-      rec.v = gamma;
-      rec.u = beta;
-      rec.t = tval;
+    if (u < 0.0 || u > 1.0) {
+      return false;
+    }
+
+    auto qvec = cross(distVec, edge1);
+    auto v = dot(r.direction(), qvec) * invDet;
+
+    if (v < 0.0 || v + u > 1.0)
+      return false;
+    auto t = dot(edge2, qvec) * invDet;
+    if (t >= t_min && t <= t_max) {
+
+      rec.v = v;
+      rec.u = u;
+      rec.t = t;
       rec.p = r.at(rec.t);
       rec.mat_ptr = mat_ptr;
-      vec3 outnormal = cross(p0 - p1, p0 - p2);
+      vec3 outnormal = cross(edge1, edge2);
       rec.set_face_normal(r, outnormal);
       return true;
     }
@@ -137,4 +128,3 @@ public:
       : AaTriangle(_y0, _y01, _y1, _z0, _z1, _k, mat),
         y0(_y0), y01(_y01), y1(_y1), z0(_z0), z1(_z1) {}
 };
-//

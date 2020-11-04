@@ -329,15 +329,47 @@ hittable_list final_scene_nextweek() {
 }
 hittable_list model_test() {
   matrix modelMat =
-      scale_translate(point3(278, 278, -2), vec3(0.2));
+      scale_translate(point3(278, 278, 0), vec3(0.5));
   std::string modelpath = "media/models/kedi.obj";
   shared_ptr<hittable> cat =
       make_shared<model>(modelpath, modelMat);
+
   hittable_list objects;
-  auto light = make_shared<diffuse_light>(color(15));
+
+  auto red = make_shared<lambertian>(color(.65, .05, .05));
+  auto white =
+      make_shared<lambertian>(color(.73, .73, .73));
+  auto green =
+      make_shared<lambertian>(color(.12, .45, .15));
+  auto light =
+      make_shared<diffuse_light>(color(15.0, 15.0, 15.0));
+
+  objects.add(make_shared<yz_rect>(0.0, 555.0, 0.0, 555.0,
+                                   555.0, green));
+  objects.add(make_shared<yz_rect>(0.0, 555.0, 0.0, 555.0,
+                                   0.0, red));
   objects.add(make_shared<flip_face>(make_shared<xz_rect>(
       213, 343, 227, 332, 554, light)));
-  objects.add(cat);
+  objects.add(
+      make_shared<xz_rect>(0, 555, 0, 555, 555, white));
+  objects.add(
+      make_shared<xz_rect>(0, 555, 0, 555, 0, white));
+  objects.add(
+      make_shared<xy_rect>(0, 555, 0, 555, 555, white));
+
+  shared_ptr<hittable> box1 = make_shared<box>(
+      point3(0, 0, 0), point3(165, 330, 165), white);
+  box1 = make_shared<rotate_y>(box1, 15);
+  box1 = make_shared<translate>(box1, vec3(265, 0, 295));
+  objects.add(box1);
+
+  shared_ptr<hittable> box2 = make_shared<box>(
+      point3(0, 0, 0), point3(165, 165, 165), white);
+  box2 = make_shared<rotate_y>(box2, -18);
+  box2 = make_shared<translate>(box2, point3(130, 0, 65));
+  objects.add(
+      make_shared<translate>(cat, point3(130, 0, 65)));
+
   return objects;
 }
 
@@ -403,7 +435,7 @@ void choose_scene(int choice, camera &cam,
   case 6: {
     world = cornell_box();
     aspect_ratio = 1.0;
-    image_width = 600;
+    image_width = 320;
     samples_per_pixel = 200;
     lookfrom = point3(278, 278, -800);
     lookat = point3(278, 278, 0);
@@ -437,7 +469,7 @@ void choose_scene(int choice, camera &cam,
     world = hittable_list(wh);
     aspect_ratio = 1.0;
     image_width = 600;
-    samples_per_pixel = 500;
+    samples_per_pixel = 100;
     lookfrom = point3(478, 278, -600);
     lookat = point3(278, 278, 0);
     break;
@@ -450,10 +482,6 @@ void choose_scene(int choice, camera &cam,
     samples_per_pixel = 100;
     lookfrom = point3(278, 278, -800);
     lookat = point3(278, 278, 0);
-
-    lookfrom = point3(26, 3, -6);
-    lookat = point3(0, 2, 3);
-    vfov = 20.0;
     break;
   }
   }
