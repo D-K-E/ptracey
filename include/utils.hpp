@@ -31,7 +31,8 @@ inline double degrees_to_radians(double degrees) {
   return degrees * M_PI / 180.0;
 }
 
-inline double clamp(double x, double min, double max) {
+template <typename Real>
+inline Real clamp(Real x, Real min, Real max) {
   if (x < min)
     return min;
   if (x > max)
@@ -53,3 +54,25 @@ inline double interp(double t, double s1, double s2) {
       throw std::runtime_error(txt.str());                 \
     }                                                      \
   }
+
+typedef bool (*bool_op)(int);
+
+using fn = std::function<bool(int)>;
+template <bool_op Finder>
+int findInterval(int size, const fn &f) {
+  // taken from
+  // https://github.com/mmp/pbrt-v3/blob/307d1620bf75771482f5dfd1dede1da0d33b5ee2/src/core/pbrt.h
+  int first = 0, len = size;
+  while (len > 0) {
+    int half = len >> 1, middle = first + half;
+    //
+    if (f(middle)) {
+      //
+      first = middle + 1;
+      len -= half + 1;
+    } else {
+      len = half;
+    }
+  }
+  return clamp<int>(first - 1, 0, size - 2);
+}

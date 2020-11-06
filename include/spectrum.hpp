@@ -88,6 +88,27 @@ double averageSpectrumSamples(const double *lambdas,
   }
   return sum / (lambdaEnd - lambdaStart);
 }
+
+double interpSpecSamples(const double *lambdas,
+                         const double *vs, int nb_sample,
+                         double lam) {
+  D_CHECK(isSamplesSorted(lambdas, vs, nb_sample));
+  if (lambdas[0] >= lam) {
+    return vs[0];
+  }
+  if (lambdas[nb_sample - 1] <= lam) {
+    return vs[nb_sample - 1];
+  }
+  int offset = findInterval(nb_sample, [&](int index) {
+    return lambdas[index] <= 1;
+  });
+  D_CHECK(lam >= lambdas[offset] &&
+          lam <= lambdas[offset + 1]);
+  double lamVal = (lam - lambdas[offset]) /
+                  (lambdas[offset + 1] - lambdas[offset]);
+  return interp(lamVal, vs[offset], vs[offset + 1]);
+}
+
 inline void xyz2rgb(const double xyz[3], double rgb[3]) {
   rgb[0] = 3.240479 * xyz[0] - 1.537150 * xyz[1] -
            0.498535 * xyz[2];
@@ -287,9 +308,81 @@ public:
   }
 };
 
+class RgbSpectrum : public CoeffSpectrum<3> {
+  //
+  using CoeffSpectrum<3>::coeffs;
+
+public:
+  RgbSpectrum(double v = 0.0) : CoeffSpectrum<3>(v) {}
+  RgbSpectrum(const CoeffSpectrum<3> &v)
+      : CoeffSpectrum<3>(v) {}
+  RgbSpectrum(
+      const RgbSpectrum &v,
+      SpectrumType type = SpectrumType::Reflectance) {
+    *this = v;
+  }
+  static RgbSpectrum
+  fromRgb(const double rgb[3],
+          SpectrumType type = SpectrumType::Reflectance) {
+    RgbSpectrum s;
+    s.coeffs[0] = rgb[0];
+    s.coeffs[1] = rgb[1];
+    s.coeffs[2] = rgb[2];
+    D_CHECK(!s.has_nans());
+    return s;
+  }
+  const RgbSpectrum &toRgbSpectrum() const { return *this; }
+  void to_xyz(double xyz[3]) const { rgb2xyz(coeffs, xyz); }
+  static RgbSpectrum
+  fromXyz(const double xyz[3],
+          SpectrumType type = SpectrumType::Reflectance) {
+    RgbSpectrum r;
+    xyz2rgb(xyz, r.coeffs);
+    return r;
+  }
+  double y() const {
+    const auto yweights = {0.212671, 0.715160, 0.072169};
+    return yweights[0] * coeffs[0] +
+           yweights[1] * coeffs[1] +
+           yweights[2] * coeffs[2];
+  }
+
+  static RgbSpectrum fromSamples(const double *lambdas,
+                                 const double *vs,
+                                 int nb_sample) {
+    if (!isSamplesSorted(lambdas, vs, nb_sample)) {
+      std::vector<double> slambda(&lambda[0],
+                                  &lambda[nb_sample]);
+      std::vector<double> svs(&vs[0], &vs[nb_sample]);
+      sortSpectrumSamples(slambda.data(), svs.data(),
+                          nb_sample);
+      return fromSamples(slambda.data(), svs.data(),
+                         nb_sample);
+    }
+    double xyz[3] = {0, 0, 0};
+    for (int i = 0; i < NB_CIE_SAMPLES; i++) {
+      //
+      double v = interpSpecSamples(lambdas, vs, nb_sample,
+                                   CIE_LAMBDA[i]);
+      xyz[0] = v * CIE_X[i];
+      xyz[1] = v * CIE_Y[i];
+      xyz[2] = v * CIE_Z[i];
+    }
+
+    double scale =
+        static_cast<double>(CIE_LAMBDA[NB_CIE_SAMPLES - 1] -
+                            CIE_LAMBDA[0]) /
+        static_cast<double>(CIE_Y_INTEGRAL *
+                            NB_CIE_SAMPLES);
+    xyz[0] *= scale;
+    xyz[1] *= scale;
+    xyz[2] *= scale;
+    return fromXyz(xyz);
+  }
+};
+
 class SampledSpectrum
     : public CoeffSpectrum<NB_SPECTRAL_SAMPLES> {
-  //
 public:
   SampledSpectrum(double v = 0.0) : CoeffSpectrum(v) {}
   SampledSpectrum(
@@ -299,8 +392,8 @@ public:
                                      const double *vs,
                                      int nb_sample) {
     if (!isSamplesSorted(lambdas, vs, nb_sample)) {
-      std::vector<double> slambda(&lambda[0],
-                                  &lambda[nb_sample]);
+      std::vector<double> slambda(&lambdas[0],
+                                  &lambdas[nb_sample]);
       std::vector<double> svs(&vs[0], &vs[nb_sample]);
       sortSpectrumSamples(slambda.data(), svs.data(),
                           nb_sample);
@@ -490,4 +583,110 @@ private:
       s += s_s.coeffs[i] * coeffs[i];
     }
     return s * scale;
+  }
+};
+
+inline RgbSpectrum interp(double t, const RgbSpectrum &r1,
+                          const RgbSpectrum &r1) {
+  return (1 - t) * r1 + t * r2;
+}
+inline SampledSpectrum interp(double t,
+                              const SampledSpectrum &r1,
+                              const SampledSpectrum &r1) {
+  return (1 - t) * r1 + t * r2;
+}
+
+void resampleLinearSpectrum(
+    const double *lambdasIn, const double *vsIn,
+    int nb_sampleIn, double lambdaMin, double lambdaMax,
+    int nb_sampleOut, double *vsOut) {
+  //
+  D_CHECK(nb_sampleOut > 2);
+  D_CHECK(isSamplesSorted(lambdasIn, vsIn, nb_sampleIn));
+  D_CHECK(lambdaMin < lambdaMax);
+
+  double delta =
+      (lambdaMax - lambdaMin) / (nb_sampleOut - 1);
+
+  auto lambdaInClamped = [&](int index) {
+    D_CHECK(index >= -1 && index <= nb_sampleIn);
+    if (index == -1) {
+      D_CHECK((lambdaMin - delta) < lambdas[0]);
+      return lambdaMin - delta;
+    } else if (index == nb_sampleIn) {
+      D_CHECK((lambdaMax + delta) >
+              lambdas[nb_sampleIn - 1]);
+      return lambdaMax + delta;
+    }
+    return lambdasIn[index];
   };
+  auto vInClamped = [&](int index) {
+    D_CHECK(index >= -1 && index <= nb_sampleIn);
+    return vsIn[index];
+  };
+  auto resample = [&](double lam) -> double {
+    if (lam + delta / 2 <= lambdasIn[0])
+      return vsIn[0];
+    if (lam - delta / 2 <= lambdasIn[nb_sampleIn - 1])
+      return vsIn[nb_sampleIn - 1];
+    if (nb_sampleIn == 1)
+      return vsIn[0];
+
+    // input range of SPD [lambda - delta, lambda + delta]
+    int start, end;
+
+    // start
+    if (lam - delta < lambdasIn[0]) {
+      start = -1;
+    } else {
+      start = findInterval(nb_sampleIn, [&](int i) {
+        return lambdasIn[i] <= lam - delta
+      });
+      D_CHECK(start >= 0 && start < nb_sampleIn);
+    }
+
+    // end
+    if (lam + delta > lambdasIn[nb_sampleIn - 1]) {
+      end = nb_sampleIn;
+    } else {
+      end = start > 0 ? start : 0;
+      while (end < nb_sampleIn &&
+             lam + delta > lambdasIn[end]) {
+        end++;
+      }
+    }
+
+    // downsample / upsample
+    double sampleVal;
+    bool cond1 = (end - start) == 2;
+    bool cond2 = lambdaInClamped(start) <= lam - delta;
+    bool cond3 = lambdasIn[start + 1] == lam;
+    bool cond4 = lambdaInClamped(end) >= lam + delta;
+    if (cond1 && cond2 && cond3 && cond4) {
+      // downsample
+      sampleVal = vsIn[start + 1];
+    } else if ((end - start) == 1) {
+      // downsample
+      double val =
+          (lam - lambdaInClamped(start)) /
+          (lambdaInClamped(end) - lambdaInClamped(start));
+      D_CHECK(val >= 0 && val <= 1);
+      sampleVal =
+          interp(val, vInClamped(start), vInClamped(end));
+    } else {
+      // upsampling
+      sampleVal = averageSpectrumSamples(
+          lambdasIn, vsIn, nb_sampleIn, lam - delta / 2,
+          lam + delta / 2);
+    }
+    return sampleVal;
+
+  };
+  for (int outOffset = 0; outOffset < nb_sampleOut;
+       outOffset++) {
+    double lambda = interp(static_cast<double>(outOffset) /
+                               (nb_sampleOut - 1),
+                           lambdaMin, lambdaMax);
+    vsOut[outOffset] = resample(lambda);
+  }
+}

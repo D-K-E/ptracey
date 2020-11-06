@@ -9,7 +9,7 @@
 #include <ray.hpp>
 #include <triangle.hpp>
 #include <vec3.hpp>
-//
+
 color to_color(aiColor3D col) {
   auto x = static_cast<double>(col.r);
   auto y = static_cast<double>(col.g);
@@ -19,23 +19,19 @@ color to_color(aiColor3D col) {
 class mesh : public hittable {
 public:
   int mesh_id;
-  shared_ptr<material> mat_ptr;
   mesh() {}
   shared_ptr<hittable> obj;
   hittable_list list;
 
   mesh(std::vector<shared_ptr<hittable>> hs, int mid,
        shared_ptr<material> mat)
-      : mesh_id(mid), mat_ptr(mat) {
-    for (auto &h : hs) {
-      h->mat_ptr = mat_ptr;
-    }
-    list = hittable_list(hs);
+      : mesh_id(mid), list(hittable_list(hs)) {
     obj = make_shared<bvh_node>(list, 0.0, 1.0);
   }
   bool hit(const ray &r, double t_min, double t_max,
            hit_record &rec) const override {
-    return obj->hit(r, t_min, t_max, rec);
+    bool res = obj->hit(r, t_min, t_max, rec);
+    return res;
   }
   bool bounding_box(double time0, double time1,
                     aabb &output_box) const override {
@@ -96,7 +92,8 @@ public:
     }
   }
   std::vector<shared_ptr<hittable>>
-  processTriangles(aiMesh *msh) {
+  processTriangles(aiMesh *msh,
+                   shared_ptr<material> mat_ptr) {
     // iterating on vertices of the mesh
     std::vector<shared_ptr<hittable>> triangles;
     for (unsigned int j = 0; j < msh->mNumFaces; j++) {
@@ -114,7 +111,7 @@ public:
       }
       shared_ptr<hittable> tri = make_shared<triangle>(
           tri_points[0], tri_points[1], tri_points[2],
-          make_shared<material>());
+          mat_ptr);
       triangles.push_back(tri);
     }
     return triangles;
@@ -166,12 +163,12 @@ public:
   shared_ptr<hittable> processMesh(aiMesh *msh,
                                    const aiScene *scene,
                                    int mesh_id) {
-    std::vector<shared_ptr<hittable>> triangles =
-        processTriangles(msh);
-
     aiMaterial *mat =
         scene->mMaterials[msh->mMaterialIndex];
     shared_ptr<material> mat_ptr = processMaterial(mat);
+
+    std::vector<shared_ptr<hittable>> triangles =
+        processTriangles(msh, mat_ptr);
 
     shared_ptr<hittable> m =
         make_shared<mesh>(triangles, mesh_id, mat_ptr);
@@ -179,7 +176,8 @@ public:
   }
   bool hit(const ray &r, double t_min, double t_max,
            hit_record &rec) const override {
-    return meshes->hit(r, t_min, t_max, rec);
+    bool res = meshes->hit(r, t_min, t_max, rec);
+    return res;
   }
   bool bounding_box(double time0, double time1,
                     aabb &output_box) const override {

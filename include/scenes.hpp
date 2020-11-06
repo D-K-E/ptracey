@@ -328,8 +328,7 @@ hittable_list final_scene_nextweek() {
   return objects;
 }
 hittable_list model_test() {
-  matrix modelMat =
-      scale_translate(point3(278, 278, 0), vec3(0.5));
+  matrix modelMat = scaleM(vec3(0.5));
   std::string modelpath = "media/models/kedi.obj";
   shared_ptr<hittable> cat =
       make_shared<model>(modelpath, modelMat);
@@ -344,18 +343,20 @@ hittable_list model_test() {
   auto light =
       make_shared<diffuse_light>(color(15.0, 15.0, 15.0));
 
-  objects.add(make_shared<yz_rect>(0.0, 555.0, 0.0, 555.0,
-                                   555.0, green));
-  objects.add(make_shared<yz_rect>(0.0, 555.0, 0.0, 555.0,
-                                   0.0, red));
+  // objects.add(make_shared<yz_rect>(0.0, 555.0, 0.0,
+  // 555.0,
+  //                                 555.0, green));
+  // objects.add(make_shared<yz_rect>(0.0, 555.0, 0.0,
+  // 555.0,
+  //                                 0.0, red));
   objects.add(make_shared<flip_face>(make_shared<xz_rect>(
       213, 343, 227, 332, 554, light)));
-  objects.add(
-      make_shared<xz_rect>(0, 555, 0, 555, 555, white));
-  objects.add(
-      make_shared<xz_rect>(0, 555, 0, 555, 0, white));
-  objects.add(
-      make_shared<xy_rect>(0, 555, 0, 555, 555, white));
+  // objects.add(
+  //    make_shared<xz_rect>(0, 555, 0, 555, 555, white));
+  // objects.add(
+  //    make_shared<xz_rect>(0, 555, 0, 555, 0, white));
+  // objects.add(
+  //    make_shared<xy_rect>(0, 555, 0, 555, 555, white));
 
   shared_ptr<hittable> box1 = make_shared<box>(
       point3(0, 0, 0), point3(165, 330, 165), white);
@@ -367,8 +368,8 @@ hittable_list model_test() {
       point3(0, 0, 0), point3(165, 165, 165), white);
   box2 = make_shared<rotate_y>(box2, -18);
   box2 = make_shared<translate>(box2, point3(130, 0, 65));
-  objects.add(
-      make_shared<translate>(cat, point3(130, 0, 65)));
+
+  objects.add(cat);
 
   return objects;
 }

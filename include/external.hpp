@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <exception>
 #include <float.h>
+#include <functional>
 #include <limits>
 #include <math.h>
 #include <memory>
