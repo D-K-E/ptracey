@@ -32,12 +32,15 @@ inline double degrees_to_radians(double degrees) {
 }
 
 template <typename Real>
-inline Real clamp(Real x, Real min, Real max) {
+Real clamp(Real x, Real min, Real max) {
   if (x < min)
     return min;
   if (x > max)
     return max;
   return x;
+}
+template <typename T> T dclamp(T x, T mn, T mx) {
+  return clamp<T>(x, mn, mx);
 }
 inline double interp(double t, double s1, double s2) {
   // interpolate
@@ -55,10 +58,7 @@ inline double interp(double t, double s1, double s2) {
     }                                                      \
   }
 
-typedef bool (*bool_op)(int);
-
 using fn = std::function<bool(int)>;
-template <bool_op Finder>
 int findInterval(int size, const fn &f) {
   // taken from
   // https://github.com/mmp/pbrt-v3/blob/307d1620bf75771482f5dfd1dede1da0d33b5ee2/src/core/pbrt.h

@@ -1,19 +1,22 @@
 #pragma once
+#include "spectrum.hpp"
+#include "utils.hpp"
 #include <pdf.hpp>
 #include <texture.hpp>
 
 struct scatter_record {
   ray specular_ray;
   bool is_specular;
-  color attenuation;
+  sampled_spectrum attenuation;
   shared_ptr<pdf> pdf_ptr;
 };
 class material {
 public:
-  virtual color emitted(const ray &r_in,
-                        const hit_record &rec, double u,
-                        double v, const point3 &p) const {
-    return color(0, 0, 0);
+  virtual sampled_spectrum emitted(const ray &r_in,
+                                   const hit_record &rec,
+                                   double u, double v,
+                                   const point3 &p) const {
+    return sampled_spectrum(0.0);
   }
 
   virtual bool scatter(const ray &r_in,
@@ -30,8 +33,10 @@ public:
 };
 class lambertian : public material {
 public:
-  lambertian(const color &a)
-      : albedo(make_shared<solid_color>(a)) {}
+  lambertian(const color &a,
+             SpectrumType type = SpectrumType::Reflectance)
+      : albedo(make_shared<solid_color>(a, type)) {}
+
   lambertian(shared_ptr<texture> a) : albedo(a) {}
 
   bool scatter(const ray &r_in, const hit_record &rec,
@@ -55,8 +60,10 @@ public:
 };
 class metal : public material {
 public:
-  metal(const color &a, double f)
-      : albedo(a), fuzz(f < 1 ? f : 1) {}
+  metal(const color &a, double f,
+        SpectrumType type = SpectrumType::Reflectance)
+      : albedo(make_shared<solid_color>(a, type)),
+        fuzz(f < 1 ? f : 1) {}
 
   bool scatter(const ray &r_in, const hit_record &rec,
                scatter_record &srec) const override {
@@ -65,26 +72,31 @@ public:
     srec.specular_ray = ray(
         rec.p, reflected + fuzz * random_in_unit_sphere(),
         r_in.time());
-    srec.attenuation = albedo;
+    srec.attenuation = albedo->value(rec.u, rec.v, rec.p);
     srec.is_specular = true;
     srec.pdf_ptr = nullptr;
     return true;
   }
 
 public:
-  color albedo;
+  shared_ptr<texture> albedo;
   double fuzz;
 };
 class dielectric : public material {
 public:
-  dielectric(double index_of_refraction)
-      : ir(index_of_refraction) {}
+  dielectric(double index_of_refraction,
+             SpectrumType stype = SpectrumType::Reflectance)
+      : ir(index_of_refraction), type(stype) {}
 
   bool scatter(const ray &r_in, const hit_record &rec,
                scatter_record &srec) const override {
     srec.is_specular = true;
     srec.pdf_ptr = nullptr;
-    srec.attenuation = color(1.0, 1.0, 1.0);
+    color white_rgb(1.0);
+    sampled_spectrum white =
+        sampled_spectrum::fromRgb(white_rgb, type);
+
+    srec.attenuation = white;
     double refraction_ratio =
         rec.front_face ? (1.0 / ir) : ir;
 
@@ -111,6 +123,7 @@ public:
 
 public:
   double ir; // Index of Refraction
+  SpectrumType type;
 
 private:
   static double reflectance(double cosine, double ref_idx) {
@@ -123,14 +136,16 @@ private:
 class diffuse_light : public material {
 public:
   diffuse_light(shared_ptr<texture> a) : emit(a) {}
-  diffuse_light(color c)
+  diffuse_light(
+      color c, SpectrumType type = SpectrumType::Illuminant)
       : emit(make_shared<solid_color>(c)) {}
 
-  color emitted(const ray &r_in, const hit_record &rec,
-                double u, double v,
-                const point3 &p) const override {
+  sampled_spectrum emitted(const ray &r_in,
+                           const hit_record &rec, double u,
+                           double v,
+                           const point3 &p) const override {
     if (!rec.front_face)
-      return color(0, 0, 0);
+      return sampled_spectrum(0.0);
     return emit->value(u, v, p);
   }
 

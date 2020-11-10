@@ -23,8 +23,7 @@ public:
   shared_ptr<hittable> obj;
   hittable_list list;
 
-  mesh(std::vector<shared_ptr<hittable>> hs, int mid,
-       shared_ptr<material> mat)
+  mesh(std::vector<shared_ptr<hittable>> hs, int mid)
       : mesh_id(mid), list(hittable_list(hs)) {
     obj = make_shared<bvh_node>(list, 0.0, 1.0);
   }
@@ -48,6 +47,7 @@ public:
 class model : public hittable {
 public:
   shared_ptr<hittable> meshes;
+  shared_ptr<material> mat = nullptr;
   hittable_list list;
   matrix transMat;
 
@@ -56,6 +56,11 @@ public:
   }
   model(std::string mpath, const matrix &transM)
       : transMat(transM) {
+    loadModel(mpath);
+  }
+  model(std::string mpath, const matrix &transM,
+        shared_ptr<material> mt)
+      : transMat(transM), mat(mt) {
     loadModel(mpath);
   }
   void loadModel(std::string mpath) {
@@ -109,9 +114,16 @@ public:
         vec = transMat * vec;
         tri_points.push_back(vec);
       }
-      shared_ptr<hittable> tri = make_shared<triangle>(
-          tri_points[0], tri_points[1], tri_points[2],
-          mat_ptr);
+      shared_ptr<hittable> tri;
+      if (!mat) {
+        tri = make_shared<triangle>(tri_points[0],
+                                    tri_points[1],
+                                    tri_points[2], mat_ptr);
+      } else {
+        tri = make_shared<triangle>(tri_points[0],
+                                    tri_points[1],
+                                    tri_points[2], mat);
+      }
       triangles.push_back(tri);
     }
     return triangles;
@@ -170,8 +182,12 @@ public:
     std::vector<shared_ptr<hittable>> triangles =
         processTriangles(msh, mat_ptr);
 
-    shared_ptr<hittable> m =
-        make_shared<mesh>(triangles, mesh_id, mat_ptr);
+    shared_ptr<hittable> m;
+    if (!mat) {
+      m = make_shared<mesh>(triangles, mesh_id);
+    } else {
+      m = make_shared<mesh>(triangles, mesh_id);
+    }
     return m;
   }
   bool hit(const ray &r, double t_min, double t_max,

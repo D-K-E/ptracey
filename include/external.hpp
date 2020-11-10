@@ -32,4 +32,4 @@
 #include <thread>
 //
 #include <future>
-#define THREAD_NB 1
+#define THREAD_NB 5

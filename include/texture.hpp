@@ -3,29 +3,33 @@
 #include <external.hpp>
 #include <perlin.hpp>
 #include <ray.hpp>
+#include <spectrum.hpp>
 #include <vec3.hpp>
 
 class texture {
 public:
-  virtual color value(double u, double v,
-                      const vec3 &p) const = 0;
+  virtual sampled_spectrum value(double u, double v,
+                                 const vec3 &p) const = 0;
 };
 
 class solid_color : public texture {
 public:
   solid_color() {}
-  solid_color(color c) : color_value(c) {}
+  solid_color(color c, SpectrumType type =
+                           SpectrumType::Reflectance) {
+    color_value = sampled_spectrum::fromRgb(c, type);
+  }
 
   solid_color(double red, double green, double blue)
       : solid_color(color(red, green, blue)) {}
 
-  color value(double u, double v,
-              const vec3 &p) const override {
+  sampled_spectrum value(double u, double v,
+                         const vec3 &p) const override {
     return color_value;
   }
 
 private:
-  color color_value;
+  sampled_spectrum color_value;
 };
 
 class checker_texture : public texture {
@@ -40,8 +44,8 @@ public:
       : even(make_shared<solid_color>(c1)),
         odd(make_shared<solid_color>(c2)) {}
 
-  color value(double u, double v,
-              const vec3 &p) const override {
+  sampled_spectrum value(double u, double v,
+                         const vec3 &p) const override {
     auto sines =
         sin(10 * p.x()) * sin(10 * p.y()) * sin(10 * p.z());
     if (sines < 0)
@@ -58,19 +62,25 @@ public:
 class noise_texture : public texture {
 public:
   noise_texture() {}
-  noise_texture(double sc) : scale(sc) {}
+  noise_texture(double sc, SpectrumType stype =
+                               SpectrumType::Reflectance)
+      : scale(sc), type(stype) {}
 
-  color value(double u, double v,
-              const vec3 &p) const override {
+  sampled_spectrum value(double u, double v,
+                         const vec3 &p) const override {
     // return color(1,1,1)*0.5*(1 + noise.turb(scale * p));
     // return color(1,1,1)*noise.turb(scale * p);
-    return color(1, 1, 1) * 0.5 *
+    color white_rgb(1.0);
+    sampled_spectrum white =
+        sampled_spectrum::fromRgb(white_rgb, type);
+    return white * 0.5 *
            (1 + sin(scale * p.z() + 10 * noise.turb(p)));
   }
 
 public:
   perlin noise;
   double scale;
+  SpectrumType type;
 };
 
 class image_texture : public texture {
@@ -100,12 +110,15 @@ public:
 
   ~image_texture() { STBI_FREE(data); }
 
-  color value(double u, double v,
-              const vec3 &p) const override {
+  sampled_spectrum value(double u, double v,
+                         const vec3 &p) const override {
     // If we have no texture data, then return solid cyan as
     // a debugging aid.
-    if (data == nullptr)
-      return color(0, 1, 1);
+    if (data == nullptr) {
+      color pix_rgb(0, 1, 1);
+      return sampled_spectrum::fromRgb(
+          pix_rgb, SpectrumType::Reflectance);
+    }
 
     // Clamp input texture coordinates to [0,1] x [1,0]
     u = clamp(u, 0.0, 1.0);
@@ -126,9 +139,11 @@ public:
     auto pixel =
         data + j * bytes_per_scanline + i * bytes_per_pixel;
 
-    return color(color_scale * pixel[0],
-                 color_scale * pixel[1],
-                 color_scale * pixel[2]);
+    color pix_rgb(color_scale * pixel[0],
+                  color_scale * pixel[1],
+                  color_scale * pixel[2]);
+    return sampled_spectrum::fromRgb(
+        pix_rgb, SpectrumType::Reflectance);
   }
 
 private:

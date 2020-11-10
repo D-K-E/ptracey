@@ -5,26 +5,28 @@
 #include <hittable_list.hpp>
 #include <ray.hpp>
 #include <scenes.hpp>
+#include <spectrum.hpp>
 #include <utils.hpp>
 #include <vec3.hpp>
 
 using immat = std::vector<std::vector<color>>;
 
-color ray_color(const ray &r, const color &background,
-                const hittable &world, int depth) {
+sampled_spectrum
+ray_color(const ray &r, const sampled_spectrum &background,
+          const hittable &world, int depth) {
   hit_record rec;
 
   // If we've exceeded the ray bounce limit, no more light
   // is gathered.
   if (depth <= 0)
-    return color(0);
+    return sampled_spectrum(0.0);
 
   // If the ray hits nothing, return the background color.
   if (!world.hit(r, 0.001, FLT_MAX, rec))
     return background;
 
   scatter_record srec;
-  color emitted =
+  sampled_spectrum emitted =
       rec.mat_ptr->emitted(r, rec, rec.u, rec.v, rec.p);
 
   if (!rec.mat_ptr->scatter(r, rec, srec))
@@ -58,10 +60,11 @@ struct InnerParams {
   int startx;
   int endx;
   hittable_list scene;
-  color background;
+  sampled_spectrum background;
   InnerParams(int sx, int ex, const camera &c, int imw,
               int imh, int ps, int d,
-              const hittable_list &hs, const color &b)
+              const hittable_list &hs,
+              const sampled_spectrum &b)
       : startx(sx), endx(ex), cam(c), imwidth(imw),
         imheight(imh), psample(ps), mdepth(d), scene(hs),
         background(b) {}
@@ -83,12 +86,12 @@ InnerRet innerLoop(InnerParams params) {
   int startx = params.startx;
   int endx = params.endx;
   int xrange = endx - startx;
-  color background = params.background;
+  sampled_spectrum background = params.background;
   hittable_list scene = params.scene;
   immat imv;
   imv.resize(xrange);
   for (int i = 0; i < xrange; i++) {
-    imv[i].resize(imheight, color(0));
+    imv[i].resize(imheight, color(0.0));
   }
 
   for (int a = 0; a < xrange; a++) {
@@ -102,7 +105,9 @@ InnerRet innerLoop(InnerParams params) {
         double s =
             double(j + random_double()) / (imheight - 1);
         ray r = cam.get_ray(t, s);
-        rcolor += ray_color(r, background, scene, mdepth);
+        sampled_spectrum ray_spec =
+            ray_color(r, background, scene, mdepth);
+        rcolor += ray_spec.to_rgb();
       }
       imv[a][j] = rcolor;
     }
@@ -140,16 +145,16 @@ int main() {
   // World
 
   hittable_list world;
-  int choice = 10;
+  int choice = 6;
   camera cam;
   int image_height;
-  color background;
+  sampled_spectrum background;
   choose_scene(choice, cam, world, samples_per_pixel,
                aspect_ratio, image_width, image_height,
                background);
   imvec.resize(image_width);
   for (int i = 0; i < image_width; i++) {
-    imvec[i].resize(image_height, color(0));
+    imvec[i].resize(image_height, color(0.0));
   }
   int wslicelen = int(image_width / THREAD_NB);
 
@@ -195,8 +200,7 @@ int main() {
   auto stop = std::chrono::high_resolution_clock::now();
   std::chrono::duration<double> elapsed = stop - start;
 
-  std::cerr << "duration: " << elapsed.count()
-            << std::endl;
+  std::cerr << "duration: " << elapsed.count() << std::endl;
 
   std::cerr << "\nDone.\n";
 }

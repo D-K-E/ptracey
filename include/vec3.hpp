@@ -10,6 +10,7 @@ public:
   vec3() : e{0, 0, 0} {}
   vec3(double e0, double e1, double e2) : e{e0, e1, e2} {}
   vec3(double e0) : e{e0, e0, e0} {}
+  vec3(const double e1[3]) : e{e1[0], e1[1], e1[2]} {}
 
   double x() const { return e[0]; }
   double y() const { return e[1]; }
@@ -196,4 +197,3 @@ inline vec3 random_to_sphere(double radius,
 }
 
 //
-

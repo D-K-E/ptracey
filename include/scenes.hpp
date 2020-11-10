@@ -10,6 +10,7 @@
 #include <mesh.hpp>
 #include <moving_sphere.hpp>
 #include <ray.hpp>
+#include <spectrum.hpp>
 #include <sphere.hpp>
 #include <vec3.hpp>
 
@@ -174,13 +175,14 @@ hittable_list simple_light() {
 hittable_list cornell_box() {
   hittable_list objects;
 
-  auto red = make_shared<lambertian>(color(.65, .05, .05));
-  auto white =
-      make_shared<lambertian>(color(.73, .73, .73));
-  auto green =
-      make_shared<lambertian>(color(.12, .45, .15));
-  auto light =
-      make_shared<diffuse_light>(color(15.0, 15.0, 15.0));
+  auto red = make_shared<lambertian>(
+      color(.65, .05, .05), SpectrumType::Reflectance);
+  auto white = make_shared<lambertian>(
+      color(.73, .73, .73), SpectrumType::Reflectance);
+  auto green = make_shared<lambertian>(
+      color(.12, .45, .15), SpectrumType::Reflectance);
+  auto light = make_shared<diffuse_light>(
+      color(15.0, 15.0, 15.0), SpectrumType::Illuminant);
 
   objects.add(make_shared<yz_rect>(0.0, 555.0, 0.0, 555.0,
                                    555.0, green));
@@ -328,10 +330,9 @@ hittable_list final_scene_nextweek() {
   return objects;
 }
 hittable_list model_test() {
-  matrix modelMat = scaleM(vec3(0.5));
+  matrix modelMat =
+      scale_translate(point3(130, 167, 65), vec3(95.0));
   std::string modelpath = "media/models/kedi.obj";
-  shared_ptr<hittable> cat =
-      make_shared<model>(modelpath, modelMat);
 
   hittable_list objects;
 
@@ -343,20 +344,21 @@ hittable_list model_test() {
   auto light =
       make_shared<diffuse_light>(color(15.0, 15.0, 15.0));
 
-  // objects.add(make_shared<yz_rect>(0.0, 555.0, 0.0,
-  // 555.0,
-  //                                 555.0, green));
-  // objects.add(make_shared<yz_rect>(0.0, 555.0, 0.0,
-  // 555.0,
-  //                                 0.0, red));
+  shared_ptr<hittable> cat =
+      make_shared<model>(modelpath, modelMat);
+
+  objects.add(make_shared<yz_rect>(0.0, 555.0, 0.0, 555.0,
+                                   555.0, green));
+  objects.add(make_shared<yz_rect>(0.0, 555.0, 0.0, 555.0,
+                                   0.0, red));
   objects.add(make_shared<flip_face>(make_shared<xz_rect>(
       213, 343, 227, 332, 554, light)));
-  // objects.add(
-  //    make_shared<xz_rect>(0, 555, 0, 555, 555, white));
-  // objects.add(
-  //    make_shared<xz_rect>(0, 555, 0, 555, 0, white));
-  // objects.add(
-  //    make_shared<xy_rect>(0, 555, 0, 555, 555, white));
+  objects.add(
+      make_shared<xz_rect>(0, 555, 0, 555, 555, white));
+  objects.add(
+      make_shared<xz_rect>(0, 555, 0, 555, 0, white));
+  objects.add(
+      make_shared<xy_rect>(0, 555, 0, 555, 555, white));
 
   shared_ptr<hittable> box1 = make_shared<box>(
       point3(0, 0, 0), point3(165, 330, 165), white);
@@ -369,6 +371,58 @@ hittable_list model_test() {
   box2 = make_shared<rotate_y>(box2, -18);
   box2 = make_shared<translate>(box2, point3(130, 0, 65));
 
+  objects.add(box2);
+  objects.add(cat);
+
+  return objects;
+}
+hittable_list model_test2() {
+  matrix modelMat =
+      scale_translate(point3(130, 167, 65), vec3(5.0));
+  std::string modelpath =
+      "media/models/redgranite/stele.obj";
+
+  hittable_list objects;
+
+  auto red = make_shared<lambertian>(color(.65, .05, .05));
+  auto white =
+      make_shared<lambertian>(color(.73, .73, .73));
+  auto green =
+      make_shared<lambertian>(color(.12, .45, .15));
+  auto light =
+      make_shared<diffuse_light>(color(15.0, 15.0, 15.0));
+
+  shared_ptr<hittable> cat =
+      make_shared<model>(modelpath, modelMat, light);
+
+  // objects.add(make_shared<yz_rect>(0.0, 555.0, 0.0,
+  // 555.0,
+  //                                 555.0, green));
+  // objects.add(make_shared<yz_rect>(0.0, 555.0, 0.0,
+  // 555.0,
+  //                                 0.0, red));
+  // objects.add(make_shared<flip_face>(make_shared<xz_rect>(
+  //    213, 343, 227, 332, 554, light)));
+  // objects.add(
+  //    make_shared<xz_rect>(0, 555, 0, 555, 555, white));
+  // objects.add(
+  //    make_shared<xz_rect>(0, 555, 0, 555, 0, white));
+  // objects.add(
+  //    make_shared<xy_rect>(0, 555, 0, 555, 555, white));
+
+  // shared_ptr<hittable> box1 = make_shared<box>(
+  //    point3(0, 0, 0), point3(165, 330, 165), white);
+  // box1 = make_shared<rotate_y>(box1, 15);
+  // box1 = make_shared<translate>(box1, vec3(265, 0, 295));
+  // objects.add(box1);
+
+  // shared_ptr<hittable> box2 = make_shared<box>(
+  //    point3(0, 0, 0), point3(165, 165, 165), white);
+  // box2 = make_shared<rotate_y>(box2, -18);
+  // box2 = make_shared<translate>(box2, point3(130, 0,
+  // 65));
+
+  // objects.add(box2);
   objects.add(cat);
 
   return objects;
@@ -378,18 +432,20 @@ void choose_scene(int choice, camera &cam,
                   hittable_list &world,
                   int samples_per_pixel, float aspect_ratio,
                   int &image_width, int &image_height,
-                  color &background) {
+                  sampled_spectrum &background) {
   //
   point3 lookfrom;
   point3 lookat;
   auto vfov = 40.0;
   auto aperture = 0.0;
-  background = color(0, 0, 0);
+  background = sampled_spectrum(0.0);
 
   switch (choice) {
   case 1: {
     world = random_scene();
-    background = color(0.70, 0.80, 1.00);
+    color b_rgb(0.70, 0.80, 1.00);
+    background = sampled_spectrum::fromRgb(
+        b_rgb, SpectrumType::Reflectance);
     lookfrom = point3(13, 2, 3);
     lookat = point3(0, 0, 0);
     vfov = 20.0;
@@ -399,7 +455,10 @@ void choose_scene(int choice, camera &cam,
 
   case 2: {
     world = two_spheres();
-    background = color(0.70, 0.80, 1.00);
+    color b_rgb(0.70, 0.80, 1.00);
+    background = sampled_spectrum::fromRgb(
+        b_rgb, SpectrumType::Reflectance);
+
     lookfrom = point3(13, 2, 3);
     lookat = point3(0, 0, 0);
     vfov = 20.0;
@@ -408,7 +467,10 @@ void choose_scene(int choice, camera &cam,
 
   case 3: {
     world = two_perlin_spheres();
-    background = color(0.70, 0.80, 1.00);
+    color b_rgb(0.70, 0.80, 1.00);
+    background = sampled_spectrum::fromRgb(
+        b_rgb, SpectrumType::Reflectance);
+
     lookfrom = point3(13, 2, 3);
     lookat = point3(0, 0, 0);
     vfov = 20.0;
@@ -417,7 +479,10 @@ void choose_scene(int choice, camera &cam,
 
   case 4: {
     world = earth();
-    background = color(0.70, 0.80, 1.00);
+    color b_rgb(0.70, 0.80, 1.00);
+    background = sampled_spectrum::fromRgb(
+        b_rgb, SpectrumType::Reflectance);
+
     lookfrom = point3(0, 0, 12);
     lookat = point3(0, 0, 0);
     vfov = 20.0;
@@ -481,6 +546,15 @@ void choose_scene(int choice, camera &cam,
     aspect_ratio = 1.0;
     image_width = 600;
     samples_per_pixel = 100;
+    lookfrom = point3(278, 278, -800);
+    lookat = point3(278, 278, 0);
+    break;
+  }
+  case 11: {
+    world = model_test2();
+    aspect_ratio = 1.0;
+    image_width = 300;
+    samples_per_pixel = 50;
     lookfrom = point3(278, 278, -800);
     lookat = point3(278, 278, 0);
     break;

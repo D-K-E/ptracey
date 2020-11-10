@@ -4,11 +4,12 @@
 // https://github.com/mmp/pbrt-v3/blob/master/src/core/spectrum.h
 #include <specdata.hpp>
 #include <utils.hpp>
+#include <vec3.hpp>
 // CONSTANTS
 
 static const int NB_SPECTRAL_SAMPLES = 60;
-static const int VISIBLE_LAMBDA_START = 360;
-static const int VISIBLE_LAMBDA_END = 830;
+static const int VISIBLE_LAMBDA_START = 400;
+static const int VISIBLE_LAMBDA_END = 700;
 static const auto CIE_Y_INTEGRAL = 106.856895;
 
 // utility functions for spectrums
@@ -129,7 +130,7 @@ inline void rgb2xyz(const double rgb[3], double xyz[3]) {
 enum class SpectrumType { Reflectance, Illuminant };
 enum RGB_AXIS : int { RGB_R, RGB_G, RGB_B };
 
-template <int NbSpecSamples> class CoeffSpectrum {
+template <int NbSpecSamples> class coeff_spectrum {
   //
 protected:
   double coeffs[NbSpecSamples];
@@ -138,18 +139,18 @@ public:
   static const int nbSamples = NbSpecSamples;
 
   // constructors
-  CoeffSpectrum(double c = 0.0) {
+  coeff_spectrum(double c = 0.0) {
     for (int i = 0; i < nbSamples; i++) {
       coeffs[i] = c;
     }
     D_CHECK(!has_nans());
   }
-  CoeffSpectrum(const CoeffSpectrum &s) {
+  coeff_spectrum(const coeff_spectrum &s) {
     D_CHECK(!s.has_nans());
     for (int i = 0; i < nbSamples; ++i)
       coeffs[i] = s.coeffs[i];
   }
-  CoeffSpectrum &operator=(const CoeffSpectrum &s) {
+  coeff_spectrum &operator=(const coeff_spectrum &s) {
     D_CHECK(!s.has_nans());
     for (int i = 0; i < nbSamples; ++i)
       coeffs[i] = s.coeffs[i];
@@ -171,51 +172,51 @@ public:
     return true;
   }
   // implementing operators
-  CoeffSpectrum &operator+=(const CoeffSpectrum &cs) {
+  coeff_spectrum &operator+=(const coeff_spectrum &cs) {
     D_CHECK(!cs.has_nans());
     for (int i = 0; i < nbSamples; i++)
       coeffs[i] += cs.coeffs[i];
     return *this;
   }
-  CoeffSpectrum operator+(const CoeffSpectrum &cs) const {
+  coeff_spectrum operator+(const coeff_spectrum &cs) const {
     D_CHECK(!cs.has_nans());
-    CoeffSpectrum cspec = *this;
+    coeff_spectrum cspec = *this;
     for (int i = 0; i < nbSamples; i++)
       cspec.coeffs[i] += cs.coeffs[i];
     return cspec;
   }
-  CoeffSpectrum operator-(const CoeffSpectrum &cs) const {
+  coeff_spectrum operator-(const coeff_spectrum &cs) const {
     D_CHECK(!cs.has_nans());
-    CoeffSpectrum cspec = *this;
+    coeff_spectrum cspec = *this;
     for (int i = 0; i < nbSamples; i++)
       cspec.coeffs[i] -= cs.coeffs[i];
     return cspec;
   }
-  CoeffSpectrum &operator-=(const CoeffSpectrum &cs) {
+  coeff_spectrum &operator-=(const coeff_spectrum &cs) {
     D_CHECK(!cs.has_nans());
     for (int i = 0; i < nbSamples; i++)
       coeffs[i] -= cs.coeffs[i];
     return *this;
   }
-  CoeffSpectrum operator/(const CoeffSpectrum &cs) const {
+  coeff_spectrum operator/(const coeff_spectrum &cs) const {
     D_CHECK(!cs.has_nans());
-    CoeffSpectrum ret = *this;
+    coeff_spectrum ret = *this;
     for (int i = 0; i < nbSamples; i++) {
       D_CHECK(cs.coeffs[i] != 0.0);
       ret.coeffs[i] /= cs.coeffs[i];
     }
     return ret;
   }
-  CoeffSpectrum operator/(double d) const {
+  coeff_spectrum operator/(double d) const {
     D_CHECK(d != 0.0);
     D_CHECK(!isnan(d));
-    CoeffSpectrum ret = *this;
+    coeff_spectrum ret = *this;
     for (int i = 0; i < nbSamples; i++) {
       ret.coeffs[i] /= d;
     }
     return ret;
   }
-  CoeffSpectrum &operator/=(double d) {
+  coeff_spectrum &operator/=(double d) {
     D_CHECK(d != 0.0);
     D_CHECK(!isnan(d));
     for (int i = 0; i < nbSamples; i++) {
@@ -223,16 +224,16 @@ public:
     }
     return *this;
   }
-  CoeffSpectrum operator*(const CoeffSpectrum &cs) {
+  coeff_spectrum operator*(const coeff_spectrum &cs) const {
     D_CHECK(!cs.has_nans());
-    CoeffSpectrum ret = *this;
+    coeff_spectrum ret = *this;
     for (int i = 0; i < nbSamples; i++) {
       ret.coeffs[i] *= cs.coeffs[i];
     }
     D_CHECK(!ret.has_nans());
     return ret;
   }
-  CoeffSpectrum &operator*=(const CoeffSpectrum &cs) {
+  coeff_spectrum &operator*=(const coeff_spectrum &cs) {
     D_CHECK(!cs.has_nans());
     for (int i = 0; i < nbSamples; i++) {
       coeffs[i] *= cs.coeffs[i];
@@ -240,19 +241,23 @@ public:
     D_CHECK(!has_nans());
     return *this;
   }
-  CoeffSpectrum operator*(double d) {
-    CoeffSpectrum ret = *this;
+  coeff_spectrum operator*(double d) const {
+    coeff_spectrum ret = *this;
     for (int i = 0; i < nbSamples; i++) {
       ret.coeffs[i] *= d;
     }
     D_CHECK(!ret.has_nans());
     return ret;
   }
-  CoeffSpectrum &operator*=(double d) {
+  friend coeff_spectrum operator*(double d,
+                                  const coeff_spectrum &c) {
+    return c * d;
+  }
+  coeff_spectrum &operator*=(double d) {
     for (int i = 0; i < nbSamples; i++) {
       coeffs[i] *= d;
     }
-    D_CHECK(has_nans());
+    D_CHECK(!has_nans());
     return *this;
   }
   double &operator[](int i) {
@@ -263,7 +268,7 @@ public:
     D_CHECK(i >= 0 && i < nbSamples);
     return coeffs[i];
   }
-  bool operator==(const CoeffSpectrum &cs) const {
+  bool operator==(const coeff_spectrum &cs) const {
     D_CHECK(!cs.has_nans());
     for (int i = 0; i < nbSamples; i++) {
       if (cs.coeffs[i] != coeffs[i])
@@ -271,7 +276,7 @@ public:
     }
     return true;
   }
-  bool operator!=(const CoeffSpectrum &cs) const {
+  bool operator!=(const coeff_spectrum &cs) const {
     return !(*this == cs);
   }
   double max() const {
@@ -288,18 +293,18 @@ public:
     }
     return c;
   }
-  CoeffSpectrum clamp(double low = 0.0,
-                      double high = FLT_MAX) {
-    CoeffSpectrum cs;
+  coeff_spectrum clamp(double low = 0.0,
+                       double high = FLT_MAX) {
+    coeff_spectrum cs;
     for (int i = 0; i < nbSamples; i++) {
-      cs.coeffs[i] = clamp(coeffs[i], low, high);
+      cs.coeffs[i] = dclamp<double>(coeffs[i], low, high);
     }
     D_CHECK(!cs.has_nans());
     return cs;
   }
-  CoeffSpectrum sqrt(const CoeffSpectrum &cs) {
+  coeff_spectrum sqrt(const coeff_spectrum &cs) {
     D_CHECK(!cs.has_nans());
-    CoeffSpectrum c;
+    coeff_spectrum c;
     for (int i = 0; i < nbSamples; i++) {
       c.coeffs[i] = sqrt(cs.coeffs[i]);
     }
@@ -308,51 +313,70 @@ public:
   }
 };
 
-class RgbSpectrum : public CoeffSpectrum<3> {
+class rgb_spectrum : public coeff_spectrum<3> {
   //
-  using CoeffSpectrum<3>::coeffs;
+  using coeff_spectrum<3>::coeffs;
 
 public:
-  RgbSpectrum(double v = 0.0) : CoeffSpectrum<3>(v) {}
-  RgbSpectrum(const CoeffSpectrum<3> &v)
-      : CoeffSpectrum<3>(v) {}
-  RgbSpectrum(
-      const RgbSpectrum &v,
+  rgb_spectrum(double v = 0.0) : coeff_spectrum<3>(v) {}
+  rgb_spectrum(const coeff_spectrum<3> &v)
+      : coeff_spectrum<3>(v) {}
+  rgb_spectrum(
+      const rgb_spectrum &v,
       SpectrumType type = SpectrumType::Reflectance) {
     *this = v;
   }
-  static RgbSpectrum
+  static rgb_spectrum
   fromRgb(const double rgb[3],
           SpectrumType type = SpectrumType::Reflectance) {
-    RgbSpectrum s;
+    rgb_spectrum s;
     s.coeffs[0] = rgb[0];
     s.coeffs[1] = rgb[1];
     s.coeffs[2] = rgb[2];
     D_CHECK(!s.has_nans());
     return s;
   }
-  const RgbSpectrum &toRgbSpectrum() const { return *this; }
+  static rgb_spectrum
+  fromRgb(const color &c,
+          SpectrumType type = SpectrumType::Reflectance) {
+    const double rgb[3] = {c.x(), c.y(), c.z()};
+    return rgb_spectrum::fromRgb(rgb, type);
+  }
+  void to_rgb(double rgb[3]) const {
+    double xyz[3];
+    to_xyz(xyz);
+    xyz2rgb(xyz, rgb);
+  }
+  color to_rgb() const {
+    double rgb[3];
+    to_rgb(rgb);
+    return color(rgb);
+  }
+  const rgb_spectrum &toRgbSpectrum() const {
+    return *this;
+  }
   void to_xyz(double xyz[3]) const { rgb2xyz(coeffs, xyz); }
-  static RgbSpectrum
+  static rgb_spectrum
   fromXyz(const double xyz[3],
           SpectrumType type = SpectrumType::Reflectance) {
-    RgbSpectrum r;
+    rgb_spectrum r;
     xyz2rgb(xyz, r.coeffs);
     return r;
   }
   double y() const {
-    const auto yweights = {0.212671, 0.715160, 0.072169};
+    const double yweights[] = {0.212671, 0.715160,
+                               0.072169};
     return yweights[0] * coeffs[0] +
            yweights[1] * coeffs[1] +
            yweights[2] * coeffs[2];
   }
 
-  static RgbSpectrum fromSamples(const double *lambdas,
-                                 const double *vs,
-                                 int nb_sample) {
+  static rgb_spectrum fromSamples(const double *lambdas,
+                                  const double *vs,
+                                  int nb_sample) {
     if (!isSamplesSorted(lambdas, vs, nb_sample)) {
-      std::vector<double> slambda(&lambda[0],
-                                  &lambda[nb_sample]);
+      std::vector<double> slambda(&lambdas[0],
+                                  &lambdas[nb_sample]);
       std::vector<double> svs(&vs[0], &vs[nb_sample]);
       sortSpectrumSamples(slambda.data(), svs.data(),
                           nb_sample);
@@ -381,16 +405,16 @@ public:
   }
 };
 
-class SampledSpectrum
-    : public CoeffSpectrum<NB_SPECTRAL_SAMPLES> {
+class sampled_spectrum
+    : public coeff_spectrum<NB_SPECTRAL_SAMPLES> {
 public:
-  SampledSpectrum(double v = 0.0) : CoeffSpectrum(v) {}
-  SampledSpectrum(
-      const CoeffSpectrum<NB_SPECTRAL_SAMPLES> &v)
-      : CoeffSpectrum<NB_SPECTRAL_SAMPLES>(v) {}
-  static SampledSpectrum fromSamples(const double *lambdas,
-                                     const double *vs,
-                                     int nb_sample) {
+  sampled_spectrum(double v = 0.0) : coeff_spectrum(v) {}
+  sampled_spectrum(
+      const coeff_spectrum<NB_SPECTRAL_SAMPLES> &v)
+      : coeff_spectrum<NB_SPECTRAL_SAMPLES>(v) {}
+  static sampled_spectrum fromSamples(const double *lambdas,
+                                      const double *vs,
+                                      int nb_sample) {
     if (!isSamplesSorted(lambdas, vs, nb_sample)) {
       std::vector<double> slambda(&lambdas[0],
                                   &lambdas[nb_sample]);
@@ -400,7 +424,7 @@ public:
       return fromSamples(slambda.data(), svs.data(),
                          nb_sample);
     }
-    SampledSpectrum r;
+    sampled_spectrum r;
     auto nb_samp = static_cast<double>(NB_SPECTRAL_SAMPLES);
     for (int i = 0; i < NB_SPECTRAL_SAMPLES; i++) {
       auto lambda0 =
@@ -433,10 +457,15 @@ public:
   double x() const { return choose_axis(0); }
   double y() const { return choose_axis(1); }
   double z() const { return choose_axis(2); }
-  void toRGB(double rgb[3]) const {
+  void to_rgb(double rgb[3]) const {
     double xyz[3];
     to_xyz(xyz);
     xyz2rgb(xyz, rgb);
+  }
+  color to_rgb() const {
+    double rgb[3];
+    to_rgb(rgb);
+    return color(rgb);
   }
   static RGB_AXIS min_axis(const double rgb[3]) {
     RGB_AXIS minax;
@@ -450,10 +479,11 @@ public:
       minax = RGB_B;
     return minax;
   }
-  static SampledSpectrum fromRgb(const double rgb[3],
-                                 SpectrumType type) {
+  static sampled_spectrum
+  fromRgb(const double rgb[3],
+          SpectrumType type = SpectrumType::Illuminant) {
     RGB_AXIS minax = min_axis(rgb);
-    SampledSpectrum r;
+    sampled_spectrum r;
 
     if (type == SpectrumType::Reflectance) {
       // convert reflectance spectrum to rgb color space
@@ -461,37 +491,49 @@ public:
       switch (minax) {
       case RGB_R: {
         // compute reflectance with rgb0 as minimum
-        r += rgbReflSpectWhite * rgb[0];
+        r += sampled_spectrum::rgbReflSpectWhite * rgb[0];
 
         if (rgb[1] <= rgb[2]) {
-          r += (rgb[1] - rgb[0]) * rgbReflSpectCyan;
-          r += (rgb[2] - rgb[1]) * rgbReflSpectBlue;
+          r += (rgb[1] - rgb[0]) *
+               sampled_spectrum::rgbReflSpectCyan;
+          r += (rgb[2] - rgb[1]) *
+               sampled_spectrum::rgbReflSpectBlue;
         } else {
-          r += (rgb[2] - rgb[0]) * rgbReflSpectCyan;
-          r += (rgb[1] - rgb[2]) * rgbReflSpectGreen;
+          r += (rgb[2] - rgb[0]) *
+               sampled_spectrum::rgbReflSpectCyan;
+          r += (rgb[1] - rgb[2]) *
+               sampled_spectrum::rgbReflSpectGreen;
         }
       }
       case RGB_G: {
         // compute reflectance with rgb1 as minimum
-        r += rgbReflSpectWhite * rgb[1];
+        r += sampled_spectrum::rgbReflSpectWhite * rgb[1];
         if (rgb[0] <= rgb[2]) {
-          r += (rgb[0] - rgb[1]) * rgbReflSpectMagenta;
-          r += (rgb[2] - rgb[0]) * rgbReflSpectBlue;
+          r += (rgb[0] - rgb[1]) *
+               sampled_spectrum::rgbReflSpectMagenta;
+          r += (rgb[2] - rgb[0]) *
+               sampled_spectrum::rgbReflSpectBlue;
         } else {
-          r += (rgb[2] - rgb[1]) * rgbReflSpectMagenta;
-          r += (rgb[0] - rgb[2]) * rgbReflSpectRed;
+          r += (rgb[2] - rgb[1]) *
+               sampled_spectrum::rgbReflSpectMagenta;
+          r += (rgb[0] - rgb[2]) *
+               sampled_spectrum::rgbReflSpectRed;
         }
       }
       case RGB_B: {
         // compute reflectance with rgb2 as minimum
-        r += rgbReflSpectWhite * rgb[2];
+        r += sampled_spectrum::rgbReflSpectWhite * rgb[2];
         if (rgb[0] <= rgb[1]) {
-          r += (rgb[0] - rgb[2]) * rgbReflSpectYellow;
-          r += (rgb[1] - rgb[0]) * rgbReflSpectGreen;
+          r += (rgb[0] - rgb[2]) *
+               sampled_spectrum::rgbReflSpectYellow;
+          r += (rgb[1] - rgb[0]) *
+               sampled_spectrum::rgbReflSpectGreen;
 
         } else {
-          r += (rgb[1] - rgb[2]) * rgbReflSpectYellow;
-          r += (rgb[0] - rgb[1]) * rgbReflSpectGreen;
+          r += (rgb[1] - rgb[2]) *
+               sampled_spectrum::rgbReflSpectYellow;
+          r += (rgb[0] - rgb[1]) *
+               sampled_spectrum::rgbReflSpectGreen;
         }
       }
       }
@@ -501,37 +543,49 @@ public:
       switch (minax) {
       case RGB_R: {
         // compute reflectance with rgb0 as minimum
-        r += rgbIllum2SpectWhite * rgb[0];
+        r += sampled_spectrum::rgbIllumSpectWhite * rgb[0];
 
         if (rgb[1] <= rgb[2]) {
-          r += (rgb[1] - rgb[0]) * rgbIllumSpectCyan;
-          r += (rgb[2] - rgb[1]) * rgbIllumSpectBlue;
+          r += sampled_spectrum::rgbIllumSpectCyan *
+               (rgb[1] - rgb[0]);
+          r += sampled_spectrum::rgbIllumSpectBlue *
+               (rgb[2] - rgb[1]);
         } else {
-          r += (rgb[2] - rgb[0]) * rgbIllumSpectCyan;
-          r += (rgb[1] - rgb[2]) * rgbIllumSpectGreen;
+          r += sampled_spectrum::rgbIllumSpectCyan *
+               (rgb[2] - rgb[0]);
+          r += sampled_spectrum::rgbIllumSpectGreen *
+               (rgb[1] - rgb[2]);
         }
       }
       case RGB_G: {
         // compute reflectance with rgb1 as minimum
-        r += rgbIllumSpectWhite * rgb[1];
+        r += sampled_spectrum::rgbIllumSpectWhite * rgb[1];
         if (rgb[0] <= rgb[2]) {
-          r += (rgb[0] - rgb[1]) * rgbIllumSpectMagenta;
-          r += (rgb[2] - rgb[0]) * rgbIllumSpectBlue;
+          r += sampled_spectrum::rgbIllumSpectMagenta *
+               (rgb[0] - rgb[1]);
+          r += sampled_spectrum::rgbIllumSpectBlue *
+               (rgb[2] - rgb[0]);
         } else {
-          r += (rgb[2] - rgb[1]) * rgbIllumSpectMagenta;
-          r += (rgb[0] - rgb[2]) * rgbIllumSpectRed;
+          r += sampled_spectrum::rgbIllumSpectMagenta *
+               (rgb[2] - rgb[1]);
+          r += sampled_spectrum::rgbIllumSpectRed *
+               (rgb[0] - rgb[2]);
         }
       }
       case RGB_B: {
         // compute reflectance with rgb2 as minimum
-        r += rgbIllumSpectWhite * rgb[2];
+        r += sampled_spectrum::rgbIllumSpectWhite * rgb[2];
         if (rgb[0] <= rgb[1]) {
-          r += (rgb[0] - rgb[2]) * rgbIllumSpectYellow;
-          r += (rgb[1] - rgb[0]) * rgbIllumSpectGreen;
+          r += sampled_spectrum::rgbIllumSpectYellow *
+               (rgb[0] - rgb[2]);
+          r += sampled_spectrum::rgbIllumSpectGreen *
+               (rgb[1] - rgb[0]);
 
         } else {
-          r += (rgb[1] - rgb[2]) * rgbIllumSpectYellow;
-          r += (rgb[0] - rgb[1]) * rgbIllumSpectGreen;
+          r += sampled_spectrum::rgbIllumSpectYellow *
+               (rgb[1] - rgb[2]);
+          r += sampled_spectrum::rgbIllumSpectGreen *
+               (rgb[0] - rgb[1]);
         }
       }
       }
@@ -539,31 +593,48 @@ public:
     }
     return r.clamp();
   }
-  static SampledSpectrum
+  static sampled_spectrum fromRgb(const color &c,
+                                  SpectrumType type) {
+    const double rgb[3] = {c.x(), c.y(), c.z()};
+    return sampled_spectrum::fromRgb(rgb, type);
+  }
+
+  static sampled_spectrum
   fromXyz(const double xyz[3],
           SpectrumType type = SpectrumType::Reflectance) {
     double rgb[3];
     xyz2rgb(xyz, rgb);
     return fromRgb(rgb, type);
   }
-  SampledSpectrum(
-      const RgbSpectrum &r,
+  sampled_spectrum(
+      const rgb_spectrum &r,
       SpectrumType type = SpectrumType::Reflectance) {
     double rgb[3];
     r.to_rgb(rgb);
-    *this = SampledSpectrum::fromRgb(rgb, type);
+    *this = sampled_spectrum::fromRgb(rgb, type);
   }
+  // TODO: implement the following
+  rgb_spectrum to_rgb_spectrum() const {}
+  static void Init() {}
 
 private:
-  static SampledSpectrum X, Y, Z;
-  static SampledSpectrum rgbReflSpectWhite,
-      rgbReflSpectCyan, rgbReflSpectBlue, rgbReflSpectGreen,
-      rgbReflSpectMagenta, rgbReflSpectRed,
-      rgbReflSpectYellow;
-  static SampledSpectrum rgbIllum2SpectWhite,
-      rgbIllumSpectCyan, rgbIllumSpectBlue,
-      rgbIllumSpectGreen, rgbIllumSpectMagenta,
-      rgbIllumSpectRed, rgbIllumSpectYellow;
+  static sampled_spectrum X;
+  static sampled_spectrum Y;
+  static sampled_spectrum Z;
+  static sampled_spectrum rgbReflSpectWhite;
+  static sampled_spectrum rgbReflSpectCyan;
+  static sampled_spectrum rgbReflSpectBlue;
+  static sampled_spectrum rgbReflSpectGreen;
+  static sampled_spectrum rgbReflSpectMagenta;
+  static sampled_spectrum rgbReflSpectRed;
+  static sampled_spectrum rgbReflSpectYellow;
+  static sampled_spectrum rgbIllumSpectWhite;
+  static sampled_spectrum rgbIllumSpectCyan;
+  static sampled_spectrum rgbIllumSpectBlue;
+  static sampled_spectrum rgbIllumSpectGreen;
+  static sampled_spectrum rgbIllumSpectMagenta;
+  static sampled_spectrum rgbIllumSpectRed;
+  static sampled_spectrum rgbIllumSpectYellow;
 
   double choose_axis(int axis) const {
     double s = 0.0;
@@ -571,7 +642,7 @@ private:
         static_cast<double>(VISIBLE_LAMBDA_END -
                             VISIBLE_LAMBDA_START) /
         (CIE_Y_INTEGRAL * NB_SPECTRAL_SAMPLES);
-    SampledSpectrum s_s;
+    sampled_spectrum s_s;
     if (axis == 0) {
       s_s = X;
     } else if (axis == 1) {
@@ -585,14 +656,94 @@ private:
     return s * scale;
   }
 };
+// initialize static variables
 
-inline RgbSpectrum interp(double t, const RgbSpectrum &r1,
-                          const RgbSpectrum &r1) {
+sampled_spectrum sampled_spectrum::X =
+    sampled_spectrum::fromSamples(CIE_LAMBDA, CIE_X,
+                                  NB_CIE_SAMPLES);
+sampled_spectrum sampled_spectrum::Y =
+    sampled_spectrum::fromSamples(CIE_LAMBDA, CIE_Y,
+                                  NB_CIE_SAMPLES);
+sampled_spectrum sampled_spectrum::Z =
+    sampled_spectrum::fromSamples(CIE_LAMBDA, CIE_Z,
+                                  NB_CIE_SAMPLES);
+sampled_spectrum sampled_spectrum::rgbIllumSpectWhite =
+    sampled_spectrum::fromSamples(RGB2SpectLambda,
+                                  RGBIllum2SpectWhite,
+                                  NB_RGB_SPEC_SAMPLES);
+
+sampled_spectrum sampled_spectrum::rgbIllumSpectCyan =
+    sampled_spectrum::fromSamples(RGB2SpectLambda,
+                                  RGBIllum2SpectCyan,
+                                  NB_RGB_SPEC_SAMPLES);
+
+sampled_spectrum sampled_spectrum::rgbIllumSpectBlue =
+    sampled_spectrum::fromSamples(RGB2SpectLambda,
+                                  RGBIllum2SpectBlue,
+                                  NB_RGB_SPEC_SAMPLES);
+
+sampled_spectrum sampled_spectrum::rgbIllumSpectGreen =
+    sampled_spectrum::fromSamples(RGB2SpectLambda,
+                                  RGBIllum2SpectGreen,
+                                  NB_RGB_SPEC_SAMPLES);
+
+sampled_spectrum sampled_spectrum::rgbIllumSpectMagenta =
+    sampled_spectrum::fromSamples(RGB2SpectLambda,
+                                  RGBIllum2SpectMagenta,
+                                  NB_RGB_SPEC_SAMPLES);
+
+sampled_spectrum sampled_spectrum::rgbIllumSpectRed =
+    sampled_spectrum::fromSamples(RGB2SpectLambda,
+                                  RGBIllum2SpectRed,
+                                  NB_RGB_SPEC_SAMPLES);
+
+sampled_spectrum sampled_spectrum::rgbIllumSpectYellow =
+    sampled_spectrum::fromSamples(RGB2SpectLambda,
+                                  RGBIllum2SpectYellow,
+                                  NB_RGB_SPEC_SAMPLES);
+sampled_spectrum sampled_spectrum::rgbReflSpectWhite =
+    sampled_spectrum::fromSamples(RGB2SpectLambda,
+                                  RGBRefl2SpectWhite,
+                                  NB_RGB_SPEC_SAMPLES);
+
+sampled_spectrum sampled_spectrum::rgbReflSpectCyan =
+    sampled_spectrum::fromSamples(RGB2SpectLambda,
+                                  RGBRefl2SpectCyan,
+                                  NB_RGB_SPEC_SAMPLES);
+
+sampled_spectrum sampled_spectrum::rgbReflSpectBlue =
+    sampled_spectrum::fromSamples(RGB2SpectLambda,
+                                  RGBRefl2SpectBlue,
+                                  NB_RGB_SPEC_SAMPLES);
+
+sampled_spectrum sampled_spectrum::rgbReflSpectGreen =
+    sampled_spectrum::fromSamples(RGB2SpectLambda,
+                                  RGBRefl2SpectGreen,
+                                  NB_RGB_SPEC_SAMPLES);
+
+sampled_spectrum sampled_spectrum::rgbReflSpectMagenta =
+    sampled_spectrum::fromSamples(RGB2SpectLambda,
+                                  RGBRefl2SpectMagenta,
+                                  NB_RGB_SPEC_SAMPLES);
+
+sampled_spectrum sampled_spectrum::rgbReflSpectRed =
+    sampled_spectrum::fromSamples(RGB2SpectLambda,
+                                  RGBRefl2SpectRed,
+                                  NB_RGB_SPEC_SAMPLES);
+
+sampled_spectrum sampled_spectrum::rgbReflSpectYellow =
+    sampled_spectrum::fromSamples(RGB2SpectLambda,
+                                  RGBRefl2SpectYellow,
+                                  NB_RGB_SPEC_SAMPLES);
+// end static variable initialize
+
+inline rgb_spectrum interp(double t, const rgb_spectrum &r1,
+                           const rgb_spectrum &r2) {
   return (1 - t) * r1 + t * r2;
 }
-inline SampledSpectrum interp(double t,
-                              const SampledSpectrum &r1,
-                              const SampledSpectrum &r1) {
+inline sampled_spectrum interp(double t,
+                               const sampled_spectrum &r1,
+                               const sampled_spectrum &r2) {
   return (1 - t) * r1 + t * r2;
 }
 
@@ -611,11 +762,11 @@ void resampleLinearSpectrum(
   auto lambdaInClamped = [&](int index) {
     D_CHECK(index >= -1 && index <= nb_sampleIn);
     if (index == -1) {
-      D_CHECK((lambdaMin - delta) < lambdas[0]);
+      D_CHECK((lambdaMin - delta) < lambdasIn[0]);
       return lambdaMin - delta;
     } else if (index == nb_sampleIn) {
       D_CHECK((lambdaMax + delta) >
-              lambdas[nb_sampleIn - 1]);
+              lambdasIn[nb_sampleIn - 1]);
       return lambdaMax + delta;
     }
     return lambdasIn[index];
@@ -640,7 +791,7 @@ void resampleLinearSpectrum(
       start = -1;
     } else {
       start = findInterval(nb_sampleIn, [&](int i) {
-        return lambdasIn[i] <= lam - delta
+        return lambdasIn[i] <= lam - delta;
       });
       D_CHECK(start >= 0 && start < nb_sampleIn);
     }
@@ -690,3 +841,4 @@ void resampleLinearSpectrum(
     vsOut[outOffset] = resample(lambda);
   }
 }
+//
