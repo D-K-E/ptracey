@@ -1,5 +1,5 @@
 #pragma once
-#include <external.hpp>
+#include <common.hpp>
 #include <hittable.hpp>
 #include <ray.hpp>
 #include <utils.hpp>
@@ -22,22 +22,21 @@ public:
     objects.push_back(object);
   }
 
-  virtual bool hit(const ray &r, double t_min, double t_max,
+  virtual bool hit(const ray &r, Real t_min, Real t_max,
                    hit_record &rec) const override;
 
   virtual bool
-  bounding_box(double time0, double time1,
+  bounding_box(Real time0, Real time1,
                aabb &output_box) const override;
-  virtual double pdf_value(const vec3 &o,
-                           const vec3 &v) const override;
+  virtual Real pdf_value(const vec3 &o,
+                         const vec3 &v) const override;
   virtual vec3 random(const vec3 &o) const override;
 
 public:
   std::vector<shared_ptr<hittable>> objects;
 };
-bool hittable_list::hit(const ray &r, double t_min,
-                        double t_max,
-                        hit_record &rec) const {
+bool hittable_list::hit(const ray &r, Real t_min,
+                        Real t_max, hit_record &rec) const {
   hit_record temp_rec;
   auto hit_anything = false;
   auto closest_so_far = t_max;
@@ -52,7 +51,7 @@ bool hittable_list::hit(const ray &r, double t_min,
 
   return hit_anything;
 }
-bool hittable_list::bounding_box(double time0, double time1,
+bool hittable_list::bounding_box(Real time0, Real time1,
                                  aabb &output_box) const {
   if (objects.empty())
     return false;
@@ -71,8 +70,8 @@ bool hittable_list::bounding_box(double time0, double time1,
 
   return true;
 }
-double hittable_list::pdf_value(const point3 &o,
-                                const vec3 &v) const {
+Real hittable_list::pdf_value(const point3 &o,
+                              const vec3 &v) const {
   auto weight = 1.0 / objects.size();
   auto sum = 0.0;
 

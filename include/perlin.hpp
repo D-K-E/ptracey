@@ -1,6 +1,6 @@
 #pragma once
 //
-#include <external.hpp>
+#include <common.hpp>
 #include <ray.hpp>
 #include <vec3.hpp>
 //
@@ -25,7 +25,7 @@ public:
     delete[] perm_z;
   }
 
-  double noise(const point3 &p) const {
+  Real noise(const point3 &p) const {
     auto u = p.x() - floor(p.x());
     auto v = p.y() - floor(p.y());
     auto w = p.z() - floor(p.z());
@@ -44,7 +44,7 @@ public:
     return perlin_interp(c, u, v, w);
   }
 
-  double turb(const point3 &p, int depth = 7) const {
+  Real turb(const point3 &p, int depth = 7) const {
     auto accum = 0.0;
     auto temp_p = p;
     auto weight = 1.0;
@@ -83,8 +83,8 @@ private:
       p[target] = tmp;
     }
   }
-  static double perlin_interp(vec3 c[2][2][2], double u,
-                              double v, double w) {
+  static Real perlin_interp(vec3 c[2][2][2], Real u, Real v,
+                            Real w) {
     auto uu = u * u * (3 - 2 * u);
     auto vv = v * v * (3 - 2 * v);
     auto ww = w * w * (3 - 2 * w);

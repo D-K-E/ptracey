@@ -24,7 +24,10 @@
 #include <assimp/types.h>
 //
 #define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
+#include <thirdparty/stb_image.h>
+
+//
+#include <thirdparty/rapidcsv.hpp>
 
 //
 #include <filesystem>

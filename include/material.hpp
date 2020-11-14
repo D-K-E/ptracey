@@ -1,22 +1,22 @@
 #pragma once
-#include "spectrum.hpp"
-#include "utils.hpp"
+#include "common.hpp"
 #include <pdf.hpp>
+#include <spectrum.hpp>
 #include <texture.hpp>
+#include <utils.hpp>
 
 struct scatter_record {
   ray specular_ray;
   bool is_specular;
-  sampled_spectrum attenuation;
+  spectrum attenuation;
   shared_ptr<pdf> pdf_ptr;
 };
 class material {
 public:
-  virtual sampled_spectrum emitted(const ray &r_in,
-                                   const hit_record &rec,
-                                   double u, double v,
-                                   const point3 &p) const {
-    return sampled_spectrum(0.0);
+  virtual spectrum emitted(const ray &r_in,
+                           const hit_record &rec, Real u,
+                           Real v, const point3 &p) const {
+    return spectrum(0.0);
   }
 
   virtual bool scatter(const ray &r_in,
@@ -33,9 +33,8 @@ public:
 };
 class lambertian : public material {
 public:
-  lambertian(const color &a,
-             SpectrumType type = SpectrumType::Reflectance)
-      : albedo(make_shared<solid_color>(a, type)) {}
+  lambertian(const spectrum &a)
+      : albedo(make_shared<solid_color>(a)) {}
 
   lambertian(shared_ptr<texture> a) : albedo(a) {}
 
@@ -60,9 +59,8 @@ public:
 };
 class metal : public material {
 public:
-  metal(const color &a, double f,
-        SpectrumType type = SpectrumType::Reflectance)
-      : albedo(make_shared<solid_color>(a, type)),
+  metal(const spectrum &a, Real f)
+      : albedo(make_shared<solid_color>(a)),
         fuzz(f < 1 ? f : 1) {}
 
   bool scatter(const ray &r_in, const hit_record &rec,
@@ -80,30 +78,26 @@ public:
 
 public:
   shared_ptr<texture> albedo;
-  double fuzz;
+  Real fuzz;
 };
 class dielectric : public material {
 public:
-  dielectric(double index_of_refraction,
-             SpectrumType stype = SpectrumType::Reflectance)
-      : ir(index_of_refraction), type(stype) {}
+  dielectric(Real index_of_refraction)
+      : ir(index_of_refraction) {}
 
   bool scatter(const ray &r_in, const hit_record &rec,
                scatter_record &srec) const override {
     srec.is_specular = true;
     srec.pdf_ptr = nullptr;
     color white_rgb(1.0);
-    sampled_spectrum white =
-        sampled_spectrum::fromRgb(white_rgb, type);
-
-    srec.attenuation = white;
-    double refraction_ratio =
+    srec.attenuation = spectrum(1.0);
+    Real refraction_ratio =
         rec.front_face ? (1.0 / ir) : ir;
 
     vec3 unit_direction = unit_vector(r_in.direction());
-    double cos_theta =
+    Real cos_theta =
         fmin(dot(-unit_direction, rec.normal), 1.0);
-    double sin_theta = sqrt(1.0 - cos_theta * cos_theta);
+    Real sin_theta = sqrt(1.0 - cos_theta * cos_theta);
 
     bool cannot_refract =
         refraction_ratio * sin_theta > 1.0;
@@ -122,11 +116,10 @@ public:
   }
 
 public:
-  double ir; // Index of Refraction
-  SpectrumType type;
+  Real ir; // Index of Refraction
 
 private:
-  static double reflectance(double cosine, double ref_idx) {
+  static Real reflectance(Real cosine, Real ref_idx) {
     // Use Schlick's approximation for reflectance.
     auto r0 = (1 - ref_idx) / (1 + ref_idx);
     r0 = r0 * r0;
@@ -136,16 +129,14 @@ private:
 class diffuse_light : public material {
 public:
   diffuse_light(shared_ptr<texture> a) : emit(a) {}
-  diffuse_light(
-      color c, SpectrumType type = SpectrumType::Illuminant)
+  diffuse_light(spectrum c)
       : emit(make_shared<solid_color>(c)) {}
 
-  sampled_spectrum emitted(const ray &r_in,
-                           const hit_record &rec, double u,
-                           double v,
-                           const point3 &p) const override {
+  spectrum emitted(const ray &r_in, const hit_record &rec,
+                   Real u, Real v,
+                   const point3 &p) const override {
     if (!rec.front_face)
-      return sampled_spectrum(0.0);
+      return spectrum(0.0);
     return emit->value(u, v, p);
   }
 
@@ -154,7 +145,7 @@ public:
 };
 class isotropic : public material {
 public:
-  isotropic(color c)
+  isotropic(spectrum c)
       : albedo(make_shared<solid_color>(c)) {}
   isotropic(shared_ptr<texture> a) : albedo(a) {}
 

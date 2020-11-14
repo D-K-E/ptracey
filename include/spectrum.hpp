@@ -5,25 +5,26 @@
 #include <specdata.hpp>
 #include <utils.hpp>
 #include <vec3.hpp>
+#include <wave.hpp>
 // CONSTANTS
 
 static const int NB_SPECTRAL_SAMPLES = 60;
-static const int VISIBLE_LAMBDA_START = 400;
-static const int VISIBLE_LAMBDA_END = 700;
+static const int VISIBLE_LAMBDA_START = 350;
+static const int VISIBLE_LAMBDA_END = 800;
 static const auto CIE_Y_INTEGRAL = 106.856895;
 
 // utility functions for spectrums
-bool isSamplesSorted(const double *lambdas,
-                     const double *vs, int nb_samples) {
+bool isSamplesSorted(const Real *lambdas, const Real *vs,
+                     int nb_samples) {
   for (int i = 0; i < nb_samples - 1; i++) {
     if (lambdas[i] > lambdas[i + 1])
       return false;
   }
   return true;
 }
-void sortSpectrumSamples(double *lambdas, double *vs,
+void sortSpectrumSamples(Real *lambdas, Real *vs,
                          int nb_samples) {
-  std::vector<std::pair<double, double>> sortedVec;
+  std::vector<std::pair<Real, Real>> sortedVec;
   sortedVec.reserve(nb_samples);
 
   for (int i = 0; i < nb_samples; i++) {
@@ -36,11 +37,10 @@ void sortSpectrumSamples(double *lambdas, double *vs,
   }
 }
 
-double averageSpectrumSamples(const double *lambdas,
-                              const double *vs,
-                              int nb_sample,
-                              double lambdaStart,
-                              double lambdaEnd) {
+Real averageSpectrumSamples(const Real *lambdas,
+                            const Real *vs, int nb_sample,
+                            Real lambdaStart,
+                            Real lambdaEnd) {
   D_CHECK(isSamplesSorted(lambdas, vs, nb_sample));
   D_CHECK(lambdaStart < lambdaEnd);
   //
@@ -54,7 +54,7 @@ double averageSpectrumSamples(const double *lambdas,
     return vs[0];
   }
   //
-  double sum = 0.0;
+  Real sum = 0.0;
   // constant segment contribution
   if (lambdaStart < lambdas[0]) {
     sum += vs[0] * (lambdas[0] - lambdaStart);
@@ -68,7 +68,7 @@ double averageSpectrumSamples(const double *lambdas,
 
   D_CHECK(start_index + 1 < nb_sample);
 
-  auto interp_l = [lambdas, vs](double w, int i) {
+  auto interp_l = [lambdas, vs](Real w, int i) {
     return interp(
         w - lambdas[i] / (lambdas[i + 1] - lambdas[i]),
         vs[i], vs[i + 1]);
@@ -78,9 +78,9 @@ double averageSpectrumSamples(const double *lambdas,
   while (start_index + 1 < nb_sample &&
          lambdaEnd > lambdas[start_index]) {
     start_index++;
-    double segStart =
+    Real segStart =
         std::max(lambdaStart, lambdas[start_index]);
-    double segEnd =
+    Real segEnd =
         std::min(lambdaEnd, lambdas[start_index + 1]);
 
     sum += 0.5 * (interp_l(segStart, start_index) +
@@ -90,9 +90,8 @@ double averageSpectrumSamples(const double *lambdas,
   return sum / (lambdaEnd - lambdaStart);
 }
 
-double interpSpecSamples(const double *lambdas,
-                         const double *vs, int nb_sample,
-                         double lam) {
+Real interpSpecSamples(const Real *lambdas, const Real *vs,
+                       int nb_sample, Real lam) {
   D_CHECK(isSamplesSorted(lambdas, vs, nb_sample));
   if (lambdas[0] >= lam) {
     return vs[0];
@@ -105,12 +104,12 @@ double interpSpecSamples(const double *lambdas,
   });
   D_CHECK(lam >= lambdas[offset] &&
           lam <= lambdas[offset + 1]);
-  double lamVal = (lam - lambdas[offset]) /
-                  (lambdas[offset + 1] - lambdas[offset]);
+  Real lamVal = (lam - lambdas[offset]) /
+                (lambdas[offset + 1] - lambdas[offset]);
   return interp(lamVal, vs[offset], vs[offset + 1]);
 }
 
-inline void xyz2rgb(const double xyz[3], double rgb[3]) {
+inline void xyz2rgb(const Real xyz[3], Real rgb[3]) {
   rgb[0] = 3.240479 * xyz[0] - 1.537150 * xyz[1] -
            0.498535 * xyz[2];
   rgb[1] = -0.969256 * xyz[0] + 1.875991 * xyz[1] +
@@ -118,7 +117,7 @@ inline void xyz2rgb(const double xyz[3], double rgb[3]) {
   rgb[2] = 0.055648 * xyz[0] - 0.204043 * xyz[1] +
            1.057311 * xyz[2];
 }
-inline void rgb2xyz(const double rgb[3], double xyz[3]) {
+inline void rgb2xyz(const Real rgb[3], Real xyz[3]) {
   xyz[0] = 0.412453 * rgb[0] + 0.357580 * rgb[1] +
            0.180423 * rgb[2];
   xyz[1] = 0.212671 * rgb[0] + 0.715160 * rgb[1] +
@@ -130,183 +129,23 @@ inline void rgb2xyz(const double rgb[3], double xyz[3]) {
 enum class SpectrumType { Reflectance, Illuminant };
 enum RGB_AXIS : int { RGB_R, RGB_G, RGB_B };
 
-template <int NbSpecSamples> class coeff_spectrum {
+template <int NbSpecSamples>
+class coeff_spectrum : public sampled_wave<Real> {
   //
-protected:
-  double coeffs[NbSpecSamples];
-
 public:
   static const int nbSamples = NbSpecSamples;
 
   // constructors
-  coeff_spectrum(double c = 0.0) {
-    for (int i = 0; i < nbSamples; i++) {
-      coeffs[i] = c;
-    }
-    D_CHECK(!has_nans());
-  }
-  coeff_spectrum(const coeff_spectrum &s) {
-    D_CHECK(!s.has_nans());
-    for (int i = 0; i < nbSamples; ++i)
-      coeffs[i] = s.coeffs[i];
-  }
-  coeff_spectrum &operator=(const coeff_spectrum &s) {
-    D_CHECK(!s.has_nans());
-    for (int i = 0; i < nbSamples; ++i)
-      coeffs[i] = s.coeffs[i];
-    return *this;
-  }
-  bool has_nans() const {
-    for (int i = 0; i < nbSamples; i++) {
-      if (isnan(coeffs[i]))
-        return true;
-    }
-    return false;
-  }
-  bool is_black() const {
-    for (int i = 0; i < nbSamples; i++) {
-      if (coeffs[i] != 0.0) {
-        return false;
-      }
-    }
-    return true;
-  }
+  coeff_spectrum(Real c = 0.0)
+      : sampled_wave(c, nbSamples) {}
+  coeff_spectrum(const sampled_wave<Real> &ws)
+      : sampled_wave(ws) {}
   // implementing operators
-  coeff_spectrum &operator+=(const coeff_spectrum &cs) {
-    D_CHECK(!cs.has_nans());
-    for (int i = 0; i < nbSamples; i++)
-      coeffs[i] += cs.coeffs[i];
-    return *this;
-  }
-  coeff_spectrum operator+(const coeff_spectrum &cs) const {
-    D_CHECK(!cs.has_nans());
-    coeff_spectrum cspec = *this;
-    for (int i = 0; i < nbSamples; i++)
-      cspec.coeffs[i] += cs.coeffs[i];
-    return cspec;
-  }
-  coeff_spectrum operator-(const coeff_spectrum &cs) const {
-    D_CHECK(!cs.has_nans());
-    coeff_spectrum cspec = *this;
-    for (int i = 0; i < nbSamples; i++)
-      cspec.coeffs[i] -= cs.coeffs[i];
-    return cspec;
-  }
-  coeff_spectrum &operator-=(const coeff_spectrum &cs) {
-    D_CHECK(!cs.has_nans());
-    for (int i = 0; i < nbSamples; i++)
-      coeffs[i] -= cs.coeffs[i];
-    return *this;
-  }
-  coeff_spectrum operator/(const coeff_spectrum &cs) const {
-    D_CHECK(!cs.has_nans());
-    coeff_spectrum ret = *this;
-    for (int i = 0; i < nbSamples; i++) {
-      D_CHECK(cs.coeffs[i] != 0.0);
-      ret.coeffs[i] /= cs.coeffs[i];
-    }
-    return ret;
-  }
-  coeff_spectrum operator/(double d) const {
-    D_CHECK(d != 0.0);
-    D_CHECK(!isnan(d));
-    coeff_spectrum ret = *this;
-    for (int i = 0; i < nbSamples; i++) {
-      ret.coeffs[i] /= d;
-    }
-    return ret;
-  }
-  coeff_spectrum &operator/=(double d) {
-    D_CHECK(d != 0.0);
-    D_CHECK(!isnan(d));
-    for (int i = 0; i < nbSamples; i++) {
-      coeffs[i] /= d;
-    }
-    return *this;
-  }
-  coeff_spectrum operator*(const coeff_spectrum &cs) const {
-    D_CHECK(!cs.has_nans());
-    coeff_spectrum ret = *this;
-    for (int i = 0; i < nbSamples; i++) {
-      ret.coeffs[i] *= cs.coeffs[i];
-    }
-    D_CHECK(!ret.has_nans());
-    return ret;
-  }
-  coeff_spectrum &operator*=(const coeff_spectrum &cs) {
-    D_CHECK(!cs.has_nans());
-    for (int i = 0; i < nbSamples; i++) {
-      coeffs[i] *= cs.coeffs[i];
-    }
-    D_CHECK(!has_nans());
-    return *this;
-  }
-  coeff_spectrum operator*(double d) const {
-    coeff_spectrum ret = *this;
-    for (int i = 0; i < nbSamples; i++) {
-      ret.coeffs[i] *= d;
-    }
-    D_CHECK(!ret.has_nans());
-    return ret;
-  }
-  friend coeff_spectrum operator*(double d,
-                                  const coeff_spectrum &c) {
-    return c * d;
-  }
-  coeff_spectrum &operator*=(double d) {
-    for (int i = 0; i < nbSamples; i++) {
-      coeffs[i] *= d;
-    }
-    D_CHECK(!has_nans());
-    return *this;
-  }
-  double &operator[](int i) {
-    D_CHECK(i >= 0 && i < nbSamples);
-    return coeffs[i];
-  }
-  double operator[](int i) const {
-    D_CHECK(i >= 0 && i < nbSamples);
-    return coeffs[i];
-  }
-  bool operator==(const coeff_spectrum &cs) const {
-    D_CHECK(!cs.has_nans());
-    for (int i = 0; i < nbSamples; i++) {
-      if (cs.coeffs[i] != coeffs[i])
-        return false;
-    }
-    return true;
-  }
-  bool operator!=(const coeff_spectrum &cs) const {
-    return !(*this == cs);
-  }
-  double max() const {
-    auto c = coeffs[0];
-    for (int i = 1; i < nbSamples; i++) {
-      c = fmax(c, coeffs[i]);
-    }
-    return c;
-  }
-  double min() const {
-    auto c = coeffs[0];
-    for (int i = 1; i < nbSamples; i++) {
-      c = fmin(c, coeffs[i]);
-    }
-    return c;
-  }
-  coeff_spectrum clamp(double low = 0.0,
-                       double high = FLT_MAX) {
-    coeff_spectrum cs;
-    for (int i = 0; i < nbSamples; i++) {
-      cs.coeffs[i] = dclamp<double>(coeffs[i], low, high);
-    }
-    D_CHECK(!cs.has_nans());
-    return cs;
-  }
   coeff_spectrum sqrt(const coeff_spectrum &cs) {
     D_CHECK(!cs.has_nans());
     coeff_spectrum c;
-    for (int i = 0; i < nbSamples; i++) {
-      c.coeffs[i] = sqrt(cs.coeffs[i]);
+    for (int i = 0; i < values.size(); i++) {
+      values[i] = sqrt(cs.values[i]);
     }
     D_CHECK(!c.has_nans());
     return c;
@@ -315,89 +154,90 @@ public:
 
 class rgb_spectrum : public coeff_spectrum<3> {
   //
-  using coeff_spectrum<3>::coeffs;
 
 public:
-  rgb_spectrum(double v = 0.0) : coeff_spectrum<3>(v) {}
+  rgb_spectrum(Real v = 0.0) : coeff_spectrum<3>(v) {}
   rgb_spectrum(const coeff_spectrum<3> &v)
       : coeff_spectrum<3>(v) {}
+  rgb_spectrum(const sampled_wave<Real> &ws)
+      : coeff_spectrum<3>(ws) {}
   rgb_spectrum(
       const rgb_spectrum &v,
       SpectrumType type = SpectrumType::Reflectance) {
     *this = v;
   }
   static rgb_spectrum
-  fromRgb(const double rgb[3],
+  fromRgb(const Real rgb[3],
           SpectrumType type = SpectrumType::Reflectance) {
     rgb_spectrum s;
-    s.coeffs[0] = rgb[0];
-    s.coeffs[1] = rgb[1];
-    s.coeffs[2] = rgb[2];
+    s.values[0] = rgb[0];
+    s.values[1] = rgb[1];
+    s.values[2] = rgb[2];
     D_CHECK(!s.has_nans());
     return s;
   }
   static rgb_spectrum
   fromRgb(const color &c,
           SpectrumType type = SpectrumType::Reflectance) {
-    const double rgb[3] = {c.x(), c.y(), c.z()};
+    const Real rgb[3] = {c.x(), c.y(), c.z()};
     return rgb_spectrum::fromRgb(rgb, type);
   }
-  void to_rgb(double rgb[3]) const {
-    double xyz[3];
+  void to_rgb(Real rgb[3]) const {
+    Real xyz[3];
     to_xyz(xyz);
     xyz2rgb(xyz, rgb);
   }
   color to_rgb() const {
-    double rgb[3];
+    Real rgb[3];
     to_rgb(rgb);
     return color(rgb);
   }
   const rgb_spectrum &toRgbSpectrum() const {
     return *this;
   }
-  void to_xyz(double xyz[3]) const { rgb2xyz(coeffs, xyz); }
+  void to_xyz(Real xyz[3]) const {
+    rgb2xyz(values.data(), xyz);
+  }
   static rgb_spectrum
-  fromXyz(const double xyz[3],
+  fromXyz(const Real xyz[3],
           SpectrumType type = SpectrumType::Reflectance) {
     rgb_spectrum r;
-    xyz2rgb(xyz, r.coeffs);
+    xyz2rgb(xyz, r.values.data());
     return r;
   }
-  double y() const {
-    const double yweights[] = {0.212671, 0.715160,
-                               0.072169};
-    return yweights[0] * coeffs[0] +
-           yweights[1] * coeffs[1] +
-           yweights[2] * coeffs[2];
+  Real y() const {
+    const Real yweights[] = {0.212671, 0.715160, 0.072169};
+    return yweights[0] * values[0] +
+           yweights[1] * values[1] +
+           yweights[2] * values[2];
   }
 
-  static rgb_spectrum fromSamples(const double *lambdas,
-                                  const double *vs,
+  static rgb_spectrum fromSamples(const Real *lambdas,
+                                  const Real *vs,
                                   int nb_sample) {
     if (!isSamplesSorted(lambdas, vs, nb_sample)) {
-      std::vector<double> slambda(&lambdas[0],
-                                  &lambdas[nb_sample]);
-      std::vector<double> svs(&vs[0], &vs[nb_sample]);
+      std::vector<Real> slambda(&lambdas[0],
+                                &lambdas[nb_sample]);
+      std::vector<Real> svs(&vs[0], &vs[nb_sample]);
       sortSpectrumSamples(slambda.data(), svs.data(),
                           nb_sample);
       return fromSamples(slambda.data(), svs.data(),
                          nb_sample);
     }
-    double xyz[3] = {0, 0, 0};
+    Real xyz[3] = {0, 0, 0};
     for (int i = 0; i < NB_CIE_SAMPLES; i++) {
       //
-      double v = interpSpecSamples(lambdas, vs, nb_sample,
-                                   CIE_LAMBDA[i]);
+      Real v = interpSpecSamples(lambdas, vs, nb_sample,
+                                 CIE_LAMBDA[i]);
       xyz[0] = v * CIE_X[i];
       xyz[1] = v * CIE_Y[i];
       xyz[2] = v * CIE_Z[i];
     }
 
-    double scale =
-        static_cast<double>(CIE_LAMBDA[NB_CIE_SAMPLES - 1] -
-                            CIE_LAMBDA[0]) /
-        static_cast<double>(CIE_Y_INTEGRAL *
-                            NB_CIE_SAMPLES);
+    Real scale =
+        static_cast<Real>(CIE_LAMBDA[NB_CIE_SAMPLES - 1] -
+                          CIE_LAMBDA[0]) /
+        static_cast<Real>(CIE_Y_INTEGRAL * NB_CIE_SAMPLES);
     xyz[0] *= scale;
     xyz[1] *= scale;
     xyz[2] *= scale;
@@ -408,68 +248,69 @@ public:
 class sampled_spectrum
     : public coeff_spectrum<NB_SPECTRAL_SAMPLES> {
 public:
-  sampled_spectrum(double v = 0.0) : coeff_spectrum(v) {}
+  sampled_spectrum(Real v = 0.0) : coeff_spectrum(v) {}
   sampled_spectrum(
       const coeff_spectrum<NB_SPECTRAL_SAMPLES> &v)
       : coeff_spectrum<NB_SPECTRAL_SAMPLES>(v) {}
-  static sampled_spectrum fromSamples(const double *lambdas,
-                                      const double *vs,
+  sampled_spectrum(const sampled_wave<Real> &ws)
+      : coeff_spectrum(ws) {}
+  static sampled_spectrum fromSamples(const Real *lambdas,
+                                      const Real *vs,
                                       int nb_sample) {
     if (!isSamplesSorted(lambdas, vs, nb_sample)) {
-      std::vector<double> slambda(&lambdas[0],
-                                  &lambdas[nb_sample]);
-      std::vector<double> svs(&vs[0], &vs[nb_sample]);
+      std::vector<Real> slambda(&lambdas[0],
+                                &lambdas[nb_sample]);
+      std::vector<Real> svs(&vs[0], &vs[nb_sample]);
       sortSpectrumSamples(slambda.data(), svs.data(),
                           nb_sample);
       return fromSamples(slambda.data(), svs.data(),
                          nb_sample);
     }
     sampled_spectrum r;
-    auto nb_samp = static_cast<double>(NB_SPECTRAL_SAMPLES);
+    auto nb_samp = static_cast<Real>(NB_SPECTRAL_SAMPLES);
     for (int i = 0; i < NB_SPECTRAL_SAMPLES; i++) {
       auto lambda0 =
-          interp(static_cast<double>(i) / nb_samp,
+          interp(static_cast<Real>(i) / nb_samp,
                  VISIBLE_LAMBDA_START, VISIBLE_LAMBDA_END);
       auto lambda1 =
-          interp(static_cast<double>(i + 1) / nb_samp,
+          interp(static_cast<Real>(i + 1) / nb_samp,
                  VISIBLE_LAMBDA_START, VISIBLE_LAMBDA_END);
-      r.coeffs[i] = averageSpectrumSamples(
+      r.values[i] = averageSpectrumSamples(
           lambdas, vs, nb_sample, lambda0, lambda1);
     }
     return r;
   }
-  void to_xyz(double xyz[3]) const {
+  void to_xyz(Real xyz[3]) const {
     xyz[0] = xyz[1] = xyz[2] = 0.0;
-    double scale =
-        static_cast<double>(VISIBLE_LAMBDA_END -
-                            VISIBLE_LAMBDA_START) /
-        (CIE_Y_INTEGRAL * NB_SPECTRAL_SAMPLES);
+    Real scale = static_cast<Real>(VISIBLE_LAMBDA_END -
+                                   VISIBLE_LAMBDA_START) /
+                 (CIE_Y_INTEGRAL * NB_SPECTRAL_SAMPLES);
 
     for (int i = 0; i < NB_SPECTRAL_SAMPLES; i++) {
-      xyz[0] += X.coeffs[i] * coeffs[i];
-      xyz[1] += Y.coeffs[i] * coeffs[i];
-      xyz[2] += Z.coeffs[i] * coeffs[i];
+      xyz[0] += X.values[i] * values[i];
+      xyz[1] += Y.values[i] * values[i];
+      xyz[2] += Z.values[i] * values[i];
     }
     xyz[0] *= scale;
     xyz[1] *= scale;
     xyz[2] *= scale;
   }
-  double x() const { return choose_axis(0); }
-  double y() const { return choose_axis(1); }
-  double z() const { return choose_axis(2); }
-  void to_rgb(double rgb[3]) const {
-    double xyz[3];
+  Real x() const { return choose_axis(0); }
+  Real y() const { return choose_axis(1); }
+  Real z() const { return choose_axis(2); }
+  void to_rgb(Real rgb[3]) const {
+    Real xyz[3];
     to_xyz(xyz);
     xyz2rgb(xyz, rgb);
   }
   color to_rgb() const {
-    double rgb[3];
+    Real rgb[3];
     to_rgb(rgb);
     return color(rgb);
   }
-  static RGB_AXIS min_axis(const double rgb[3]) {
+  static RGB_AXIS min_axis(const Real rgb[3]) {
     RGB_AXIS minax;
-    double minval = std::min(rgb[0], rgb[1]);
+    Real minval = std::min(rgb[0], rgb[1]);
     minval = std::min(minval, rgb[2]);
     if (minval == rgb[0])
       minax = RGB_R;
@@ -480,7 +321,7 @@ public:
     return minax;
   }
   static sampled_spectrum
-  fromRgb(const double rgb[3],
+  fromRgb(const Real rgb[3],
           SpectrumType type = SpectrumType::Illuminant) {
     RGB_AXIS minax = min_axis(rgb);
     sampled_spectrum r;
@@ -591,31 +432,34 @@ public:
       }
       r *= 0.86445;
     }
-    return r.clamp();
+    return sampled_spectrum(r.clamp());
   }
   static sampled_spectrum fromRgb(const color &c,
                                   SpectrumType type) {
-    const double rgb[3] = {c.x(), c.y(), c.z()};
+    const Real rgb[3] = {c.x(), c.y(), c.z()};
     return sampled_spectrum::fromRgb(rgb, type);
   }
 
   static sampled_spectrum
-  fromXyz(const double xyz[3],
+  fromXyz(const Real xyz[3],
           SpectrumType type = SpectrumType::Reflectance) {
-    double rgb[3];
+    Real rgb[3];
     xyz2rgb(xyz, rgb);
     return fromRgb(rgb, type);
   }
   sampled_spectrum(
       const rgb_spectrum &r,
       SpectrumType type = SpectrumType::Reflectance) {
-    double rgb[3];
+    Real rgb[3];
     r.to_rgb(rgb);
     *this = sampled_spectrum::fromRgb(rgb, type);
   }
   // TODO: implement the following
-  rgb_spectrum to_rgb_spectrum() const {}
-  static void Init() {}
+  rgb_spectrum to_rgb_spectrum() const {
+    Real rgb[3];
+    to_rgb(rgb);
+    return rgb_spectrum::fromRgb(rgb);
+  }
 
 private:
   static sampled_spectrum X;
@@ -636,12 +480,11 @@ private:
   static sampled_spectrum rgbIllumSpectRed;
   static sampled_spectrum rgbIllumSpectYellow;
 
-  double choose_axis(int axis) const {
-    double s = 0.0;
-    double scale =
-        static_cast<double>(VISIBLE_LAMBDA_END -
-                            VISIBLE_LAMBDA_START) /
-        (CIE_Y_INTEGRAL * NB_SPECTRAL_SAMPLES);
+  Real choose_axis(int axis) const {
+    Real s = 0.0;
+    Real scale = static_cast<Real>(VISIBLE_LAMBDA_END -
+                                   VISIBLE_LAMBDA_START) /
+                 (CIE_Y_INTEGRAL * NB_SPECTRAL_SAMPLES);
     sampled_spectrum s_s;
     if (axis == 0) {
       s_s = X;
@@ -651,7 +494,7 @@ private:
       s_s = Z;
     }
     for (int i = 0; i < NB_SPECTRAL_SAMPLES; i++) {
-      s += s_s.coeffs[i] * coeffs[i];
+      s += s_s.values[i] * values[i];
     }
     return s * scale;
   }
@@ -737,27 +580,27 @@ sampled_spectrum sampled_spectrum::rgbReflSpectYellow =
                                   NB_RGB_SPEC_SAMPLES);
 // end static variable initialize
 
-inline rgb_spectrum interp(double t, const rgb_spectrum &r1,
+inline rgb_spectrum interp(Real t, const rgb_spectrum &r1,
                            const rgb_spectrum &r2) {
   return (1 - t) * r1 + t * r2;
 }
-inline sampled_spectrum interp(double t,
+inline sampled_spectrum interp(Real t,
                                const sampled_spectrum &r1,
                                const sampled_spectrum &r2) {
   return (1 - t) * r1 + t * r2;
 }
 
-void resampleLinearSpectrum(
-    const double *lambdasIn, const double *vsIn,
-    int nb_sampleIn, double lambdaMin, double lambdaMax,
-    int nb_sampleOut, double *vsOut) {
+void resampleLinearSpectrum(const Real *lambdasIn,
+                            const Real *vsIn,
+                            int nb_sampleIn, Real lambdaMin,
+                            Real lambdaMax,
+                            int nb_sampleOut, Real *vsOut) {
   //
   D_CHECK(nb_sampleOut > 2);
   D_CHECK(isSamplesSorted(lambdasIn, vsIn, nb_sampleIn));
   D_CHECK(lambdaMin < lambdaMax);
 
-  double delta =
-      (lambdaMax - lambdaMin) / (nb_sampleOut - 1);
+  Real delta = (lambdaMax - lambdaMin) / (nb_sampleOut - 1);
 
   auto lambdaInClamped = [&](int index) {
     D_CHECK(index >= -1 && index <= nb_sampleIn);
@@ -775,7 +618,7 @@ void resampleLinearSpectrum(
     D_CHECK(index >= -1 && index <= nb_sampleIn);
     return vsIn[index];
   };
-  auto resample = [&](double lam) -> double {
+  auto resample = [&](Real lam) -> Real {
     if (lam + delta / 2 <= lambdasIn[0])
       return vsIn[0];
     if (lam - delta / 2 <= lambdasIn[nb_sampleIn - 1])
@@ -808,7 +651,7 @@ void resampleLinearSpectrum(
     }
 
     // downsample / upsample
-    double sampleVal;
+    Real sampleVal;
     bool cond1 = (end - start) == 2;
     bool cond2 = lambdaInClamped(start) <= lam - delta;
     bool cond3 = lambdasIn[start + 1] == lam;
@@ -818,7 +661,7 @@ void resampleLinearSpectrum(
       sampleVal = vsIn[start + 1];
     } else if ((end - start) == 1) {
       // downsample
-      double val =
+      Real val =
           (lam - lambdaInClamped(start)) /
           (lambdaInClamped(end) - lambdaInClamped(start));
       D_CHECK(val >= 0 && val <= 1);
@@ -835,10 +678,13 @@ void resampleLinearSpectrum(
   };
   for (int outOffset = 0; outOffset < nb_sampleOut;
        outOffset++) {
-    double lambda = interp(static_cast<double>(outOffset) /
-                               (nb_sampleOut - 1),
-                           lambdaMin, lambdaMax);
+    Real lambda = interp(static_cast<Real>(outOffset) /
+                             (nb_sampleOut - 1),
+                         lambdaMin, lambdaMax);
     vsOut[outOffset] = resample(lambda);
   }
 }
 //
+typedef color spectrum;
+// typedef sampled_spectrum spectrum;
+// typedef rgb_spectrum spectrum;

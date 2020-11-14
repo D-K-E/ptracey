@@ -11,7 +11,7 @@ public:
   vec3 v() const { return axis[1]; }
   vec3 w() const { return axis[2]; }
 
-  vec3 local(double a, double b, double c) const {
+  vec3 local(Real a, Real b, Real c) const {
     return a * u() + b * v() + c * w();
   }
 

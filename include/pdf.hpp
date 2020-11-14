@@ -7,14 +7,14 @@ class pdf {
 public:
   virtual ~pdf() {}
 
-  virtual double value(const vec3 &direction) const = 0;
+  virtual Real value(const vec3 &direction) const = 0;
   virtual vec3 generate() const = 0;
 };
 
 class cosine_pdf : public pdf {
 public:
   cosine_pdf(const vec3 &w) { uvw.build_from_w(w); }
-  double value(const vec3 &direction) const override {
+  Real value(const vec3 &direction) const override {
     auto cosine = dot(unit_vector(direction), uvw.w());
     return (cosine <= 0) ? 0 : cosine / M_PI;
   }
@@ -31,7 +31,7 @@ public:
   hittable_pdf(shared_ptr<hittable> p, const point3 &origin)
       : o(origin), ptr(p) {}
 
-  double value(const vec3 &direction) const override {
+  Real value(const vec3 &direction) const override {
     return ptr->pdf_value(o, direction);
   }
 
@@ -49,7 +49,7 @@ public:
     p[1] = p1;
   }
 
-  double value(const vec3 &direction) const override {
+  Real value(const vec3 &direction) const override {
     return 0.5 * p[0]->value(direction) +
            0.5 * p[1]->value(direction);
   }

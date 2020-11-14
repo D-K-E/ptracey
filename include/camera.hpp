@@ -1,6 +1,6 @@
 #pragma once
 
-#include <external.hpp>
+#include <common.hpp>
 #include <ray.hpp>
 #include <utils.hpp>
 #include <vec3.hpp>
@@ -12,10 +12,9 @@ public:
                vec3(0, 1, 0), 40, 1, 0, 10) {}
 
   camera(point3 lookfrom, point3 lookat, vec3 vup,
-         double vfov, // vertical field-of-view in degrees
-         double aspect_ratio, double aperture,
-         double focus_dist, double _time0 = 0,
-         double _time1 = 0) {
+         Real vfov, // vertical field-of-view in degrees
+         Real aspect_ratio, Real aperture, Real focus_dist,
+         Real _time0 = 0, Real _time1 = 0) {
     auto theta = degrees_to_radians(vfov);
     auto h = tan(theta / 2);
     auto viewport_height = 2.0 * h;
@@ -36,7 +35,7 @@ public:
     time1 = _time1;
   }
 
-  ray get_ray(double s, double t) const {
+  ray get_ray(Real s, Real t) const {
     vec3 rd = lens_radius * random_in_unit_disk();
     vec3 offset = u * rd.x() + v * rd.y();
     return ray(origin + offset,
@@ -51,6 +50,6 @@ private:
   vec3 horizontal;
   vec3 vertical;
   vec3 u, v, w;
-  double lens_radius;
-  double time0, time1; // shutter open/close times
+  Real lens_radius;
+  Real time0, time1; // shutter open/close times
 };

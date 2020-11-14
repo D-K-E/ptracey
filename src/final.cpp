@@ -1,7 +1,7 @@
 //
 #include <camera.hpp>
 #include <color.hpp>
-#include <external.hpp>
+#include <common.hpp>
 #include <hittable_list.hpp>
 #include <ray.hpp>
 #include <scenes.hpp>
@@ -9,24 +9,23 @@
 #include <utils.hpp>
 #include <vec3.hpp>
 
-using immat = std::vector<std::vector<color>>;
+using immat = std::vector<std::vector<spectrum>>;
 
-sampled_spectrum
-ray_color(const ray &r, const sampled_spectrum &background,
-          const hittable &world, int depth) {
+spectrum ray_color(const ray &r, const spectrum &background,
+                   const hittable &world, int depth) {
   hit_record rec;
 
   // If we've exceeded the ray bounce limit, no more light
   // is gathered.
   if (depth <= 0)
-    return sampled_spectrum(0.0);
+    return spectrum(0.0);
 
   // If the ray hits nothing, return the background color.
   if (!world.hit(r, 0.001, FLT_MAX, rec))
     return background;
 
   scatter_record srec;
-  sampled_spectrum emitted =
+  spectrum emitted =
       rec.mat_ptr->emitted(r, rec, rec.u, rec.v, rec.p);
 
   if (!rec.mat_ptr->scatter(r, rec, srec))
@@ -60,11 +59,10 @@ struct InnerParams {
   int startx;
   int endx;
   hittable_list scene;
-  sampled_spectrum background;
+  spectrum background;
   InnerParams(int sx, int ex, const camera &c, int imw,
               int imh, int ps, int d,
-              const hittable_list &hs,
-              const sampled_spectrum &b)
+              const hittable_list &hs, const spectrum &b)
       : startx(sx), endx(ex), cam(c), imwidth(imw),
         imheight(imh), psample(ps), mdepth(d), scene(hs),
         background(b) {}
@@ -86,7 +84,7 @@ InnerRet innerLoop(InnerParams params) {
   int startx = params.startx;
   int endx = params.endx;
   int xrange = endx - startx;
-  sampled_spectrum background = params.background;
+  spectrum background = params.background;
   hittable_list scene = params.scene;
   immat imv;
   imv.resize(xrange);
@@ -98,16 +96,12 @@ InnerRet innerLoop(InnerParams params) {
     for (int j = 0; j < imheight; j++) {
       int i = a + startx;
       //
-      color rcolor(0.0, 0.0, 0.0);
+      spectrum rcolor(0.0);
       for (int k = 0; k < psample; k++) {
-        double t =
-            double(i + random_double()) / (imwidth - 1);
-        double s =
-            double(j + random_double()) / (imheight - 1);
+        Real t = Real(i + random_double()) / (imwidth - 1);
+        Real s = Real(j + random_double()) / (imheight - 1);
         ray r = cam.get_ray(t, s);
-        sampled_spectrum ray_spec =
-            ray_color(r, background, scene, mdepth);
-        rcolor += ray_spec.to_rgb();
+        rcolor += ray_color(r, background, scene, mdepth);
       }
       imv[a][j] = rcolor;
     }
@@ -139,16 +133,16 @@ int main() {
   auto aspect_ratio = 16.0 / 9.0;
   int image_width = 400;
   int samples_per_pixel = 100;
-  int max_depth = 50;
+  int max_depth = 200;
   immat imvec;
 
   // World
 
   hittable_list world;
-  int choice = 6;
+  int choice = 10;
   camera cam;
   int image_height;
-  sampled_spectrum background;
+  spectrum background;
   choose_scene(choice, cam, world, samples_per_pixel,
                aspect_ratio, image_width, image_height,
                background);
@@ -198,7 +192,7 @@ int main() {
     }
   }
   auto stop = std::chrono::high_resolution_clock::now();
-  std::chrono::duration<double> elapsed = stop - start;
+  std::chrono::duration<Real> elapsed = stop - start;
 
   std::cerr << "duration: " << elapsed.count() << std::endl;
 

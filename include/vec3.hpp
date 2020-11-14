@@ -1,42 +1,41 @@
 #pragma once
-#include <external.hpp>
+#include <common.hpp>
 #include <utils.hpp>
-
-using std::sqrt;
-using std::fabs;
 
 class vec3 {
 public:
   vec3() : e{0, 0, 0} {}
-  vec3(double e0, double e1, double e2) : e{e0, e1, e2} {}
-  vec3(double e0) : e{e0, e0, e0} {}
-  vec3(const double e1[3]) : e{e1[0], e1[1], e1[2]} {}
+  vec3(Real e0, Real e1, Real e2) : e{e0, e1, e2} {}
+  vec3(Real e0) : e{e0, e0, e0} {}
+  vec3(const Real e1[3]) : e{e1[0], e1[1], e1[2]} {}
 
-  double x() const { return e[0]; }
-  double y() const { return e[1]; }
-  double z() const { return e[2]; }
+  Real x() const { return e[0]; }
+  Real y() const { return e[1]; }
+  Real z() const { return e[2]; }
+  Real r() const { return x(); }
+  Real g() const { return y(); }
+  Real b() const { return z(); }
+
   vec3 operator-() const {
     return vec3(-e[0], -e[1], -e[2]);
   }
-  double operator[](int i) const { return e[i]; }
-  double &operator[](int i) { return e[i]; }
+  Real operator[](int i) const { return e[i]; }
+  Real &operator[](int i) { return e[i]; }
   vec3 &operator+=(const vec3 &v) {
     e[0] += v.e[0];
     e[1] += v.e[1];
     e[2] += v.e[2];
     return *this;
   }
-  vec3 &operator*=(const double t) {
+  vec3 &operator*=(const Real t) {
     e[0] *= t;
     e[1] *= t;
     e[2] *= t;
     return *this;
   }
-  vec3 &operator/=(const double t) {
-    return *this *= 1 / t;
-  }
-  double length() const { return sqrt(length_squared()); }
-  double length_squared() const {
+  vec3 &operator/=(const Real t) { return *this *= 1 / t; }
+  Real length() const { return sqrt(length_squared()); }
+  Real length_squared() const {
     return e[0] * e[0] + e[1] * e[1] + e[2] * e[2];
   }
   bool near_zero() const {
@@ -50,14 +49,14 @@ public:
     return vec3(random_double(), random_double(),
                 random_double());
   }
-  inline static vec3 random(double min, double max) {
+  inline static vec3 random(Real min, Real max) {
     return vec3(random_double(min, max),
                 random_double(min, max),
                 random_double(min, max));
   }
 
 public:
-  double e[3];
+  Real e[3];
 };
 
 // Type aliases for vec3
@@ -86,19 +85,19 @@ inline vec3 operator*(const vec3 &u, const vec3 &v) {
               u.e[2] * v.e[2]);
 }
 
-inline vec3 operator*(double t, const vec3 &v) {
+inline vec3 operator*(Real t, const vec3 &v) {
   return vec3(t * v.e[0], t * v.e[1], t * v.e[2]);
 }
 
-inline vec3 operator*(const vec3 &v, double t) {
+inline vec3 operator*(const vec3 &v, Real t) {
   return t * v;
 }
 
-inline vec3 operator/(vec3 v, double t) {
+inline vec3 operator/(vec3 v, Real t) {
   return (1 / t) * v;
 }
 
-inline double dot(const vec3 &u, const vec3 &v) {
+inline Real dot(const vec3 &u, const vec3 &v) {
   return u.e[0] * v.e[0] + u.e[1] * v.e[1] +
          u.e[2] * v.e[2];
 }
@@ -160,7 +159,7 @@ inline vec3 reflect(const vec3 &v, const vec3 &n) {
 }
 
 inline vec3 refract(const vec3 &uv, const vec3 &n,
-                    double etai_over_etat) {
+                    Real etai_over_etat) {
   auto cos_theta = fmin(dot(-uv, n), 1.0);
   vec3 r_out_perp = etai_over_etat * (uv + cos_theta * n);
   vec3 r_out_parallel =
@@ -180,8 +179,8 @@ inline vec3 random_cosine_direction() {
   return vec3(x, y, z);
 }
 
-inline vec3 random_to_sphere(double radius,
-                             double distance_squared) {
+inline vec3 random_to_sphere(Real radius,
+                             Real distance_squared) {
   auto r1 = random_double();
   auto r2 = random_double();
   auto z =
@@ -195,5 +194,3 @@ inline vec3 random_to_sphere(double radius,
 
   return vec3(x, y, z);
 }
-
-//

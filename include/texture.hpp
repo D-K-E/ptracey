@@ -1,6 +1,6 @@
 #pragma once
 //
-#include <external.hpp>
+#include <common.hpp>
 #include <perlin.hpp>
 #include <ray.hpp>
 #include <spectrum.hpp>
@@ -8,30 +8,25 @@
 
 class texture {
 public:
-  virtual sampled_spectrum value(double u, double v,
-                                 const vec3 &p) const = 0;
+  virtual spectrum value(Real u, Real v,
+                         const vec3 &p) const = 0;
 };
-
 class solid_color : public texture {
 public:
   solid_color() {}
-  solid_color(color c, SpectrumType type =
-                           SpectrumType::Reflectance) {
-    color_value = sampled_spectrum::fromRgb(c, type);
-  }
+  solid_color(spectrum c) { color_value = c; }
 
-  solid_color(double red, double green, double blue)
-      : solid_color(color(red, green, blue)) {}
+  solid_color(Real red, Real green, Real blue)
+      : solid_color(spectrum(red, green, blue)) {}
 
-  sampled_spectrum value(double u, double v,
-                         const vec3 &p) const override {
+  spectrum value(Real u, Real v,
+                 const vec3 &p) const override {
     return color_value;
   }
 
 private:
-  sampled_spectrum color_value;
+  spectrum color_value;
 };
-
 class checker_texture : public texture {
 public:
   checker_texture() {}
@@ -40,12 +35,12 @@ public:
                   shared_ptr<texture> _odd)
       : even(_even), odd(_odd) {}
 
-  checker_texture(color c1, color c2)
+  checker_texture(spectrum c1, spectrum c2)
       : even(make_shared<solid_color>(c1)),
         odd(make_shared<solid_color>(c2)) {}
 
-  sampled_spectrum value(double u, double v,
-                         const vec3 &p) const override {
+  spectrum value(Real u, Real v,
+                 const vec3 &p) const override {
     auto sines =
         sin(10 * p.x()) * sin(10 * p.y()) * sin(10 * p.z());
     if (sines < 0)
@@ -58,31 +53,23 @@ public:
   shared_ptr<texture> odd;
   shared_ptr<texture> even;
 };
-
 class noise_texture : public texture {
 public:
   noise_texture() {}
-  noise_texture(double sc, SpectrumType stype =
-                               SpectrumType::Reflectance)
-      : scale(sc), type(stype) {}
+  noise_texture(Real sc, const spectrum &sp)
+      : scale(sc), spec(sp) {}
 
-  sampled_spectrum value(double u, double v,
-                         const vec3 &p) const override {
-    // return color(1,1,1)*0.5*(1 + noise.turb(scale * p));
-    // return color(1,1,1)*noise.turb(scale * p);
-    color white_rgb(1.0);
-    sampled_spectrum white =
-        sampled_spectrum::fromRgb(white_rgb, type);
-    return white * 0.5 *
+  spectrum value(Real u, Real v,
+                 const vec3 &p) const override {
+    return spec * 0.5 *
            (1 + sin(scale * p.z() + 10 * noise.turb(p)));
   }
 
 public:
   perlin noise;
-  double scale;
-  SpectrumType type;
+  Real scale;
+  spectrum spec;
 };
-
 class image_texture : public texture {
 public:
   const static int bytes_per_pixel = 3;
@@ -110,14 +97,13 @@ public:
 
   ~image_texture() { STBI_FREE(data); }
 
-  sampled_spectrum value(double u, double v,
-                         const vec3 &p) const override {
+  spectrum value(Real u, Real v,
+                 const vec3 &p) const override {
     // If we have no texture data, then return solid cyan as
     // a debugging aid.
     if (data == nullptr) {
       color pix_rgb(0, 1, 1);
-      return sampled_spectrum::fromRgb(
-          pix_rgb, SpectrumType::Reflectance);
+      return spectrum(0, 1, 1);
     }
 
     // Clamp input texture coordinates to [0,1] x [1,0]
@@ -142,12 +128,25 @@ public:
     color pix_rgb(color_scale * pixel[0],
                   color_scale * pixel[1],
                   color_scale * pixel[2]);
-    return sampled_spectrum::fromRgb(
-        pix_rgb, SpectrumType::Reflectance);
+    return spectrum(pix_rgb);
   }
 
 private:
   unsigned char *data;
   int width, height;
   int bytes_per_scanline;
+};
+
+class material_texture : public texture {
+  // use material refractive spectral power distribution
+  // for color
+public:
+  material_texture(const spectrum &s) : spect(s) {}
+  material_texture(const path &path_to_csv,
+                   const std::string &wave_col_name,
+                   const std::string &power_col_name,
+                   const std::string &sep = ",") {}
+
+public:
+  spectrum spect;
 };
