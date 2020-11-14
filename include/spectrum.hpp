@@ -129,6 +129,19 @@ inline void rgb2xyz(const Real rgb[3], Real xyz[3]) {
 enum class SpectrumType { Reflectance, Illuminant };
 enum RGB_AXIS : int { RGB_R, RGB_G, RGB_B };
 
+class abstract_spectrum {
+public:
+  abstract_spectrum() {}
+  virtual Real r() const = 0;
+  virtual Real g() const = 0;
+  virtual Real b() const = 0;
+  virtual Real x() const = 0;
+  virtual Real y() const = 0;
+  virtual Real z() const = 0;
+
+public:
+};
+
 template <int NbSpecSamples>
 class coeff_spectrum : public sampled_wave<Real> {
   //
@@ -152,8 +165,8 @@ public:
   }
 };
 
-class rgb_spectrum : public coeff_spectrum<3> {
-  //
+class rgb_spectrum : public coeff_spectrum<3>,
+                     public abstract_spectrum {
 
 public:
   rgb_spectrum(Real v = 0.0) : coeff_spectrum<3>(v) {}
@@ -198,6 +211,11 @@ public:
   void to_xyz(Real xyz[3]) const {
     rgb2xyz(values.data(), xyz);
   }
+  vec3 to_xyz() const {
+    Real xyz[3];
+    to_xyz(xyz);
+    return vec3(xyz);
+  }
   static rgb_spectrum
   fromXyz(const Real xyz[3],
           SpectrumType type = SpectrumType::Reflectance) {
@@ -211,6 +229,11 @@ public:
            yweights[1] * values[1] +
            yweights[2] * values[2];
   }
+  Real r() const { return to_rgb().r(); }
+  Real g() const { return to_rgb().g(); }
+  Real b() const { return to_rgb().b(); }
+  Real x() const { return to_xyz().x(); }
+  Real z() const { return to_xyz().z(); }
 
   static rgb_spectrum fromSamples(const Real *lambdas,
                                   const Real *vs,
@@ -295,6 +318,10 @@ public:
     xyz[1] *= scale;
     xyz[2] *= scale;
   }
+  Real r() const { return to_rgb().r(); }
+  Real g() const { return to_rgb().g(); }
+  Real b() const { return to_rgb().b(); }
+
   Real x() const { return choose_axis(0); }
   Real y() const { return choose_axis(1); }
   Real z() const { return choose_axis(2); }
