@@ -1,5 +1,6 @@
 #pragma once
-#include "common.hpp"
+
+#include <common.hpp>
 #include <pdf.hpp>
 #include <spectrum.hpp>
 #include <texture.hpp>
@@ -8,23 +9,21 @@
 struct scatter_record {
   ray specular_ray;
   bool is_specular;
-  spectrum attenuation;
+  shared_ptr<spectrum> attenuation;
   shared_ptr<pdf> pdf_ptr;
 };
 class material {
 public:
-  virtual spectrum emitted(const ray &r_in,
-                           const hit_record &rec, Real u,
-                           Real v, const point3 &p) const {
-    return spectrum(0.0);
+  virtual shared_ptr<spectrum>
+  emitted(const ray &r_in, const hit_record &rec, Real u,
+          Real v, const point3 &p) const {
+    return make_shared<spectrum>(0.0);
   }
-
   virtual bool scatter(const ray &r_in,
                        const hit_record &rec,
                        scatter_record &srec) const {
     return false;
   }
-
   virtual double
   scattering_pdf(const ray &r_in, const hit_record &rec,
                  const ray &scattered) const {
@@ -33,11 +32,9 @@ public:
 };
 class lambertian : public material {
 public:
-  lambertian(const spectrum &a)
+  lambertian(const shared_ptr<spectrum> &a)
       : albedo(make_shared<solid_color>(a)) {}
-
   lambertian(shared_ptr<texture> a) : albedo(a) {}
-
   bool scatter(const ray &r_in, const hit_record &rec,
                scatter_record &srec) const override {
     srec.is_specular = false;
@@ -45,7 +42,6 @@ public:
     srec.pdf_ptr = make_shared<cosine_pdf>(rec.normal);
     return true;
   }
-
   double
   scattering_pdf(const ray &r_in, const hit_record &rec,
                  const ray &scattered) const override {
@@ -59,7 +55,7 @@ public:
 };
 class metal : public material {
 public:
-  metal(const spectrum &a, Real f)
+  metal(const shared_ptr<spectrum> &a, Real f)
       : albedo(make_shared<solid_color>(a)),
         fuzz(f < 1 ? f : 1) {}
 
@@ -90,7 +86,7 @@ public:
     srec.is_specular = true;
     srec.pdf_ptr = nullptr;
     color white_rgb(1.0);
-    srec.attenuation = spectrum(1.0);
+    srec.attenuation = make_shared<spectrum>(1.0);
     Real refraction_ratio =
         rec.front_face ? (1.0 / ir) : ir;
 
@@ -129,14 +125,14 @@ private:
 class diffuse_light : public material {
 public:
   diffuse_light(shared_ptr<texture> a) : emit(a) {}
-  diffuse_light(spectrum c)
+  diffuse_light(shared_ptr<spectrum> c)
       : emit(make_shared<solid_color>(c)) {}
 
-  spectrum emitted(const ray &r_in, const hit_record &rec,
-                   Real u, Real v,
-                   const point3 &p) const override {
+  shared_ptr<spectrum>
+  emitted(const ray &r_in, const hit_record &rec, Real u,
+          Real v, const point3 &p) const override {
     if (!rec.front_face)
-      return spectrum(0.0);
+      return make_shared<spectrum>(0.0);
     return emit->value(u, v, p);
   }
 
@@ -145,7 +141,7 @@ public:
 };
 class isotropic : public material {
 public:
-  isotropic(spectrum c)
+  isotropic(shared_ptr<spectrum> c)
       : albedo(make_shared<solid_color>(c)) {}
   isotropic(shared_ptr<texture> a) : albedo(a) {}
 

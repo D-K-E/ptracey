@@ -17,14 +17,12 @@ public:
     perm_y = perlin_generate_perm();
     perm_z = perlin_generate_perm();
   }
-
   ~perlin() {
     delete[] ranvec;
     delete[] perm_x;
     delete[] perm_y;
     delete[] perm_z;
   }
-
   Real noise(const point3 &p) const {
     auto u = p.x() - floor(p.x());
     auto v = p.y() - floor(p.y());
@@ -43,7 +41,6 @@ public:
 
     return perlin_interp(c, u, v, w);
   }
-
   Real turb(const point3 &p, int depth = 7) const {
     auto accum = 0.0;
     auto temp_p = p;

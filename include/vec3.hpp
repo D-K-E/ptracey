@@ -1,5 +1,6 @@
 #pragma once
 #include <common.hpp>
+#include <stdexcept>
 #include <utils.hpp>
 
 class vec3 {
@@ -34,6 +35,58 @@ public:
     return *this;
   }
   vec3 &operator/=(const Real t) { return *this *= 1 / t; }
+  vec3 add(const vec3 &v) {
+    return vec3(x() + v.x(), y() + v.y(), z() + v.z());
+  }
+  shared_ptr<vec3> add(const shared_ptr<vec3> &v) {
+    return make_shared<vec3>(x() + v->x(), y() + v->y(),
+                             z() + v->z());
+  }
+  vec3 add(const Real &v) {
+    return vec3(x() + v, y() + v, z() + v);
+  }
+  vec3 subt(const Real &v) {
+    return vec3(x() - v, y() - v, z() - v);
+  }
+  vec3 subt(const vec3 &v) {
+    return vec3(x() - v.x(), y() - v.y(), z() - v.z());
+  }
+  shared_ptr<vec3> subt(const shared_ptr<vec3> &v) {
+    return make_shared<vec3>(x() - v->x(), y() - v->y(),
+                             z() - v->z());
+  }
+  vec3 multip(const vec3 &v) {
+    return vec3(x() * v.x(), y() * v.y(), z() * v.z());
+  }
+  shared_ptr<vec3> multip(const shared_ptr<vec3> &v) {
+    return make_shared<vec3>(x() * v->x(), y() * v->y(),
+                             z() * v->z());
+  }
+  vec3 multip(const Real &v) {
+    return vec3(x() * v, y() * v, z() * v);
+  }
+  vec3 div(const Real &v) {
+    if (v == 0.0)
+      throw std::runtime_error("no zero division");
+    return vec3(x() / v, y() / v, z() / v);
+  }
+  vec3 div(const vec3 &v) {
+    if (v.x() == 0.0)
+      throw std::runtime_error(
+          "no zero division x is zero");
+    if (v.y() == 0.0)
+      throw std::runtime_error(
+          "no zero division y is zero");
+    if (v.z() == 0.0)
+      throw std::runtime_error(
+          "no zero division z is zero");
+    return vec3(x() / v.x(), y() / v.y(), z() / v.z());
+  }
+  shared_ptr<vec3> div(const shared_ptr<vec3> &v) {
+    auto vs = *v;
+    vs = div(vs);
+    return make_shared<vec3>(vs.x(), vs.y(), vs.z());
+  }
   Real length() const { return sqrt(length_squared()); }
   Real length_squared() const {
     return e[0] * e[0] + e[1] * e[1] + e[2] * e[2];

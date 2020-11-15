@@ -1,5 +1,7 @@
 #pragma once
 
+#include "common.hpp"
+#include "spectrum.hpp"
 #include <bvh.hpp>
 #include <external.hpp>
 #include <hittable.hpp>
@@ -138,9 +140,10 @@ public:
     }
     aiColor3D col;
     mat->Get(AI_MATKEY_COLOR_EMISSIVE, col);
-    color em = to_color(col);
+    shared_ptr<spectrum> em =
+        make_shared<spectrum>(to_color(col));
     bool res =
-        em.x() == 0.0 && em.y() == 0.0 && em.z() == 0.0;
+        em->x() == 0.0 && em->y() == 0.0 && em->z() == 0.0;
     if (!res) {
       shared_ptr<material> ret =
           make_shared<diffuse_light>(em);
@@ -150,16 +153,17 @@ public:
     mat->Get(AI_MATKEY_REFLECTIVITY, fuzz);
     if (fuzz != 0.0) {
       mat->Get(AI_MATKEY_COLOR_DIFFUSE, col);
-      color c = to_color(col);
-      res = c.x() == 0.0 && c.y() == 0.0 && c.z() == 0.0;
+      shared_ptr<spectrum> c =
+          make_shared<spectrum>(to_color(col));
+      res = c->x() == 0.0 && c->y() == 0.0 && c->z() == 0.0;
       if (!res) {
         shared_ptr<material> ret =
             make_shared<metal>(c, fuzz);
         return ret;
       }
       mat->Get(AI_MATKEY_COLOR_REFLECTIVE, col);
-      c = to_color(col);
-      res = c.x() == 0.0 && c.y() == 0.0 && c.z() == 0.0;
+      c = make_shared<spectrum>(to_color(col));
+      res = c->x() == 0.0 && c->y() == 0.0 && c->z() == 0.0;
       if (!res) {
         shared_ptr<material> ret =
             make_shared<metal>(c, fuzz);
@@ -167,7 +171,8 @@ public:
       }
     }
     mat->Get(AI_MATKEY_COLOR_DIFFUSE, col);
-    color diffuse = to_color(col);
+    shared_ptr<spectrum> diffuse =
+        make_shared<spectrum>(to_color(col));
     shared_ptr<material> ret =
         make_shared<lambertian>(diffuse);
     return ret;

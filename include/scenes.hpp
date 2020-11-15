@@ -1,12 +1,10 @@
 #pragma once
 //
-#include "common.hpp"
-#include "texture.hpp"
-#include "utils.hpp"
 #include <aarect.hpp>
 #include <box.hpp>
 #include <bvh.hpp>
 #include <camera.hpp>
+#include <common.hpp>
 #include <hittable.hpp>
 #include <hittable_list.hpp>
 #include <mediumc.hpp>
@@ -15,13 +13,16 @@
 #include <ray.hpp>
 #include <spectrum.hpp>
 #include <sphere.hpp>
+#include <texture.hpp>
+#include <utils.hpp>
 #include <vec3.hpp>
 
 shared_ptr<hittable>
 model_random_material(matrix modelMat,
                       std::string modelpath) {
   int choice = random_int(0, 4);
-  spectrum rcolor = spectrum::random();
+  shared_ptr<spectrum> rcolor =
+      make_shared<spectrum>(spectrum::random());
   shared_ptr<material> mat;
   if (choice == 0) {
     mat = make_shared<lambertian>(rcolor);
@@ -44,7 +45,8 @@ model_random_material(matrix modelMat,
         make_shared<model>(modelpath, modelMat);
     return make_shared<constant_medium>(
         mod, random_double(0, 2.0),
-        make_shared<solid_color>(spectrum::random()));
+        make_shared<solid_color>(
+            make_shared<spectrum>(spectrum::random())));
     std::cerr << "model material :: constant medium"
               << std::endl;
   }
@@ -54,14 +56,14 @@ model_random_material(matrix modelMat,
 hittable_list cornell_box_restlife() {
   hittable_list objects;
 
-  auto red =
-      make_shared<lambertian>(spectrum(.65, .05, .05));
-  auto white =
-      make_shared<lambertian>(spectrum(.73, .73, .73));
-  auto green =
-      make_shared<lambertian>(spectrum(.12, .45, .15));
-  auto light =
-      make_shared<diffuse_light>(spectrum(15, 15, 15));
+  auto red = make_shared<lambertian>(
+      make_shared<spectrum>(.65, .05, .05));
+  auto white = make_shared<lambertian>(
+      make_shared<spectrum>(.73, .73, .73));
+  auto green = make_shared<lambertian>(
+      make_shared<spectrum>(.12, .45, .15));
+  auto light = make_shared<diffuse_light>(
+      make_shared<spectrum>(15, 15, 15));
 
   objects.add(
       make_shared<yz_rect>(0, 555, 0, 555, 555, green));
@@ -75,8 +77,8 @@ hittable_list cornell_box_restlife() {
   objects.add(
       make_shared<xy_rect>(0, 555, 0, 555, 555, white));
 
-  shared_ptr<material> aluminum =
-      make_shared<metal>(spectrum(0.8, 0.85, 0.88), 0.0);
+  shared_ptr<material> aluminum = make_shared<metal>(
+      make_shared<spectrum>(0.8, 0.85, 0.88), 0.0);
   shared_ptr<hittable> box1 = make_shared<box>(
       point3(0, 0, 0), point3(165, 330, 165), aluminum);
   box1 = make_shared<rotate_y>(box1, 15);
@@ -93,7 +95,8 @@ hittable_list random_scene() {
   hittable_list world;
 
   auto checker = make_shared<checker_texture>(
-      spectrum(0.2, 0.3, 0.1), spectrum(0.9, 0.9, 0.9));
+      make_shared<spectrum>(0.2, 0.3, 0.1),
+      make_shared<spectrum>(0.9, 0.9, 0.9));
 
   world.add(make_shared<sphere>(
       point3(0, -1000, 0), 1000,
@@ -110,7 +113,11 @@ hittable_list random_scene() {
 
         if (choose_mat < 0.8) {
           // diffuse
-          auto albedo = color::random() * color::random();
+          shared_ptr<spectrum> randcol1 =
+              make_shared<spectrum>(color::random());
+          shared_ptr<spectrum> randcol2 =
+              make_shared<spectrum>(color::random());
+          auto albedo = randcol1->multip(randcol2);
           sphere_material = make_shared<lambertian>(albedo);
           auto center2 =
               center + vec3(0, random_double(0, .5), 0);
@@ -119,7 +126,8 @@ hittable_list random_scene() {
               sphere_material));
         } else if (choose_mat < 0.95) {
           // metal
-          auto albedo = color::random(0.5, 1);
+          auto albedo = make_shared<spectrum>(
+              spectrum::random(0.5, 1));
           auto fuzz = random_double(0, 0.5);
           sphere_material =
               make_shared<metal>(albedo, fuzz);
@@ -139,13 +147,13 @@ hittable_list random_scene() {
   world.add(
       make_shared<sphere>(point3(0, 1, 0), 1.0, material1));
 
-  auto material2 =
-      make_shared<lambertian>(spectrum(0.4, 0.2, 0.1));
+  auto material2 = make_shared<lambertian>(
+      make_shared<spectrum>(0.4, 0.2, 0.1));
   world.add(make_shared<sphere>(point3(-4, 1, 0), 1.0,
                                 material2));
 
-  auto material3 =
-      make_shared<metal>(spectrum(0.7, 0.6, 0.5), 0.0);
+  auto material3 = make_shared<metal>(
+      make_shared<spectrum>(0.7, 0.6, 0.5), 0.0);
   world.add(
       make_shared<sphere>(point3(4, 1, 0), 1.0, material3));
 
@@ -156,7 +164,8 @@ hittable_list two_spheres() {
   hittable_list objects;
 
   auto checker = make_shared<checker_texture>(
-      spectrum(0.2, 0.3, 0.1), spectrum(0.9, 0.9, 0.9));
+      make_shared<spectrum>(0.2, 0.3, 0.1),
+      make_shared<spectrum>(0.9, 0.9, 0.9));
 
   objects.add(make_shared<sphere>(
       point3(0, -10, 0), 10,
@@ -170,8 +179,8 @@ hittable_list two_spheres() {
 hittable_list two_perlin_spheres() {
   hittable_list objects;
 
-  auto pertext =
-      make_shared<noise_texture>(4, spectrum(1.0));
+  auto pertext = make_shared<noise_texture>(
+      4, make_shared<spectrum>(1.0));
   objects.add(make_shared<sphere>(
       point3(0, -1000, 0), 1000,
       make_shared<lambertian>(pertext)));
@@ -194,8 +203,8 @@ hittable_list earth() {
 hittable_list simple_light() {
   hittable_list objects;
 
-  auto pertext =
-      make_shared<noise_texture>(4, spectrum(1.0));
+  auto pertext = make_shared<noise_texture>(
+      4, make_shared<spectrum>(1.0));
   objects.add(make_shared<sphere>(
       point3(0, -1000, 0), 1000,
       make_shared<lambertian>(pertext)));
@@ -203,8 +212,8 @@ hittable_list simple_light() {
       point3(0, 2, 0), 2,
       make_shared<lambertian>(pertext)));
 
-  auto difflight =
-      make_shared<diffuse_light>(spectrum(4, 4, 4));
+  auto difflight = make_shared<diffuse_light>(
+      make_shared<spectrum>(4, 4, 4));
   objects.add(
       make_shared<sphere>(point3(0, 7, 0), 2, difflight));
   objects.add(
@@ -215,14 +224,14 @@ hittable_list simple_light() {
 hittable_list cornell_box() {
   hittable_list objects;
 
-  auto red =
-      make_shared<lambertian>(spectrum(.65, .05, .05));
-  auto white =
-      make_shared<lambertian>(spectrum(.73, .73, .73));
-  auto green =
-      make_shared<lambertian>(spectrum(.12, .45, .15));
+  auto red = make_shared<lambertian>(
+      make_shared<spectrum>(.65, .05, .05));
+  auto white = make_shared<lambertian>(
+      make_shared<spectrum>(.73, .73, .73));
+  auto green = make_shared<lambertian>(
+      make_shared<spectrum>(.12, .45, .15));
   auto light = make_shared<diffuse_light>(
-      spectrum(15.0, 15.0, 15.0));
+      make_shared<spectrum>(15.0, 15.0, 15.0));
 
   objects.add(make_shared<yz_rect>(0.0, 555.0, 0.0, 555.0,
                                    555.0, green));
@@ -254,14 +263,14 @@ hittable_list cornell_box() {
 hittable_list cornell_smoke() {
   hittable_list objects;
 
-  auto red =
-      make_shared<lambertian>(spectrum(.65, .05, .05));
-  auto white =
-      make_shared<lambertian>(spectrum(.73, .73, .73));
-  auto green =
-      make_shared<lambertian>(spectrum(.12, .45, .15));
-  auto light =
-      make_shared<diffuse_light>(spectrum(7, 7, 7));
+  auto red = make_shared<lambertian>(
+      make_shared<spectrum>(.65, .05, .05));
+  auto white = make_shared<lambertian>(
+      make_shared<spectrum>(.73, .73, .73));
+  auto green = make_shared<lambertian>(
+      make_shared<spectrum>(.12, .45, .15));
+  auto light = make_shared<diffuse_light>(
+      make_shared<spectrum>(7, 7, 7));
 
   objects.add(
       make_shared<yz_rect>(0, 555, 0, 555, 555, green));
@@ -286,16 +295,16 @@ hittable_list cornell_smoke() {
   box2 = make_shared<translate>(box2, vec3(130, 0, 65));
 
   objects.add(make_shared<constant_medium>(
-      box1, 0.01, spectrum(0, 0, 0)));
+      box1, 0.01, make_shared<spectrum>(0, 0, 0)));
   objects.add(make_shared<constant_medium>(
-      box2, 0.01, spectrum(1, 1, 1)));
+      box2, 0.01, make_shared<spectrum>(1, 1, 1)));
 
   return objects;
 }
 hittable_list final_scene_nextweek() {
   hittable_list boxes1;
-  auto ground =
-      make_shared<lambertian>(spectrum(0.48, 0.83, 0.53));
+  auto ground = make_shared<lambertian>(
+      make_shared<spectrum>(0.48, 0.83, 0.53));
 
   const int boxes_per_side = 20;
   for (int i = 0; i < boxes_per_side; i++) {
@@ -317,15 +326,15 @@ hittable_list final_scene_nextweek() {
 
   objects.add(make_shared<bvh_node>(boxes1, 0, 1));
 
-  auto light =
-      make_shared<diffuse_light>(spectrum(7, 7, 7));
+  auto light = make_shared<diffuse_light>(
+      make_shared<spectrum>(7, 7, 7));
   objects.add(
       make_shared<xz_rect>(123, 423, 147, 412, 554, light));
 
   auto center1 = point3(400, 400, 200);
   auto center2 = center1 + vec3(30, 0, 0);
-  auto moving_sphere_material =
-      make_shared<lambertian>(spectrum(0.7, 0.3, 0.1));
+  auto moving_sphere_material = make_shared<lambertian>(
+      make_shared<spectrum>(0.7, 0.3, 0.1));
   objects.add(make_shared<moving_sphere>(
       center1, center2, 0, 1, 50, moving_sphere_material));
 
@@ -334,32 +343,33 @@ hittable_list final_scene_nextweek() {
                           make_shared<dielectric>(1.5)));
   objects.add(make_shared<sphere>(
       point3(0, 150, 145), 50,
-      make_shared<metal>(spectrum(0.8, 0.8, 0.9), 1.0)));
+      make_shared<metal>(
+          make_shared<spectrum>(0.8, 0.8, 0.9), 1.0)));
 
   auto boundary =
       make_shared<sphere>(point3(360, 150, 145), 70,
                           make_shared<dielectric>(1.5));
   objects.add(boundary);
   objects.add(make_shared<constant_medium>(
-      boundary, 0.2, spectrum(0.2, 0.4, 0.9)));
+      boundary, 0.2, make_shared<spectrum>(0.2, 0.4, 0.9)));
   boundary = make_shared<sphere>(
       point3(0, 0, 0), 5000, make_shared<dielectric>(1.5));
   objects.add(make_shared<constant_medium>(
-      boundary, .0001, spectrum(1, 1, 1)));
+      boundary, .0001, make_shared<spectrum>(1, 1, 1)));
 
   auto emat = make_shared<lambertian>(
       make_shared<image_texture>("media/earthmap.jpg"));
   objects.add(make_shared<sphere>(point3(400, 200, 400),
                                   100, emat));
-  auto pertext =
-      make_shared<noise_texture>(0.1, spectrum(1.0));
+  auto pertext = make_shared<noise_texture>(
+      0.1, make_shared<spectrum>(1.0));
   objects.add(make_shared<sphere>(
       point3(220, 280, 300), 80,
       make_shared<lambertian>(pertext)));
 
   hittable_list boxes2;
-  auto white =
-      make_shared<lambertian>(spectrum(.73, .73, .73));
+  auto white = make_shared<lambertian>(
+      make_shared<spectrum>(.73, .73, .73));
   int ns = 1000;
   for (int j = 0; j < ns; j++) {
     boxes2.add(make_shared<sphere>(point3::random(0, 165),
@@ -383,14 +393,14 @@ hittable_list model_cat() {
 
   hittable_list objects;
 
-  auto red =
-      make_shared<lambertian>(spectrum(.65, .05, .05));
-  auto white =
-      make_shared<lambertian>(spectrum(.73, .73, .73));
-  auto green =
-      make_shared<lambertian>(spectrum(.12, .45, .15));
+  auto red = make_shared<lambertian>(
+      make_shared<spectrum>(.65, .05, .05));
+  auto white = make_shared<lambertian>(
+      make_shared<spectrum>(.73, .73, .73));
+  auto green = make_shared<lambertian>(
+      make_shared<spectrum>(.12, .45, .15));
   auto light = make_shared<diffuse_light>(
-      spectrum(15.0, 15.0, 15.0));
+      make_shared<spectrum>(15.0, 15.0, 15.0));
 
   objects.add(make_shared<yz_rect>(0.0, 555.0, 0.0, 555.0,
                                    555.0, green));
@@ -429,14 +439,14 @@ hittable_list model_test2() {
 
   hittable_list objects;
 
-  auto red =
-      make_shared<lambertian>(spectrum(.65, .05, .05));
-  auto white =
-      make_shared<lambertian>(spectrum(.73, .73, .73));
-  auto green =
-      make_shared<lambertian>(spectrum(.12, .45, .15));
+  auto red = make_shared<lambertian>(
+      make_shared<spectrum>(.65, .05, .05));
+  auto white = make_shared<lambertian>(
+      make_shared<spectrum>(.73, .73, .73));
+  auto green = make_shared<lambertian>(
+      make_shared<spectrum>(.12, .45, .15));
   auto light = make_shared<diffuse_light>(
-      spectrum(15.0, 15.0, 15.0));
+      make_shared<spectrum>(15.0, 15.0, 15.0));
 
   shared_ptr<hittable> cat =
       make_shared<model>(modelpath, modelMat, light);
@@ -478,19 +488,19 @@ void choose_scene(int choice, camera &cam,
                   hittable_list &world,
                   int samples_per_pixel, float aspect_ratio,
                   int &image_width, int &image_height,
-                  spectrum &background) {
+                  shared_ptr<spectrum> &background) {
   //
   point3 lookfrom;
   point3 lookat;
   auto vfov = 40.0;
   auto aperture = 0.0;
-  background = spectrum(0.0);
+  background = make_shared<spectrum>(0.0);
 
   switch (choice) {
   case 1: {
     world = random_scene();
     color b_rgb(0.70, 0.80, 1.00);
-    background = b_rgb;
+    background = make_shared<spectrum>(0.70, 0.80, 1.00);
     lookfrom = point3(13, 2, 3);
     lookat = point3(0, 0, 0);
     vfov = 20.0;
@@ -503,7 +513,7 @@ void choose_scene(int choice, camera &cam,
     color b_rgb(0.70, 0.80, 1.00);
     // background = sampled_spectrum::fromRgb(
     //    b_rgb, SpectrumType::Reflectance);
-    background = b_rgb;
+    background = make_shared<spectrum>(0.70, 0.80, 1.00);
 
     lookfrom = point3(13, 2, 3);
     lookat = point3(0, 0, 0);
@@ -516,7 +526,7 @@ void choose_scene(int choice, camera &cam,
     color b_rgb(0.70, 0.80, 1.00);
     // background = sampled_spectrum::fromRgb(
     //    b_rgb, SpectrumType::Reflectance);
-    background = b_rgb;
+    background = make_shared<spectrum>(0.70, 0.80, 1.00);
 
     lookfrom = point3(13, 2, 3);
     lookat = point3(0, 0, 0);
@@ -529,7 +539,7 @@ void choose_scene(int choice, camera &cam,
     color b_rgb(0.70, 0.80, 1.00);
     // background = sampled_spectrum::fromRgb(
     //    b_rgb, SpectrumType::Reflectance);
-    background = b_rgb;
+    background = make_shared<spectrum>(0.70, 0.80, 1.00);
 
     lookfrom = point3(0, 0, 12);
     lookat = point3(0, 0, 0);

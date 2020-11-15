@@ -11,7 +11,8 @@ public:
       : boundary(b), neg_inv_density(-1 / d),
         phase_function(make_shared<isotropic>(a)) {}
 
-  constant_medium(shared_ptr<hittable> b, double d, color c)
+  constant_medium(shared_ptr<hittable> b, double d,
+                  shared_ptr<spectrum> c)
       : boundary(b), neg_inv_density(-1 / d),
         phase_function(make_shared<isotropic>(c)) {}
 

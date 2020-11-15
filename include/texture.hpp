@@ -8,24 +8,25 @@
 
 class texture {
 public:
-  virtual spectrum value(Real u, Real v,
-                         const vec3 &p) const = 0;
+  virtual shared_ptr<spectrum>
+  value(Real u, Real v, const vec3 &p) const = 0;
 };
 class solid_color : public texture {
 public:
   solid_color() {}
-  solid_color(spectrum c) { color_value = c; }
+  solid_color(shared_ptr<spectrum> c) : color_value(c) {}
 
   solid_color(Real red, Real green, Real blue)
-      : solid_color(spectrum(red, green, blue)) {}
+      : solid_color(
+            make_shared<spectrum>(red, green, blue)) {}
 
-  spectrum value(Real u, Real v,
-                 const vec3 &p) const override {
+  shared_ptr<spectrum> value(Real u, Real v,
+                             const vec3 &p) const override {
     return color_value;
   }
 
 private:
-  spectrum color_value;
+  shared_ptr<spectrum> color_value;
 };
 class checker_texture : public texture {
 public:
@@ -35,12 +36,13 @@ public:
                   shared_ptr<texture> _odd)
       : even(_even), odd(_odd) {}
 
-  checker_texture(spectrum c1, spectrum c2)
+  checker_texture(shared_ptr<spectrum> c1,
+                  shared_ptr<spectrum> c2)
       : even(make_shared<solid_color>(c1)),
         odd(make_shared<solid_color>(c2)) {}
 
-  spectrum value(Real u, Real v,
-                 const vec3 &p) const override {
+  shared_ptr<spectrum> value(Real u, Real v,
+                             const vec3 &p) const override {
     auto sines =
         sin(10 * p.x()) * sin(10 * p.y()) * sin(10 * p.z());
     if (sines < 0)
@@ -56,19 +58,22 @@ public:
 class noise_texture : public texture {
 public:
   noise_texture() {}
-  noise_texture(Real sc, const spectrum &sp)
+  noise_texture(Real sc, shared_ptr<spectrum> sp)
       : scale(sc), spec(sp) {}
 
-  spectrum value(Real u, Real v,
-                 const vec3 &p) const override {
-    return spec * 0.5 *
-           (1 + sin(scale * p.z() + 10 * noise.turb(p)));
+  shared_ptr<spectrum> value(Real u, Real v,
+                             const vec3 &p) const override {
+    Real coeff =
+        0.5 * (1 + sin(scale * p.z() + 10 * noise.turb(p)));
+    shared_ptr<spectrum> s =
+        make_shared<spectrum>(spec->multip(coeff));
+    return s;
   }
 
 public:
   perlin noise;
   Real scale;
-  spectrum spec;
+  shared_ptr<spectrum> spec;
 };
 class image_texture : public texture {
 public:
@@ -97,13 +102,12 @@ public:
 
   ~image_texture() { STBI_FREE(data); }
 
-  spectrum value(Real u, Real v,
-                 const vec3 &p) const override {
+  shared_ptr<spectrum> value(Real u, Real v,
+                             const vec3 &p) const override {
     // If we have no texture data, then return solid cyan as
     // a debugging aid.
     if (data == nullptr) {
-      color pix_rgb(0, 1, 1);
-      return spectrum(0, 1, 1);
+      return make_shared<spectrum>(0, 1, 1);
     }
 
     // Clamp input texture coordinates to [0,1] x [1,0]
@@ -128,7 +132,8 @@ public:
     color pix_rgb(color_scale * pixel[0],
                   color_scale * pixel[1],
                   color_scale * pixel[2]);
-    return spectrum(pix_rgb);
+    return make_shared<spectrum>(pix_rgb.x(), pix_rgb.y(),
+                                 pix_rgb.z());
   }
 
 private:
@@ -141,12 +146,13 @@ class material_texture : public texture {
   // use material refractive spectral power distribution
   // for color
 public:
-  material_texture(const spectrum &s) : spect(s) {}
+  material_texture(const shared_ptr<spectrum> &s)
+      : spect(s) {}
   material_texture(const path &path_to_csv,
                    const std::string &wave_col_name,
                    const std::string &power_col_name,
                    const std::string &sep = ",") {}
 
 public:
-  spectrum spect;
+  shared_ptr<spectrum> spect;
 };

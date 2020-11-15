@@ -9,45 +9,50 @@
 #include <utils.hpp>
 #include <vec3.hpp>
 
-using immat = std::vector<std::vector<spectrum>>;
+using immat =
+    std::vector<std::vector<shared_ptr<spectrum>>>;
 
-spectrum ray_color(const ray &r, const spectrum &background,
-                   const hittable &world, int depth) {
+shared_ptr<spectrum>
+ray_color(const ray &r,
+          const shared_ptr<spectrum> &background,
+          const hittable &world, int depth) {
   hit_record rec;
 
   // If we've exceeded the ray bounce limit, no more light
   // is gathered.
   if (depth <= 0)
-    return spectrum(0.0);
+    return make_shared<spectrum>(0.0);
 
   // If the ray hits nothing, return the background color.
   if (!world.hit(r, 0.001, FLT_MAX, rec))
     return background;
 
   scatter_record srec;
-  spectrum emitted =
+  shared_ptr<spectrum> emitted =
       rec.mat_ptr->emitted(r, rec, rec.u, rec.v, rec.p);
 
   if (!rec.mat_ptr->scatter(r, rec, srec))
     return emitted;
 
   if (srec.is_specular) {
-    return srec.attenuation * ray_color(srec.specular_ray,
-                                        background, world,
-                                        depth - 1);
+    shared_ptr<spectrum> rs = ray_color(
+        srec.specular_ray, background, world, depth - 1);
+
+    //
+    return srec.attenuation->multip(rs);
   }
 
   ray scattered =
       ray(rec.p, srec.pdf_ptr->generate(), r.time());
   auto pdf_val = srec.pdf_ptr->value(scattered.direction());
+  shared_ptr<spectrum> recs =
+      make_shared<spectrum>(srec.attenuation->multip(
+          rec.mat_ptr->scattering_pdf(r, rec, scattered)));
+  recs = recs->multip(
+      ray_color(scattered, background, world, depth - 1));
+  recs = make_shared<spectrum>(recs->div(pdf_val));
 
-  return emitted +
-         srec.attenuation *
-             rec.mat_ptr->scattering_pdf(r, rec,
-                                         scattered) *
-             ray_color(scattered, background, world,
-                       depth - 1) /
-             pdf_val;
+  return emitted->add(recs);
 }
 
 struct InnerParams {
@@ -59,10 +64,11 @@ struct InnerParams {
   int startx;
   int endx;
   hittable_list scene;
-  spectrum background;
+  shared_ptr<spectrum> background;
   InnerParams(int sx, int ex, const camera &c, int imw,
               int imh, int ps, int d,
-              const hittable_list &hs, const spectrum &b)
+              const hittable_list &hs,
+              const shared_ptr<spectrum> &b)
       : startx(sx), endx(ex), cam(c), imwidth(imw),
         imheight(imh), psample(ps), mdepth(d), scene(hs),
         background(b) {}
@@ -84,24 +90,27 @@ InnerRet innerLoop(InnerParams params) {
   int startx = params.startx;
   int endx = params.endx;
   int xrange = endx - startx;
-  spectrum background = params.background;
+  shared_ptr<spectrum> background = params.background;
   hittable_list scene = params.scene;
   immat imv;
   imv.resize(xrange);
   for (int i = 0; i < xrange; i++) {
-    imv[i].resize(imheight, color(0.0));
+    imv[i].resize(imheight, make_shared<spectrum>(0.0));
   }
 
   for (int a = 0; a < xrange; a++) {
     for (int j = 0; j < imheight; j++) {
       int i = a + startx;
       //
-      spectrum rcolor(0.0);
+      shared_ptr<spectrum> rcolor =
+          make_shared<spectrum>(0.0);
       for (int k = 0; k < psample; k++) {
         Real t = Real(i + random_double()) / (imwidth - 1);
         Real s = Real(j + random_double()) / (imheight - 1);
         ray r = cam.get_ray(t, s);
-        rcolor += ray_color(r, background, scene, mdepth);
+        shared_ptr<spectrum> rcol =
+            ray_color(r, background, scene, mdepth);
+        rcolor = rcolor->add(rcol);
       }
       imv[a][j] = rcolor;
     }
@@ -139,16 +148,17 @@ int main() {
   // World
 
   hittable_list world;
-  int choice = 10;
+  int choice = 2;
   camera cam;
   int image_height;
-  spectrum background;
+  shared_ptr<spectrum> background;
   choose_scene(choice, cam, world, samples_per_pixel,
                aspect_ratio, image_width, image_height,
                background);
   imvec.resize(image_width);
   for (int i = 0; i < image_width; i++) {
-    imvec[i].resize(image_height, color(0.0));
+    imvec[i].resize(image_height,
+                    make_shared<spectrum>(0.0));
   }
   int wslicelen = int(image_width / THREAD_NB);
 

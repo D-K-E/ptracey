@@ -1,14 +1,29 @@
 #pragma once
 
 #include <common.hpp>
+#include <stdexcept>
 #include <utils.hpp>
 #include <wave.hpp>
+
 template <class T> class spd {
   // sampled spectrum power distribution
 public:
   Real wave_start;
   Real wave_end;
   std::map<Real, T> wavelength_power;
+  spd(unsigned int size = 60) {
+    wavelength_power.clear();
+    std::vector<Real> powers;
+    for (unsigned int i = 0; i < size; i++) {
+      powers.push_back(random_double());
+    }
+    auto power_spd = sampled_wave<Real>(powers);
+    auto ws = linspace<Real>(400, 750, powers.size());
+    for (int i = 0; i < powers.size(); i++) {
+      auto pw = make_pair(ws[i], powers[i]);
+      wavelength_power.insert(pw);
+    }
+  }
   spd(const sampled_wave<T> &sampled_powers,
       unsigned int wstart)
       : wave_start((Real)wstart) {
@@ -60,8 +75,6 @@ public:
       wavelength_power.insert(pw);
     }
   }
-  void
-  fill_spd_wavelengths(const std::vector<Real> &wlengths) {}
   spd(const path &csv_path,
       const std::string &wave_col_name = "wavelength",
       const std::string &power_col_name = "power",
@@ -69,12 +82,26 @@ public:
     wavelength_power.clear();
     path csv_path_abs = RUNTIME_PATH / csv_path;
     rapidcsv::Document doc(csv_path_abs.string(),
-                           rapidcsv::LabelParams(0, 0),
+                           rapidcsv::LabelParams(0, -1),
                            rapidcsv::SeparatorParams(','));
-    std::vector<T> powers =
-        doc.GetColumn<T>(power_col_name);
-    std::vector<Real> wlengths =
-        doc.GetColumn<T>(wave_col_name);
+    std::vector<T> powers;
+    try {
+      powers = doc.GetColumn<T>(power_col_name);
+    } catch (const std::out_of_range &err) {
+      throw std::runtime_error(std::string(err.what()) +
+                               " :: " + power_col_name +
+                               " in file :: " +
+                               csv_path_abs.string());
+    }
+    std::vector<Real> wlengths;
+    try {
+      wlengths = doc.GetColumn<T>(wave_col_name);
+    } catch (const std::out_of_range &error) {
+      throw std::runtime_error(std::string(error.what()) +
+                               " :: " + wave_col_name +
+                               " in file :: " +
+                               csv_path_abs.string());
+    }
     wavelength_power.clear();
     D_CHECK(powers.size() == wlengths.size());
     for (auto wl : wlengths) {
@@ -92,7 +119,6 @@ public:
       wavelength_power.insert(pw);
     }
   }
-
   sampled_wave<T> power() const {
     std::vector<T> ps;
     for (auto pw : wavelength_power) {
@@ -100,7 +126,7 @@ public:
     }
     return sampled_wave<T>(ps);
   }
-  std::vector<Real> wavelength() const {
+  std::vector<Real> wavelengths() const {
     std::vector<Real> ps;
     for (auto pw : wavelength_power) {
       ps.push_back(pw.first);
@@ -117,7 +143,7 @@ public:
     auto spd = normalized();
     *this = spd;
   }
-  Real min_wave() {
+  Real min_wave() const {
     auto it = std::min_element(
         wavelength_power.begin(), wavelength_power.end(),
         [](const auto &k1, const auto &k2) {
@@ -127,7 +153,7 @@ public:
         it == wavelength_power.end() ? -1.0 : it->first;
     return wavel;
   }
-  Real max_wave() {
+  Real max_wave() const {
     auto it = std::max_element(
         wavelength_power.begin(), wavelength_power.end(),
         [](const auto &k1, const auto &k2) {
@@ -137,7 +163,7 @@ public:
         it == wavelength_power.end() ? -1.0 : it->first;
     return wavel;
   }
-  T min_power() {
+  T min_power() const {
     auto it = std::min_element(
         wavelength_power.begin(), wavelength_power.end(),
         [](const auto &k1, const auto &k2) {
@@ -147,7 +173,7 @@ public:
         it == wavelength_power.end() ? -1.0 : it->second;
     return p;
   }
-  T max_power() {
+  T max_power() const {
     auto it = std::max_element(
         wavelength_power.begin(), wavelength_power.end(),
         [](const auto &k1, const auto &k2) {
@@ -157,15 +183,17 @@ public:
         it == wavelength_power.end() ? -1.0 : it->second;
     return p;
   }
-  std::size_t size() { return wavelength_power.size(); }
-  Real integrate(const spd<T> &nspd) {
-    D_CHECK(wavelength_power.size() == nspd.size());
+  std::size_t size() const {
+    return wavelength_power.size();
+  }
+  Real integrate(const spd<T> &nspd) const {
+    D_CHECK(size() == nspd.size());
     Real x1 = min_wave();
     Real x2 = max_wave();
 
     Real stepsize = (x2 - x1) / static_cast<Real>(size());
     Real val = 0.0;
-    auto waves = wavelength_power.wavelength();
+    auto waves = wavelengths();
     for (int i = 0; i < (int)size(); i++) {
       auto pw = eval_wavelength(waves[i]);
       auto v = nspd.eval_wavelength(waves[i]);
@@ -173,13 +201,13 @@ public:
     }
     return val * stepsize;
   }
-  T power_average(Real w1, Real w2) {
+  T power_average(Real w1, Real w2) const {
     auto pwave1 = wavelength_power.at(w1);
     auto pwave2 = wavelength_power.at(w2);
     return (pwave1 + pwave2) / 2.0;
   }
   T power_average(const std::vector<Real> &ws,
-                  int lbound_pos) {
+                  int lbound_pos) const {
     lbound_pos = lbound_pos == 0 ? 1 : lbound_pos;
     Real w1 = ws[lbound_pos - 1];
     Real w2 = ws[lbound_pos];
@@ -199,11 +227,11 @@ public:
     T ret;
     if (eval_wavelength(wave_length, ret))
       return ret;
-    auto wlengths = wavelength();
+    auto wlengths = wavelengths();
     auto lbound = std::lower_bound(
         wlengths.begin(), wlengths.end(), wave_length);
     if (lbound != wlengths.end()) {
-      auto lbound_pos = lbound - wlengths.begin();
+      int lbound_pos = lbound - wlengths.begin();
       ret = power_average(wlengths, lbound_pos);
     } else {
       Real wave1 = min_wave();
@@ -217,6 +245,136 @@ public:
     }
     return ret;
   }
+  spd &operator+=(const spd &s) {
+    auto pw1 = power();
+    auto pw2 = s.power();
+    pw1 += pw2;
+    auto wlengths = wavelengths();
+    auto ss = spd(pw1, wlengths);
+    return ss;
+  }
+  spd &operator+=(const Real &s) {
+    auto pw1 = power();
+    pw1 += s;
+    auto wlengths = wavelengths();
+    auto ss = spd(pw1, wlengths);
+    return ss;
+  }
+  spd operator+(const spd &s) const {
+    auto pw1 = power();
+    auto pw2 = s.power();
+    auto wlengths = wavelengths();
+    auto pw3 = pw1 + pw2;
+    auto ss = spd<T>(pw3, wlengths);
+    return ss;
+  }
+  spd operator+(const Real &s) const {
+    auto pw1 = power();
+    auto pw2 = pw1 + s;
+    auto wlengths = wavelengths();
+    auto ss = spd(pw2, wlengths);
+    return ss;
+  }
+  friend spd operator+(const Real &s, const spd &ss) {
+    return ss + s;
+  }
+  spd &operator-=(const spd &s) {
+    auto pw1 = power();
+    auto pw2 = s.power();
+    pw1 -= pw2;
+    auto wlengths = wavelengths();
+    auto ss = spd(pw1, wlengths);
+    return ss;
+  }
+  spd &operator-=(const Real &s) {
+    auto pw1 = power();
+    pw1 -= s;
+    auto wlengths = wavelengths();
+    auto ss = spd(pw1, wlengths);
+    return ss;
+  }
+  spd operator-(const spd &s) const {
+    auto pw1 = power();
+    auto pw2 = s.power();
+    auto wlengths = wavelengths();
+    auto ss = spd(pw1 - pw2, wlengths);
+    return ss;
+  }
+  spd operator-(const Real &s) const {
+    auto pw1 = power();
+    auto wlengths = wavelengths();
+    auto ss = spd(pw1 - s, wlengths);
+    return ss;
+  }
+  friend spd operator-(const Real &s, const spd &ss) {
+    return ss - s;
+  }
+  spd &operator*=(const spd &s) {
+    auto pw1 = power();
+    auto pw2 = s.power();
+    auto wlengths = wavelengths();
+    auto ss = spd(pw1 * pw2, wlengths);
+    return ss;
+  }
+  spd &operator*=(const Real &s) {
+    auto pw1 = power();
+    auto wlengths = wavelengths();
+    auto ss = spd(pw1 * s, wlengths);
+    return ss;
+  }
+  spd operator*(const spd &s) const {
+    auto pw1 = power();
+    auto pw2 = s.power();
+    auto wlengths = wavelengths();
+    auto ss = spd(pw1 * pw2, wlengths);
+    return ss;
+  }
+  spd operator*(const Real &s) const {
+    auto pw1 = power();
+    auto wlengths = wavelengths();
+    auto ss = spd(pw1 * s, wlengths);
+    return ss;
+  }
+  friend spd operator*(const Real &s, const spd &ss) {
+    return ss * s;
+  }
+  spd &operator/=(const spd &s) {
+    auto pw1 = power();
+    auto pw2 = s.power();
+    auto wlengths = wavelengths();
+    auto ss = spd(pw1 / pw2, wlengths);
+    return ss;
+  }
+  spd &operator/=(const Real &s) {
+    auto pw1 = power();
+    auto wlengths = wavelengths();
+    auto ss = spd(pw1 / s, wlengths);
+    return ss;
+  }
+  spd &operator/(const spd &s) {
+    auto pw1 = power();
+    auto pw2 = s.power();
+    auto wlengths = wavelengths();
+    auto ss = spd(pw1 / pw2, wlengths);
+    return ss;
+  }
+  spd &operator/(const Real &s) {
+    auto pw1 = power();
+    auto wlengths = wavelengths();
+    auto ss = spd(pw1 / s, wlengths);
+    return ss;
+  }
+  friend spd operator/(const Real &s, const spd &ss) {
+    return ss / s;
+  }
+  spd add(const spd &s) const { return *this + s; }
+  spd add(const Real &s) const { return *this + s; }
+  spd subt(const spd &s) const { return *this - s; }
+  spd subt(const Real &s) const { return *this - s; }
+  spd multip(const spd &s) const { return *this * s; }
+  spd multip(const Real &s) const { return *this * s; }
+  spd div(const spd &s) const { return *this / s; }
+  spd div(const Real &s) const { return *this / s; }
 };
 Real get_cie_k(const spd<Real> &ss, const spd<Real> &cie_y,
                int wave_length_start, int wave_length_end,
@@ -225,23 +383,48 @@ Real get_cie_k(const spd<Real> &ss, const spd<Real> &cie_y,
   if (stepsize > 0) {
     for (int i = wave_length_start; i < wave_length_end;
          i += stepsize) {
-      Real w1 = ss.eval_wavelength(i);
-      Real w2 = cie_y.eval_wavelength(i);
+      Real w1 = ss.eval_wavelength((Real)i);
+      Real w2 = cie_y.eval_wavelength((Real)i);
       sum += (w1 * w2);
     }
     return 100 / sum;
   }
-  if (ss.power_wavelengths.size() !=
-      cie_y.power_wavelengths.size()) {
+  if (ss.wavelength_power.size() !=
+      cie_y.wavelength_power.size()) {
     throw std::runtime_error("if step size is 0, spd and "
                              "cie_y should have same size");
   }
   auto pw1 = ss.power();
   auto pw2 = cie_y.power();
-  for (int i = 0; i < ss.power_wavelengths.size(); i++) {
+  for (int i = 0; i < ss.wavelength_power.size(); i++) {
     sum += pw1[i] * pw2[i];
   }
   return 100.0 / sum;
+}
+Real get_cie_val(const spd<Real> &qlambda,
+                 const spd<Real> &cie_bar) {
+  Real sum = qlambda.integrate(cie_bar);
+  return sum;
+}
+Real get_cie_val(const spd<Real> &qlambda,
+                 const spd<Real> &rlambda,
+                 const spd<Real> &cie_bar) {
+  D_CHECK(qlambda.size() == rlambda.size());
+  D_CHECK(rlambda.size() == cie_bar.size());
+  Real w1 = qlambda.min_wave();
+  Real w2 = qlambda.max_wave();
+
+  Real stepsize =
+      (w2 - w1) / static_cast<Real>(qlambda.size());
+  Real sum = 0.0;
+  auto waves = qlambda.wavelengths();
+  for (auto w : waves) {
+    auto pw1 = qlambda.eval_wavelength(w);
+    auto pw2 = rlambda.eval_wavelength(w);
+    auto pw3 = cie_bar.eval_wavelength(w);
+    sum += (pw1 * pw2 * pw3);
+  }
+  return sum * stepsize;
 }
 Real get_cie_val(const spd<Real> &rs, const spd<Real> &ss,
                  const spd<Real> &cie_spd, int wl_start,
@@ -256,17 +439,17 @@ Real get_cie_val(const spd<Real> &rs, const spd<Real> &ss,
     }
     return sum;
   }
-  if (ss.power_wavelengths.size() !=
-          cie_spd.power_wavelengths.size() ||
-      cie_spd.power_wavelengths.size() !=
-          rs.power_wavelengths.size()) {
+  if (ss.wavelength_power.size() !=
+          cie_spd.wavelength_power.size() ||
+      cie_spd.wavelength_power.size() !=
+          rs.wavelength_power.size()) {
     throw std::runtime_error("if step size is 0, spd and "
                              "cie_y should have same size");
   }
   auto pw1 = ss.power();
   auto pw2 = cie_spd.power();
   auto pw3 = rs.power();
-  for (int i = 0; i < ss.power_wavelengths.size(); i++) {
+  for (int i = 0; i < ss.wavelength_power.size(); i++) {
     sum += pw1[i] * pw2[i] * pw3[i];
   }
   return sum;

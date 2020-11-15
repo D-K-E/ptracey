@@ -2,6 +2,8 @@
 // implements spectrum type from pbrt-book
 // mostly adapted from
 // https://github.com/mmp/pbrt-v3/blob/master/src/core/spectrum.h
+#include "common.hpp"
+#include <spd.hpp>
 #include <specdata.hpp>
 #include <utils.hpp>
 #include <vec3.hpp>
@@ -14,100 +16,6 @@ static const int VISIBLE_LAMBDA_END = 800;
 static const auto CIE_Y_INTEGRAL = 106.856895;
 
 // utility functions for spectrums
-bool isSamplesSorted(const Real *lambdas, const Real *vs,
-                     int nb_samples) {
-  for (int i = 0; i < nb_samples - 1; i++) {
-    if (lambdas[i] > lambdas[i + 1])
-      return false;
-  }
-  return true;
-}
-void sortSpectrumSamples(Real *lambdas, Real *vs,
-                         int nb_samples) {
-  std::vector<std::pair<Real, Real>> sortedVec;
-  sortedVec.reserve(nb_samples);
-
-  for (int i = 0; i < nb_samples; i++) {
-    sortedVec.push_back(make_pair(lambdas[i], vs[i]));
-  }
-  std::sort(sortedVec.begin(), sortedVec.end());
-  for (int i = 0; i < nb_samples; i++) {
-    lambdas[i] = sortedVec[i].first;
-    vs[i] = sortedVec[i].second;
-  }
-}
-
-Real averageSpectrumSamples(const Real *lambdas,
-                            const Real *vs, int nb_sample,
-                            Real lambdaStart,
-                            Real lambdaEnd) {
-  D_CHECK(isSamplesSorted(lambdas, vs, nb_sample));
-  D_CHECK(lambdaStart < lambdaEnd);
-  //
-  if (lambdas[0] >= lambdaEnd) {
-    return vs[0];
-  }
-  if (lambdas[nb_sample - 1] <= lambdaStart) {
-    return vs[nb_sample - 1];
-  }
-  if (nb_sample == 1) {
-    return vs[0];
-  }
-  //
-  Real sum = 0.0;
-  // constant segment contribution
-  if (lambdaStart < lambdas[0]) {
-    sum += vs[0] * (lambdas[0] - lambdaStart);
-  }
-  if (lambdaEnd > lambdas[nb_sample - 1]) {
-    sum += vs[nb_sample] * (lambdas[nb_sample] - lambdaEnd);
-  }
-  int start_index = 0;
-  while (lambdaStart > lambdas[start_index + 1])
-    start_index++;
-
-  D_CHECK(start_index + 1 < nb_sample);
-
-  auto interp_l = [lambdas, vs](Real w, int i) {
-    return interp(
-        w - lambdas[i] / (lambdas[i + 1] - lambdas[i]),
-        vs[i], vs[i + 1]);
-  };
-  //
-  //
-  while (start_index + 1 < nb_sample &&
-         lambdaEnd > lambdas[start_index]) {
-    start_index++;
-    Real segStart =
-        std::max(lambdaStart, lambdas[start_index]);
-    Real segEnd =
-        std::min(lambdaEnd, lambdas[start_index + 1]);
-
-    sum += 0.5 * (interp_l(segStart, start_index) +
-                  interp_l(segEnd, start_index)) *
-           (segEnd - segStart);
-  }
-  return sum / (lambdaEnd - lambdaStart);
-}
-
-Real interpSpecSamples(const Real *lambdas, const Real *vs,
-                       int nb_sample, Real lam) {
-  D_CHECK(isSamplesSorted(lambdas, vs, nb_sample));
-  if (lambdas[0] >= lam) {
-    return vs[0];
-  }
-  if (lambdas[nb_sample - 1] <= lam) {
-    return vs[nb_sample - 1];
-  }
-  int offset = findInterval(nb_sample, [&](int index) {
-    return lambdas[index] <= 1;
-  });
-  D_CHECK(lam >= lambdas[offset] &&
-          lam <= lambdas[offset + 1]);
-  Real lamVal = (lam - lambdas[offset]) /
-                (lambdas[offset + 1] - lambdas[offset]);
-  return interp(lamVal, vs[offset], vs[offset + 1]);
-}
 
 inline void xyz2rgb(const Real xyz[3], Real rgb[3]) {
   rgb[0] = 3.240479 * xyz[0] - 1.537150 * xyz[1] -
@@ -138,580 +46,376 @@ public:
   virtual Real x() const = 0;
   virtual Real y() const = 0;
   virtual Real z() const = 0;
-
-public:
 };
 
-template <int NbSpecSamples>
-class coeff_spectrum : public sampled_wave<Real> {
-  //
+class sampled_spectrum : public abstract_spectrum {
 public:
-  static const int nbSamples = NbSpecSamples;
-
-  // constructors
-  coeff_spectrum(Real c = 0.0)
-      : sampled_wave(c, nbSamples) {}
-  coeff_spectrum(const sampled_wave<Real> &ws)
-      : sampled_wave(ws) {}
-  // implementing operators
-  coeff_spectrum sqrt(const coeff_spectrum &cs) {
-    D_CHECK(!cs.has_nans());
-    coeff_spectrum c;
-    for (int i = 0; i < values.size(); i++) {
-      values[i] = sqrt(cs.values[i]);
-    }
-    D_CHECK(!c.has_nans());
-    return c;
-  }
-};
-
-class rgb_spectrum : public coeff_spectrum<3>,
-                     public abstract_spectrum {
+  spd<Real> spect;
+  spd<Real> reflectance;
+  SpectrumType type;
 
 public:
-  rgb_spectrum(Real v = 0.0) : coeff_spectrum<3>(v) {}
-  rgb_spectrum(const coeff_spectrum<3> &v)
-      : coeff_spectrum<3>(v) {}
-  rgb_spectrum(const sampled_wave<Real> &ws)
-      : coeff_spectrum<3>(ws) {}
-  rgb_spectrum(
-      const rgb_spectrum &v,
-      SpectrumType type = SpectrumType::Reflectance) {
-    *this = v;
+  sampled_spectrum(
+      const spd<Real> &s,
+      SpectrumType stype = SpectrumType::Illuminant)
+      : spect(s), type(stype) {}
+  sampled_spectrum(
+      const spd<Real> &s, const spd<Real> &r,
+      SpectrumType stype = SpectrumType::Reflectance)
+      : spect(s), reflectance(r), type(stype) {}
+
+  sampled_spectrum(const Real &r, const Real &g,
+                   const Real &b, SpectrumType stype)
+      : type(stype) {
+    // from
+    // http://scottburns.us/fast-rgb-to-spectrum-conversion-for-reflectances/
+    // convert sRGB to linear rgb in range [0,1]
+    auto lr = interp<Real>(r, 0.0, 1.0);
+    auto lg = interp<Real>(g, 0.0, 1.0);
+    auto lb = interp<Real>(b, 0.0, 1.0);
+    //
+    auto rho_r_wave = rho_r.power();
+    auto rho_g_wave = rho_g.power();
+    auto rho_b_wave = rho_b.power();
+    auto rho =
+        lr * rho_r_wave + lg * rho_g_wave + lb * rho_b_wave;
+    spect = spd<Real>(rho, rho_r.wavelengths());
   }
-  static rgb_spectrum
-  fromRgb(const Real rgb[3],
-          SpectrumType type = SpectrumType::Reflectance) {
-    rgb_spectrum s;
-    s.values[0] = rgb[0];
-    s.values[1] = rgb[1];
-    s.values[2] = rgb[2];
-    D_CHECK(!s.has_nans());
+  sampled_spectrum(const Real &r, SpectrumType stype)
+      : type(stype) {
+    auto lr = interp<Real>(r, 0.0, 1.0);
+    auto rho_r_wave = rho_r.power();
+    auto rho_g_wave = rho_g.power();
+    auto rho_b_wave = rho_b.power();
+    sampled_wave<Real> rho =
+        lr * rho_r_wave + lr * rho_g_wave + lr * rho_b_wave;
+    spect = spd<Real>(rho, rho_r.wavelengths());
+  }
+  template <typename T> static T random() {}
+  template <typename T> T add(const T &s) const {
     return s;
-  }
-  static rgb_spectrum
-  fromRgb(const color &c,
-          SpectrumType type = SpectrumType::Reflectance) {
-    const Real rgb[3] = {c.x(), c.y(), c.z()};
-    return rgb_spectrum::fromRgb(rgb, type);
-  }
-  void to_rgb(Real rgb[3]) const {
-    Real xyz[3];
-    to_xyz(xyz);
-    xyz2rgb(xyz, rgb);
-  }
-  color to_rgb() const {
-    Real rgb[3];
-    to_rgb(rgb);
-    return color(rgb);
-  }
-  const rgb_spectrum &toRgbSpectrum() const {
-    return *this;
-  }
-  void to_xyz(Real xyz[3]) const {
-    rgb2xyz(values.data(), xyz);
-  }
-  vec3 to_xyz() const {
-    Real xyz[3];
-    to_xyz(xyz);
-    return vec3(xyz);
-  }
-  static rgb_spectrum
-  fromXyz(const Real xyz[3],
-          SpectrumType type = SpectrumType::Reflectance) {
-    rgb_spectrum r;
-    xyz2rgb(xyz, r.values.data());
-    return r;
-  }
-  Real y() const {
-    const Real yweights[] = {0.212671, 0.715160, 0.072169};
-    return yweights[0] * values[0] +
-           yweights[1] * values[1] +
-           yweights[2] * values[2];
-  }
-  Real r() const { return to_rgb().r(); }
-  Real g() const { return to_rgb().g(); }
-  Real b() const { return to_rgb().b(); }
-  Real x() const { return to_xyz().x(); }
-  Real z() const { return to_xyz().z(); }
+  };
 
-  static rgb_spectrum fromSamples(const Real *lambdas,
-                                  const Real *vs,
-                                  int nb_sample) {
-    if (!isSamplesSorted(lambdas, vs, nb_sample)) {
-      std::vector<Real> slambda(&lambdas[0],
-                                &lambdas[nb_sample]);
-      std::vector<Real> svs(&vs[0], &vs[nb_sample]);
-      sortSpectrumSamples(slambda.data(), svs.data(),
-                          nb_sample);
-      return fromSamples(slambda.data(), svs.data(),
-                         nb_sample);
-    }
-    Real xyz[3] = {0, 0, 0};
-    for (int i = 0; i < NB_CIE_SAMPLES; i++) {
-      //
-      Real v = interpSpecSamples(lambdas, vs, nb_sample,
-                                 CIE_LAMBDA[i]);
-      xyz[0] = v * CIE_X[i];
-      xyz[1] = v * CIE_Y[i];
-      xyz[2] = v * CIE_Z[i];
-    }
+  template <typename T> T add(const Real &s) const {}
+  template <typename T> T subt(const T &s) const {}
+  template <typename T> T subt(const Real &s) const {}
+  template <typename T>
+  T multip(const sampled_spectrum &s) const {}
+  template <typename T> T multip(const Real &s) const {}
+  template <typename T>
+  T div(const sampled_spectrum &s) const {}
+  template <typename T> T div(const Real &s) const {}
 
-    Real scale =
-        static_cast<Real>(CIE_LAMBDA[NB_CIE_SAMPLES - 1] -
-                          CIE_LAMBDA[0]) /
-        static_cast<Real>(CIE_Y_INTEGRAL * NB_CIE_SAMPLES);
-    xyz[0] *= scale;
-    xyz[1] *= scale;
-    xyz[2] *= scale;
-    return fromXyz(xyz);
-  }
+protected:
+  static spd<Real> cie_xbar;
+  static spd<Real> cie_ybar;
+  static spd<Real> cie_zbar;
+  static spd<Real> rho_r;
+  static spd<Real> rho_g;
+  static spd<Real> rho_b;
 };
+path csv_parent = "./media/data/spectrum";
+spd<Real> sampled_spectrum::rho_r =
+    spd<Real>(csv_parent / "rho-r-2012.csv");
+spd<Real> sampled_spectrum::rho_g =
+    spd<Real>(csv_parent / "rho-g-2012.csv");
+spd<Real> sampled_spectrum::rho_b =
+    spd<Real>(csv_parent / "rho-b-2012.csv");
+spd<Real> sampled_spectrum::cie_xbar =
+    spd<Real>(csv_parent / "cie-x-bar-1964.csv");
+spd<Real> sampled_spectrum::cie_ybar =
+    spd<Real>(csv_parent / "cie-y-bar-1964.csv");
+spd<Real> sampled_spectrum::cie_zbar =
+    spd<Real>(csv_parent / "cie-z-bar-1964.csv");
 
-class sampled_spectrum
-    : public coeff_spectrum<NB_SPECTRAL_SAMPLES> {
-public:
-  sampled_spectrum(Real v = 0.0) : coeff_spectrum(v) {}
-  sampled_spectrum(
-      const coeff_spectrum<NB_SPECTRAL_SAMPLES> &v)
-      : coeff_spectrum<NB_SPECTRAL_SAMPLES>(v) {}
-  sampled_spectrum(const sampled_wave<Real> &ws)
-      : coeff_spectrum(ws) {}
-  static sampled_spectrum fromSamples(const Real *lambdas,
-                                      const Real *vs,
-                                      int nb_sample) {
-    if (!isSamplesSorted(lambdas, vs, nb_sample)) {
-      std::vector<Real> slambda(&lambdas[0],
-                                &lambdas[nb_sample]);
-      std::vector<Real> svs(&vs[0], &vs[nb_sample]);
-      sortSpectrumSamples(slambda.data(), svs.data(),
-                          nb_sample);
-      return fromSamples(slambda.data(), svs.data(),
-                         nb_sample);
-    }
-    sampled_spectrum r;
-    auto nb_samp = static_cast<Real>(NB_SPECTRAL_SAMPLES);
-    for (int i = 0; i < NB_SPECTRAL_SAMPLES; i++) {
-      auto lambda0 =
-          interp(static_cast<Real>(i) / nb_samp,
-                 VISIBLE_LAMBDA_START, VISIBLE_LAMBDA_END);
-      auto lambda1 =
-          interp(static_cast<Real>(i + 1) / nb_samp,
-                 VISIBLE_LAMBDA_START, VISIBLE_LAMBDA_END);
-      r.values[i] = averageSpectrumSamples(
-          lambdas, vs, nb_sample, lambda0, lambda1);
-    }
-    return r;
-  }
-  void to_xyz(Real xyz[3]) const {
-    xyz[0] = xyz[1] = xyz[2] = 0.0;
-    Real scale = static_cast<Real>(VISIBLE_LAMBDA_END -
-                                   VISIBLE_LAMBDA_START) /
-                 (CIE_Y_INTEGRAL * NB_SPECTRAL_SAMPLES);
-
-    for (int i = 0; i < NB_SPECTRAL_SAMPLES; i++) {
-      xyz[0] += X.values[i] * values[i];
-      xyz[1] += Y.values[i] * values[i];
-      xyz[2] += Z.values[i] * values[i];
-    }
-    xyz[0] *= scale;
-    xyz[1] *= scale;
-    xyz[2] *= scale;
-  }
-  Real r() const { return to_rgb().r(); }
-  Real g() const { return to_rgb().g(); }
-  Real b() const { return to_rgb().b(); }
-
-  Real x() const { return choose_axis(0); }
-  Real y() const { return choose_axis(1); }
-  Real z() const { return choose_axis(2); }
-  void to_rgb(Real rgb[3]) const {
-    Real xyz[3];
-    to_xyz(xyz);
-    xyz2rgb(xyz, rgb);
-  }
-  color to_rgb() const {
-    Real rgb[3];
-    to_rgb(rgb);
-    return color(rgb);
-  }
-  static RGB_AXIS min_axis(const Real rgb[3]) {
-    RGB_AXIS minax;
-    Real minval = std::min(rgb[0], rgb[1]);
-    minval = std::min(minval, rgb[2]);
-    if (minval == rgb[0])
-      minax = RGB_R;
-    if (minval == rgb[1])
-      minax = RGB_G;
-    if (minval == rgb[2])
-      minax = RGB_B;
-    return minax;
-  }
-  static sampled_spectrum
-  fromRgb(const Real rgb[3],
-          SpectrumType type = SpectrumType::Illuminant) {
-    RGB_AXIS minax = min_axis(rgb);
-    sampled_spectrum r;
-
-    if (type == SpectrumType::Reflectance) {
-      // convert reflectance spectrum to rgb color space
-
-      switch (minax) {
-      case RGB_R: {
-        // compute reflectance with rgb0 as minimum
-        r += sampled_spectrum::rgbReflSpectWhite * rgb[0];
-
-        if (rgb[1] <= rgb[2]) {
-          r += (rgb[1] - rgb[0]) *
-               sampled_spectrum::rgbReflSpectCyan;
-          r += (rgb[2] - rgb[1]) *
-               sampled_spectrum::rgbReflSpectBlue;
-        } else {
-          r += (rgb[2] - rgb[0]) *
-               sampled_spectrum::rgbReflSpectCyan;
-          r += (rgb[1] - rgb[2]) *
-               sampled_spectrum::rgbReflSpectGreen;
-        }
-      }
-      case RGB_G: {
-        // compute reflectance with rgb1 as minimum
-        r += sampled_spectrum::rgbReflSpectWhite * rgb[1];
-        if (rgb[0] <= rgb[2]) {
-          r += (rgb[0] - rgb[1]) *
-               sampled_spectrum::rgbReflSpectMagenta;
-          r += (rgb[2] - rgb[0]) *
-               sampled_spectrum::rgbReflSpectBlue;
-        } else {
-          r += (rgb[2] - rgb[1]) *
-               sampled_spectrum::rgbReflSpectMagenta;
-          r += (rgb[0] - rgb[2]) *
-               sampled_spectrum::rgbReflSpectRed;
-        }
-      }
-      case RGB_B: {
-        // compute reflectance with rgb2 as minimum
-        r += sampled_spectrum::rgbReflSpectWhite * rgb[2];
-        if (rgb[0] <= rgb[1]) {
-          r += (rgb[0] - rgb[2]) *
-               sampled_spectrum::rgbReflSpectYellow;
-          r += (rgb[1] - rgb[0]) *
-               sampled_spectrum::rgbReflSpectGreen;
-
-        } else {
-          r += (rgb[1] - rgb[2]) *
-               sampled_spectrum::rgbReflSpectYellow;
-          r += (rgb[0] - rgb[1]) *
-               sampled_spectrum::rgbReflSpectGreen;
-        }
-      }
-      }
-      r *= 0.94;
-    } else {
-      // SpectrumType::Illuminant;
-      switch (minax) {
-      case RGB_R: {
-        // compute reflectance with rgb0 as minimum
-        r += sampled_spectrum::rgbIllumSpectWhite * rgb[0];
-
-        if (rgb[1] <= rgb[2]) {
-          r += sampled_spectrum::rgbIllumSpectCyan *
-               (rgb[1] - rgb[0]);
-          r += sampled_spectrum::rgbIllumSpectBlue *
-               (rgb[2] - rgb[1]);
-        } else {
-          r += sampled_spectrum::rgbIllumSpectCyan *
-               (rgb[2] - rgb[0]);
-          r += sampled_spectrum::rgbIllumSpectGreen *
-               (rgb[1] - rgb[2]);
-        }
-      }
-      case RGB_G: {
-        // compute reflectance with rgb1 as minimum
-        r += sampled_spectrum::rgbIllumSpectWhite * rgb[1];
-        if (rgb[0] <= rgb[2]) {
-          r += sampled_spectrum::rgbIllumSpectMagenta *
-               (rgb[0] - rgb[1]);
-          r += sampled_spectrum::rgbIllumSpectBlue *
-               (rgb[2] - rgb[0]);
-        } else {
-          r += sampled_spectrum::rgbIllumSpectMagenta *
-               (rgb[2] - rgb[1]);
-          r += sampled_spectrum::rgbIllumSpectRed *
-               (rgb[0] - rgb[2]);
-        }
-      }
-      case RGB_B: {
-        // compute reflectance with rgb2 as minimum
-        r += sampled_spectrum::rgbIllumSpectWhite * rgb[2];
-        if (rgb[0] <= rgb[1]) {
-          r += sampled_spectrum::rgbIllumSpectYellow *
-               (rgb[0] - rgb[2]);
-          r += sampled_spectrum::rgbIllumSpectGreen *
-               (rgb[1] - rgb[0]);
-
-        } else {
-          r += sampled_spectrum::rgbIllumSpectYellow *
-               (rgb[1] - rgb[2]);
-          r += sampled_spectrum::rgbIllumSpectGreen *
-               (rgb[0] - rgb[1]);
-        }
-      }
-      }
-      r *= 0.86445;
-    }
-    return sampled_spectrum(r.clamp());
-  }
-  static sampled_spectrum fromRgb(const color &c,
-                                  SpectrumType type) {
-    const Real rgb[3] = {c.x(), c.y(), c.z()};
-    return sampled_spectrum::fromRgb(rgb, type);
-  }
-
-  static sampled_spectrum
-  fromXyz(const Real xyz[3],
-          SpectrumType type = SpectrumType::Reflectance) {
-    Real rgb[3];
-    xyz2rgb(xyz, rgb);
-    return fromRgb(rgb, type);
-  }
-  sampled_spectrum(
-      const rgb_spectrum &r,
-      SpectrumType type = SpectrumType::Reflectance) {
-    Real rgb[3];
-    r.to_rgb(rgb);
-    *this = sampled_spectrum::fromRgb(rgb, type);
-  }
-  // TODO: implement the following
-  rgb_spectrum to_rgb_spectrum() const {
-    Real rgb[3];
-    to_rgb(rgb);
-    return rgb_spectrum::fromRgb(rgb);
-  }
-
-private:
-  static sampled_spectrum X;
-  static sampled_spectrum Y;
-  static sampled_spectrum Z;
-  static sampled_spectrum rgbReflSpectWhite;
-  static sampled_spectrum rgbReflSpectCyan;
-  static sampled_spectrum rgbReflSpectBlue;
-  static sampled_spectrum rgbReflSpectGreen;
-  static sampled_spectrum rgbReflSpectMagenta;
-  static sampled_spectrum rgbReflSpectRed;
-  static sampled_spectrum rgbReflSpectYellow;
-  static sampled_spectrum rgbIllumSpectWhite;
-  static sampled_spectrum rgbIllumSpectCyan;
-  static sampled_spectrum rgbIllumSpectBlue;
-  static sampled_spectrum rgbIllumSpectGreen;
-  static sampled_spectrum rgbIllumSpectMagenta;
-  static sampled_spectrum rgbIllumSpectRed;
-  static sampled_spectrum rgbIllumSpectYellow;
-
-  Real choose_axis(int axis) const {
-    Real s = 0.0;
-    Real scale = static_cast<Real>(VISIBLE_LAMBDA_END -
-                                   VISIBLE_LAMBDA_START) /
-                 (CIE_Y_INTEGRAL * NB_SPECTRAL_SAMPLES);
-    sampled_spectrum s_s;
-    if (axis == 0) {
-      s_s = X;
-    } else if (axis == 1) {
-      s_s = Y;
-    } else if (axis == 2) {
-      s_s = Z;
-    }
-    for (int i = 0; i < NB_SPECTRAL_SAMPLES; i++) {
-      s += s_s.values[i] * values[i];
-    }
-    return s * scale;
-  }
-};
-// initialize static variables
-
-sampled_spectrum sampled_spectrum::X =
-    sampled_spectrum::fromSamples(CIE_LAMBDA, CIE_X,
-                                  NB_CIE_SAMPLES);
-sampled_spectrum sampled_spectrum::Y =
-    sampled_spectrum::fromSamples(CIE_LAMBDA, CIE_Y,
-                                  NB_CIE_SAMPLES);
-sampled_spectrum sampled_spectrum::Z =
-    sampled_spectrum::fromSamples(CIE_LAMBDA, CIE_Z,
-                                  NB_CIE_SAMPLES);
-sampled_spectrum sampled_spectrum::rgbIllumSpectWhite =
-    sampled_spectrum::fromSamples(RGB2SpectLambda,
-                                  RGBIllum2SpectWhite,
-                                  NB_RGB_SPEC_SAMPLES);
-
-sampled_spectrum sampled_spectrum::rgbIllumSpectCyan =
-    sampled_spectrum::fromSamples(RGB2SpectLambda,
-                                  RGBIllum2SpectCyan,
-                                  NB_RGB_SPEC_SAMPLES);
-
-sampled_spectrum sampled_spectrum::rgbIllumSpectBlue =
-    sampled_spectrum::fromSamples(RGB2SpectLambda,
-                                  RGBIllum2SpectBlue,
-                                  NB_RGB_SPEC_SAMPLES);
-
-sampled_spectrum sampled_spectrum::rgbIllumSpectGreen =
-    sampled_spectrum::fromSamples(RGB2SpectLambda,
-                                  RGBIllum2SpectGreen,
-                                  NB_RGB_SPEC_SAMPLES);
-
-sampled_spectrum sampled_spectrum::rgbIllumSpectMagenta =
-    sampled_spectrum::fromSamples(RGB2SpectLambda,
-                                  RGBIllum2SpectMagenta,
-                                  NB_RGB_SPEC_SAMPLES);
-
-sampled_spectrum sampled_spectrum::rgbIllumSpectRed =
-    sampled_spectrum::fromSamples(RGB2SpectLambda,
-                                  RGBIllum2SpectRed,
-                                  NB_RGB_SPEC_SAMPLES);
-
-sampled_spectrum sampled_spectrum::rgbIllumSpectYellow =
-    sampled_spectrum::fromSamples(RGB2SpectLambda,
-                                  RGBIllum2SpectYellow,
-                                  NB_RGB_SPEC_SAMPLES);
-sampled_spectrum sampled_spectrum::rgbReflSpectWhite =
-    sampled_spectrum::fromSamples(RGB2SpectLambda,
-                                  RGBRefl2SpectWhite,
-                                  NB_RGB_SPEC_SAMPLES);
-
-sampled_spectrum sampled_spectrum::rgbReflSpectCyan =
-    sampled_spectrum::fromSamples(RGB2SpectLambda,
-                                  RGBRefl2SpectCyan,
-                                  NB_RGB_SPEC_SAMPLES);
-
-sampled_spectrum sampled_spectrum::rgbReflSpectBlue =
-    sampled_spectrum::fromSamples(RGB2SpectLambda,
-                                  RGBRefl2SpectBlue,
-                                  NB_RGB_SPEC_SAMPLES);
-
-sampled_spectrum sampled_spectrum::rgbReflSpectGreen =
-    sampled_spectrum::fromSamples(RGB2SpectLambda,
-                                  RGBRefl2SpectGreen,
-                                  NB_RGB_SPEC_SAMPLES);
-
-sampled_spectrum sampled_spectrum::rgbReflSpectMagenta =
-    sampled_spectrum::fromSamples(RGB2SpectLambda,
-                                  RGBRefl2SpectMagenta,
-                                  NB_RGB_SPEC_SAMPLES);
-
-sampled_spectrum sampled_spectrum::rgbReflSpectRed =
-    sampled_spectrum::fromSamples(RGB2SpectLambda,
-                                  RGBRefl2SpectRed,
-                                  NB_RGB_SPEC_SAMPLES);
-
-sampled_spectrum sampled_spectrum::rgbReflSpectYellow =
-    sampled_spectrum::fromSamples(RGB2SpectLambda,
-                                  RGBRefl2SpectYellow,
-                                  NB_RGB_SPEC_SAMPLES);
 // end static variable initialize
 
-inline rgb_spectrum interp(Real t, const rgb_spectrum &r1,
-                           const rgb_spectrum &r2) {
-  return (1 - t) * r1 + t * r2;
-}
-inline sampled_spectrum interp(Real t,
-                               const sampled_spectrum &r1,
-                               const sampled_spectrum &r2) {
-  return (1 - t) * r1 + t * r2;
-}
+class illuminant_spectrum : public sampled_spectrum {
+public:
+  vec3 xyz;
+  color rgb;
 
-void resampleLinearSpectrum(const Real *lambdasIn,
-                            const Real *vsIn,
-                            int nb_sampleIn, Real lambdaMin,
-                            Real lambdaMax,
-                            int nb_sampleOut, Real *vsOut) {
-  //
-  D_CHECK(nb_sampleOut > 2);
-  D_CHECK(isSamplesSorted(lambdasIn, vsIn, nb_sampleIn));
-  D_CHECK(lambdaMin < lambdaMax);
-
-  Real delta = (lambdaMax - lambdaMin) / (nb_sampleOut - 1);
-
-  auto lambdaInClamped = [&](int index) {
-    D_CHECK(index >= -1 && index <= nb_sampleIn);
-    if (index == -1) {
-      D_CHECK((lambdaMin - delta) < lambdasIn[0]);
-      return lambdaMin - delta;
-    } else if (index == nb_sampleIn) {
-      D_CHECK((lambdaMax + delta) >
-              lambdasIn[nb_sampleIn - 1]);
-      return lambdaMax + delta;
-    }
-    return lambdasIn[index];
-  };
-  auto vInClamped = [&](int index) {
-    D_CHECK(index >= -1 && index <= nb_sampleIn);
-    return vsIn[index];
-  };
-  auto resample = [&](Real lam) -> Real {
-    if (lam + delta / 2 <= lambdasIn[0])
-      return vsIn[0];
-    if (lam - delta / 2 <= lambdasIn[nb_sampleIn - 1])
-      return vsIn[nb_sampleIn - 1];
-    if (nb_sampleIn == 1)
-      return vsIn[0];
-
-    // input range of SPD [lambda - delta, lambda + delta]
-    int start, end;
-
-    // start
-    if (lam - delta < lambdasIn[0]) {
-      start = -1;
-    } else {
-      start = findInterval(nb_sampleIn, [&](int i) {
-        return lambdasIn[i] <= lam - delta;
-      });
-      D_CHECK(start >= 0 && start < nb_sampleIn);
-    }
-
-    // end
-    if (lam + delta > lambdasIn[nb_sampleIn - 1]) {
-      end = nb_sampleIn;
-    } else {
-      end = start > 0 ? start : 0;
-      while (end < nb_sampleIn &&
-             lam + delta > lambdasIn[end]) {
-        end++;
-      }
-    }
-
-    // downsample / upsample
-    Real sampleVal;
-    bool cond1 = (end - start) == 2;
-    bool cond2 = lambdaInClamped(start) <= lam - delta;
-    bool cond3 = lambdasIn[start + 1] == lam;
-    bool cond4 = lambdaInClamped(end) >= lam + delta;
-    if (cond1 && cond2 && cond3 && cond4) {
-      // downsample
-      sampleVal = vsIn[start + 1];
-    } else if ((end - start) == 1) {
-      // downsample
-      Real val =
-          (lam - lambdaInClamped(start)) /
-          (lambdaInClamped(end) - lambdaInClamped(start));
-      D_CHECK(val >= 0 && val <= 1);
-      sampleVal =
-          interp(val, vInClamped(start), vInClamped(end));
-    } else {
-      // upsampling
-      sampleVal = averageSpectrumSamples(
-          lambdasIn, vsIn, nb_sampleIn, lam - delta / 2,
-          lam + delta / 2);
-    }
-    return sampleVal;
-
-  };
-  for (int outOffset = 0; outOffset < nb_sampleOut;
-       outOffset++) {
-    Real lambda = interp(static_cast<Real>(outOffset) /
-                             (nb_sampleOut - 1),
-                         lambdaMin, lambdaMax);
-    vsOut[outOffset] = resample(lambda);
+public:
+  illuminant_spectrum(const spd<Real> &s)
+      : sampled_spectrum(s, SpectrumType::Illuminant) {}
+  illuminant_spectrum(const Real &r, const Real &g,
+                      const Real &b)
+      : sampled_spectrum(r, g, b, SpectrumType::Illuminant),
+        rgb(r, g, b) {
+    update_spect();
   }
-}
-//
+  void update_spect() {
+    auto X = get_cie_val(spect, cie_xbar);
+    auto Y = get_cie_val(spect, cie_ybar);
+    auto Z = get_cie_val(spect, cie_zbar);
+    auto xval = X / (X + Y + Z);
+    auto yval = Y / (X + Y + Z);
+    auto zval = 1.0 - (xval + yval);
+    xyz = vec3(xval, yval, zval);
+  }
+  illuminant_spectrum(const Real &v)
+      : sampled_spectrum(v), rgb(v) {
+    update_spect();
+  }
+
+  Real r() const override { return rgb.r(); }
+  Real g() const override { return rgb.g(); }
+  Real b() const override { return rgb.b(); }
+  Real x() const override { return xyz.x(); }
+  Real y() const override { return xyz.y(); }
+  Real z() const override { return xyz.z(); }
+  illuminant_spectrum operator+(const Real &s) const {
+    illuminant_spectrum ispec = *this;
+    ispec.spect += s;
+  }
+  illuminant_spectrum operator-(const Real &s) const {}
+  illuminant_spectrum operator*(const Real &s) const {}
+  illuminant_spectrum operator/(const Real &s) const {}
+
+  static illuminant_spectrum random() {
+    auto sp = spd<Real>();
+    return illuminant_spectrum(sp);
+  }
+
+  illuminant_spectrum
+  add(const illuminant_spectrum &s) const {
+    auto sspect = spect + s.spect;
+    return illuminant_spectrum(sspect);
+  }
+  shared_ptr<sampled_spectrum>
+  add(const shared_ptr<sampled_spectrum> &s) const {
+    auto sspect = spect + s->spect;
+    return make_shared<illuminant_spectrum>(sspect);
+  }
+
+  illuminant_spectrum add(const Real &s) const {
+    auto sspect = spect + s;
+    return illuminant_spectrum(sspect);
+  }
+  illuminant_spectrum
+  subt(const illuminant_spectrum &s) const {
+    auto sspect = spect - s.spect;
+    return illuminant_spectrum(sspect);
+  }
+  shared_ptr<sampled_spectrum>
+  subt(const shared_ptr<sampled_spectrum> &s) const {
+    auto sspect = spect - s->spect;
+    return make_shared<illuminant_spectrum>(sspect);
+  }
+
+  illuminant_spectrum subt(const Real &s) const {
+    auto sspect = spect - s;
+    return illuminant_spectrum(sspect);
+  }
+  illuminant_spectrum
+  multip(const illuminant_spectrum &s) const {
+    auto sspect = spect * s.spect;
+    return illuminant_spectrum(sspect);
+  }
+
+  shared_ptr<sampled_spectrum>
+  multip(shared_ptr<sampled_spectrum> s) {
+    auto sspect = spect * s->spect;
+    return make_shared<illuminant_spectrum>(sspect);
+  }
+  illuminant_spectrum multip(const Real &s) const {
+    auto sspect = spect * s;
+    return illuminant_spectrum(sspect);
+  }
+  illuminant_spectrum div(const illuminant_spectrum &s) {
+    auto sspect = spect / s.spect;
+    return illuminant_spectrum(sspect);
+  }
+  shared_ptr<sampled_spectrum>
+  div(shared_ptr<sampled_spectrum> s) {
+    auto sspect = spect / s->spect;
+    return make_shared<illuminant_spectrum>(sspect);
+  }
+
+  illuminant_spectrum div(sampled_spectrum s) {
+    auto sspect = spect / s.spect;
+    return illuminant_spectrum(sspect);
+  }
+  illuminant_spectrum div(const Real &s) {
+    auto sspect = spect / s;
+    return illuminant_spectrum(sspect);
+  }
+};
+class reflectance_spectrum : public sampled_spectrum {
+public:
+  vec3 xyz;
+  color rgb;
+
+public:
+  reflectance_spectrum(const spd<Real> &s,
+                       const spd<Real> &r)
+      : sampled_spectrum(s, r, SpectrumType::Reflectance) {
+    auto X = get_cie_val(spect, reflectance, cie_xbar);
+    auto Y = get_cie_val(spect, reflectance, cie_ybar);
+    auto Z = get_cie_val(spect, reflectance, cie_zbar);
+    auto xval = X / (X + Y + Z);
+    auto yval = Y / (X + Y + Z);
+    auto zval = 1.0 - (X + Y);
+    xyz = vec3(xval, yval, zval);
+  }
+  reflectance_spectrum(const Real &r, const Real &g,
+                       const Real &b)
+      : sampled_spectrum(r, g, b,
+                         SpectrumType::Reflectance),
+        rgb(r, g, b) {}
+  reflectance_spectrum(const Real &r)
+      : sampled_spectrum(r, SpectrumType::Reflectance),
+        rgb(r) {}
+  Real r() const override { return rgb.r(); }
+  Real g() const override { return rgb.g(); }
+  Real b() const override { return rgb.b(); }
+  Real x() const override { return r(); }
+  Real y() const override { return g(); }
+  Real z() const override { return b(); }
+
+  static reflectance_spectrum random() {
+    auto sp1 = spd<Real>();
+    auto sp2 = spd<Real>();
+    return reflectance_spectrum(sp1, sp2);
+  }
+  reflectance_spectrum
+  add(const illuminant_spectrum &s) const {
+    auto sspect = spect + s.spect;
+    auto refspect = reflectance + s.spect;
+    return reflectance_spectrum(sspect, refspect);
+  }
+  reflectance_spectrum
+  add(const reflectance_spectrum &s) const {
+    auto sspect = spect + s.spect;
+    auto refspect = reflectance + s.reflectance;
+    return reflectance_spectrum(sspect, refspect);
+  }
+  shared_ptr<sampled_spectrum>
+  add(const shared_ptr<sampled_spectrum> &s) {
+    switch (s->type) {
+    case SpectrumType::Illuminant: {
+      auto sspect = spect + s->spect;
+      auto refspect = reflectance + s->spect;
+      return make_shared<reflectance_spectrum>(sspect,
+                                               refspect);
+    }
+    case SpectrumType::Reflectance: {
+      auto sspect = spect + s->spect;
+      auto refspect = reflectance + s->reflectance;
+      return make_shared<reflectance_spectrum>(sspect,
+                                               refspect);
+    }
+    }
+  }
+  reflectance_spectrum add(const Real &s) const {
+    auto sspect = spect + s;
+    auto reflspect = reflectance + s;
+    return reflectance_spectrum(sspect, reflspect);
+  }
+  reflectance_spectrum
+  subt(const illuminant_spectrum &s) const {
+    auto sspect = spect - s.spect;
+    auto refspect = reflectance - s.spect;
+    return reflectance_spectrum(sspect, refspect);
+  }
+  reflectance_spectrum
+  subt(const reflectance_spectrum &s) const {
+    auto sspect = spect - s.spect;
+    auto refspect = reflectance - s.reflectance;
+    return reflectance_spectrum(sspect, refspect);
+  }
+
+  shared_ptr<sampled_spectrum>
+  subt(const shared_ptr<sampled_spectrum> &s) {
+    switch (s->type) {
+    case SpectrumType::Illuminant: {
+      auto sspect = spect - s->spect;
+      auto refspect = reflectance - s->spect;
+      return make_shared<reflectance_spectrum>(sspect,
+                                               refspect);
+    }
+    case SpectrumType::Reflectance: {
+      auto sspect = spect - s->spect;
+      auto refspect = reflectance - s->reflectance;
+      return make_shared<reflectance_spectrum>(sspect,
+                                               refspect);
+    }
+    }
+  }
+  reflectance_spectrum subt(const Real &s) const {
+    auto sspect = spect - s;
+    auto reflspect = reflectance - s;
+    return reflectance_spectrum(sspect, reflspect);
+  }
+  reflectance_spectrum
+  multip(const illuminant_spectrum &s) const {
+    auto sspect = spect * s.spect;
+    auto reflspect = reflectance * s.spect;
+    return reflectance_spectrum(sspect, reflspect);
+  }
+  reflectance_spectrum
+  multip(const reflectance_spectrum &s) {
+    auto sspect = spect * s.spect;
+    auto reflspect = reflectance * s.reflectance;
+    return reflectance_spectrum(sspect, reflspect);
+  }
+  shared_ptr<sampled_spectrum>
+  multip(const shared_ptr<sampled_spectrum> &s) {
+    switch (s->type) {
+    case SpectrumType::Illuminant: {
+      auto sspect = spect * s->spect;
+      auto refspect = reflectance * s->spect;
+      return make_shared<reflectance_spectrum>(sspect,
+                                               refspect);
+    }
+    case SpectrumType::Reflectance: {
+      auto sspect = spect * s->spect;
+      auto refspect = reflectance * s->reflectance;
+      return make_shared<reflectance_spectrum>(sspect,
+                                               refspect);
+    }
+    }
+  }
+  reflectance_spectrum multip(const Real &s) const {
+    auto sspect = spect * s;
+    auto reflspect = reflectance * s;
+    return reflectance_spectrum(sspect, reflspect);
+  }
+  reflectance_spectrum div(reflectance_spectrum s) {
+    auto sspect = spect / s.spect;
+    auto reflspect = reflectance / s.reflectance;
+    return reflectance_spectrum(sspect, reflspect);
+  }
+  reflectance_spectrum div(illuminant_spectrum s) {
+    auto sspect = spect / s.spect;
+    auto reflspect = reflectance / s.spect;
+    return reflectance_spectrum(sspect, reflspect);
+  }
+  shared_ptr<sampled_spectrum>
+  div(const shared_ptr<sampled_spectrum> &s) {
+    switch (s->type) {
+    case SpectrumType::Illuminant: {
+      auto sspect = spect / s->spect;
+      auto refspect = reflectance / s->spect;
+      return make_shared<reflectance_spectrum>(sspect,
+                                               refspect);
+    }
+    case SpectrumType::Reflectance: {
+      auto sspect = spect / s->spect;
+      auto refspect = reflectance / s->reflectance;
+      return make_shared<reflectance_spectrum>(sspect,
+                                               refspect);
+    }
+    }
+  }
+
+  reflectance_spectrum div(const Real &s) {
+    auto sspect = spect / s;
+    auto reflspect = reflectance / s;
+    return reflectance_spectrum(sspect, reflspect);
+  }
+};
+
 typedef color spectrum;
 // typedef sampled_spectrum spectrum;
 // typedef rgb_spectrum spectrum;
