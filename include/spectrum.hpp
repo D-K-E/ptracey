@@ -53,58 +53,420 @@ public:
   spd<Real> spect;
   spd<Real> reflectance;
   SpectrumType type;
+  vec3 xyz;
+  color rgb;
 
 public:
+  sampled_spectrum()
+      : spect(spd<Real>()), type(SpectrumType::Reflectance),
+        reflectance(spd<Real>()) {}
+  sampled_spectrum(const spd<Real> &s)
+      : spect(s), type(SpectrumType::Illuminant) {
+    update_spect();
+  }
+  sampled_spectrum(const spd<Real> &s, const spd<Real> &r)
+      : spect(s), reflectance(r),
+        type(SpectrumType::Reflectance) {
+    update_refl_spect();
+  }
+  void update_spect() {
+    auto X = get_cie_val(spect, cie_xbar);
+    auto Y = get_cie_val(spect, cie_ybar);
+    auto Z = get_cie_val(spect, cie_zbar);
+    auto xyzsum = X + Y + Z;
+    xyzsum = xyzsum == 0 ? 1 : xyzsum;
+    auto xval = X / xyzsum;
+    auto yval = Y / xyzsum;
+    auto zval = 1.0 - (xval + yval);
+    xyz = vec3(xval, yval, zval);
+  }
+  void update_refl_spect() {
+    auto X = get_cie_val(spect, reflectance, cie_xbar);
+    auto Y = get_cie_val(spect, reflectance, cie_ybar);
+    auto Z = get_cie_val(spect, reflectance, cie_zbar);
+    auto xyzsum = X + Y + Z;
+    xyzsum = xyzsum == 0 ? 1 : xyzsum;
+    auto xval = X / xyzsum;
+    auto yval = Y / xyzsum;
+    auto zval = 1.0 - (xval + yval);
+    xyz = vec3(xval, yval, zval);
+  }
   sampled_spectrum(
-      const spd<Real> &s,
-      SpectrumType stype = SpectrumType::Illuminant)
-      : spect(s), type(stype) {}
-  sampled_spectrum(
-      const spd<Real> &s, const spd<Real> &r,
+      const Real &r, const Real &g, const Real &b,
       SpectrumType stype = SpectrumType::Reflectance)
-      : spect(s), reflectance(r), type(stype) {}
+      : type(stype), rgb(color(r, g, b)) {
+    switch (type) {
+    case SpectrumType::Illuminant: {
+      spect = from_rgb(color(r, g, b));
+      update_spect();
+    }
+    case SpectrumType::Reflectance: {
+      reflectance = from_rgb(color(r, g, b));
+      spect = sampled_spectrum::standard_d65;
+      update_refl_spect();
+    }
+    }
+  }
+  sampled_spectrum(
+      const Real &r,
+      SpectrumType stype = SpectrumType::Reflectance)
+      : type(stype), rgb(color(r)) {
+    switch (type) {
+    case SpectrumType::Illuminant: {
+      spect = from_rgb(color(r, r, r));
+      update_spect();
+    }
+    case SpectrumType::Reflectance: {
+      reflectance = from_rgb(color(r, r, r));
+      spect = standard_d65;
+      update_refl_spect();
+    }
+    }
+  }
 
-  sampled_spectrum(const Real &r, const Real &g,
-                   const Real &b, SpectrumType stype)
-      : type(stype) {
+  sampled_spectrum(
+      const color &_rgb,
+      SpectrumType stype = SpectrumType::Reflectance)
+      : type(stype), rgb(_rgb) {
+    switch (type) {
+    case SpectrumType::Illuminant: {
+      spect = from_rgb(_rgb);
+      update_spect();
+    }
+    case SpectrumType::Reflectance: {
+      reflectance = from_rgb(_rgb);
+      spect = standard_d65;
+      update_refl_spect();
+    }
+    }
+  }
+
+  spd<Real> from_rgb(const color &rgb) {
     // from
     // http://scottburns.us/fast-rgb-to-spectrum-conversion-for-reflectances/
     // convert sRGB to linear rgb in range [0,1]
-    auto lr = interp<Real>(r, 0.0, 1.0);
-    auto lg = interp<Real>(g, 0.0, 1.0);
-    auto lb = interp<Real>(b, 0.0, 1.0);
+    Real rgbm = rgb.max();
+    Real ins, ine;
+    if (rgbm > 1.0) {
+      ins = 0.0;
+      ine = 256.0;
+    } else {
+      ins = 0.0;
+      ine = 1.0;
+    }
+    auto lr = interp<Real>(rgb.r(), ins, ine, 0.0, 1.0);
+    auto lg = interp<Real>(rgb.g(), ins, ine, 0.0, 1.0);
+    auto lb = interp<Real>(rgb.b(), ins, ine, 0.0, 1.0);
     //
     auto rho_r_wave = rho_r.power();
     auto rho_g_wave = rho_g.power();
     auto rho_b_wave = rho_b.power();
-    auto rho =
-        lr * rho_r_wave + lg * rho_g_wave + lb * rho_b_wave;
-    spect = spd<Real>(rho, rho_r.wavelengths());
+    auto rho = lr * rho_r_wave;
+    rho += lg * rho_g_wave;
+    rho += lb * rho_b_wave;
+    return spd<Real>(rho, rho_r.wavelengths());
   }
-  sampled_spectrum(const Real &r, SpectrumType stype)
-      : type(stype) {
-    auto lr = interp<Real>(r, 0.0, 1.0);
-    auto rho_r_wave = rho_r.power();
-    auto rho_g_wave = rho_g.power();
-    auto rho_b_wave = rho_b.power();
-    sampled_wave<Real> rho =
-        lr * rho_r_wave + lr * rho_g_wave + lr * rho_b_wave;
-    spect = spd<Real>(rho, rho_r.wavelengths());
-  }
-  template <typename T> static T random() {}
-  template <typename T> T add(const T &s) const {
-    return s;
-  };
+  Real r() const override { return rgb.r(); }
+  Real g() const override { return rgb.g(); }
+  Real b() const override { return rgb.b(); }
+  Real x() const override { return x(); }
+  Real y() const override { return y(); }
+  Real z() const override { return z(); }
 
-  template <typename T> T add(const Real &s) const {}
-  template <typename T> T subt(const T &s) const {}
-  template <typename T> T subt(const Real &s) const {}
-  template <typename T>
-  T multip(const sampled_spectrum &s) const {}
-  template <typename T> T multip(const Real &s) const {}
-  template <typename T>
-  T div(const sampled_spectrum &s) const {}
-  template <typename T> T div(const Real &s) const {}
+  static sampled_spectrum
+  random(SpectrumType stype = SpectrumType::Reflectance) {
+    switch (stype) {
+    case SpectrumType::Illuminant: {
+      auto sp1 = spd<Real>::random();
+      return sampled_spectrum(sp1);
+    }
+    case SpectrumType::Reflectance: {
+      auto sp1 = spd<Real>::random();
+      auto sp2 = spd<Real>::random();
+      return sampled_spectrum(sp1, sp2);
+    }
+    }
+  }
+  static sampled_spectrum
+  random(Real mn, Real mx,
+         SpectrumType stype = SpectrumType::Reflectance) {
+    switch (stype) {
+    case SpectrumType::Illuminant: {
+      auto sp1 = spd<Real>::random(mn, mx);
+      return sampled_spectrum(sp1);
+    }
+    case SpectrumType::Reflectance: {
+      auto sp1 = spd<Real>::random(mn, mx);
+      auto sp2 = spd<Real>::random(mn, mx);
+      return sampled_spectrum(sp1, sp2);
+    }
+    }
+  }
+  void get_spds(spd<Real> &sspect,
+                spd<Real> &rspect) const {
+    switch (type) {
+    case SpectrumType::Illuminant: {
+      sspect = spect;
+      rspect = spect;
+    }
+    case SpectrumType::Reflectance: {
+      sspect = spect;
+      rspect = reflectance;
+    }
+    }
+  }
+
+  shared_ptr<sampled_spectrum>
+  add(const shared_ptr<Real> &s) const {
+    auto ss = *s;
+    switch (type) {
+    case SpectrumType::Illuminant: {
+      auto sp1 = spect + ss;
+      return make_shared<sampled_spectrum>(sp1);
+    }
+    case SpectrumType::Reflectance: {
+      auto sp1 = spect + ss;
+      auto sp2 = reflectance + ss;
+      return make_shared<sampled_spectrum>(sp1, sp2);
+    }
+    }
+  }
+  shared_ptr<sampled_spectrum>
+  add(const shared_ptr<sampled_spectrum> &s) const {
+
+    spd<Real> sspect;
+    spd<Real> rspect;
+    s->get_spds(sspect, rspect);
+    switch (type) {
+    case SpectrumType::Illuminant: {
+      auto sp1 = spect + sspect;
+      return make_shared<sampled_spectrum>(sp1);
+    }
+    case SpectrumType::Reflectance: {
+      auto sp1 = spect + sspect;
+      auto sp2 = reflectance + rspect;
+      return make_shared<sampled_spectrum>(sp1, sp2);
+    }
+    }
+  }
+  sampled_spectrum add(const Real &s) const {
+    switch (type) {
+    case SpectrumType::Illuminant: {
+      auto sp1 = spect + s;
+      return sampled_spectrum(sp1);
+    }
+    case SpectrumType::Reflectance: {
+      auto sp1 = spect + s;
+      auto sp2 = reflectance + s;
+      return sampled_spectrum(sp1, sp2);
+    }
+    }
+  }
+  sampled_spectrum add(const sampled_spectrum &s) const {
+    spd<Real> sspect;
+    spd<Real> rspect;
+    s.get_spds(sspect, rspect);
+    switch (type) {
+    case SpectrumType::Illuminant: {
+      auto sp1 = spect + sspect;
+      return sampled_spectrum(sp1);
+    }
+    case SpectrumType::Reflectance: {
+      auto sp1 = spect + sspect;
+      auto sp2 = reflectance + rspect;
+      return sampled_spectrum(sp1, sp2);
+    }
+    }
+  }
+
+  shared_ptr<sampled_spectrum>
+  subt(const shared_ptr<Real> &s) const {
+    auto ss = *s;
+    switch (type) {
+    case SpectrumType::Illuminant: {
+      auto sp1 = spect - ss;
+      return make_shared<sampled_spectrum>(sp1);
+    }
+    case SpectrumType::Reflectance: {
+      auto sp1 = spect - ss;
+      auto sp2 = reflectance - ss;
+      return make_shared<sampled_spectrum>(sp1, sp2);
+    }
+    }
+  }
+  shared_ptr<sampled_spectrum>
+  subt(const shared_ptr<sampled_spectrum> &s) const {
+
+    spd<Real> sspect;
+    spd<Real> rspect;
+    s->get_spds(sspect, rspect);
+    switch (type) {
+    case SpectrumType::Illuminant: {
+      auto sp1 = spect - sspect;
+      return make_shared<sampled_spectrum>(sp1);
+    }
+    case SpectrumType::Reflectance: {
+      auto sp1 = spect - sspect;
+      auto sp2 = reflectance - rspect;
+      return make_shared<sampled_spectrum>(sp1, sp2);
+    }
+    }
+  }
+  sampled_spectrum subt(const Real &s) const {
+    switch (type) {
+    case SpectrumType::Illuminant: {
+      auto sp1 = spect - s;
+      return sampled_spectrum(sp1);
+    }
+    case SpectrumType::Reflectance: {
+      auto sp1 = spect - s;
+      auto sp2 = reflectance - s;
+      return sampled_spectrum(sp1, sp2);
+    }
+    }
+  }
+  sampled_spectrum subt(const sampled_spectrum &s) const {
+    spd<Real> sspect;
+    spd<Real> rspect;
+    s.get_spds(sspect, rspect);
+    switch (type) {
+    case SpectrumType::Illuminant: {
+      auto sp1 = spect - sspect;
+      return sampled_spectrum(sp1);
+    }
+    case SpectrumType::Reflectance: {
+      auto sp1 = spect - sspect;
+      auto sp2 = reflectance - rspect;
+      return sampled_spectrum(sp1, sp2);
+    }
+    }
+  }
+
+  shared_ptr<sampled_spectrum>
+  multip(const shared_ptr<Real> &s) const {
+    auto ss = *s;
+    switch (type) {
+    case SpectrumType::Illuminant: {
+      auto sp1 = spect * ss;
+      return make_shared<sampled_spectrum>(sp1);
+    }
+    case SpectrumType::Reflectance: {
+      auto sp1 = spect * ss;
+      auto sp2 = reflectance * ss;
+      return make_shared<sampled_spectrum>(sp1, sp2);
+    }
+    }
+  }
+  shared_ptr<sampled_spectrum>
+  multip(const shared_ptr<sampled_spectrum> &s) const {
+
+    spd<Real> sspect;
+    spd<Real> rspect;
+    s->get_spds(sspect, rspect);
+    switch (type) {
+    case SpectrumType::Illuminant: {
+      auto sp1 = spect * sspect;
+      return make_shared<sampled_spectrum>(sp1);
+    }
+    case SpectrumType::Reflectance: {
+      auto sp1 = spect * sspect;
+      auto sp2 = reflectance * rspect;
+      return make_shared<sampled_spectrum>(sp1, sp2);
+    }
+    }
+  }
+  sampled_spectrum multip(const Real &s) const {
+    switch (type) {
+    case SpectrumType::Illuminant: {
+      auto sp1 = spect * s;
+      return sampled_spectrum(sp1);
+    }
+    case SpectrumType::Reflectance: {
+      auto sp1 = spect * s;
+      auto sp2 = reflectance * s;
+      return sampled_spectrum(sp1, sp2);
+    }
+    }
+  }
+  sampled_spectrum multip(const sampled_spectrum &s) const {
+    spd<Real> sspect;
+    spd<Real> rspect;
+    s.get_spds(sspect, rspect);
+    switch (type) {
+    case SpectrumType::Illuminant: {
+      auto sp1 = spect * sspect;
+      return sampled_spectrum(sp1);
+    }
+    case SpectrumType::Reflectance: {
+      auto sp1 = spect * sspect;
+      auto sp2 = reflectance * rspect;
+      return sampled_spectrum(sp1, sp2);
+    }
+    }
+  }
+
+  shared_ptr<sampled_spectrum>
+  div(const shared_ptr<Real> &s) const {
+    auto ss = *s;
+    switch (type) {
+    case SpectrumType::Illuminant: {
+      auto sp1 = spect / ss;
+      return make_shared<sampled_spectrum>(sp1);
+    }
+    case SpectrumType::Reflectance: {
+      auto sp1 = spect / ss;
+      auto sp2 = reflectance / ss;
+      return make_shared<sampled_spectrum>(sp1, sp2);
+    }
+    }
+  }
+  shared_ptr<sampled_spectrum>
+  div(const shared_ptr<sampled_spectrum> &s) const {
+
+    spd<Real> sspect;
+    spd<Real> rspect;
+    s->get_spds(sspect, rspect);
+    switch (type) {
+    case SpectrumType::Illuminant: {
+      auto sp1 = spect / sspect;
+      return make_shared<sampled_spectrum>(sp1);
+    }
+    case SpectrumType::Reflectance: {
+      auto sp1 = spect / sspect;
+      auto sp2 = reflectance / rspect;
+      return make_shared<sampled_spectrum>(sp1, sp2);
+    }
+    }
+  }
+  sampled_spectrum div(const Real &s) const {
+    switch (type) {
+    case SpectrumType::Illuminant: {
+      auto sp1 = spect / s;
+      return sampled_spectrum(sp1);
+    }
+    case SpectrumType::Reflectance: {
+      auto sp1 = spect / s;
+      auto sp2 = reflectance / s;
+      return sampled_spectrum(sp1, sp2);
+    }
+    }
+  }
+  sampled_spectrum div(const sampled_spectrum &s) const {
+    spd<Real> sspect;
+    spd<Real> rspect;
+    s.get_spds(sspect, rspect);
+    switch (type) {
+    case SpectrumType::Illuminant: {
+      auto sp1 = spect / sspect;
+      return sampled_spectrum(sp1);
+    }
+    case SpectrumType::Reflectance: {
+      auto sp1 = spect / sspect;
+      auto sp2 = reflectance / rspect;
+      return sampled_spectrum(sp1, sp2);
+    }
+    }
+  }
 
 protected:
   static spd<Real> cie_xbar;
@@ -113,309 +475,38 @@ protected:
   static spd<Real> rho_r;
   static spd<Real> rho_g;
   static spd<Real> rho_b;
+  static spd<Real> standard_d65;
 };
+
 path csv_parent = "./media/data/spectrum";
-spd<Real> sampled_spectrum::rho_r =
-    spd<Real>(csv_parent / "rho-r-2012.csv");
-spd<Real> sampled_spectrum::rho_g =
-    spd<Real>(csv_parent / "rho-g-2012.csv");
-spd<Real> sampled_spectrum::rho_b =
-    spd<Real>(csv_parent / "rho-b-2012.csv");
-spd<Real> sampled_spectrum::cie_xbar =
+auto rho_rspd = spd<Real>(csv_parent / "rho-r-2012.csv");
+spd<Real> sampled_spectrum::rho_r = rho_rspd.normalized();
+auto rho_gspd = spd<Real>(csv_parent / "rho-g-2012.csv");
+spd<Real> sampled_spectrum::rho_g = rho_gspd.normalized();
+auto rho_bspd = spd<Real>(csv_parent / "rho-b-2012.csv");
+spd<Real> sampled_spectrum::rho_b = rho_bspd.normalized();
+
+auto cie_xbarspd =
     spd<Real>(csv_parent / "cie-x-bar-1964.csv");
-spd<Real> sampled_spectrum::cie_ybar =
+spd<Real> sampled_spectrum::cie_xbar =
+    cie_xbarspd.normalized();
+
+auto cie_ybarspd =
     spd<Real>(csv_parent / "cie-y-bar-1964.csv");
-spd<Real> sampled_spectrum::cie_zbar =
+spd<Real> sampled_spectrum::cie_ybar =
+    cie_ybarspd.normalized();
+
+auto cie_zbarspd =
     spd<Real>(csv_parent / "cie-z-bar-1964.csv");
+spd<Real> sampled_spectrum::cie_zbar =
+    cie_zbarspd.normalized();
+
+auto stand_d65 =
+    spd<Real>(csv_parent / "cie-d65-standard.csv");
+spd<Real> sampled_spectrum::standard_d65 =
+    stand_d65.normalized();
 
 // end static variable initialize
 
-class illuminant_spectrum : public sampled_spectrum {
-public:
-  vec3 xyz;
-  color rgb;
-
-public:
-  illuminant_spectrum(const spd<Real> &s)
-      : sampled_spectrum(s, SpectrumType::Illuminant) {}
-  illuminant_spectrum(const Real &r, const Real &g,
-                      const Real &b)
-      : sampled_spectrum(r, g, b, SpectrumType::Illuminant),
-        rgb(r, g, b) {
-    update_spect();
-  }
-  void update_spect() {
-    auto X = get_cie_val(spect, cie_xbar);
-    auto Y = get_cie_val(spect, cie_ybar);
-    auto Z = get_cie_val(spect, cie_zbar);
-    auto xval = X / (X + Y + Z);
-    auto yval = Y / (X + Y + Z);
-    auto zval = 1.0 - (xval + yval);
-    xyz = vec3(xval, yval, zval);
-  }
-  illuminant_spectrum(const Real &v)
-      : sampled_spectrum(v), rgb(v) {
-    update_spect();
-  }
-
-  Real r() const override { return rgb.r(); }
-  Real g() const override { return rgb.g(); }
-  Real b() const override { return rgb.b(); }
-  Real x() const override { return xyz.x(); }
-  Real y() const override { return xyz.y(); }
-  Real z() const override { return xyz.z(); }
-  illuminant_spectrum operator+(const Real &s) const {
-    illuminant_spectrum ispec = *this;
-    ispec.spect += s;
-  }
-  illuminant_spectrum operator-(const Real &s) const {}
-  illuminant_spectrum operator*(const Real &s) const {}
-  illuminant_spectrum operator/(const Real &s) const {}
-
-  static illuminant_spectrum random() {
-    auto sp = spd<Real>();
-    return illuminant_spectrum(sp);
-  }
-
-  illuminant_spectrum
-  add(const illuminant_spectrum &s) const {
-    auto sspect = spect + s.spect;
-    return illuminant_spectrum(sspect);
-  }
-  shared_ptr<sampled_spectrum>
-  add(const shared_ptr<sampled_spectrum> &s) const {
-    auto sspect = spect + s->spect;
-    return make_shared<illuminant_spectrum>(sspect);
-  }
-
-  illuminant_spectrum add(const Real &s) const {
-    auto sspect = spect + s;
-    return illuminant_spectrum(sspect);
-  }
-  illuminant_spectrum
-  subt(const illuminant_spectrum &s) const {
-    auto sspect = spect - s.spect;
-    return illuminant_spectrum(sspect);
-  }
-  shared_ptr<sampled_spectrum>
-  subt(const shared_ptr<sampled_spectrum> &s) const {
-    auto sspect = spect - s->spect;
-    return make_shared<illuminant_spectrum>(sspect);
-  }
-
-  illuminant_spectrum subt(const Real &s) const {
-    auto sspect = spect - s;
-    return illuminant_spectrum(sspect);
-  }
-  illuminant_spectrum
-  multip(const illuminant_spectrum &s) const {
-    auto sspect = spect * s.spect;
-    return illuminant_spectrum(sspect);
-  }
-
-  shared_ptr<sampled_spectrum>
-  multip(shared_ptr<sampled_spectrum> s) {
-    auto sspect = spect * s->spect;
-    return make_shared<illuminant_spectrum>(sspect);
-  }
-  illuminant_spectrum multip(const Real &s) const {
-    auto sspect = spect * s;
-    return illuminant_spectrum(sspect);
-  }
-  illuminant_spectrum div(const illuminant_spectrum &s) {
-    auto sspect = spect / s.spect;
-    return illuminant_spectrum(sspect);
-  }
-  shared_ptr<sampled_spectrum>
-  div(shared_ptr<sampled_spectrum> s) {
-    auto sspect = spect / s->spect;
-    return make_shared<illuminant_spectrum>(sspect);
-  }
-
-  illuminant_spectrum div(sampled_spectrum s) {
-    auto sspect = spect / s.spect;
-    return illuminant_spectrum(sspect);
-  }
-  illuminant_spectrum div(const Real &s) {
-    auto sspect = spect / s;
-    return illuminant_spectrum(sspect);
-  }
-};
-class reflectance_spectrum : public sampled_spectrum {
-public:
-  vec3 xyz;
-  color rgb;
-
-public:
-  reflectance_spectrum(const spd<Real> &s,
-                       const spd<Real> &r)
-      : sampled_spectrum(s, r, SpectrumType::Reflectance) {
-    auto X = get_cie_val(spect, reflectance, cie_xbar);
-    auto Y = get_cie_val(spect, reflectance, cie_ybar);
-    auto Z = get_cie_val(spect, reflectance, cie_zbar);
-    auto xval = X / (X + Y + Z);
-    auto yval = Y / (X + Y + Z);
-    auto zval = 1.0 - (X + Y);
-    xyz = vec3(xval, yval, zval);
-  }
-  reflectance_spectrum(const Real &r, const Real &g,
-                       const Real &b)
-      : sampled_spectrum(r, g, b,
-                         SpectrumType::Reflectance),
-        rgb(r, g, b) {}
-  reflectance_spectrum(const Real &r)
-      : sampled_spectrum(r, SpectrumType::Reflectance),
-        rgb(r) {}
-  Real r() const override { return rgb.r(); }
-  Real g() const override { return rgb.g(); }
-  Real b() const override { return rgb.b(); }
-  Real x() const override { return r(); }
-  Real y() const override { return g(); }
-  Real z() const override { return b(); }
-
-  static reflectance_spectrum random() {
-    auto sp1 = spd<Real>();
-    auto sp2 = spd<Real>();
-    return reflectance_spectrum(sp1, sp2);
-  }
-  reflectance_spectrum
-  add(const illuminant_spectrum &s) const {
-    auto sspect = spect + s.spect;
-    auto refspect = reflectance + s.spect;
-    return reflectance_spectrum(sspect, refspect);
-  }
-  reflectance_spectrum
-  add(const reflectance_spectrum &s) const {
-    auto sspect = spect + s.spect;
-    auto refspect = reflectance + s.reflectance;
-    return reflectance_spectrum(sspect, refspect);
-  }
-  shared_ptr<sampled_spectrum>
-  add(const shared_ptr<sampled_spectrum> &s) {
-    switch (s->type) {
-    case SpectrumType::Illuminant: {
-      auto sspect = spect + s->spect;
-      auto refspect = reflectance + s->spect;
-      return make_shared<reflectance_spectrum>(sspect,
-                                               refspect);
-    }
-    case SpectrumType::Reflectance: {
-      auto sspect = spect + s->spect;
-      auto refspect = reflectance + s->reflectance;
-      return make_shared<reflectance_spectrum>(sspect,
-                                               refspect);
-    }
-    }
-  }
-  reflectance_spectrum add(const Real &s) const {
-    auto sspect = spect + s;
-    auto reflspect = reflectance + s;
-    return reflectance_spectrum(sspect, reflspect);
-  }
-  reflectance_spectrum
-  subt(const illuminant_spectrum &s) const {
-    auto sspect = spect - s.spect;
-    auto refspect = reflectance - s.spect;
-    return reflectance_spectrum(sspect, refspect);
-  }
-  reflectance_spectrum
-  subt(const reflectance_spectrum &s) const {
-    auto sspect = spect - s.spect;
-    auto refspect = reflectance - s.reflectance;
-    return reflectance_spectrum(sspect, refspect);
-  }
-
-  shared_ptr<sampled_spectrum>
-  subt(const shared_ptr<sampled_spectrum> &s) {
-    switch (s->type) {
-    case SpectrumType::Illuminant: {
-      auto sspect = spect - s->spect;
-      auto refspect = reflectance - s->spect;
-      return make_shared<reflectance_spectrum>(sspect,
-                                               refspect);
-    }
-    case SpectrumType::Reflectance: {
-      auto sspect = spect - s->spect;
-      auto refspect = reflectance - s->reflectance;
-      return make_shared<reflectance_spectrum>(sspect,
-                                               refspect);
-    }
-    }
-  }
-  reflectance_spectrum subt(const Real &s) const {
-    auto sspect = spect - s;
-    auto reflspect = reflectance - s;
-    return reflectance_spectrum(sspect, reflspect);
-  }
-  reflectance_spectrum
-  multip(const illuminant_spectrum &s) const {
-    auto sspect = spect * s.spect;
-    auto reflspect = reflectance * s.spect;
-    return reflectance_spectrum(sspect, reflspect);
-  }
-  reflectance_spectrum
-  multip(const reflectance_spectrum &s) {
-    auto sspect = spect * s.spect;
-    auto reflspect = reflectance * s.reflectance;
-    return reflectance_spectrum(sspect, reflspect);
-  }
-  shared_ptr<sampled_spectrum>
-  multip(const shared_ptr<sampled_spectrum> &s) {
-    switch (s->type) {
-    case SpectrumType::Illuminant: {
-      auto sspect = spect * s->spect;
-      auto refspect = reflectance * s->spect;
-      return make_shared<reflectance_spectrum>(sspect,
-                                               refspect);
-    }
-    case SpectrumType::Reflectance: {
-      auto sspect = spect * s->spect;
-      auto refspect = reflectance * s->reflectance;
-      return make_shared<reflectance_spectrum>(sspect,
-                                               refspect);
-    }
-    }
-  }
-  reflectance_spectrum multip(const Real &s) const {
-    auto sspect = spect * s;
-    auto reflspect = reflectance * s;
-    return reflectance_spectrum(sspect, reflspect);
-  }
-  reflectance_spectrum div(reflectance_spectrum s) {
-    auto sspect = spect / s.spect;
-    auto reflspect = reflectance / s.reflectance;
-    return reflectance_spectrum(sspect, reflspect);
-  }
-  reflectance_spectrum div(illuminant_spectrum s) {
-    auto sspect = spect / s.spect;
-    auto reflspect = reflectance / s.spect;
-    return reflectance_spectrum(sspect, reflspect);
-  }
-  shared_ptr<sampled_spectrum>
-  div(const shared_ptr<sampled_spectrum> &s) {
-    switch (s->type) {
-    case SpectrumType::Illuminant: {
-      auto sspect = spect / s->spect;
-      auto refspect = reflectance / s->spect;
-      return make_shared<reflectance_spectrum>(sspect,
-                                               refspect);
-    }
-    case SpectrumType::Reflectance: {
-      auto sspect = spect / s->spect;
-      auto refspect = reflectance / s->reflectance;
-      return make_shared<reflectance_spectrum>(sspect,
-                                               refspect);
-    }
-    }
-  }
-
-  reflectance_spectrum div(const Real &s) {
-    auto sspect = spect / s;
-    auto reflspect = reflectance / s;
-    return reflectance_spectrum(sspect, reflspect);
-  }
-};
-
 typedef color spectrum;
 // typedef sampled_spectrum spectrum;
-// typedef rgb_spectrum spectrum;

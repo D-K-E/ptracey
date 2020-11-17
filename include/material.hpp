@@ -101,7 +101,7 @@ public:
 
     if (cannot_refract ||
         reflectance(cos_theta, refraction_ratio) >
-            random_double())
+            random_real())
       direction = reflect(unit_direction, rec.normal);
     else
       direction = refract(unit_direction, rec.normal,

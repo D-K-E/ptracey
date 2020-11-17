@@ -1,26 +1,27 @@
 #pragma once
+#include <chrono>
 #include <common.hpp>
 
-double random_double() {
-  static std::uniform_real_distribution<double>
-      distribution(0.0f, 1.0f);
-  static std::mt19937 generator;
+Real random_real(unsigned int seed) {
+  static std::uniform_real_distribution<Real> distribution(
+      0.0f, 1.0f);
+  static std::mt19937 generator(seed);
   return distribution(generator);
 }
-
-double random_double(double mn, double mx) {
-  static std::uniform_real_distribution<double>
-      distribution(mn, mx);
-  static std::mt19937 generator;
-  return distribution(generator);
+Real random_real() {
+  auto now1 = std::chrono::high_resolution_clock::now();
+  auto now2 = std::chrono::high_resolution_clock::now();
+  auto d1 = now2 - now1;
+  return random_real(static_cast<unsigned int>(d1.count()));
 }
-int random_int() {
-  return static_cast<int>(random_double());
+Real random_real(Real mn, Real mx) {
+  return mn + (mx - mn) * random_real();
 }
+int random_int() { return static_cast<int>(random_real()); }
 int random_int(int mn, int mx) {
-  return static_cast<int>(random_double(mn, mx));
+  return static_cast<int>(random_real(mn, mx));
 }
-inline double degrees_to_radians(double degrees) {
+inline Real degrees_to_radians(Real degrees) {
   return degrees * M_PI / 180.0;
 }
 
@@ -34,17 +35,20 @@ template <typename T> T clamp(T x, T min, T max) {
 template <typename T> T dclamp(T x, T mn, T mx) {
   return clamp<T>(x, mn, mx);
 }
-template <typename T, typename U>
-T interp(T t, U s1, U s2) {
-  // interpolate from glsl reference
-  // https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/mix.xhtml
-  return (1 - t) * s1 + t * s2;
+
+template <typename T>
+T interp(T t, T input_start, T input_end, T output_start,
+         T output_end) {
+  return (t - input_start) / (input_end - input_start) *
+             (output_end - output_start) +
+         output_start;
 }
 template <typename T> T interp(T t, T s1, T s2) {
   // interpolate from glsl reference
   // https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/mix.xhtml
-  return (1 - t) * s1 + t * s2;
+  return interp(t, 0.0, 1.0, s1, s2);
 }
+
 template <typename T>
 std::vector<T> linspace(T start, T end, unsigned int size) {
   // from: https://stackoverflow.com/a/27030598/7330813

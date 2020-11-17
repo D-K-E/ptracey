@@ -181,10 +181,12 @@ public:
   }
   sampled_wave operator/(const T &s) const {
     D_CHECK(s != 0.0);
-    sampled_wave ss = *this;
+    std::vector<T> vs;
+    vs.resize(values.size());
     for (unsigned int i = 0; i < values.size(); i++) {
-      ss.values[i] /= s;
+      vs[i] = values[i] / s;
     }
+    auto ss = sampled_wave(vs);
     return ss;
   }
   friend sampled_wave operator/(const T &s,
@@ -241,11 +243,17 @@ public:
     D_CHECK(!cs.has_nans());
     return cs;
   }
-  sampled_wave interpolate(T low = 0.0, T high = FLT_MAX) {
-    sampled_wave cs = *this;
+  sampled_wave interpolate(Real low = 0.0,
+                           Real high = FLT_MAX) {
+    std::vector<T> csvec;
+    csvec.resize(values.size());
+    T start = min();
+    T end = max();
     for (int i = 0; i < values.size(); i++) {
-      cs.values[i] = interp<T>(values[i], low, high);
+      csvec[i] =
+          interp<T>(values[i], start, end, low, high);
     }
+    sampled_wave cs = sampled_wave(csvec);
     D_CHECK(!cs.has_nans());
     return cs;
   }

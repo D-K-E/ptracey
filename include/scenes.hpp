@@ -7,6 +7,7 @@
 #include <common.hpp>
 #include <hittable.hpp>
 #include <hittable_list.hpp>
+#include <iostream>
 #include <mediumc.hpp>
 #include <mesh.hpp>
 #include <moving_sphere.hpp>
@@ -21,6 +22,7 @@ shared_ptr<hittable>
 model_random_material(matrix modelMat,
                       std::string modelpath) {
   int choice = random_int(0, 4);
+  std::cerr << "choice " << choice << std::endl;
   shared_ptr<spectrum> rcolor =
       make_shared<spectrum>(spectrum::random());
   shared_ptr<material> mat;
@@ -29,11 +31,11 @@ model_random_material(matrix modelMat,
     std::cerr << "model material :: lambertian"
               << std::endl;
   } else if (choice == 1) {
-    mat = make_shared<metal>(rcolor, random_double());
+    mat = make_shared<metal>(rcolor, random_real());
     std::cerr << "model material :: metal" << std::endl;
   } else if (choice == 2) {
     mat =
-        make_shared<dielectric>(random_double(0.001, 3.0));
+        make_shared<dielectric>(random_real(0.001, 3.0));
     std::cerr << "model material :: dielectric"
               << std::endl;
   } else if (choice == 3) {
@@ -44,7 +46,7 @@ model_random_material(matrix modelMat,
     shared_ptr<hittable> mod =
         make_shared<model>(modelpath, modelMat);
     return make_shared<constant_medium>(
-        mod, random_double(0, 2.0),
+        mod, random_real(0, 2.0),
         make_shared<solid_color>(
             make_shared<spectrum>(spectrum::random())));
     std::cerr << "model material :: constant medium"
@@ -104,9 +106,9 @@ hittable_list random_scene() {
 
   for (int a = -11; a < 11; a++) {
     for (int b = -11; b < 11; b++) {
-      auto choose_mat = random_double();
-      point3 center(a + 0.9 * random_double(), 0.2,
-                    b + 0.9 * random_double());
+      auto choose_mat = random_real();
+      point3 center(a + 0.9 * random_real(), 0.2,
+                    b + 0.9 * random_real());
 
       if ((center - vec3(4, 0.2, 0)).length() > 0.9) {
         shared_ptr<material> sphere_material;
@@ -120,7 +122,7 @@ hittable_list random_scene() {
           auto albedo = randcol1->multip(randcol2);
           sphere_material = make_shared<lambertian>(albedo);
           auto center2 =
-              center + vec3(0, random_double(0, .5), 0);
+              center + vec3(0, random_real(0, .5), 0);
           world.add(make_shared<moving_sphere>(
               center, center2, 0.0, 1.0, 0.2,
               sphere_material));
@@ -128,7 +130,7 @@ hittable_list random_scene() {
           // metal
           auto albedo = make_shared<spectrum>(
               spectrum::random(0.5, 1));
-          auto fuzz = random_double(0, 0.5);
+          auto fuzz = random_real(0, 0.5);
           sphere_material =
               make_shared<metal>(albedo, fuzz);
           world.add(make_shared<sphere>(center, 0.2,
@@ -314,7 +316,7 @@ hittable_list final_scene_nextweek() {
       auto z0 = -1000.0 + j * w;
       auto y0 = 0.0;
       auto x1 = x0 + w;
-      auto y1 = random_double(1, 101);
+      auto y1 = random_real(1, 101);
       auto z1 = z0 + w;
 
       boxes1.add(make_shared<box>(
@@ -385,7 +387,7 @@ hittable_list final_scene_nextweek() {
 }
 hittable_list model_cat() {
   matrix modelMat =
-      scale_translate(point3(130, 167, 65), vec3(95.0));
+      scale_translate(point3(150, 167, 45), vec3(55.0));
   std::string modelpath = "media/models/kedi.obj";
 
   shared_ptr<hittable> cat =
@@ -602,8 +604,8 @@ void choose_scene(int choice, camera &cam,
   case 10: {
     world = model_cat();
     aspect_ratio = 1.0;
-    image_width = 600;
-    samples_per_pixel = 500;
+    image_width = 400;
+    samples_per_pixel = 10000;
     lookfrom = point3(278, 278, -800);
     lookat = point3(278, 278, 0);
     break;

@@ -129,8 +129,8 @@ public:
   }
 
   vec3 random(const point3 &origin) const override {
-    auto random_point = point3(random_double(x0, x1), k,
-                               random_double(z0, z1));
+    auto random_point = point3(random_real(x0, x1), k,
+                               random_real(z0, z1));
     return random_point - origin;
   }
 };

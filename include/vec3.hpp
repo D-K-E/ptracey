@@ -45,6 +45,9 @@ public:
   vec3 add(const Real &v) {
     return vec3(x() + v, y() + v, z() + v);
   }
+  shared_ptr<vec3> add(const shared_ptr<Real> vptr) {
+    return make_shared<vec3>(add(*vptr));
+  }
   vec3 subt(const Real &v) {
     return vec3(x() - v, y() - v, z() - v);
   }
@@ -55,12 +58,18 @@ public:
     return make_shared<vec3>(x() - v->x(), y() - v->y(),
                              z() - v->z());
   }
+  shared_ptr<vec3> subt(const shared_ptr<Real> vptr) {
+    return make_shared<vec3>(subt(*vptr));
+  }
   vec3 multip(const vec3 &v) {
     return vec3(x() * v.x(), y() * v.y(), z() * v.z());
   }
   shared_ptr<vec3> multip(const shared_ptr<vec3> &v) {
     return make_shared<vec3>(x() * v->x(), y() * v->y(),
                              z() * v->z());
+  }
+  shared_ptr<vec3> multip(const shared_ptr<Real> &v) {
+    return make_shared<vec3>(multip(*v));
   }
   vec3 multip(const Real &v) {
     return vec3(x() * v, y() * v, z() * v);
@@ -87,9 +96,18 @@ public:
     vs = div(vs);
     return make_shared<vec3>(vs.x(), vs.y(), vs.z());
   }
+  shared_ptr<vec3> div(const shared_ptr<Real> &v) {
+    return make_shared<vec3>(div(*v));
+  }
   Real length() const { return sqrt(length_squared()); }
   Real length_squared() const {
     return e[0] * e[0] + e[1] * e[1] + e[2] * e[2];
+  }
+  inline Real min() const {
+    return fmin(fmin(x(), y()), z());
+  }
+  inline Real max() const {
+    return fmax(fmax(x(), y()), z());
   }
   bool near_zero() const {
     // Return true if the vector is close to zero in all
@@ -99,13 +117,13 @@ public:
            (fabs(e[2]) < s);
   }
   inline static vec3 random() {
-    return vec3(random_double(), random_double(),
-                random_double());
+    return vec3(random_real(), random_real(),
+                random_real());
   }
   inline static vec3 random(Real min, Real max) {
-    return vec3(random_double(min, max),
-                random_double(min, max),
-                random_double(min, max));
+    return vec3(random_real(min, max),
+                random_real(min, max),
+                random_real(min, max));
   }
 
 public:
@@ -178,7 +196,7 @@ inline vec3 max_vec(const vec3 &v1, const vec3 &v2) {
 inline vec3 random_in_unit_disk() {
   while (true) {
     auto p =
-        vec3(random_double(-1, 1), random_double(-1, 1), 0);
+        vec3(random_real(-1, 1), random_real(-1, 1), 0);
     if (p.length_squared() >= 1)
       continue;
     return p;
@@ -221,8 +239,8 @@ inline vec3 refract(const vec3 &uv, const vec3 &n,
 }
 
 inline vec3 random_cosine_direction() {
-  auto r1 = random_double();
-  auto r2 = random_double();
+  auto r1 = random_real();
+  auto r2 = random_real();
   auto z = sqrt(1 - r2);
 
   auto phi = 2 * M_PI * r1;
@@ -234,8 +252,8 @@ inline vec3 random_cosine_direction() {
 
 inline vec3 random_to_sphere(Real radius,
                              Real distance_squared) {
-  auto r1 = random_double();
-  auto r2 = random_double();
+  auto r1 = random_real();
+  auto r2 = random_real();
   auto z =
       1 +
       r2 * (sqrt(1 - radius * radius / distance_squared) -

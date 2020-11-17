@@ -38,19 +38,28 @@ ray_color(const ray &r,
     shared_ptr<spectrum> rs = ray_color(
         srec.specular_ray, background, world, depth - 1);
 
-    //
     return srec.attenuation->multip(rs);
   }
 
   ray scattered =
       ray(rec.p, srec.pdf_ptr->generate(), r.time());
   auto pdf_val = srec.pdf_ptr->value(scattered.direction());
-  shared_ptr<spectrum> recs =
-      make_shared<spectrum>(srec.attenuation->multip(
-          rec.mat_ptr->scattering_pdf(r, rec, scattered)));
-  recs = recs->multip(
-      ray_color(scattered, background, world, depth - 1));
-  recs = make_shared<spectrum>(recs->div(pdf_val));
+  auto scatter_pdf =
+      rec.mat_ptr->scattering_pdf(r, rec, scattered);
+
+  //
+  shared_ptr<spectrum> recs = srec.attenuation->multip(
+      make_shared<Real>(scatter_pdf));
+
+  shared_ptr<spectrum> rcolor =
+      ray_color(scattered, background, world, depth - 1);
+  //
+  recs = recs->multip(rcolor);
+
+  auto pval = make_shared<Real>(pdf_val);
+
+  //
+  recs = recs->div(pval);
 
   return emitted->add(recs);
 }
@@ -105,8 +114,8 @@ InnerRet innerLoop(InnerParams params) {
       shared_ptr<spectrum> rcolor =
           make_shared<spectrum>(0.0);
       for (int k = 0; k < psample; k++) {
-        Real t = Real(i + random_double()) / (imwidth - 1);
-        Real s = Real(j + random_double()) / (imheight - 1);
+        Real t = Real(i + random_real()) / (imwidth - 1);
+        Real s = Real(j + random_real()) / (imheight - 1);
         ray r = cam.get_ray(t, s);
         shared_ptr<spectrum> rcol =
             ray_color(r, background, scene, mdepth);
@@ -141,14 +150,14 @@ int main() {
   // Image
   auto aspect_ratio = 16.0 / 9.0;
   int image_width = 400;
-  int samples_per_pixel = 100;
-  int max_depth = 200;
+  int samples_per_pixel = 1000;
+  int max_depth = 500;
   immat imvec;
 
   // World
 
   hittable_list world;
-  int choice = 2;
+  int choice = 10;
   camera cam;
   int image_height;
   shared_ptr<spectrum> background;

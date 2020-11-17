@@ -48,8 +48,8 @@ public:
   }
   vec3 random(const vec3 &o) const override {
     // from A. Glassner, Graphics Gems, 1995, p. 24
-    auto t = random_double();
-    auto ss = random_double();
+    auto t = random_real();
+    auto ss = random_real();
     auto a = 1 - sqrt(t);
     auto b = (1 - ss) * sqrt(t);
     auto c = ss * sqrt(t);

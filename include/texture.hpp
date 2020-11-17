@@ -66,7 +66,7 @@ public:
     Real coeff =
         0.5 * (1 + sin(scale * p.z() + 10 * noise.turb(p)));
     shared_ptr<spectrum> s =
-        make_shared<spectrum>(spec->multip(coeff));
+        spec->multip(make_shared<Real>(coeff));
     return s;
   }
 
