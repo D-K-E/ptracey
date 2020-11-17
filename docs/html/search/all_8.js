@@ -6,8 +6,8 @@ var searchData=
   ['haspropertymatrix_538',['HasPropertyMatrix',['../classAssimp_1_1ExportProperties.html#aa99262953ae9812ccfae65ca6c66fd4e',1,'Assimp::ExportProperties']]],
   ['haspropertystring_539',['HasPropertyString',['../classAssimp_1_1ExportProperties.html#aa37ac3a66f91aa3e34a3894b0fbddccf',1,'Assimp::ExportProperties']]],
   ['header_540',['Header',['../structAssimp_1_1Bitmap_1_1Header.html',1,'Assimp::Bitmap']]],
-  ['hit_5frecord_541',['hit_record',['../structhit__record.html',1,'']]],
-  ['hittable_542',['hittable',['../classhittable.html',1,'']]],
-  ['hittable_5flist_543',['hittable_list',['../classhittable__list.html',1,'']]],
-  ['hittable_5fpdf_544',['hittable_pdf',['../classhittable__pdf.html',1,'']]]
+  ['hit_5frecord_541',['hit_record',['../structptracey_1_1hit__record.html',1,'ptracey']]],
+  ['hittable_542',['hittable',['../classptracey_1_1hittable.html',1,'ptracey']]],
+  ['hittable_5flist_543',['hittable_list',['../classptracey_1_1hittable__list.html',1,'ptracey']]],
+  ['hittable_5fpdf_544',['hittable_pdf',['../classptracey_1_1hittable__pdf.html',1,'ptracey']]]
 ];

@@ -1,15 +1,15 @@
 var searchData=
 [
   ['id_545',['id',['../structaiExportFormatDesc.html#afe216eaea3a04abca041e5c253f94bbf',1,'aiExportFormatDesc']]],
-  ['image_5ftexture_546',['image_texture',['../classimage__texture.html',1,'']]],
+  ['image_5ftexture_546',['image_texture',['../classptracey_1_1image__texture.html',1,'ptracey']]],
   ['importer_547',['Importer',['../classAssimp_1_1Importer.html',1,'Assimp::Importer'],['../classAssimp_1_1Importer.html#a2c207299ed05f1db1ad1e6dab005f719',1,'Assimp::Importer::Importer()'],['../classAssimp_1_1Importer.html#a31c6cd729b79d586504dabe30353e39a',1,'Assimp::Importer::Importer(const Importer &amp;other)=delete']]],
   ['importer_2ehpp_548',['Importer.hpp',['../Importer_8hpp.html',1,'']]],
   ['importerdesc_2eh_549',['importerdesc.h',['../importerdesc_8h.html',1,'']]],
   ['importerunits_550',['importerUnits',['../classAssimp_1_1BaseImporter.html#ac43f3495d597a22da47ea894f5432016',1,'Assimp::BaseImporter']]],
   ['incptr_551',['IncPtr',['../classAssimp_1_1StreamReader.html#acb14681435190e35ffbdbd3f4239c774',1,'Assimp::StreamReader']]],
   ['info_552',['info',['../classAssimp_1_1Logger.html#a12b8a125083c47ac0bb6056f00761e52',1,'Assimp::Logger::info(const char *message)'],['../classAssimp_1_1Logger.html#acd0b52a87d6fc11e957ed2c6e2ad75b6aa3377a574928b86f7de55c5df154f461',1,'Assimp::Logger::Info()']]],
-  ['innerparams_553',['InnerParams',['../structInnerParams.html',1,'']]],
-  ['innerret_554',['InnerRet',['../structInnerRet.html',1,'']]],
+  ['innerparams_553',['InnerParams',['../structptracey_1_1InnerParams.html',1,'ptracey::InnerParams'],['../structInnerParams.html',1,'InnerParams']]],
+  ['innerret_554',['InnerRet',['../structInnerRet.html',1,'InnerRet'],['../structptracey_1_1InnerRet.html',1,'ptracey::InnerRet']]],
   ['integer_5fpow_555',['integer_pow',['../namespaceAssimp.html#a7232eb06a7d7532801382998c0853018',1,'Assimp']]],
   ['internreadfile_556',['InternReadFile',['../classAssimp_1_1BaseImporter.html#ac67d9f5ceb26353d27d6be06cccad398',1,'Assimp::BaseImporter']]],
   ['iostream_557',['IOStream',['../classAssimp_1_1IOStream.html',1,'Assimp::IOStream'],['../classAssimp_1_1IOStream.html#a0be5cf1642597edeffe5360025ddf50f',1,'Assimp::IOStream::IOStream()']]],
@@ -26,5 +26,5 @@ var searchData=
   ['ismoothgroup_568',['iSmoothGroup',['../structFaceWithSmoothingGroup.html#a686bc8272adeb1b5c376483ebfab3ec1',1,'FaceWithSmoothingGroup']]],
   ['isnulllogger_569',['isNullLogger',['../classAssimp_1_1DefaultLogger.html#abebc7ee702a2a2dde765e771948400c6',1,'Assimp::DefaultLogger']]],
   ['isopen_570',['isOpen',['../classAssimp_1_1ZipArchiveIOSystem.html#a164dbcbdb69cf237d525927567c78616',1,'Assimp::ZipArchiveIOSystem']]],
-  ['isotropic_571',['isotropic',['../classisotropic.html',1,'']]]
+  ['isotropic_571',['isotropic',['../classptracey_1_1isotropic.html',1,'ptracey']]]
 ];

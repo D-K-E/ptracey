@@ -1,7 +1,7 @@
 var searchData=
 [
   ['validateflags_914',['ValidateFlags',['../classAssimp_1_1Importer.html#af0292c1603ff9b483a5deba4d183eba5',1,'Assimp::Importer']]],
-  ['vec3_915',['vec3',['../classvec3.html',1,'']]],
+  ['vec3_915',['vec3',['../classptracey_1_1vec3.html',1,'ptracey']]],
   ['vector2_2eh_916',['vector2.h',['../vector2_8h.html',1,'']]],
   ['vector2_2einl_917',['vector2.inl',['../vector2_8inl.html',1,'']]],
   ['vector3_2eh_918',['vector3.h',['../vector3_8h.html',1,'']]],

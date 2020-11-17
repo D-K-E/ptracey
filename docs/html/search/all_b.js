@@ -1,7 +1,7 @@
 var searchData=
 [
   ['labelparams_573',['LabelParams',['../structrapidcsv_1_1LabelParams.html',1,'rapidcsv::LabelParams'],['../structrapidcsv_1_1LabelParams.html#a410048d60e7012e586e40d15692b748a',1,'rapidcsv::LabelParams::LabelParams()']]],
-  ['lambertian_574',['lambertian',['../classlambertian.html',1,'']]],
+  ['lambertian_574',['lambertian',['../classptracey_1_1lambertian.html',1,'ptracey']]],
   ['lcm_575',['lcm',['../MathFunctions_8h.html#a918eb7bddac3741e7cf72dd900a90a0c',1,'Assimp::Math']]],
   ['length_576',['length',['../structaiString.html#aed051e2996a96ca3a53e069f9b93da0c',1,'aiString']]],
   ['light_2eh_577',['light.h',['../light_8h.html',1,'']]],

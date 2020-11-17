@@ -12,7 +12,7 @@ var searchData=
   ['find_5fnode_5fby_5fname_5fpredicate_457',['find_node_by_name_predicate',['../structAssimp_1_1find__node__by__name__predicate.html',1,'Assimp']]],
   ['findidenticalpositions_458',['FindIdenticalPositions',['../classAssimp_1_1SpatialSort.html#a1c6461ed4e8fc4304b0c59d6fbd16548',1,'Assimp::SpatialSort']]],
   ['findpositions_459',['FindPositions',['../classAssimp_1_1SGSpatialSort.html#ab06ebf9fdf866149666dbb5206111e87',1,'Assimp::SGSpatialSort::FindPositions()'],['../classAssimp_1_1SpatialSort.html#a3a92120bbf54cc73feced00822bb877e',1,'Assimp::SpatialSort::FindPositions()']]],
-  ['flip_5fface_460',['flip_face',['../classflip__face.html',1,'']]],
+  ['flip_5fface_460',['flip_face',['../classptracey_1_1flip__face.html',1,'ptracey']]],
   ['flush_461',['Flush',['../classAssimp_1_1BlobIOStream.html#aa8875a880e989b6743cbdb613e11ba76',1,'Assimp::BlobIOStream::Flush()'],['../classAssimp_1_1DefaultIOStream.html#aebb62f6522d15c0b194a6ef1b32f46e0',1,'Assimp::DefaultIOStream::Flush()'],['../classAssimp_1_1IOStream.html#a7c19952446ece90924b246f087417899',1,'Assimp::IOStream::Flush()'],['../classAssimp_1_1MemoryIOStream.html#aae4a10484dbad0604f7663dcaac94055',1,'Assimp::MemoryIOStream::Flush()'],['../classAssimp_1_1StreamWriter.html#a64ca1a79ccbf2033a8ad40c738f02670',1,'Assimp::StreamWriter::Flush()']]],
   ['flushproc_462',['FlushProc',['../structaiFile.html#a1102d28d1c0be68ffed20476669bdb0d',1,'aiFile']]],
   ['fpexportfunc_463',['fpExportFunc',['../classAssimp_1_1Exporter.html#a37fc9550e48e51c26478c008835846d0',1,'Assimp::Exporter']]],

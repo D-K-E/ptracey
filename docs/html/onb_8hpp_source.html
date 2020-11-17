@@ -72,40 +72,43 @@ $(function() {
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &lt;ray.hpp&gt;</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;vec3.hpp&gt;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno"><a class="line" href="classonb.html">    4</a></span>&#160;<span class="keyword">class </span><a class="code" href="classonb.html">onb</a> {</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;  <a class="code" href="classonb.html">onb</a>() {}</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;  <span class="keyword">inline</span> <a class="code" href="classvec3.html">vec3</a> operator[](<span class="keywordtype">int</span> i)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> axis[i]; }</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">using namespace </span>ptracey;</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">namespace </span>ptracey {</div>
+<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="classptracey_1_1onb.html">    6</a></span>&#160;<span class="keyword">class </span><a class="code" href="classptracey_1_1onb.html">onb</a> {</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;  <a class="code" href="classptracey_1_1onb.html">onb</a>() {}</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;  <a class="code" href="classvec3.html">vec3</a> u()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> axis[0]; }</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;  <a class="code" href="classvec3.html">vec3</a> v()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> axis[1]; }</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;  <a class="code" href="classvec3.html">vec3</a> w()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> axis[2]; }</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  <a class="code" href="classvec3.html">vec3</a> local(Real a, Real b, Real c)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keywordflow">return</span> a * u() + b * v() + c * w();</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  }</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  <a class="code" href="classvec3.html">vec3</a> local(<span class="keyword">const</span> <a class="code" href="classvec3.html">vec3</a> &amp;a)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keywordflow">return</span> a.x() * u() + a.y() * v() + a.z() * w();</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  }</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;  <span class="keywordtype">void</span> build_from_w(<span class="keyword">const</span> <a class="code" href="classvec3.html">vec3</a> &amp;);</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;  <span class="keyword">inline</span> <a class="code" href="classptracey_1_1vec3.html">vec3</a> operator[](<span class="keywordtype">int</span> i)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> axis[i]; }</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;  <a class="code" href="classptracey_1_1vec3.html">vec3</a> u()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> axis[0]; }</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;  <a class="code" href="classptracey_1_1vec3.html">vec3</a> v()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> axis[1]; }</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  <a class="code" href="classptracey_1_1vec3.html">vec3</a> w()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> axis[2]; }</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  <a class="code" href="classptracey_1_1vec3.html">vec3</a> local(Real a, Real b, Real c)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keywordflow">return</span> a * u() + b * v() + c * w();</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  }</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  <a class="code" href="classptracey_1_1vec3.html">vec3</a> local(<span class="keyword">const</span> <a class="code" href="classptracey_1_1vec3.html">vec3</a> &amp;a)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keywordflow">return</span> a.x() * u() + a.y() * v() + a.z() * w();</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;  }</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  <a class="code" href="classvec3.html">vec3</a> axis[3];</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;};</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keywordtype">void</span> onb::build_from_w(<span class="keyword">const</span> <a class="code" href="classvec3.html">vec3</a> &amp;n) {</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  axis[2] = unit_vector(n);</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  <a class="code" href="classvec3.html">vec3</a> a =</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;      (fabs(w().x()) &gt; 0.9) ? <a class="code" href="classvec3.html">vec3</a>(0, 1, 0) : <a class="code" href="classvec3.html">vec3</a>(1, 0, 0);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  axis[1] = unit_vector(cross(w(), a));</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  axis[0] = cross(w(), v());</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;}</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  <span class="keywordtype">void</span> build_from_w(<span class="keyword">const</span> <a class="code" href="classptracey_1_1vec3.html">vec3</a> &amp;);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  <a class="code" href="classptracey_1_1vec3.html">vec3</a> axis[3];</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;};</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keywordtype">void</span> onb::build_from_w(<span class="keyword">const</span> <a class="code" href="classptracey_1_1vec3.html">vec3</a> &amp;n) {</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  axis[2] = unit_vector(n);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <a class="code" href="classptracey_1_1vec3.html">vec3</a> a =</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;      (fabs(w().x()) &gt; 0.9) ? <a class="code" href="classptracey_1_1vec3.html">vec3</a>(0, 1, 0) : <a class="code" href="classptracey_1_1vec3.html">vec3</a>(1, 0, 0);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  axis[1] = unit_vector(cross(w(), a));</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  axis[0] = cross(w(), v());</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;}</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclassonb_html"><div class="ttname"><a href="classonb.html">onb</a></div><div class="ttdef"><b>Definition:</b> onb.hpp:4</div></div>
-<div class="ttc" id="aclassvec3_html"><div class="ttname"><a href="classvec3.html">vec3</a></div><div class="ttdef"><b>Definition:</b> vec3.hpp:6</div></div>
+<div class="ttc" id="aclassptracey_1_1onb_html"><div class="ttname"><a href="classptracey_1_1onb.html">ptracey::onb</a></div><div class="ttdef"><b>Definition:</b> onb.hpp:6</div></div>
+<div class="ttc" id="aclassptracey_1_1vec3_html"><div class="ttname"><a href="classptracey_1_1vec3.html">ptracey::vec3</a></div><div class="ttdef"><b>Definition:</b> vec3.hpp:7</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

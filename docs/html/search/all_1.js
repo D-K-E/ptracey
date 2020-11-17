@@ -1,11 +1,11 @@
 var searchData=
 [
   ['a_9',['a',['../structaiPlane.html#a0e2f46be0d810fef7633c9d4b77c5556',1,'aiPlane']]],
-  ['aabb_10',['aabb',['../classaabb.html',1,'']]],
-  ['aarect_11',['AaRect',['../classAaRect.html',1,'']]],
-  ['aatriangle_12',['AaTriangle',['../classAaTriangle.html',1,'']]],
+  ['aabb_10',['aabb',['../classptracey_1_1aabb.html',1,'ptracey']]],
+  ['aarect_11',['AaRect',['../classptracey_1_1AaRect.html',1,'ptracey']]],
+  ['aatriangle_12',['AaTriangle',['../classptracey_1_1AaTriangle.html',1,'ptracey']]],
   ['absolutepath_13',['absolutePath',['../classAssimp_1_1DefaultIOSystem.html#af95ec2cff042a580082d463613cfe407',1,'Assimp::DefaultIOSystem']]],
-  ['abstract_5fspectrum_14',['abstract_spectrum',['../classabstract__spectrum.html',1,'']]],
+  ['abstract_5fspectrum_14',['abstract_spectrum',['../classptracey_1_1abstract__spectrum.html',1,'ptracey']]],
   ['achformathint_15',['achFormatHint',['../structaiTexture.html#ac01ce5b148494a2d7278c29f6fcd0b0e',1,'aiTexture']]],
   ['add_16',['Add',['../classAssimp_1_1SGSpatialSort.html#adfe82e1689fc782166019d8f7f9b35a5',1,'Assimp::SGSpatialSort']]],
   ['addnodeprefixes_17',['AddNodePrefixes',['../classAssimp_1_1SceneCombiner.html#a5e4ec755bb270b894e37d20938a4a88b',1,'Assimp::SceneCombiner']]],
@@ -347,5 +347,5 @@ var searchData=
   ['attachmentinfo_353',['AttachmentInfo',['../structAssimp_1_1AttachmentInfo.html',1,'Assimp']]],
   ['attachstream_354',['attachStream',['../classAssimp_1_1DefaultLogger.html#abc0ca7a337f8c3e38eca0eb45bb1ccf0',1,'Assimp::DefaultLogger::attachStream()'],['../classAssimp_1_1Logger.html#aaf32a42b02a7e227076013d01e349871',1,'Assimp::Logger::attachStream()'],['../classAssimp_1_1NullLogger.html#a31c05ecaee392b5fd34fd2dfd1cca559',1,'Assimp::NullLogger::attachStream()']]],
   ['attachtograph_355',['AttachToGraph',['../classAssimp_1_1SceneCombiner.html#a1672dc80009a8183edbabc4ef262b5c5',1,'Assimp::SceneCombiner']]],
-  ['axisinfo_356',['AxisInfo',['../structAxisInfo.html',1,'']]]
+  ['axisinfo_356',['AxisInfo',['../structptracey_1_1AxisInfo.html',1,'ptracey']]]
 ];

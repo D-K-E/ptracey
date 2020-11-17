@@ -75,105 +75,107 @@ $(function() {
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;ray.hpp&gt;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;vec3.hpp&gt;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="classperlin.html">    8</a></span>&#160;<span class="keyword">class </span><a class="code" href="classperlin.html">perlin</a> {</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;  <a class="code" href="classperlin.html">perlin</a>() {</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    ranvec = <span class="keyword">new</span> <a class="code" href="classvec3.html">vec3</a>[point_count];</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; point_count; ++i) {</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;      ranvec[i] = unit_vector(vec3::random(-1, 1));</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    }</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    perm_x = perlin_generate_perm();</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    perm_y = perlin_generate_perm();</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    perm_z = perlin_generate_perm();</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;  }</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  ~<a class="code" href="classperlin.html">perlin</a>() {</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keyword">delete</span>[] ranvec;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keyword">delete</span>[] perm_x;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">delete</span>[] perm_y;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">delete</span>[] perm_z;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  }</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  Real noise(<span class="keyword">const</span> <a class="code" href="classvec3.html">point3</a> &amp;p)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">auto</span> u = p.x() - floor(p.x());</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">auto</span> v = p.y() - floor(p.y());</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keyword">auto</span> w = p.z() - floor(p.z());</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">auto</span> i = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(floor(p.x()));</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keyword">auto</span> j = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(floor(p.y()));</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">auto</span> k = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(floor(p.z()));</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <a class="code" href="classvec3.html">vec3</a> c[2][2][2];</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> di = 0; di &lt; 2; di++)</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> dj = 0; dj &lt; 2; dj++)</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> dk = 0; dk &lt; 2; dk++)</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;          c[di][dj][dk] = ranvec[perm_x[(i + di) &amp; 255] ^</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                                 perm_y[(j + dj) &amp; 255] ^</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                                 perm_z[(k + dk) &amp; 255]];</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordflow">return</span> perlin_interp(c, u, v, w);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  }</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  Real turb(<span class="keyword">const</span> <a class="code" href="classvec3.html">point3</a> &amp;p, <span class="keywordtype">int</span> depth = 7)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keyword">auto</span> accum = 0.0;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keyword">auto</span> temp_p = p;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">auto</span> weight = 1.0;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; depth; i++) {</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;      accum += weight * noise(temp_p);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      weight *= 0.5;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      temp_p *= 2;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    }</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordflow">return</span> fabs(accum);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  }</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">int</span> point_count = 256;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <a class="code" href="classvec3.html">vec3</a> *ranvec;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keywordtype">int</span> *perm_x;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordtype">int</span> *perm_y;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keywordtype">int</span> *perm_z;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">int</span> *perlin_generate_perm() {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keyword">auto</span> p = <span class="keyword">new</span> <span class="keywordtype">int</span>[point_count];</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; point_count; i++)</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;      p[i] = i;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    permute(p, point_count);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordflow">return</span> p;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  }</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">void</span> permute(<span class="keywordtype">int</span> *p, <span class="keywordtype">int</span> n) {</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = n - 1; i &gt; 0; i--) {</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;      <span class="keywordtype">int</span> target = random_int(0, i);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;      <span class="keywordtype">int</span> tmp = p[i];</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      p[i] = p[target];</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      p[target] = tmp;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    }</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  }</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keyword">static</span> Real perlin_interp(<a class="code" href="classvec3.html">vec3</a> c[2][2][2], Real u, Real v,</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                            Real w) {</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keyword">auto</span> uu = u * u * (3 - 2 * u);</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keyword">auto</span> vv = v * v * (3 - 2 * v);</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keyword">auto</span> ww = w * w * (3 - 2 * w);</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keyword">auto</span> accum = 0.0;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 2; i++)</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; 2; j++)</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; 2; k++) {</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;          <a class="code" href="classvec3.html">vec3</a> weight_v(u - i, v - j, w - k);</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;          accum += (i * uu + (1 - i) * (1 - uu)) *</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                   (j * vv + (1 - j) * (1 - vv)) *</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                   (k * ww + (1 - k) * (1 - ww)) *</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                   dot(c[i][j][k], weight_v);</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        }</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keywordflow">return</span> accum;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  }</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;};</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">using namespace </span>ptracey;</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">namespace </span>ptracey {</div>
+<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="classptracey_1_1perlin.html">    9</a></span>&#160;<span class="keyword">class </span><a class="code" href="classptracey_1_1perlin.html">perlin</a> {</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;  <a class="code" href="classptracey_1_1perlin.html">perlin</a>() {</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    ranvec = <span class="keyword">new</span> <a class="code" href="classptracey_1_1vec3.html">vec3</a>[point_count];</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; point_count; ++i) {</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;      ranvec[i] = unit_vector(vec3::random(-1, 1));</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    }</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    perm_x = perlin_generate_perm();</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    perm_y = perlin_generate_perm();</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    perm_z = perlin_generate_perm();</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  }</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  ~<a class="code" href="classptracey_1_1perlin.html">perlin</a>() {</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keyword">delete</span>[] ranvec;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">delete</span>[] perm_x;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">delete</span>[] perm_y;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keyword">delete</span>[] perm_z;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  }</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  Real noise(<span class="keyword">const</span> <a class="code" href="classptracey_1_1vec3.html">point3</a> &amp;p)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">auto</span> u = p.x() - floor(p.x());</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keyword">auto</span> v = p.y() - floor(p.y());</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">auto</span> w = p.z() - floor(p.z());</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keyword">auto</span> i = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(floor(p.x()));</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">auto</span> j = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(floor(p.y()));</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">auto</span> k = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(floor(p.z()));</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <a class="code" href="classptracey_1_1vec3.html">vec3</a> c[2][2][2];</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> di = 0; di &lt; 2; di++)</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> dj = 0; dj &lt; 2; dj++)</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> dk = 0; dk &lt; 2; dk++)</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;          c[di][dj][dk] = ranvec[perm_x[(i + di) &amp; 255] ^</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                                 perm_y[(j + dj) &amp; 255] ^</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                                 perm_z[(k + dk) &amp; 255]];</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordflow">return</span> perlin_interp(c, u, v, w);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  }</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  Real turb(<span class="keyword">const</span> <a class="code" href="classptracey_1_1vec3.html">point3</a> &amp;p, <span class="keywordtype">int</span> depth = 7)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keyword">auto</span> accum = 0.0;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">auto</span> temp_p = p;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keyword">auto</span> weight = 1.0;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; depth; i++) {</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      accum += weight * noise(temp_p);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      weight *= 0.5;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      temp_p *= 2;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    }</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordflow">return</span> fabs(accum);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  }</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">int</span> point_count = 256;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <a class="code" href="classptracey_1_1vec3.html">vec3</a> *ranvec;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordtype">int</span> *perm_x;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keywordtype">int</span> *perm_y;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordtype">int</span> *perm_z;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">int</span> *perlin_generate_perm() {</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keyword">auto</span> p = <span class="keyword">new</span> <span class="keywordtype">int</span>[point_count];</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; point_count; i++)</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      p[i] = i;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    permute(p, point_count);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordflow">return</span> p;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  }</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">void</span> permute(<span class="keywordtype">int</span> *p, <span class="keywordtype">int</span> n) {</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = n - 1; i &gt; 0; i--) {</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;      <span class="keywordtype">int</span> target = random_int(0, i);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      <span class="keywordtype">int</span> tmp = p[i];</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      p[i] = p[target];</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      p[target] = tmp;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    }</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  }</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keyword">static</span> Real perlin_interp(<a class="code" href="classptracey_1_1vec3.html">vec3</a> c[2][2][2], Real u, Real v,</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                            Real w) {</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keyword">auto</span> uu = u * u * (3 - 2 * u);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keyword">auto</span> vv = v * v * (3 - 2 * v);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keyword">auto</span> ww = w * w * (3 - 2 * w);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keyword">auto</span> accum = 0.0;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 2; i++)</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; 2; j++)</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; 2; k++) {</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;          <a class="code" href="classptracey_1_1vec3.html">vec3</a> weight_v(u - i, v - j, w - k);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;          accum += (i * uu + (1 - i) * (1 - uu)) *</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                   (j * vv + (1 - j) * (1 - vv)) *</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                   (k * ww + (1 - k) * (1 - ww)) *</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                   dot(c[i][j][k], weight_v);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        }</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keywordflow">return</span> accum;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  }</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;};</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclassvec3_html"><div class="ttname"><a href="classvec3.html">vec3</a></div><div class="ttdef"><b>Definition:</b> vec3.hpp:6</div></div>
-<div class="ttc" id="aclassperlin_html"><div class="ttname"><a href="classperlin.html">perlin</a></div><div class="ttdef"><b>Definition:</b> perlin.hpp:8</div></div>
+<div class="ttc" id="aclassptracey_1_1perlin_html"><div class="ttname"><a href="classptracey_1_1perlin.html">ptracey::perlin</a></div><div class="ttdef"><b>Definition:</b> perlin.hpp:9</div></div>
+<div class="ttc" id="aclassptracey_1_1vec3_html"><div class="ttname"><a href="classptracey_1_1vec3.html">ptracey::vec3</a></div><div class="ttdef"><b>Definition:</b> vec3.hpp:7</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

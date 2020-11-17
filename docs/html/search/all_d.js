@@ -6,7 +6,7 @@ var searchData=
   ['nodeattachmentinfo_757',['NodeAttachmentInfo',['../structAssimp_1_1NodeAttachmentInfo.html',1,'Assimp']]],
   ['nodeconverter_758',['NodeConverter',['../structAssimp_1_1NodeConverter.html',1,'Assimp']]],
   ['nodes_759',['nodes',['../structaiMemoryInfo.html#a5a084942c81a29f7bb03c9903430b033',1,'aiMemoryInfo']]],
-  ['noise_5ftexture_760',['noise_texture',['../classnoise__texture.html',1,'']]],
+  ['noise_5ftexture_760',['noise_texture',['../classptracey_1_1noise__texture.html',1,'ptracey']]],
   ['normal_761',['NORMAL',['../classAssimp_1_1Logger.html#a8b6248a0fd062431e8572556350d29e6a79d16f85dc21486ee489f300027e8eda',1,'Assimp::Logger']]],
   ['nulllogger_762',['NullLogger',['../classAssimp_1_1NullLogger.html',1,'Assimp']]],
   ['nulllogger_2ehpp_763',['NullLogger.hpp',['../NullLogger_8hpp.html',1,'']]]

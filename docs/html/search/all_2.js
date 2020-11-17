@@ -9,9 +9,9 @@ var searchData=
   ['blobiostream_363',['BlobIOStream',['../classAssimp_1_1BlobIOStream.html',1,'Assimp']]],
   ['blobiosystem_364',['BlobIOSystem',['../classAssimp_1_1BlobIOSystem.html',1,'Assimp']]],
   ['bonewithhash_365',['BoneWithHash',['../structAssimp_1_1BoneWithHash.html',1,'Assimp']]],
-  ['box_366',['box',['../classbox.html',1,'']]],
+  ['box_366',['box',['../classptracey_1_1box.html',1,'ptracey']]],
   ['builduniquebonelist_367',['BuildUniqueBoneList',['../classAssimp_1_1SceneCombiner.html#a9bfbbbab2ece2925fc3628c587ea9dcc',1,'Assimp::SceneCombiner']]],
-  ['bvh_5fnode_368',['bvh_node',['../classbvh__node.html',1,'']]],
+  ['bvh_5fnode_368',['bvh_node',['../classptracey_1_1bvh__node.html',1,'ptracey']]],
   ['byteswap_369',['ByteSwap',['../classAssimp_1_1ByteSwap.html',1,'Assimp']]],
   ['byteswapper_370',['ByteSwapper',['../structAssimp_1_1Intern_1_1ByteSwapper.html',1,'Assimp::Intern']]],
   ['byteswapper_3c_20t_2c_20false_20_3e_371',['ByteSwapper&lt; T, false &gt;',['../structAssimp_1_1Intern_1_1ByteSwapper_3_01T_00_01false_01_4.html',1,'Assimp::Intern']]]

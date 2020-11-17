@@ -4599,7 +4599,7 @@ $(function() {
 <div class="line"><a name="l04537"></a><span class="lineno"> 4537</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> stbi_uc stbi__depth_scale_table[9] = { 0, 0xff, 0x55, 0, 0x11, 0,0,0, 0x01 };</div>
 <div class="line"><a name="l04538"></a><span class="lineno"> 4538</span>&#160; </div>
 <div class="line"><a name="l04539"></a><span class="lineno"> 4539</span>&#160;<span class="comment">// create the png data from post-deflated data</span></div>
-<div class="line"><a name="l04540"></a><span class="lineno"> 4540</span>&#160;<span class="keyword">static</span> <span class="keywordtype">int</span> stbi__create_png_image_raw(stbi__png *a, stbi_uc *raw, stbi__uint32 raw_len, <span class="keywordtype">int</span> out_n, stbi__uint32 x, stbi__uint32 y, <span class="keywordtype">int</span> depth, <span class="keywordtype">int</span> <a class="code" href="classvec3.html">color</a>)</div>
+<div class="line"><a name="l04540"></a><span class="lineno"> 4540</span>&#160;<span class="keyword">static</span> <span class="keywordtype">int</span> stbi__create_png_image_raw(stbi__png *a, stbi_uc *raw, stbi__uint32 raw_len, <span class="keywordtype">int</span> out_n, stbi__uint32 x, stbi__uint32 y, <span class="keywordtype">int</span> depth, <span class="keywordtype">int</span> color)</div>
 <div class="line"><a name="l04541"></a><span class="lineno"> 4541</span>&#160;{</div>
 <div class="line"><a name="l04542"></a><span class="lineno"> 4542</span>&#160;   <span class="keywordtype">int</span> bytes = (depth == 16? 2 : 1);</div>
 <div class="line"><a name="l04543"></a><span class="lineno"> 4543</span>&#160;   stbi__context *s = a-&gt;s;</div>
@@ -4732,7 +4732,7 @@ $(function() {
 <div class="line"><a name="l04670"></a><span class="lineno"> 4670</span>&#160;         stbi_uc *in  = a-&gt;out + stride*j + x*out_n - img_width_bytes;</div>
 <div class="line"><a name="l04671"></a><span class="lineno"> 4671</span>&#160;         <span class="comment">// unpack 1/2/4-bit into a 8-bit buffer. allows us to keep the common 8-bit path optimal at minimal cost for 1/2/4-bit</span></div>
 <div class="line"><a name="l04672"></a><span class="lineno"> 4672</span>&#160;         <span class="comment">// png guarante byte alignment, if width is not multiple of 8/4/2 we&#39;ll decode dummy trailing data that will be skipped in the later loop</span></div>
-<div class="line"><a name="l04673"></a><span class="lineno"> 4673</span>&#160;         stbi_uc scale = (<a class="code" href="classvec3.html">color</a> == 0) ? stbi__depth_scale_table[depth] : 1; <span class="comment">// scale grayscale values to 0..255 range</span></div>
+<div class="line"><a name="l04673"></a><span class="lineno"> 4673</span>&#160;         stbi_uc scale = (color == 0) ? stbi__depth_scale_table[depth] : 1; <span class="comment">// scale grayscale values to 0..255 range</span></div>
 <div class="line"><a name="l04674"></a><span class="lineno"> 4674</span>&#160; </div>
 <div class="line"><a name="l04675"></a><span class="lineno"> 4675</span>&#160;         <span class="comment">// note that the final byte might overshoot and write more data than desired.</span></div>
 <div class="line"><a name="l04676"></a><span class="lineno"> 4676</span>&#160;         <span class="comment">// we can allocate enough data that this never writes out of memory, but it</span></div>
@@ -4811,14 +4811,14 @@ $(function() {
 <div class="line"><a name="l04749"></a><span class="lineno"> 4749</span>&#160;   <span class="keywordflow">return</span> 1;</div>
 <div class="line"><a name="l04750"></a><span class="lineno"> 4750</span>&#160;}</div>
 <div class="line"><a name="l04751"></a><span class="lineno"> 4751</span>&#160; </div>
-<div class="line"><a name="l04752"></a><span class="lineno"> 4752</span>&#160;<span class="keyword">static</span> <span class="keywordtype">int</span> stbi__create_png_image(stbi__png *a, stbi_uc *image_data, stbi__uint32 image_data_len, <span class="keywordtype">int</span> out_n, <span class="keywordtype">int</span> depth, <span class="keywordtype">int</span> <a class="code" href="classvec3.html">color</a>, <span class="keywordtype">int</span> interlaced)</div>
+<div class="line"><a name="l04752"></a><span class="lineno"> 4752</span>&#160;<span class="keyword">static</span> <span class="keywordtype">int</span> stbi__create_png_image(stbi__png *a, stbi_uc *image_data, stbi__uint32 image_data_len, <span class="keywordtype">int</span> out_n, <span class="keywordtype">int</span> depth, <span class="keywordtype">int</span> color, <span class="keywordtype">int</span> interlaced)</div>
 <div class="line"><a name="l04753"></a><span class="lineno"> 4753</span>&#160;{</div>
 <div class="line"><a name="l04754"></a><span class="lineno"> 4754</span>&#160;   <span class="keywordtype">int</span> bytes = (depth == 16 ? 2 : 1);</div>
 <div class="line"><a name="l04755"></a><span class="lineno"> 4755</span>&#160;   <span class="keywordtype">int</span> out_bytes = out_n * bytes;</div>
 <div class="line"><a name="l04756"></a><span class="lineno"> 4756</span>&#160;   stbi_uc *<span class="keyword">final</span>;</div>
 <div class="line"><a name="l04757"></a><span class="lineno"> 4757</span>&#160;   <span class="keywordtype">int</span> p;</div>
 <div class="line"><a name="l04758"></a><span class="lineno"> 4758</span>&#160;   <span class="keywordflow">if</span> (!interlaced)</div>
-<div class="line"><a name="l04759"></a><span class="lineno"> 4759</span>&#160;      <span class="keywordflow">return</span> stbi__create_png_image_raw(a, image_data, image_data_len, out_n, a-&gt;s-&gt;img_x, a-&gt;s-&gt;img_y, depth, <a class="code" href="classvec3.html">color</a>);</div>
+<div class="line"><a name="l04759"></a><span class="lineno"> 4759</span>&#160;      <span class="keywordflow">return</span> stbi__create_png_image_raw(a, image_data, image_data_len, out_n, a-&gt;s-&gt;img_x, a-&gt;s-&gt;img_y, depth, color);</div>
 <div class="line"><a name="l04760"></a><span class="lineno"> 4760</span>&#160; </div>
 <div class="line"><a name="l04761"></a><span class="lineno"> 4761</span>&#160;   <span class="comment">// de-interlacing</span></div>
 <div class="line"><a name="l04762"></a><span class="lineno"> 4762</span>&#160;   <span class="keyword">final</span> = (stbi_uc *) stbi__malloc_mad3(a-&gt;s-&gt;img_x, a-&gt;s-&gt;img_y, out_bytes, 0);</div>
@@ -4833,7 +4833,7 @@ $(function() {
 <div class="line"><a name="l04771"></a><span class="lineno"> 4771</span>&#160;      y = (a-&gt;s-&gt;img_y - yorig[p] + yspc[p]-1) / yspc[p];</div>
 <div class="line"><a name="l04772"></a><span class="lineno"> 4772</span>&#160;      <span class="keywordflow">if</span> (x &amp;&amp; y) {</div>
 <div class="line"><a name="l04773"></a><span class="lineno"> 4773</span>&#160;         stbi__uint32 img_len = ((((a-&gt;s-&gt;img_n * x * depth) + 7) &gt;&gt; 3) + 1) * y;</div>
-<div class="line"><a name="l04774"></a><span class="lineno"> 4774</span>&#160;         <span class="keywordflow">if</span> (!stbi__create_png_image_raw(a, image_data, image_data_len, out_n, x, y, depth, <a class="code" href="classvec3.html">color</a>)) {</div>
+<div class="line"><a name="l04774"></a><span class="lineno"> 4774</span>&#160;         <span class="keywordflow">if</span> (!stbi__create_png_image_raw(a, image_data, image_data_len, out_n, x, y, depth, color)) {</div>
 <div class="line"><a name="l04775"></a><span class="lineno"> 4775</span>&#160;            STBI_FREE(<span class="keyword">final</span>);</div>
 <div class="line"><a name="l04776"></a><span class="lineno"> 4776</span>&#160;            <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l04777"></a><span class="lineno"> 4777</span>&#160;         }</div>
@@ -5006,7 +5006,7 @@ $(function() {
 <div class="line"><a name="l04944"></a><span class="lineno"> 4944</span>&#160;   stbi_uc has_trans=0, tc[3]={0};</div>
 <div class="line"><a name="l04945"></a><span class="lineno"> 4945</span>&#160;   stbi__uint16 tc16[3];</div>
 <div class="line"><a name="l04946"></a><span class="lineno"> 4946</span>&#160;   stbi__uint32 ioff=0, idata_limit=0, i, pal_len=0;</div>
-<div class="line"><a name="l04947"></a><span class="lineno"> 4947</span>&#160;   <span class="keywordtype">int</span> first=1,k,interlace=0, <a class="code" href="classvec3.html">color</a>=0, is_iphone=0;</div>
+<div class="line"><a name="l04947"></a><span class="lineno"> 4947</span>&#160;   <span class="keywordtype">int</span> first=1,k,interlace=0, color=0, is_iphone=0;</div>
 <div class="line"><a name="l04948"></a><span class="lineno"> 4948</span>&#160;   stbi__context *s = z-&gt;s;</div>
 <div class="line"><a name="l04949"></a><span class="lineno"> 4949</span>&#160; </div>
 <div class="line"><a name="l04950"></a><span class="lineno"> 4950</span>&#160;   z-&gt;expanded = NULL;</div>
@@ -5034,15 +5034,15 @@ $(function() {
 <div class="line"><a name="l04972"></a><span class="lineno"> 4972</span>&#160;            <span class="keywordflow">if</span> (s-&gt;img_y &gt; STBI_MAX_DIMENSIONS) <span class="keywordflow">return</span> stbi__err(<span class="stringliteral">&quot;too large&quot;</span>,<span class="stringliteral">&quot;Very large image (corrupt?)&quot;</span>);</div>
 <div class="line"><a name="l04973"></a><span class="lineno"> 4973</span>&#160;            <span class="keywordflow">if</span> (s-&gt;img_x &gt; STBI_MAX_DIMENSIONS) <span class="keywordflow">return</span> stbi__err(<span class="stringliteral">&quot;too large&quot;</span>,<span class="stringliteral">&quot;Very large image (corrupt?)&quot;</span>);</div>
 <div class="line"><a name="l04974"></a><span class="lineno"> 4974</span>&#160;            z-&gt;depth = stbi__get8(s);  <span class="keywordflow">if</span> (z-&gt;depth != 1 &amp;&amp; z-&gt;depth != 2 &amp;&amp; z-&gt;depth != 4 &amp;&amp; z-&gt;depth != 8 &amp;&amp; z-&gt;depth != 16)  <span class="keywordflow">return</span> stbi__err(<span class="stringliteral">&quot;1/2/4/8/16-bit only&quot;</span>,<span class="stringliteral">&quot;PNG not supported: 1/2/4/8/16-bit only&quot;</span>);</div>
-<div class="line"><a name="l04975"></a><span class="lineno"> 4975</span>&#160;            <a class="code" href="classvec3.html">color</a> = stbi__get8(s);  <span class="keywordflow">if</span> (<a class="code" href="classvec3.html">color</a> &gt; 6)         <span class="keywordflow">return</span> stbi__err(<span class="stringliteral">&quot;bad ctype&quot;</span>,<span class="stringliteral">&quot;Corrupt PNG&quot;</span>);</div>
-<div class="line"><a name="l04976"></a><span class="lineno"> 4976</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="classvec3.html">color</a> == 3 &amp;&amp; z-&gt;depth == 16)                  <span class="keywordflow">return</span> stbi__err(<span class="stringliteral">&quot;bad ctype&quot;</span>,<span class="stringliteral">&quot;Corrupt PNG&quot;</span>);</div>
-<div class="line"><a name="l04977"></a><span class="lineno"> 4977</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="classvec3.html">color</a> == 3) pal_img_n = 3; <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="classvec3.html">color</a> &amp; 1) <span class="keywordflow">return</span> stbi__err(<span class="stringliteral">&quot;bad ctype&quot;</span>,<span class="stringliteral">&quot;Corrupt PNG&quot;</span>);</div>
+<div class="line"><a name="l04975"></a><span class="lineno"> 4975</span>&#160;            color = stbi__get8(s);  <span class="keywordflow">if</span> (color &gt; 6)         <span class="keywordflow">return</span> stbi__err(<span class="stringliteral">&quot;bad ctype&quot;</span>,<span class="stringliteral">&quot;Corrupt PNG&quot;</span>);</div>
+<div class="line"><a name="l04976"></a><span class="lineno"> 4976</span>&#160;            <span class="keywordflow">if</span> (color == 3 &amp;&amp; z-&gt;depth == 16)                  <span class="keywordflow">return</span> stbi__err(<span class="stringliteral">&quot;bad ctype&quot;</span>,<span class="stringliteral">&quot;Corrupt PNG&quot;</span>);</div>
+<div class="line"><a name="l04977"></a><span class="lineno"> 4977</span>&#160;            <span class="keywordflow">if</span> (color == 3) pal_img_n = 3; <span class="keywordflow">else</span> <span class="keywordflow">if</span> (color &amp; 1) <span class="keywordflow">return</span> stbi__err(<span class="stringliteral">&quot;bad ctype&quot;</span>,<span class="stringliteral">&quot;Corrupt PNG&quot;</span>);</div>
 <div class="line"><a name="l04978"></a><span class="lineno"> 4978</span>&#160;            comp  = stbi__get8(s);  <span class="keywordflow">if</span> (comp) <span class="keywordflow">return</span> stbi__err(<span class="stringliteral">&quot;bad comp method&quot;</span>,<span class="stringliteral">&quot;Corrupt PNG&quot;</span>);</div>
 <div class="line"><a name="l04979"></a><span class="lineno"> 4979</span>&#160;            filter= stbi__get8(s);  <span class="keywordflow">if</span> (filter) <span class="keywordflow">return</span> stbi__err(<span class="stringliteral">&quot;bad filter method&quot;</span>,<span class="stringliteral">&quot;Corrupt PNG&quot;</span>);</div>
 <div class="line"><a name="l04980"></a><span class="lineno"> 4980</span>&#160;            interlace = stbi__get8(s); <span class="keywordflow">if</span> (interlace&gt;1) <span class="keywordflow">return</span> stbi__err(<span class="stringliteral">&quot;bad interlace method&quot;</span>,<span class="stringliteral">&quot;Corrupt PNG&quot;</span>);</div>
 <div class="line"><a name="l04981"></a><span class="lineno"> 4981</span>&#160;            <span class="keywordflow">if</span> (!s-&gt;img_x || !s-&gt;img_y) <span class="keywordflow">return</span> stbi__err(<span class="stringliteral">&quot;0-pixel image&quot;</span>,<span class="stringliteral">&quot;Corrupt PNG&quot;</span>);</div>
 <div class="line"><a name="l04982"></a><span class="lineno"> 4982</span>&#160;            <span class="keywordflow">if</span> (!pal_img_n) {</div>
-<div class="line"><a name="l04983"></a><span class="lineno"> 4983</span>&#160;               s-&gt;img_n = (<a class="code" href="classvec3.html">color</a> &amp; 2 ? 3 : 1) + (<a class="code" href="classvec3.html">color</a> &amp; 4 ? 1 : 0);</div>
+<div class="line"><a name="l04983"></a><span class="lineno"> 4983</span>&#160;               s-&gt;img_n = (color &amp; 2 ? 3 : 1) + (color &amp; 4 ? 1 : 0);</div>
 <div class="line"><a name="l04984"></a><span class="lineno"> 4984</span>&#160;               <span class="keywordflow">if</span> ((1 &lt;&lt; 30) / s-&gt;img_x / s-&gt;img_n &lt; s-&gt;img_y) <span class="keywordflow">return</span> stbi__err(<span class="stringliteral">&quot;too large&quot;</span>, <span class="stringliteral">&quot;Image too large to decode&quot;</span>);</div>
 <div class="line"><a name="l04985"></a><span class="lineno"> 4985</span>&#160;               <span class="keywordflow">if</span> (scan == STBI__SCAN_header) <span class="keywordflow">return</span> 1;</div>
 <div class="line"><a name="l04986"></a><span class="lineno"> 4986</span>&#160;            } <span class="keywordflow">else</span> {</div>
@@ -5127,7 +5127,7 @@ $(function() {
 <div class="line"><a name="l05065"></a><span class="lineno"> 5065</span>&#160;               s-&gt;img_out_n = s-&gt;img_n+1;</div>
 <div class="line"><a name="l05066"></a><span class="lineno"> 5066</span>&#160;            <span class="keywordflow">else</span></div>
 <div class="line"><a name="l05067"></a><span class="lineno"> 5067</span>&#160;               s-&gt;img_out_n = s-&gt;img_n;</div>
-<div class="line"><a name="l05068"></a><span class="lineno"> 5068</span>&#160;            <span class="keywordflow">if</span> (!stbi__create_png_image(z, z-&gt;expanded, raw_len, s-&gt;img_out_n, z-&gt;depth, <a class="code" href="classvec3.html">color</a>, interlace)) <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l05068"></a><span class="lineno"> 5068</span>&#160;            <span class="keywordflow">if</span> (!stbi__create_png_image(z, z-&gt;expanded, raw_len, s-&gt;img_out_n, z-&gt;depth, color, interlace)) <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l05069"></a><span class="lineno"> 5069</span>&#160;            <span class="keywordflow">if</span> (has_trans) {</div>
 <div class="line"><a name="l05070"></a><span class="lineno"> 5070</span>&#160;               <span class="keywordflow">if</span> (z-&gt;depth == 16) {</div>
 <div class="line"><a name="l05071"></a><span class="lineno"> 5071</span>&#160;                  <span class="keywordflow">if</span> (!stbi__compute_transparency16(z, tc16, s-&gt;img_out_n)) <span class="keywordflow">return</span> 0;</div>
@@ -5498,10 +5498,10 @@ $(function() {
 <div class="line"><a name="l05436"></a><span class="lineno"> 5436</span>&#160;         <span class="keywordflow">for</span> (j=0; j &lt; (int) s-&gt;img_y; ++j) {</div>
 <div class="line"><a name="l05437"></a><span class="lineno"> 5437</span>&#160;            <span class="keywordtype">int</span> bit_offset = 7, v = stbi__get8(s);</div>
 <div class="line"><a name="l05438"></a><span class="lineno"> 5438</span>&#160;            <span class="keywordflow">for</span> (i=0; i &lt; (int) s-&gt;img_x; ++i) {</div>
-<div class="line"><a name="l05439"></a><span class="lineno"> 5439</span>&#160;               <span class="keywordtype">int</span> <a class="code" href="classvec3.html">color</a> = (v&gt;&gt;bit_offset)&amp;0x1;</div>
-<div class="line"><a name="l05440"></a><span class="lineno"> 5440</span>&#160;               out[z++] = pal[<a class="code" href="classvec3.html">color</a>][0];</div>
-<div class="line"><a name="l05441"></a><span class="lineno"> 5441</span>&#160;               out[z++] = pal[<a class="code" href="classvec3.html">color</a>][1];</div>
-<div class="line"><a name="l05442"></a><span class="lineno"> 5442</span>&#160;               out[z++] = pal[<a class="code" href="classvec3.html">color</a>][2];</div>
+<div class="line"><a name="l05439"></a><span class="lineno"> 5439</span>&#160;               <span class="keywordtype">int</span> color = (v&gt;&gt;bit_offset)&amp;0x1;</div>
+<div class="line"><a name="l05440"></a><span class="lineno"> 5440</span>&#160;               out[z++] = pal[color][0];</div>
+<div class="line"><a name="l05441"></a><span class="lineno"> 5441</span>&#160;               out[z++] = pal[color][1];</div>
+<div class="line"><a name="l05442"></a><span class="lineno"> 5442</span>&#160;               out[z++] = pal[color][2];</div>
 <div class="line"><a name="l05443"></a><span class="lineno"> 5443</span>&#160;               <span class="keywordflow">if</span> (target == 4) out[z++] = 255;</div>
 <div class="line"><a name="l05444"></a><span class="lineno"> 5444</span>&#160;               <span class="keywordflow">if</span> (i+1 == (<span class="keywordtype">int</span>) s-&gt;img_x) <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l05445"></a><span class="lineno"> 5445</span>&#160;               <span class="keywordflow">if</span>((--bit_offset) &lt; 0) {</div>
@@ -7825,7 +7825,6 @@ $(function() {
 <div class="line"><a name="l07763"></a><span class="lineno"> 7763</span>&#160;<span class="comment">*/</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="astructstbi__io__callbacks_html"><div class="ttname"><a href="structstbi__io__callbacks.html">stbi_io_callbacks</a></div><div class="ttdef"><b>Definition:</b> stb_image.h:382</div></div>
-<div class="ttc" id="aclassvec3_html"><div class="ttname"><a href="classvec3.html">vec3</a></div><div class="ttdef"><b>Definition:</b> vec3.hpp:6</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">
