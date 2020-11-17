@@ -81,9 +81,9 @@ Inheritance diagram for lambertian:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af8e58b324776397a6598b2ec85a0b887"><td class="memItemLeft" align="right" valign="top"><a id="af8e58b324776397a6598b2ec85a0b887"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>lambertian</b> (const <a class="el" href="classvec3.html">color</a> &amp;a)</td></tr>
-<tr class="separator:af8e58b324776397a6598b2ec85a0b887"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c1cc538e12871d30768086fd1c2277e"><td class="memItemLeft" align="right" valign="top"><a id="a0c1cc538e12871d30768086fd1c2277e"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>lambertian</b> (const shared_ptr&lt; <a class="el" href="classvec3.html">spectrum</a> &gt; &amp;a)</td></tr>
+<tr class="separator:a0c1cc538e12871d30768086fd1c2277e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea3d8319e98c01893f36cc54d3c0d43a"><td class="memItemLeft" align="right" valign="top"><a id="aea3d8319e98c01893f36cc54d3c0d43a"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>lambertian</b> (shared_ptr&lt; <a class="el" href="classtexture.html">texture</a> &gt; a)</td></tr>
 <tr class="separator:aea3d8319e98c01893f36cc54d3c0d43a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -94,9 +94,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>scatter</b> (const <a
 double&#160;</td><td class="memItemRight" valign="bottom"><b>scattering_pdf</b> (const <a class="el" href="classray.html">ray</a> &amp;r_in, const <a class="el" href="structhit__record.html">hit_record</a> &amp;rec, const <a class="el" href="classray.html">ray</a> &amp;scattered) const override</td></tr>
 <tr class="separator:a026d2b3e1e0b601c5b6ac4a095d2f382"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classmaterial"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classmaterial')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classmaterial.html">material</a></td></tr>
-<tr class="memitem:aabfcf0d27478c3c48de8d33b5bf0d0a7 inherit pub_methods_classmaterial"><td class="memItemLeft" align="right" valign="top"><a id="aabfcf0d27478c3c48de8d33b5bf0d0a7"></a>
-virtual <a class="el" href="classvec3.html">color</a>&#160;</td><td class="memItemRight" valign="bottom"><b>emitted</b> (const <a class="el" href="classray.html">ray</a> &amp;r_in, const <a class="el" href="structhit__record.html">hit_record</a> &amp;rec, double u, double v, const <a class="el" href="classvec3.html">point3</a> &amp;p) const</td></tr>
-<tr class="separator:aabfcf0d27478c3c48de8d33b5bf0d0a7 inherit pub_methods_classmaterial"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abfd72d3c3dc02d65ca6a3c951ae943f8 inherit pub_methods_classmaterial"><td class="memItemLeft" align="right" valign="top"><a id="abfd72d3c3dc02d65ca6a3c951ae943f8"></a>
+virtual shared_ptr&lt; <a class="el" href="classvec3.html">spectrum</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>emitted</b> (const <a class="el" href="classray.html">ray</a> &amp;r_in, const <a class="el" href="structhit__record.html">hit_record</a> &amp;rec, Real u, Real v, const <a class="el" href="classvec3.html">point3</a> &amp;p) const</td></tr>
+<tr class="separator:abfd72d3c3dc02d65ca6a3c951ae943f8 inherit pub_methods_classmaterial"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>

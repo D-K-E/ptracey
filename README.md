@@ -76,26 +76,32 @@ glass sphere"/>
 ## A Special Hallmark for #RTKitty
 
 The model is made by 
-EKA: twitter (`@bakin____`)
+EKA: twitter (`@bakin___`)[https://twitter.com/bakin__]
 
 It is traced by PTracey.
 
-Anger Kitty
+- Anger Kitty
+
 <img src="image/angerkitty.png" alt="kitty on a box with reddish color"/>
 
-Glass Kitty
+- Glass Kitty
+
 <img src="image/glasskitty.png" alt="Cornell box with glass kitty"/>
 
-Invisible Kitty
+- Invisible Kitty
+
 <img src="image/invisiblekitty.png" alt="Cornell box with invisible kitty"/>
 
-Metal Kitty
+- Metal Kitty
+
 <img src="image/metalkitty.png" alt="Cornell Box with metal kitty"/>
 
-Night is Yours Kitty
+- Night is Yours Kitty
+
 <img src="image/nightisyourskitty.png" alt="Magenta colored kitty in cornell
 box setting"/>
 
-Glow me Thy Name Kitty 
+- Glow me Thy Name Kitty 
+
 <img src="image/phosphorkitty.png" alt="Greenish colored kitty in cornell box
 setting"/>

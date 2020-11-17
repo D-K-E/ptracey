@@ -84,20 +84,26 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6b85a9f054d06a3091991895faa9cb55"><td class="memItemLeft" align="right" valign="top"><a id="a6b85a9f054d06a3091991895faa9cb55"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>model</b> (std::string mpath)</td></tr>
 <tr class="separator:a6b85a9f054d06a3091991895faa9cb55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecf55fa9630f4f09a146f7be4e980fa1"><td class="memItemLeft" align="right" valign="top"><a id="aecf55fa9630f4f09a146f7be4e980fa1"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>model</b> (std::string mpath, const <a class="el" href="classmatrix.html">matrix</a> &amp;transM)</td></tr>
+<tr class="separator:aecf55fa9630f4f09a146f7be4e980fa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9147d0f1a8eebecf439aedfc0089dc4d"><td class="memItemLeft" align="right" valign="top"><a id="a9147d0f1a8eebecf439aedfc0089dc4d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>model</b> (std::string mpath, const <a class="el" href="classmatrix.html">matrix</a> &amp;transM, shared_ptr&lt; <a class="el" href="classmaterial.html">material</a> &gt; mt)</td></tr>
+<tr class="separator:a9147d0f1a8eebecf439aedfc0089dc4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d1710add228e07d24ac5124d8a906e6"><td class="memItemLeft" align="right" valign="top"><a id="a4d1710add228e07d24ac5124d8a906e6"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>loadModel</b> (std::string mpath)</td></tr>
 <tr class="separator:a4d1710add228e07d24ac5124d8a906e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e2b81f8b27c6a51bb07977223c8e568"><td class="memItemLeft" align="right" valign="top"><a id="a4e2b81f8b27c6a51bb07977223c8e568"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>processNode</b> (aiNode *node, const aiScene *scene, int node_id, std::vector&lt; shared_ptr&lt; <a class="el" href="classhittable.html">hittable</a> &gt;&gt; &amp;ms)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>processNode</b> (<a class="el" href="structaiNode.html">aiNode</a> *node, const <a class="el" href="structaiScene.html">aiScene</a> *scene, int node_id, std::vector&lt; shared_ptr&lt; <a class="el" href="classhittable.html">hittable</a> &gt;&gt; &amp;ms)</td></tr>
 <tr class="separator:a4e2b81f8b27c6a51bb07977223c8e568"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f112db2dae83accf6e1589bb3ca2bd3"><td class="memItemLeft" align="right" valign="top"><a id="a3f112db2dae83accf6e1589bb3ca2bd3"></a>
-std::vector&lt; shared_ptr&lt; <a class="el" href="classhittable.html">hittable</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>processTriangles</b> (aiMesh *msh)</td></tr>
-<tr class="separator:a3f112db2dae83accf6e1589bb3ca2bd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1120d0800405380a6bb0eb95c7bbd61"><td class="memItemLeft" align="right" valign="top"><a id="aa1120d0800405380a6bb0eb95c7bbd61"></a>
+std::vector&lt; shared_ptr&lt; <a class="el" href="classhittable.html">hittable</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>processTriangles</b> (<a class="el" href="structaiMesh.html">aiMesh</a> *msh, shared_ptr&lt; <a class="el" href="classmaterial.html">material</a> &gt; mat_ptr)</td></tr>
+<tr class="separator:aa1120d0800405380a6bb0eb95c7bbd61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1fddb727e43b021dcc320cc4acee8f17"><td class="memItemLeft" align="right" valign="top"><a id="a1fddb727e43b021dcc320cc4acee8f17"></a>
-shared_ptr&lt; <a class="el" href="classmaterial.html">material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>processMaterial</b> (aiMaterial *mat)</td></tr>
+shared_ptr&lt; <a class="el" href="classmaterial.html">material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>processMaterial</b> (<a class="el" href="structaiMaterial.html">aiMaterial</a> *mat)</td></tr>
 <tr class="separator:a1fddb727e43b021dcc320cc4acee8f17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a875ca41d81f2103d0dae4207e5e4d549"><td class="memItemLeft" align="right" valign="top"><a id="a875ca41d81f2103d0dae4207e5e4d549"></a>
-shared_ptr&lt; <a class="el" href="classhittable.html">hittable</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>processMesh</b> (aiMesh *msh, const aiScene *scene, int mesh_id)</td></tr>
+shared_ptr&lt; <a class="el" href="classhittable.html">hittable</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>processMesh</b> (<a class="el" href="structaiMesh.html">aiMesh</a> *msh, const <a class="el" href="structaiScene.html">aiScene</a> *scene, int mesh_id)</td></tr>
 <tr class="separator:a875ca41d81f2103d0dae4207e5e4d549"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac6ff10bac5015e89b356f1f6661b690b"><td class="memItemLeft" align="right" valign="top"><a id="ac6ff10bac5015e89b356f1f6661b690b"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>hit</b> (const <a class="el" href="classray.html">ray</a> &amp;r, double t_min, double t_max, <a class="el" href="structhit__record.html">hit_record</a> &amp;rec) const override</td></tr>
@@ -117,9 +123,15 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a9a45328e5e9bc7b8f237b4747bd3b417"><td class="memItemLeft" align="right" valign="top"><a id="a9a45328e5e9bc7b8f237b4747bd3b417"></a>
 shared_ptr&lt; <a class="el" href="classhittable.html">hittable</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>meshes</b></td></tr>
 <tr class="separator:a9a45328e5e9bc7b8f237b4747bd3b417"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72345b2d05768d9af720502fb8192351"><td class="memItemLeft" align="right" valign="top"><a id="a72345b2d05768d9af720502fb8192351"></a>
+shared_ptr&lt; <a class="el" href="classmaterial.html">material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>mat</b> = nullptr</td></tr>
+<tr class="separator:a72345b2d05768d9af720502fb8192351"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7325ae0dd55c02341abd74bb13312e29"><td class="memItemLeft" align="right" valign="top"><a id="a7325ae0dd55c02341abd74bb13312e29"></a>
 <a class="el" href="classhittable__list.html">hittable_list</a>&#160;</td><td class="memItemRight" valign="bottom"><b>list</b></td></tr>
 <tr class="separator:a7325ae0dd55c02341abd74bb13312e29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe0c82ee937b800854c1f37e2f3e6635"><td class="memItemLeft" align="right" valign="top"><a id="afe0c82ee937b800854c1f37e2f3e6635"></a>
+<a class="el" href="classmatrix.html">matrix</a>&#160;</td><td class="memItemRight" valign="bottom"><b>transMat</b></td></tr>
+<tr class="separator:afe0c82ee937b800854c1f37e2f3e6635"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classhittable"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classhittable')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classhittable.html">hittable</a></td></tr>
 <tr class="memitem:aad5e99c2132c82a1d06add858325a531 inherit pub_attribs_classhittable"><td class="memItemLeft" align="right" valign="top"><a id="aad5e99c2132c82a1d06add858325a531"></a>
 shared_ptr&lt; <a class="el" href="classmaterial.html">material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>mat_ptr</b></td></tr>

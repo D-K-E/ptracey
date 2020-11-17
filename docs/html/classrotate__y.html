@@ -81,19 +81,19 @@ Inheritance diagram for rotate_y:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac12ea9a4942937b2f76857a0329ca6ad"><td class="memItemLeft" align="right" valign="top"><a id="ac12ea9a4942937b2f76857a0329ca6ad"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>rotate_y</b> (shared_ptr&lt; <a class="el" href="classhittable.html">hittable</a> &gt; p, double angle)</td></tr>
-<tr class="separator:ac12ea9a4942937b2f76857a0329ca6ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab145f6b4e63d95803a2eac0be58cc29e"><td class="memItemLeft" align="right" valign="top"><a id="ab145f6b4e63d95803a2eac0be58cc29e"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>hit</b> (const <a class="el" href="classray.html">ray</a> &amp;r, double t_min, double t_max, <a class="el" href="structhit__record.html">hit_record</a> &amp;rec) const override</td></tr>
-<tr class="separator:ab145f6b4e63d95803a2eac0be58cc29e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a9c0106e98bd7364d7d70523d8a300a"><td class="memItemLeft" align="right" valign="top"><a id="a2a9c0106e98bd7364d7d70523d8a300a"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>bounding_box</b> (double time0, double time1, <a class="el" href="classaabb.html">aabb</a> &amp;output_box) const override</td></tr>
-<tr class="separator:a2a9c0106e98bd7364d7d70523d8a300a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a797d77f6cbd0029c847ee6318178996a"><td class="memItemLeft" align="right" valign="top"><a id="a797d77f6cbd0029c847ee6318178996a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>rotate_y</b> (shared_ptr&lt; <a class="el" href="classhittable.html">hittable</a> &gt; p, Real angle)</td></tr>
+<tr class="separator:a797d77f6cbd0029c847ee6318178996a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e9a6374f8d1438a4b4d3a67345be117"><td class="memItemLeft" align="right" valign="top"><a id="a3e9a6374f8d1438a4b4d3a67345be117"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>hit</b> (const <a class="el" href="classray.html">ray</a> &amp;r, Real t_min, Real t_max, <a class="el" href="structhit__record.html">hit_record</a> &amp;rec) const override</td></tr>
+<tr class="separator:a3e9a6374f8d1438a4b4d3a67345be117"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5e83796d73707084f5db8a38fb4fc27"><td class="memItemLeft" align="right" valign="top"><a id="aa5e83796d73707084f5db8a38fb4fc27"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>bounding_box</b> (Real time0, Real time1, <a class="el" href="classaabb.html">aabb</a> &amp;output_box) const override</td></tr>
+<tr class="separator:aa5e83796d73707084f5db8a38fb4fc27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classhittable"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classhittable')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classhittable.html">hittable</a></td></tr>
-<tr class="memitem:a1e5376f9774f1e28b10009b2f0b04d7f inherit pub_methods_classhittable"><td class="memItemLeft" align="right" valign="top"><a id="a1e5376f9774f1e28b10009b2f0b04d7f"></a>
-virtual double&#160;</td><td class="memItemRight" valign="bottom"><b>pdf_value</b> (const <a class="el" href="classvec3.html">vec3</a> &amp;o, const <a class="el" href="classvec3.html">vec3</a> &amp;v) const</td></tr>
-<tr class="separator:a1e5376f9774f1e28b10009b2f0b04d7f inherit pub_methods_classhittable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9fd4ee6812e0290b4a286519c6ff645d inherit pub_methods_classhittable"><td class="memItemLeft" align="right" valign="top"><a id="a9fd4ee6812e0290b4a286519c6ff645d"></a>
+virtual Real&#160;</td><td class="memItemRight" valign="bottom"><b>pdf_value</b> (const <a class="el" href="classvec3.html">vec3</a> &amp;o, const <a class="el" href="classvec3.html">vec3</a> &amp;v) const</td></tr>
+<tr class="separator:a9fd4ee6812e0290b4a286519c6ff645d inherit pub_methods_classhittable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5870a831f552bcd18a95f3555a4c9cd5 inherit pub_methods_classhittable"><td class="memItemLeft" align="right" valign="top"><a id="a5870a831f552bcd18a95f3555a4c9cd5"></a>
 virtual <a class="el" href="classvec3.html">vec3</a>&#160;</td><td class="memItemRight" valign="bottom"><b>random</b> (const <a class="el" href="classvec3.html">vec3</a> &amp;o) const</td></tr>
 <tr class="separator:a5870a831f552bcd18a95f3555a4c9cd5 inherit pub_methods_classhittable"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -103,12 +103,12 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a760247eba0313cf7d58099b471aa747f"><td class="memItemLeft" align="right" valign="top"><a id="a760247eba0313cf7d58099b471aa747f"></a>
 shared_ptr&lt; <a class="el" href="classhittable.html">hittable</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ptr</b></td></tr>
 <tr class="separator:a760247eba0313cf7d58099b471aa747f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24cc7809abc43e1eb59493a54178e1eb"><td class="memItemLeft" align="right" valign="top"><a id="a24cc7809abc43e1eb59493a54178e1eb"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>sin_theta</b></td></tr>
-<tr class="separator:a24cc7809abc43e1eb59493a54178e1eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf3952668f0f3e5e109bfcd30f8485ca"><td class="memItemLeft" align="right" valign="top"><a id="aaf3952668f0f3e5e109bfcd30f8485ca"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>cos_theta</b></td></tr>
-<tr class="separator:aaf3952668f0f3e5e109bfcd30f8485ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2c34e2c945c1eba03083da44b289ad6"><td class="memItemLeft" align="right" valign="top"><a id="ae2c34e2c945c1eba03083da44b289ad6"></a>
+Real&#160;</td><td class="memItemRight" valign="bottom"><b>sin_theta</b></td></tr>
+<tr class="separator:ae2c34e2c945c1eba03083da44b289ad6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab04aafcd34111ebbc3cb80db9200a288"><td class="memItemLeft" align="right" valign="top"><a id="ab04aafcd34111ebbc3cb80db9200a288"></a>
+Real&#160;</td><td class="memItemRight" valign="bottom"><b>cos_theta</b></td></tr>
+<tr class="separator:ab04aafcd34111ebbc3cb80db9200a288"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4e63b57e4ba2c4c2465597369922217"><td class="memItemLeft" align="right" valign="top"><a id="aa4e63b57e4ba2c4c2465597369922217"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasbox</b></td></tr>
 <tr class="separator:aa4e63b57e4ba2c4c2465597369922217"><td class="memSeparator" colspan="2">&#160;</td></tr>

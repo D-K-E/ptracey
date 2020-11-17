@@ -81,25 +81,25 @@ Inheritance diagram for dielectric:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a41d64928c380a59555750a928ae92a63"><td class="memItemLeft" align="right" valign="top"><a id="a41d64928c380a59555750a928ae92a63"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>dielectric</b> (double index_of_refraction)</td></tr>
-<tr class="separator:a41d64928c380a59555750a928ae92a63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd5a66c99495de3178ac5e9243a72c9e"><td class="memItemLeft" align="right" valign="top"><a id="afd5a66c99495de3178ac5e9243a72c9e"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>dielectric</b> (Real index_of_refraction)</td></tr>
+<tr class="separator:afd5a66c99495de3178ac5e9243a72c9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16b04d1452c8327644ef66cdab6365a2"><td class="memItemLeft" align="right" valign="top"><a id="a16b04d1452c8327644ef66cdab6365a2"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>scatter</b> (const <a class="el" href="classray.html">ray</a> &amp;r_in, const <a class="el" href="structhit__record.html">hit_record</a> &amp;rec, <a class="el" href="structscatter__record.html">scatter_record</a> &amp;srec) const override</td></tr>
 <tr class="separator:a16b04d1452c8327644ef66cdab6365a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classmaterial"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classmaterial')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classmaterial.html">material</a></td></tr>
-<tr class="memitem:aabfcf0d27478c3c48de8d33b5bf0d0a7 inherit pub_methods_classmaterial"><td class="memItemLeft" align="right" valign="top"><a id="aabfcf0d27478c3c48de8d33b5bf0d0a7"></a>
-virtual <a class="el" href="classvec3.html">color</a>&#160;</td><td class="memItemRight" valign="bottom"><b>emitted</b> (const <a class="el" href="classray.html">ray</a> &amp;r_in, const <a class="el" href="structhit__record.html">hit_record</a> &amp;rec, double u, double v, const <a class="el" href="classvec3.html">point3</a> &amp;p) const</td></tr>
-<tr class="separator:aabfcf0d27478c3c48de8d33b5bf0d0a7 inherit pub_methods_classmaterial"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abfd72d3c3dc02d65ca6a3c951ae943f8 inherit pub_methods_classmaterial"><td class="memItemLeft" align="right" valign="top"><a id="abfd72d3c3dc02d65ca6a3c951ae943f8"></a>
+virtual shared_ptr&lt; <a class="el" href="classvec3.html">spectrum</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>emitted</b> (const <a class="el" href="classray.html">ray</a> &amp;r_in, const <a class="el" href="structhit__record.html">hit_record</a> &amp;rec, Real u, Real v, const <a class="el" href="classvec3.html">point3</a> &amp;p) const</td></tr>
+<tr class="separator:abfd72d3c3dc02d65ca6a3c951ae943f8 inherit pub_methods_classmaterial"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af15ef7e3fe51e8bb8a02db1fc151f5ad inherit pub_methods_classmaterial"><td class="memItemLeft" align="right" valign="top"><a id="af15ef7e3fe51e8bb8a02db1fc151f5ad"></a>
 virtual double&#160;</td><td class="memItemRight" valign="bottom"><b>scattering_pdf</b> (const <a class="el" href="classray.html">ray</a> &amp;r_in, const <a class="el" href="structhit__record.html">hit_record</a> &amp;rec, const <a class="el" href="classray.html">ray</a> &amp;scattered) const</td></tr>
 <tr class="separator:af15ef7e3fe51e8bb8a02db1fc151f5ad inherit pub_methods_classmaterial"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a884c836520a1d559cc5cef5fec1d903e"><td class="memItemLeft" align="right" valign="top"><a id="a884c836520a1d559cc5cef5fec1d903e"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>ir</b></td></tr>
-<tr class="separator:a884c836520a1d559cc5cef5fec1d903e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d56ca67029023f8d9c4b16919b9b6de"><td class="memItemLeft" align="right" valign="top"><a id="a2d56ca67029023f8d9c4b16919b9b6de"></a>
+Real&#160;</td><td class="memItemRight" valign="bottom"><b>ir</b></td></tr>
+<tr class="separator:a2d56ca67029023f8d9c4b16919b9b6de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li><a class="el" href="material_8hpp_source.html">material.hpp</a></li>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['onb_29',['onb',['../classonb.html',1,'']]]
+  ['kill_572',['kill',['../classAssimp_1_1DefaultLogger.html#a0b1da096d7442af5a4a4cb5ebb2540f7',1,'Assimp::DefaultLogger']]]
 ];

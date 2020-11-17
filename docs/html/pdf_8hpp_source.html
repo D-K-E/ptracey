@@ -78,14 +78,14 @@ $(function() {
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;  <span class="keyword">virtual</span> ~<a class="code" href="classpdf.html">pdf</a>() {}</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">double</span> value(<span class="keyword">const</span> <a class="code" href="classvec3.html">vec3</a> &amp;direction) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;  <span class="keyword">virtual</span> Real value(<span class="keyword">const</span> <a class="code" href="classvec3.html">vec3</a> &amp;direction) <span class="keyword">const</span> = 0;</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classvec3.html">vec3</a> generate() <span class="keyword">const</span> = 0;</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;};</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
 <div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="classcosine__pdf.html">   14</a></span>&#160;<span class="keyword">class </span><a class="code" href="classcosine__pdf.html">cosine_pdf</a> : <span class="keyword">public</span> <a class="code" href="classpdf.html">pdf</a> {</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  <a class="code" href="classcosine__pdf.html">cosine_pdf</a>(<span class="keyword">const</span> <a class="code" href="classvec3.html">vec3</a> &amp;w) { uvw.build_from_w(w); }</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;  <span class="keywordtype">double</span> value(<span class="keyword">const</span> <a class="code" href="classvec3.html">vec3</a> &amp;direction)<span class="keyword"> const override </span>{</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;  Real value(<span class="keyword">const</span> <a class="code" href="classvec3.html">vec3</a> &amp;direction)<span class="keyword"> const override </span>{</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keyword">auto</span> cosine = dot(unit_vector(direction), uvw.w());</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keywordflow">return</span> (cosine &lt;= 0) ? 0 : cosine / M_PI;</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  }</div>
@@ -100,9 +100,9 @@ $(function() {
 <div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="classhittable__pdf.html">   29</a></span>&#160;<span class="keyword">class </span><a class="code" href="classhittable__pdf.html">hittable_pdf</a> : <span class="keyword">public</span> <a class="code" href="classpdf.html">pdf</a> {</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <a class="code" href="classhittable__pdf.html">hittable_pdf</a>(shared_ptr&lt;hittable&gt; p, <span class="keyword">const</span> <a class="code" href="classvec3.html">point3</a> &amp;origin)</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;      : ptr(p), o(origin) {}</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;      : o(origin), ptr(p) {}</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keywordtype">double</span> value(<span class="keyword">const</span> <a class="code" href="classvec3.html">vec3</a> &amp;direction)<span class="keyword"> const override </span>{</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  Real value(<span class="keyword">const</span> <a class="code" href="classvec3.html">vec3</a> &amp;direction)<span class="keyword"> const override </span>{</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordflow">return</span> ptr-&gt;pdf_value(o, direction);</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  }</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
@@ -120,13 +120,13 @@ $(function() {
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    p[1] = p1;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  }</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keywordtype">double</span> value(<span class="keyword">const</span> <a class="code" href="classvec3.html">vec3</a> &amp;direction)<span class="keyword"> const override </span>{</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  Real value(<span class="keyword">const</span> <a class="code" href="classvec3.html">vec3</a> &amp;direction)<span class="keyword"> const override </span>{</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordflow">return</span> 0.5 * p[0]-&gt;value(direction) +</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;           0.5 * p[1]-&gt;value(direction);</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  }</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <a class="code" href="classvec3.html">vec3</a> generate()<span class="keyword"> const override </span>{</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordflow">if</span> (random_double() &lt; 0.5)</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordflow">if</span> (random_real() &lt; 0.5)</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      <span class="keywordflow">return</span> p[0]-&gt;generate();</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      <span class="keywordflow">return</span> p[1]-&gt;generate();</div>
@@ -140,7 +140,7 @@ $(function() {
 <div class="ttc" id="aclasshittable__pdf_html"><div class="ttname"><a href="classhittable__pdf.html">hittable_pdf</a></div><div class="ttdef"><b>Definition:</b> pdf.hpp:29</div></div>
 <div class="ttc" id="aclassmixture__pdf_html"><div class="ttname"><a href="classmixture__pdf.html">mixture_pdf</a></div><div class="ttdef"><b>Definition:</b> pdf.hpp:45</div></div>
 <div class="ttc" id="aclassonb_html"><div class="ttname"><a href="classonb.html">onb</a></div><div class="ttdef"><b>Definition:</b> onb.hpp:4</div></div>
-<div class="ttc" id="aclassvec3_html"><div class="ttname"><a href="classvec3.html">vec3</a></div><div class="ttdef"><b>Definition:</b> vec3.hpp:8</div></div>
+<div class="ttc" id="aclassvec3_html"><div class="ttname"><a href="classvec3.html">vec3</a></div><div class="ttdef"><b>Definition:</b> vec3.hpp:6</div></div>
 <div class="ttc" id="aclasscosine__pdf_html"><div class="ttname"><a href="classcosine__pdf.html">cosine_pdf</a></div><div class="ttdef"><b>Definition:</b> pdf.hpp:14</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
