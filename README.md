@@ -76,7 +76,7 @@ glass sphere"/>
 ## A Special Hallmark for #RTKitty
 
 The model is made by 
-EKA: twitter (`@bakin___`)[https://twitter.com/bakin__]
+EKA: twitter [`@bakin___`](https://twitter.com/bakin__)
 
 It is traced by PTracey.
 
