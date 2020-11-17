@@ -4,7 +4,8 @@
 #include <ray.hpp>
 #include <utils.hpp>
 #include <vec3.hpp>
-
+using namespace ptracey;
+namespace ptracey {
 class material;
 
 struct hit_record {
@@ -24,7 +25,7 @@ struct hit_record {
 };
 
 Real get_pdf_surface(point3 dir, vec3 normal, Real dist,
-                       Real area) {
+                     Real area) {
   auto distance_squared =
       dist * dist * dir.length_squared();
   Real cosine = fabs(dot(dir, normal) / dir.length());
@@ -40,7 +41,7 @@ public:
                             aabb &output_box) const = 0;
 
   virtual Real pdf_value(const vec3 &o,
-                           const vec3 &v) const {
+                         const vec3 &v) const {
     return 0.0;
   }
 
@@ -89,8 +90,8 @@ public:
   shared_ptr<hittable> ptr;
   vec3 offset;
 };
-bool translate::hit(const ray &r, Real t_min,
-                    Real t_max, hit_record &rec) const {
+bool translate::hit(const ray &r, Real t_min, Real t_max,
+                    hit_record &rec) const {
   ray moved_r(r.origin() - offset, r.direction(), r.time());
   if (!ptr->hit(moved_r, t_min, t_max, rec))
     return false;
@@ -200,4 +201,5 @@ bool rotate_y::hit(const ray &r, Real t_min, Real t_max,
   rec.set_face_normal(rotated_r, normal);
 
   return true;
+}
 }

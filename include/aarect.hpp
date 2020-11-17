@@ -4,7 +4,8 @@
 #include <info.hpp>
 #include <ray.hpp>
 #include <vec3.hpp>
-
+using namespace ptracey;
+namespace ptracey {
 class AaRect : public hittable {
 protected:
   vec3 axis_normal;
@@ -99,7 +100,8 @@ public:
   xy_rect() {}
   xy_rect(double _x0, double _x1, double _y0, double _y1,
           double _k, shared_ptr<material> mat)
-      : AaRect(_x0, _x1, _y0, _y1, _k, mat, vec3(0.0, 0.0, 1.0)),
+      : AaRect(_x0, _x1, _y0, _y1, _k, mat,
+               vec3(0.0, 0.0, 1.0)),
         x0(_x0), x1(_x1), y0(_y0), y1(_y1) {}
 };
 class xz_rect : public AaRect {
@@ -110,7 +112,8 @@ public:
   xz_rect() {}
   xz_rect(double _x0, double _x1, double _z0, double _z1,
           double _k, shared_ptr<material> mat)
-      : AaRect(_x0, _x1, _z0, _z1, _k, mat, vec3(0.0, 1.0, 0.0)),
+      : AaRect(_x0, _x1, _z0, _z1, _k, mat,
+               vec3(0.0, 1.0, 0.0)),
         x0(_x0), x1(_x1), z0(_z0), z1(_z1) {}
   double pdf_value(const point3 &origin,
                    const vec3 &dir) const override {
@@ -129,8 +132,8 @@ public:
   }
 
   vec3 random(const point3 &origin) const override {
-    auto random_point = point3(random_real(x0, x1), k,
-                               random_real(z0, z1));
+    auto random_point =
+        point3(random_real(x0, x1), k, random_real(z0, z1));
     return random_point - origin;
   }
 };
@@ -145,3 +148,4 @@ public:
       : AaRect(_y0, _y1, _z0, _z1, _k, mat, vec3(1, 0, 0)),
         y0(_y0), y1(_y1), z0(_z0), z1(_z1) {}
 };
+}

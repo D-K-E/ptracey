@@ -4,6 +4,8 @@
 #include <ray.hpp>
 #include <vec3.hpp>
 //
+using namespace ptracey;
+namespace ptracey {
 class moving_sphere : public hittable {
 public:
   moving_sphere() {}
@@ -72,4 +74,5 @@ bool moving_sphere::hit(const ray &r, double t_min,
   rec.mat_ptr = mat_ptr;
 
   return true;
+}
 }

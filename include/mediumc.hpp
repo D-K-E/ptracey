@@ -4,6 +4,8 @@
 #include <ray.hpp>
 #include <texture.hpp>
 #include <vec3.hpp>
+using namespace ptracey;
+namespace ptracey {
 class constant_medium : public hittable {
 public:
   constant_medium(shared_ptr<hittable> b, double d,
@@ -85,4 +87,5 @@ bool constant_medium::hit(const ray &r, double t_min,
   rec.mat_ptr = phase_function;
 
   return true;
+}
 }

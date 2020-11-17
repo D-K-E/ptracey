@@ -2,7 +2,8 @@
 
 #include <common.hpp>
 #include <utils.hpp>
-
+using namespace ptracey;
+namespace ptracey {
 template <class T> class sampled_wave {
 public:
   std::vector<T> values;
@@ -258,3 +259,4 @@ public:
     return cs;
   }
 };
+}

@@ -3,6 +3,8 @@
 #include <spectrum.hpp>
 #include <vec3.hpp>
 
+using namespace ptracey;
+namespace ptracey {
 void write_color(std::ostream &out,
                  shared_ptr<spectrum> pixel_color,
                  int samples_per_pixel) {
@@ -32,4 +34,5 @@ void write_color(std::ostream &out,
       << static_cast<int>(256 * clamp(g, 0.0, 0.999)) << ' '
       << static_cast<int>(256 * clamp(b, 0.0, 0.999))
       << '\n';
+}
 }

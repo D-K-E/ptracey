@@ -18,6 +18,9 @@
 #include <utils.hpp>
 #include <vec3.hpp>
 
+using namespace ptracey;
+namespace ptracey {
+
 shared_ptr<hittable>
 model_random_material(matrix modelMat,
                       std::string modelpath) {
@@ -34,8 +37,7 @@ model_random_material(matrix modelMat,
     mat = make_shared<metal>(rcolor, random_real());
     std::cerr << "model material :: metal" << std::endl;
   } else if (choice == 2) {
-    mat =
-        make_shared<dielectric>(random_real(0.001, 3.0));
+    mat = make_shared<dielectric>(random_real(0.001, 3.0));
     std::cerr << "model material :: dielectric"
               << std::endl;
   } else if (choice == 3) {
@@ -630,4 +632,5 @@ void choose_scene(int choice, camera &cam,
 
   cam = camera(lookfrom, lookat, vup, vfov, aspect_ratio,
                aperture, dist_to_focus, 0.0, 1.0);
+}
 }

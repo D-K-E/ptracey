@@ -2,7 +2,8 @@
 #include <external.hpp>
 #include <utils.hpp>
 // wave implementation
-
+using namespace ptracey;
+namespace ptracey {
 class sinwave {
 public:
   unsigned int sample_nb;
@@ -289,3 +290,4 @@ public:
     return s;
   }
 };
+}

@@ -1,6 +1,8 @@
 #pragma once
 #include <vec3.hpp>
 
+using namespace ptracey;
+namespace ptracey {
 class ray {
 public:
   ray() {}
@@ -22,3 +24,4 @@ public:
   vec3 dir;
   Real tm;
 };
+}

@@ -1,16 +1,19 @@
 #pragma once
 
-#include "common.hpp"
-#include "spectrum.hpp"
 #include <bvh.hpp>
+#include <common.hpp>
 #include <external.hpp>
 #include <hittable.hpp>
 #include <hittable_list.hpp>
 #include <material.hpp>
 #include <matrix.hpp>
 #include <ray.hpp>
+#include <spectrum.hpp>
 #include <triangle.hpp>
 #include <vec3.hpp>
+
+using namespace ptracey;
+namespace ptracey {
 
 color to_color(aiColor3D col) {
   auto x = static_cast<double>(col.r);
@@ -212,3 +215,4 @@ public:
     return list.random(o);
   }
 };
+}

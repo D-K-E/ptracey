@@ -5,6 +5,8 @@
 #include <utils.hpp>
 #include <vec3.hpp>
 //
+using namespace ptracey;
+namespace ptracey {
 class camera {
 public:
   camera()
@@ -53,3 +55,4 @@ private:
   Real lens_radius;
   Real time0, time1; // shutter open/close times
 };
+}

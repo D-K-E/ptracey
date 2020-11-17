@@ -9,6 +9,8 @@
 #include <utils.hpp>
 #include <vec3.hpp>
 
+using namespace ptracey;
+namespace ptracey {
 using immat =
     std::vector<std::vector<shared_ptr<spectrum>>>;
 
@@ -144,20 +146,20 @@ void fill_imvec(InnerRet ret, immat &imvec,
   }
 }
 
-int main() {
+extern "C" int main(int ac, char **av) {
   auto start = std::chrono::high_resolution_clock::now();
 
   // Image
   auto aspect_ratio = 16.0 / 9.0;
   int image_width = 400;
   int samples_per_pixel = 1000;
-  int max_depth = 500;
+  int max_depth = 100;
   immat imvec;
 
   // World
 
   hittable_list world;
-  int choice = 10;
+  int choice = 2;
   camera cam;
   int image_height;
   shared_ptr<spectrum> background;
@@ -216,4 +218,6 @@ int main() {
   std::cerr << "duration: " << elapsed.count() << std::endl;
 
   std::cerr << "\nDone.\n";
+  return 0;
+}
 }

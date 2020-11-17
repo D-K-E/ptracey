@@ -5,7 +5,8 @@
 #include <ray.hpp>
 #include <spectrum.hpp>
 #include <vec3.hpp>
-
+using namespace ptracey;
+namespace ptracey {
 class texture {
 public:
   virtual shared_ptr<spectrum>
@@ -141,7 +142,6 @@ private:
   int width, height;
   int bytes_per_scanline;
 };
-
 class material_texture : public texture {
   // use material refractive spectral power distribution
   // for color
@@ -156,3 +156,4 @@ public:
 public:
   shared_ptr<spectrum> spect;
 };
+}

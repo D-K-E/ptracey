@@ -1,6 +1,8 @@
 #pragma once
 // matrix library from P. Shirley, Realistic Ray Tracing
 #include <vec3.hpp>
+using namespace ptracey;
+namespace ptracey {
 //
 class matrix {
 public:
@@ -417,4 +419,5 @@ matrix viewMatrix(const vec3 &eye, const vec3 &gaze,
   move.x[2][3] = -(eye.z());
   ret = ret * move;
   return ret;
+}
 }

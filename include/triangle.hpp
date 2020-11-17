@@ -3,7 +3,8 @@
 #include <info.hpp>
 #include <ray.hpp>
 #include <vec3.hpp>
-
+using namespace ptracey;
+namespace ptracey {
 class triangle : public hittable {
 public:
   shared_ptr<material> mat_ptr;
@@ -128,3 +129,4 @@ public:
       : AaTriangle(_y0, _y01, _y1, _z0, _z1, _k, mat),
         y0(_y0), y01(_y01), y1(_y1), z0(_z0), z1(_z1) {}
 };
+}

@@ -6,6 +6,10 @@
 #include <ray.hpp>
 #include <vec3.hpp>
 
+using namespace ptracey;
+
+namespace ptracey {
+
 class bvh_node : public hittable {
 public:
   bvh_node();
@@ -122,4 +126,5 @@ bool bvh_node::bounding_box(double time0, double time1,
                             aabb &output_box) const {
   output_box = box;
   return true;
+}
 }

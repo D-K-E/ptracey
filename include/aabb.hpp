@@ -1,9 +1,13 @@
 #pragma once
 
-#include <external.hpp>
+#include <common.hpp>
 #include <ray.hpp>
 #include <utils.hpp>
 #include <vec3.hpp>
+
+using namespace ptracey;
+
+namespace ptracey {
 
 class aabb {
 public:
@@ -63,4 +67,5 @@ aabb surrounding_box(aabb box0, aabb box1) {
            fmax(box0.max().z(), box1.max().z()));
 
   return aabb(small, big);
+}
 }

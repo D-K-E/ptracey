@@ -1,7 +1,7 @@
 #pragma once
-#include <chrono>
 #include <common.hpp>
 
+namespace ptracey {
 Real random_real(unsigned int seed) {
   static std::uniform_real_distribution<Real> distribution(
       0.0f, 1.0f);
@@ -115,4 +115,5 @@ int findInterval(int size, const fn &f) {
     }
   }
   return clamp<int>(first - 1, 0, size - 2);
+}
 }

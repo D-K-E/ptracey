@@ -2,14 +2,15 @@
 // implements spectrum type from pbrt-book
 // mostly adapted from
 // https://github.com/mmp/pbrt-v3/blob/master/src/core/spectrum.h
-#include "common.hpp"
+#include <common.hpp>
 #include <spd.hpp>
 #include <specdata.hpp>
 #include <utils.hpp>
 #include <vec3.hpp>
 #include <wave.hpp>
 // CONSTANTS
-
+using namespace ptracey;
+namespace ptracey {
 static const int NB_SPECTRAL_SAMPLES = 60;
 static const int VISIBLE_LAMBDA_START = 350;
 static const int VISIBLE_LAMBDA_END = 800;
@@ -510,3 +511,4 @@ spd<Real> sampled_spectrum::standard_d65 =
 
 typedef color spectrum;
 // typedef sampled_spectrum spectrum;
+}

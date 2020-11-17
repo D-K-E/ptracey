@@ -2,7 +2,8 @@
 #include <onb.hpp>
 #include <ray.hpp>
 #include <vec3.hpp>
-
+using namespace ptracey;
+namespace ptracey {
 class pdf {
 public:
   virtual ~pdf() {}
@@ -64,3 +65,4 @@ public:
 public:
   shared_ptr<pdf> p[2];
 };
+}

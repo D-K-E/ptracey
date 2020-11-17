@@ -1,10 +1,10 @@
 #pragma once
 
 #include <common.hpp>
-#include <stdexcept>
 #include <utils.hpp>
 #include <wave.hpp>
-
+using namespace ptracey;
+namespace ptracey {
 template <class T> class spd {
   // sampled spectrum power distribution
 public:
@@ -482,4 +482,5 @@ Real get_cie_value(const spd<Real> &reflectance,
   Real val = get_cie_val(reflectance, illuminant, cie_val,
                          wl_start, wl_end, stepsize);
   return k * val;
+}
 }

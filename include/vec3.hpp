@@ -1,7 +1,8 @@
 #pragma once
 #include <common.hpp>
-#include <stdexcept>
 #include <utils.hpp>
+
+namespace ptracey {
 
 class vec3 {
 public:
@@ -264,4 +265,5 @@ inline vec3 random_to_sphere(Real radius,
   auto y = sin(phi) * sqrt(1 - z * z);
 
   return vec3(x, y, z);
+}
 }

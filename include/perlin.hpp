@@ -4,7 +4,8 @@
 #include <ray.hpp>
 #include <vec3.hpp>
 //
-
+using namespace ptracey;
+namespace ptracey {
 class perlin {
 public:
   perlin() {
@@ -100,3 +101,4 @@ private:
     return accum;
   }
 };
+}

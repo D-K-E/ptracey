@@ -3,6 +3,8 @@
 // https://github.com/mmp/pbrt-v3/blob/master/src/core/spectrum.cpp
 // and other sources
 #include <common.hpp>
+using namespace ptracey;
+namespace ptracey {
 
 static const int NB_CIE_SAMPLES = 471;
 
@@ -1105,3 +1107,4 @@ const Real CIE_STANDARD_ILLUMINANT_D65_POWER
         109.354, 108.578, 107.802, 106.296, 104.79,
         106.239, 107.689, 106.047, 104.405, 104.225,
         104.046, 102.023};
+}

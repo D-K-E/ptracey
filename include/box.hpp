@@ -5,6 +5,8 @@
 #include <material.hpp>
 #include <ray.hpp>
 #include <vec3.hpp>
+using namespace ptracey;
+namespace ptracey {
 
 class box : public hittable {
 public:
@@ -52,4 +54,5 @@ box::box(const point3 &p0, const point3 &p1,
 bool box::hit(const ray &r, double t_min, double t_max,
               hit_record &rec) const {
   return sides.hit(r, t_min, t_max, rec);
+}
 }

@@ -5,6 +5,8 @@
 #include <spectrum.hpp>
 #include <texture.hpp>
 #include <utils.hpp>
+using namespace ptracey;
+namespace ptracey {
 
 struct scatter_record {
   ray specular_ray;
@@ -158,3 +160,4 @@ public:
 public:
   shared_ptr<texture> albedo;
 };
+}

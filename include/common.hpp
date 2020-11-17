@@ -11,7 +11,9 @@ using std::make_pair;
 using std::isnan;
 using namespace std::filesystem;
 
+namespace ptracey {
 path RUNTIME_PATH = current_path();
 
 typedef double Real;
 // typedef float Float;
+}

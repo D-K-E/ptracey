@@ -1,6 +1,9 @@
 #pragma once
+#include <common.hpp>
+namespace ptracey {
 struct AxisInfo {
-  double aligned1;
-  double aligned2;
-  double notAligned;
+  Real aligned1;
+  Real aligned2;
+  Real notAligned;
 };
+}

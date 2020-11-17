@@ -1,6 +1,8 @@
 #pragma once
 #include <ray.hpp>
 #include <vec3.hpp>
+using namespace ptracey;
+namespace ptracey {
 class onb {
 public:
   onb() {}
@@ -31,4 +33,5 @@ void onb::build_from_w(const vec3 &n) {
       (fabs(w().x()) > 0.9) ? vec3(0, 1, 0) : vec3(1, 0, 0);
   axis[1] = unit_vector(cross(w(), a));
   axis[0] = cross(w(), v());
+}
 }

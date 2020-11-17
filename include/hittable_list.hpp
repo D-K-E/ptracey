@@ -4,6 +4,9 @@
 #include <ray.hpp>
 #include <utils.hpp>
 #include <vec3.hpp>
+using namespace ptracey;
+
+namespace ptracey {
 
 class hittable_list : public hittable {
 public:
@@ -83,4 +86,5 @@ Real hittable_list::pdf_value(const point3 &o,
 vec3 hittable_list::random(const vec3 &o) const {
   auto int_size = static_cast<int>(objects.size());
   return objects[random_int(0, int_size - 1)]->random(o);
+}
 }

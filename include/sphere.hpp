@@ -3,7 +3,8 @@
 #include <onb.hpp>
 #include <ray.hpp>
 #include <vec3.hpp>
-
+using namespace ptracey;
+namespace ptracey {
 class sphere : public hittable {
 public:
   sphere() {}
@@ -107,4 +108,5 @@ bool sphere::hit(const ray &r, double t_min, double t_max,
   rec.mat_ptr = mat_ptr;
 
   return true;
+}
 }
