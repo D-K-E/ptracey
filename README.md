@@ -23,6 +23,11 @@ It has couple of extra features as well:
   hoping improve it when I have more time)
 
 
+## In Progress
+
+- Spectral Rendering switch.
+
+
 ## Requirements
 
 - Assimp
@@ -67,3 +72,30 @@ glass sphere"/>
 <img src="image/im5.png" alt="perlin noise with rectangle light"/>
 <img src="image/im6.png" alt="cornell box with box rotations"/>
 <img src="image/im7.png" alt="cornell box with smoke boxes"/>
+
+## A Special Hallmark for #RTKitty
+
+The model is made by 
+EKA: twitter (`@bakin____`)
+
+It is traced by PTracey.
+
+Anger Kitty
+<img src="image/angerkitty.png" alt="kitty on a box with reddish color"/>
+
+Glass Kitty
+<img src="image/glasskitty.png" alt="Cornell box with glass kitty"/>
+
+Invisible Kitty
+<img src="image/invisiblekitty.png" alt="Cornell box with invisible kitty"/>
+
+Metal Kitty
+<img src="image/metalkitty.png" alt="Cornell Box with metal kitty"/>
+
+Night is Yours Kitty
+<img src="image/nightisyourskitty.png" alt="Magenta colored kitty in cornell
+box setting"/>
+
+Glow me Thy Name Kitty 
+<img src="image/phosphorkitty.png" alt="Greenish colored kitty in cornell box
+setting"/>
