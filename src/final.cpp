@@ -69,7 +69,9 @@ InnerRet innerLoop(InnerParams params) {
             static_cast<unsigned int>(random_int(
                 VISIBLE_LAMBDA_START, VISIBLE_LAMBDA_END));
         ray r = cam.get_ray(t, s, wavelength);
-        ray_color(r, background, scene, mdepth, rcolor);
+        spectrum r_color = spectrum(0.0);
+        ray_color(r, background, scene, mdepth, r_color);
+        rcolor += r_color;
       }
       imv[a][j] = rcolor;
     }
@@ -100,7 +102,7 @@ extern "C" int main(int ac, char **av) {
   // Image
   auto aspect_ratio = 16.0 / 9.0;
   int image_width = 400;
-  int samples_per_pixel = 10;
+  int samples_per_pixel = 100;
   int max_depth = 100;
   immat imvec;
 
