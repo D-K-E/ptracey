@@ -31,8 +31,9 @@ void ray_color(const ray &r,
                const hittable &world, int depth,
                spectrum &output) {
   hit_record rec;
+  auto wlength = r.wavelength();
   // add the wavelength if it is not already present
-  output.insert(r.wavelength(), 0.0);
+  output.insert(wlength, 0.0);
 
   // If we've exceeded the ray bounce limit, no more light
   // is gathered.
@@ -44,23 +45,21 @@ void ray_color(const ray &r,
   // If the ray hits nothing, return the background color.
   if (!world.hit(r, 0.001, FLT_MAX, rec)) {
     // L_e + L_r = background = L_o
-    auto out_lambda = output.evaluate(r.wavelength());
-    auto back_lambda = background->evaluate(r.wavelength());
-    auto out_lambda2 = out_lambda.add(back_lambda);
-    output.update(r.wavelength(), out_lambda2);
+    auto back_lambda = background->evaluate(wlength);
+    auto out_lambda2 = output.add(wlength, back_lambda);
+    output.update(wlength, out_lambda2);
     return;
   }
 
   scatter_record srec;
   shared_ptr<spectrum> emitted =
       rec.mat_ptr->emitted(r, rec, rec.u, rec.v, rec.p);
-  auto emit_power = emitted->evaluate(r.wavelength());
+  auto emit_power = emitted->evaluate(wlength);
 
   if (!rec.mat_ptr->scatter(r, rec, srec)) {
     // L_e + 0 = L_o
-    auto out_lambda = output.evaluate(r.wavelength());
-    auto out_lambda2 = out_lambda.add(emit_power);
-    output.update(r.wavelength(), out_lambda2);
+    auto out_lambda2 = output.add(wlength, emit_power);
+    output.update(wlength, out_lambda2);
     return;
   }
 
@@ -70,37 +69,36 @@ void ray_color(const ray &r,
               depth - 1, output);
     // TODO what if the material changes the wavelength of
     // the ray ??
-    auto f_r_power =
-        srec.attenuation->evaluate(r.wavelength());
-    auto out_lambda = output.evaluate(r.wavelength());
-    auto out_lambda2 = out_lambda.multip(f_r_power);
-    output.update(r.wavelength(), out_lambda2);
+    auto f_r_power = srec.attenuation->evaluate(wlength);
+    auto out_lambda2 = output.multip(wlength, f_r_power);
+    output.update(wlength, out_lambda2);
     return;
   }
 
   // w_o
   ray scattered = ray(rec.p, srec.pdf_ptr->generate(),
-                      r.time(), r.wavelength());
-  auto pdf_val = srec.pdf_ptr->value(scattered.direction());
-  auto scatter_pdf =
+                      r.time(), wlength);
+  Real pdf_val = srec.pdf_ptr->value(scattered.direction());
+  Real scatter_pdf =
       rec.mat_ptr->scattering_pdf(r, rec, scattered);
 
   // f_r
-  spectrum f_r_lambda =
-      srec.attenuation->evaluate(r.wavelength());
-  auto f_r_lambda2 = f_r_lambda.multip(scatter_pdf);
+  spectrum f_r_lambda = srec.attenuation->evaluate(wlength);
+  auto f_r_lambda2 =
+      f_r_lambda.multip(wlength, scatter_pdf);
 
   // L_i
   ray_color(scattered, background, world, depth - 1,
             output);
-  spectrum out_lambda =
-      output.evaluate(scattered.wavelength());
+  auto sc_wavel = scattered.wavelength();
+  wlength = sc_wavel != wlength ? sc_wavel : wlength;
+  spectrum out_lambda = output.evaluate(wlength);
 
   //
-  auto out_lambda2 = out_lambda.multip(f_r_lambda2);
-  auto out_lambda3 = out_lambda2.div(pdf_val);
-  auto out_lambda4 = out_lambda3.add(emit_power);
-  output.update(scattered.wavelength(), out_lambda4);
+  auto out_lambda2 = output.multip(wlength, f_r_lambda2);
+  auto out_lambda3 = out_lambda2.div(wlength, pdf_val);
+  auto out_lambda4 = out_lambda3.add(wlength, emit_power);
+  output.update(wlength, out_lambda4);
 
   return;
 }

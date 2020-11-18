@@ -79,6 +79,202 @@ public:
     return color(v.x(), v.y(), v.z());
   }
   void insert(unsigned int wl, Real v) { return; }
+  shared_ptr<color> add(unsigned int wlength,
+                        const shared_ptr<Real> &s) {
+    auto ss = *s;
+    vec3 v(r(), g(), b());
+    auto sv = v + ss;
+    return make_shared<color>(sv);
+  }
+  shared_ptr<color> add(const shared_ptr<Real> &s) {
+    auto ss = *s;
+    vec3 v(r(), g(), b());
+    auto sv = v + ss;
+    return make_shared<color>(sv);
+  }
+
+  color add(unsigned int wlength, Real s) {
+    vec3 v(r(), g(), b());
+    auto sv = v + s;
+    return color(sv);
+  }
+  color add(Real s) {
+    vec3 v(r(), g(), b());
+    auto sv = v + s;
+    return color(sv);
+  }
+  shared_ptr<color> add(unsigned int wlength,
+                        const shared_ptr<vec3> &s) {
+    auto ss = *s;
+    vec3 v(r(), g(), b());
+    auto sv = v + ss;
+    return make_shared<color>(sv);
+  }
+  shared_ptr<color> add(const shared_ptr<vec3> &s) {
+    auto ss = *s;
+    vec3 v(r(), g(), b());
+    auto sv = v + ss;
+    return make_shared<color>(sv);
+  }
+
+  color add(unsigned int wlength, vec3 s) {
+    vec3 v(r(), g(), b());
+    auto sv = v + s;
+    return color(sv);
+  }
+  color add(vec3 s) {
+    vec3 v(r(), g(), b());
+    auto sv = v + s;
+    return color(sv);
+  }
+
+  shared_ptr<color> subt(unsigned int wlength,
+                         const shared_ptr<Real> &s) {
+    auto ss = *s;
+    vec3 v(r(), g(), b());
+    auto sv = v - ss;
+    return make_shared<color>(sv);
+  }
+  shared_ptr<color> subt(const shared_ptr<Real> &s) {
+    auto ss = *s;
+    vec3 v(r(), g(), b());
+    auto sv = v - ss;
+    return make_shared<color>(sv);
+  }
+
+  color subt(unsigned int wlength, Real s) {
+    vec3 v(r(), g(), b());
+    auto sv = v - s;
+    return color(sv);
+  }
+  color subt(Real s) {
+    vec3 v(r(), g(), b());
+    auto sv = v - s;
+    return color(sv);
+  }
+  shared_ptr<color> subt(unsigned int wlength,
+                         const shared_ptr<vec3> &s) {
+    auto ss = *s;
+    vec3 v(r(), g(), b());
+    auto sv = v - ss;
+    return make_shared<color>(sv);
+  }
+  shared_ptr<color> subt(const shared_ptr<vec3> &s) {
+    auto ss = *s;
+    vec3 v(r(), g(), b());
+    auto sv = v - ss;
+    return make_shared<color>(sv);
+  }
+
+  color subt(unsigned int wlength, vec3 s) {
+    vec3 v(r(), g(), b());
+    auto sv = v - s;
+    return color(sv);
+  }
+  color subt(vec3 s) {
+    vec3 v(r(), g(), b());
+    auto sv = v - s;
+    return color(sv);
+  }
+
+  shared_ptr<color>
+  multip(unsigned int wlength,
+         const shared_ptr<Real> &s) const {
+    auto ss = *s;
+    vec3 v(r(), g(), b());
+    auto sv = v * ss;
+    return make_shared<color>(sv);
+  }
+  shared_ptr<color>
+  multip(const shared_ptr<Real> &s) const {
+    auto ss = *s;
+    vec3 v(r(), g(), b());
+    auto sv = v * ss;
+    return make_shared<color>(sv);
+  }
+
+  color multip(unsigned int wlength, const Real &s) const {
+    vec3 v(r(), g(), b());
+    auto sv = v * s;
+    return color(sv);
+  }
+  color multip(const Real &s) const {
+    vec3 v(r(), g(), b());
+    auto sv = v * s;
+    return color(sv);
+  }
+
+  shared_ptr<color>
+  multip(unsigned int wlength,
+         const shared_ptr<vec3> &s) const {
+    auto ss = *s;
+    vec3 v(r(), g(), b());
+    auto sv = v * ss;
+    return make_shared<color>(sv);
+  }
+  shared_ptr<color>
+  multip(const shared_ptr<vec3> &s) const {
+    auto ss = *s;
+    vec3 v(r(), g(), b());
+    auto sv = v * ss;
+    return make_shared<color>(sv);
+  }
+
+  color multip(unsigned int wlength, const vec3 &s) const {
+    vec3 v(r(), g(), b());
+    auto sv = v * s;
+    return color(sv);
+  }
+  color multip(const vec3 &s) const {
+    vec3 v(r(), g(), b());
+    auto sv = v * s;
+    return color(sv);
+  }
+
+  shared_ptr<color> div(unsigned int wlength,
+                        const shared_ptr<Real> &s) {
+    auto ss = *s;
+    vec3 v(r(), g(), b());
+    auto sv = v / ss;
+    return make_shared<color>(sv);
+  }
+  shared_ptr<color> div(const shared_ptr<Real> &s) {
+    auto ss = *s;
+    vec3 v(r(), g(), b());
+    auto sv = v / ss;
+    return make_shared<color>(sv);
+  }
+
+  color div(unsigned int wlength, Real s) {
+    vec3 v(r(), g(), b());
+    auto sv = v / s;
+    return color(sv);
+  }
+  color div(Real s) {
+    vec3 v(r(), g(), b());
+    auto sv = v / s;
+    return color(sv);
+  }
+  shared_ptr<color> div(unsigned int wlength,
+                        const shared_ptr<vec3> &s) {
+    auto ss = *s;
+    vec3 v(r() / ss.r(), g() / ss.g(), b() / ss.b());
+    return make_shared<color>(v);
+  }
+  shared_ptr<color> div(const shared_ptr<vec3> &s) {
+    auto ss = *s;
+    vec3 v(r() / ss.r(), g() / ss.g(), b() / ss.b());
+    return make_shared<color>(v);
+  }
+
+  color div(unsigned int wlength, vec3 s) {
+    vec3 v(r() / s.r(), g() / s.g(), b() / s.b());
+    return color(v);
+  }
+  color div(vec3 s) {
+    vec3 v(r() / s.r(), g() / s.g(), b() / s.b());
+    return color(v);
+  }
 };
 
 class sampled_spectrum {
@@ -178,14 +374,24 @@ public:
     auto sp1 = spect + ss;
     return make_shared<sampled_spectrum>(sp1, type);
   }
+  sampled_spectrum add(const Real &s) const {
+    auto sp1 = spect + s;
+    return sampled_spectrum(sp1, type);
+  }
+  shared_ptr<sampled_spectrum>
+  add(unsigned int wlength, const shared_ptr<Real> &s) {
+    auto ss = *s;
+    spect.add(wlength, ss);
+    return make_shared<sampled_spectrum>(spect, type);
+  }
+  sampled_spectrum add(unsigned int wlength, Real s) {
+    spect.add(wlength, s);
+    return sampled_spectrum(spect, type);
+  }
   shared_ptr<sampled_spectrum>
   add(const shared_ptr<sampled_spectrum> &s) const {
     auto sp1 = spect + s->spect;
     return make_shared<sampled_spectrum>(sp1, type);
-  }
-  sampled_spectrum add(const Real &s) const {
-    auto sp1 = spect + s;
-    return sampled_spectrum(sp1, type);
   }
   sampled_spectrum add(const sampled_spectrum &s) const {
     auto sp1 = spect + s.spect;
@@ -210,6 +416,16 @@ public:
     auto sp1 = spect - s.spect;
     return sampled_spectrum(sp1, type);
   }
+  shared_ptr<sampled_spectrum>
+  subt(unsigned int wlength, const shared_ptr<Real> &s) {
+    auto ss = *s;
+    spect.subt(wlength, ss);
+    return make_shared<sampled_spectrum>(spect, type);
+  }
+  sampled_spectrum subt(unsigned int wlength, Real s) {
+    spect.subt(wlength, s);
+    return sampled_spectrum(spect, type);
+  }
 
   shared_ptr<sampled_spectrum>
   multip(const shared_ptr<Real> &s) const {
@@ -230,6 +446,16 @@ public:
     auto sp1 = spect * s.spect;
     return sampled_spectrum(sp1, type);
   }
+  shared_ptr<sampled_spectrum>
+  multip(unsigned int wlength, const shared_ptr<Real> &s) {
+    auto ss = *s;
+    spect.multip(wlength, ss);
+    return make_shared<sampled_spectrum>(spect, type);
+  }
+  sampled_spectrum multip(unsigned int wlength, Real s) {
+    spect.multip(wlength, s);
+    return sampled_spectrum(spect, type);
+  }
 
   shared_ptr<sampled_spectrum>
   div(const shared_ptr<Real> &s) const {
@@ -249,6 +475,16 @@ public:
   sampled_spectrum div(const sampled_spectrum &s) const {
     auto sp1 = spect / s.spect;
     return sampled_spectrum(sp1, type);
+  }
+  shared_ptr<sampled_spectrum>
+  div(unsigned int wlength, const shared_ptr<Real> &s) {
+    auto ss = *s;
+    spect.div(wlength, ss);
+    return make_shared<sampled_spectrum>(spect, type);
+  }
+  sampled_spectrum div(unsigned int wlength, Real s) {
+    spect.div(wlength, s);
+    return sampled_spectrum(spect, type);
   }
 
   Real evaluate(unsigned int wavelength) {
