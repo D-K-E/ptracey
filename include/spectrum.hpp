@@ -456,6 +456,16 @@ public:
     spect.multip(wlength, s);
     return sampled_spectrum(spect, type);
   }
+  sampled_spectrum multip(unsigned int wlength,
+                          sampled_spectrum s) {
+    spect.multip(wlength, s.spect[wlength]);
+    return sampled_spectrum(spect, type);
+  }
+  sampled_spectrum &operator+=(const sampled_spectrum s) {
+    auto ss = spect + s.spect;
+    auto s_spec = sampled_spectrum(ss, type);
+    return s_spec;
+  }
 
   shared_ptr<sampled_spectrum>
   div(const shared_ptr<Real> &s) const {
@@ -493,6 +503,10 @@ public:
 
   void update(unsigned int wlength, Real value) {
     spect.update(wlength, value);
+  }
+  void update(unsigned int wlength,
+              sampled_spectrum value) {
+    spect.update(wlength, value.spect[wlength]);
   }
 };
 
