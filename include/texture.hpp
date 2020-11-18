@@ -79,11 +79,9 @@ public:
 class image_texture : public texture {
 public:
   const static int bytes_per_pixel = 3;
-
   image_texture()
       : data(nullptr), width(0), height(0),
         bytes_per_scanline(0) {}
-
   image_texture(const char *filename) {
     auto components_per_pixel = bytes_per_pixel;
 
@@ -100,9 +98,7 @@ public:
 
     bytes_per_scanline = bytes_per_pixel * width;
   }
-
   ~image_texture() { STBI_FREE(data); }
-
   shared_ptr<spectrum> value(Real u, Real v,
                              const vec3 &p) const override {
     // If we have no texture data, then return solid cyan as
@@ -147,13 +143,27 @@ class material_texture : public texture {
   // for color
 public:
   material_texture(const shared_ptr<spectrum> &s)
-      : spect(s) {}
-  material_texture(const path &path_to_csv,
-                   const std::string &wave_col_name,
-                   const std::string &power_col_name,
-                   const std::string &sep = ",") {}
+      : spect(make_shared<solid_color>(s)) {}
+  material_texture(shared_ptr<texture> t) : spect(t) {}
+  material_texture(
+      const path &path_to_csv,
+      const std::string &wave_col_name,
+      const std::string &power_col_name,
+      const std::string &sep = ",",
+      const unsigned int stride = SPD_STRIDE,
+      SpectrumType stype = SpectrumType::Reflectance) {
+    spect = make_shared<solid_color>(
+        make_shared<sampled_spectrum>(
+            CSV_PARENT / path_to_csv, wave_col_name,
+            power_col_name, sep, stride, stype));
+  }
+
+  shared_ptr<spectrum> value(Real u, Real v,
+                             const vec3 &p) const {
+    return spect->value(u, v, p);
+  }
 
 public:
-  shared_ptr<spectrum> spect;
+  shared_ptr<texture> spect;
 };
 }

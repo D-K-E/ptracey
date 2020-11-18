@@ -14,6 +14,16 @@ namespace ptracey {
 using immat =
     std::vector<std::vector<shared_ptr<spectrum>>>;
 
+/*!
+  main rendering code equation:
+\f[
+L_o(x, w_o, \lambda, t) =
+    L_e(x, w_o, \lambda, t)
+    \int_{\omega} f_r(x,w_i,w_o,\lambda,t)
+        L_i(x,w_i,\lambda,t)
+        (w_i \cdot n) d_w
+\f]
+ */
 shared_ptr<spectrum>
 ray_color(const ray &r,
           const shared_ptr<spectrum> &background,
@@ -152,14 +162,14 @@ extern "C" int main(int ac, char **av) {
   // Image
   auto aspect_ratio = 16.0 / 9.0;
   int image_width = 400;
-  int samples_per_pixel = 1000;
+  int samples_per_pixel = 10;
   int max_depth = 100;
   immat imvec;
 
   // World
 
   hittable_list world;
-  int choice = 2;
+  int choice = 12;
   camera cam;
   int image_height;
   shared_ptr<spectrum> background;

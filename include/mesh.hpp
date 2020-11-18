@@ -15,7 +15,7 @@
 using namespace ptracey;
 namespace ptracey {
 
-color to_color(aiColor3D col) {
+color to_color_ai(aiColor3D col) {
   auto x = static_cast<double>(col.r);
   auto y = static_cast<double>(col.g);
   auto z = static_cast<double>(col.b);
@@ -143,10 +143,10 @@ public:
     }
     aiColor3D col;
     mat->Get(AI_MATKEY_COLOR_EMISSIVE, col);
-    shared_ptr<spectrum> em =
-        make_shared<spectrum>(to_color(col));
-    bool res =
-        em->x() == 0.0 && em->y() == 0.0 && em->z() == 0.0;
+    auto rgb_c = to_color_ai(col);
+    shared_ptr<spectrum> em = make_shared<spectrum>(rgb_c);
+    bool res = rgb_c.x() == 0.0 && rgb_c.y() == 0.0 &&
+               rgb_c.z() == 0.0;
     if (!res) {
       shared_ptr<material> ret =
           make_shared<diffuse_light>(em);
@@ -156,17 +156,20 @@ public:
     mat->Get(AI_MATKEY_REFLECTIVITY, fuzz);
     if (fuzz != 0.0) {
       mat->Get(AI_MATKEY_COLOR_DIFFUSE, col);
-      shared_ptr<spectrum> c =
-          make_shared<spectrum>(to_color(col));
-      res = c->x() == 0.0 && c->y() == 0.0 && c->z() == 0.0;
+      auto rgb_c = to_color_ai(col);
+      shared_ptr<spectrum> c = make_shared<spectrum>(rgb_c);
+      res = rgb_c.r() == 0.0 && rgb_c.g() == 0.0 &&
+            rgb_c.b() == 0.0;
       if (!res) {
         shared_ptr<material> ret =
             make_shared<metal>(c, fuzz);
         return ret;
       }
       mat->Get(AI_MATKEY_COLOR_REFLECTIVE, col);
-      c = make_shared<spectrum>(to_color(col));
-      res = c->x() == 0.0 && c->y() == 0.0 && c->z() == 0.0;
+      rgb_c = to_color_ai(col);
+      c = make_shared<spectrum>(rgb_c);
+      res = rgb_c.x() == 0.0 && rgb_c.y() == 0.0 &&
+            rgb_c.z() == 0.0;
       if (!res) {
         shared_ptr<material> ret =
             make_shared<metal>(c, fuzz);
@@ -174,8 +177,9 @@ public:
       }
     }
     mat->Get(AI_MATKEY_COLOR_DIFFUSE, col);
+    rgb_c = to_color_ai(col);
     shared_ptr<spectrum> diffuse =
-        make_shared<spectrum>(to_color(col));
+        make_shared<spectrum>(rgb_c);
     shared_ptr<material> ret =
         make_shared<lambertian>(diffuse);
     return ret;

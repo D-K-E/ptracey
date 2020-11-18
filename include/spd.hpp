@@ -5,21 +5,27 @@
 #include <wave.hpp>
 using namespace ptracey;
 namespace ptracey {
+
+static const unsigned int SPD_STRIDE = 20;
+static const int VISIBLE_LAMBDA_START = 360;
+static const int VISIBLE_LAMBDA_END = 830;
+
 template <class T> class spd {
   // sampled spectrum power distribution
 public:
   unsigned int wave_start;
   unsigned int wave_end;
   std::map<unsigned int, T> wavelength_power;
-  spd(unsigned int size = 471) {
+  spd(unsigned int size = 471 / SPD_STRIDE) {
     wavelength_power.clear();
     std::vector<Real> powers;
     for (unsigned int i = 0; i < size; i++) {
       powers.push_back(random_real());
     }
     auto power_spd = sampled_wave<Real>(powers);
-    auto ws =
-        linspace<unsigned int>(360, 830, powers.size());
+    auto ws = linspace<unsigned int>(VISIBLE_LAMBDA_START,
+                                     VISIBLE_LAMBDA_END,
+                                     powers.size());
     for (int i = 0; i < powers.size(); i++) {
       auto pw = make_pair(ws[i], powers[i]);
       wavelength_power.insert(pw);
@@ -39,7 +45,7 @@ public:
     return ss;
   }
   spd(const sampled_wave<T> &sampled_powers,
-      unsigned int wstart)
+      unsigned int wstart, unsigned int stride = SPD_STRIDE)
       : wave_start(wstart) {
     wavelength_power.clear();
     for (unsigned int i = 0; i < sampled_powers.size();
@@ -54,7 +60,8 @@ public:
                                 sampled_powers.size() - 1);
   }
   spd(const sampled_wave<T> &sampled_powers,
-      std::vector<unsigned int> wlengths) {
+      std::vector<unsigned int> wlengths,
+      unsigned int stride = SPD_STRIDE) {
     wavelength_power.clear();
     D_CHECK(sampled_powers.size() == wlengths.size());
     for (auto wl : wlengths) {
@@ -78,33 +85,48 @@ public:
       wavelength_power.insert(pw);
     }
   }
+  template <typename U>
+  void fill_with_stride(std::vector<U> &dest,
+                        const std::vector<U> &srcv,
+                        unsigned int stride) {
+    for (unsigned int i = 0; i < srcv.size(); i += stride) {
+      dest.push_back(srcv[i]);
+    }
+  }
   spd(const path &csv_path,
       const std::string &wave_col_name = "wavelength",
       const std::string &power_col_name = "power",
-      const std::string &sep = ",") {
+      const std::string &sep = ",",
+      const unsigned int stride = SPD_STRIDE) {
     wavelength_power.clear();
     path csv_path_abs = RUNTIME_PATH / csv_path;
     rapidcsv::Document doc(csv_path_abs.string(),
                            rapidcsv::LabelParams(0, -1),
                            rapidcsv::SeparatorParams(','));
-    std::vector<T> powers;
+    std::vector<T> temp;
     try {
-      powers = doc.GetColumn<T>(power_col_name);
+      temp = doc.GetColumn<T>(power_col_name);
     } catch (const std::out_of_range &err) {
       throw std::runtime_error(std::string(err.what()) +
                                " :: " + power_col_name +
                                " in file :: " +
                                csv_path_abs.string());
     }
-    std::vector<unsigned int> wlengths;
+    std::vector<T> powers;
+    fill_with_stride<T>(powers, temp, stride);
+    std::vector<unsigned int> tempv;
     try {
-      wlengths = doc.GetColumn<unsigned int>(wave_col_name);
+      tempv = doc.GetColumn<unsigned int>(wave_col_name);
     } catch (const std::out_of_range &error) {
       throw std::runtime_error(std::string(error.what()) +
                                " :: " + wave_col_name +
                                " in file :: " +
                                csv_path_abs.string());
     }
+    D_CHECK(tempv.size() == temp.size());
+    std::vector<unsigned int> wlengths;
+    fill_with_stride<unsigned int>(wlengths, tempv, stride);
+
     wavelength_power.clear();
     D_CHECK(powers.size() == wlengths.size());
     for (auto wl : wlengths) {
@@ -113,9 +135,9 @@ public:
             "wavelength can not be less than 0");
       }
     }
-    std::map<unsigned int, T> temp;
+    std::map<unsigned int, T> tempwp;
     for (int i = 0; i < wlengths.size(); i++) {
-      temp.insert(make_pair(wlengths[i], powers[i]));
+      tempwp.insert(make_pair(wlengths[i], powers[i]));
     }
     std::sort(wlengths.begin(), wlengths.end(),
               [](auto i, auto j) { return i < j; });
@@ -123,7 +145,7 @@ public:
     wave_end = wlengths[wlengths.size() - 1];
     for (int i = 0; i < wlengths.size(); i++) {
       auto pw =
-          make_pair(wlengths[i], temp.at(wlengths[i]));
+          make_pair(wlengths[i], tempwp.at(wlengths[i]));
       wavelength_power.insert(pw);
     }
   }
@@ -205,7 +227,8 @@ public:
     Real stepsize = (x2 - x1) / static_cast<Real>(size());
     Real val = 0.0;
     auto waves = wavelengths();
-    for (unsigned int i = 0; i < (int)size(); i++) {
+    for (unsigned int i = 0; i < (unsigned int)size();
+         i++) {
       auto pw = eval_wavelength(waves[i]);
       auto v = nspd.eval_wavelength(waves[i]);
       val += pw * v;
@@ -261,14 +284,14 @@ public:
     auto pw2 = s.power();
     pw1 += pw2;
     auto wlengths = wavelengths();
-    auto ss = spd(pw1, wlengths);
+    auto ss = spd(pw1, wlengths, 1);
     return ss;
   }
   spd &operator+=(const Real &s) const {
     auto pw1 = power();
     pw1 += s;
     auto wlengths = wavelengths();
-    auto ss = spd(pw1, wlengths);
+    auto ss = spd(pw1, wlengths, 1);
     return ss;
   }
   spd operator+(const spd &s) const {
@@ -276,14 +299,14 @@ public:
     auto pw2 = s.power();
     auto wlengths = wavelengths();
     auto pw3 = pw1 + pw2;
-    auto ss = spd<T>(pw3, wlengths);
+    auto ss = spd<T>(pw3, wlengths, 1);
     return ss;
   }
   spd operator+(const Real &s) const {
     auto pw1 = power();
     auto pw2 = pw1 + s;
     auto wlengths = wavelengths();
-    auto ss = spd(pw2, wlengths);
+    auto ss = spd(pw2, wlengths, 1);
     return ss;
   }
   friend spd operator+(const Real &s, const spd &ss) {
@@ -294,27 +317,27 @@ public:
     auto pw2 = s.power();
     pw1 -= pw2;
     auto wlengths = wavelengths();
-    auto ss = spd(pw1, wlengths);
+    auto ss = spd(pw1, wlengths, 1);
     return ss;
   }
   spd &operator-=(const Real &s) const {
     auto pw1 = power();
     pw1 -= s;
     auto wlengths = wavelengths();
-    auto ss = spd(pw1, wlengths);
+    auto ss = spd(pw1, wlengths, 1);
     return ss;
   }
   spd operator-(const spd &s) const {
     auto pw1 = power();
     auto pw2 = s.power();
     auto wlengths = wavelengths();
-    auto ss = spd(pw1 - pw2, wlengths);
+    auto ss = spd(pw1 - pw2, wlengths, 1);
     return ss;
   }
   spd operator-(const Real &s) const {
     auto pw1 = power();
     auto wlengths = wavelengths();
-    auto ss = spd(pw1 - s, wlengths);
+    auto ss = spd(pw1 - s, wlengths, 1);
     return ss;
   }
   friend spd operator-(const Real &s, const spd &ss) {
@@ -324,26 +347,26 @@ public:
     auto pw1 = power();
     auto pw2 = s.power();
     auto wlengths = wavelengths();
-    auto ss = spd(pw1 * pw2, wlengths);
+    auto ss = spd(pw1 * pw2, wlengths, 1);
     return ss;
   }
   spd &operator*=(const Real &s) const {
     auto pw1 = power();
     auto wlengths = wavelengths();
-    auto ss = spd(pw1 * s, wlengths);
+    auto ss = spd(pw1 * s, wlengths, 1);
     return ss;
   }
   spd operator*(const spd &s) const {
     auto pw1 = power();
     auto pw2 = s.power();
     auto wlengths = wavelengths();
-    auto ss = spd(pw1 * pw2, wlengths);
+    auto ss = spd(pw1 * pw2, wlengths, 1);
     return ss;
   }
   spd operator*(const Real &s) const {
     auto pw1 = power();
     auto wlengths = wavelengths();
-    auto ss = spd(pw1 * s, wlengths);
+    auto ss = spd(pw1 * s, wlengths, 1);
     return ss;
   }
   friend spd operator*(const Real &s, const spd &ss) {
@@ -353,26 +376,26 @@ public:
     auto pw1 = power();
     auto pw2 = s.power();
     auto wlengths = wavelengths();
-    auto ss = spd(pw1 / pw2, wlengths);
+    auto ss = spd(pw1 / pw2, wlengths, 1);
     return ss;
   }
   spd &operator/=(const Real &s) const {
     auto pw1 = power();
     auto wlengths = wavelengths();
-    auto ss = spd(pw1 / s, wlengths);
+    auto ss = spd(pw1 / s, wlengths, 1);
     return ss;
   }
   spd operator/(const spd &s) const {
     auto pw1 = power();
     auto pw2 = s.power();
     auto wlengths = wavelengths();
-    auto ss = spd(pw1 / pw2, wlengths);
+    auto ss = spd(pw1 / pw2, wlengths, 1);
     return ss;
   }
   spd operator/(const Real &s) const {
     auto pw1 = power();
     auto wlengths = wavelengths();
-    auto ss = spd(pw1 / s, wlengths);
+    auto ss = spd(pw1 / s, wlengths, 1);
     return ss;
   }
   friend spd operator/(const Real &s, const spd &ss) {

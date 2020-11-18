@@ -67,8 +67,11 @@ public:
         reflect(unit_vector(r_in.direction()), rec.normal);
     srec.specular_ray = ray(
         rec.p, reflected + fuzz * random_in_unit_sphere(),
-        r_in.time());
-    srec.attenuation = albedo->value(rec.u, rec.v, rec.p);
+        r_in.time(), r.wavelength());
+    shared_ptr<spectrum> rspect = rec.spec_ptr;
+    shared_ptr<spectrum> spect =
+        albedo->value(rec.u, rec.v, rec.p);
+    srec.attenuation = ;
     srec.is_specular = true;
     srec.pdf_ptr = nullptr;
     return true;

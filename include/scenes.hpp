@@ -180,6 +180,22 @@ hittable_list two_spheres() {
 
   return objects;
 }
+hittable_list two_spheres2() {
+  hittable_list objects;
+
+  auto checker = make_shared<checker_texture>(
+      make_shared<spectrum>(0.2, 0.3, 0.1),
+      make_shared<spectrum>(0.9, 0.9, 0.9));
+
+  objects.add(make_shared<sphere>(
+      point3(0, -10, 0), 10,
+      make_shared<lambertian>(checker)));
+  objects.add(make_shared<sphere>(
+      point3(0, 10, 0), 10,
+      make_shared<lambertian>(checker)));
+
+  return objects;
+}
 hittable_list two_perlin_spheres() {
   hittable_list objects;
 
@@ -490,8 +506,9 @@ hittable_list model_test2() {
 
 void choose_scene(int choice, camera &cam,
                   hittable_list &world,
-                  int samples_per_pixel, float aspect_ratio,
-                  int &image_width, int &image_height,
+                  int &samples_per_pixel,
+                  float aspect_ratio, int &image_width,
+                  int &image_height,
                   shared_ptr<spectrum> &background) {
   //
   point3 lookfrom;
@@ -619,6 +636,20 @@ void choose_scene(int choice, camera &cam,
     samples_per_pixel = 50;
     lookfrom = point3(278, 278, -800);
     lookat = point3(278, 278, 0);
+    break;
+  }
+
+  case 12: {
+    world = two_spheres();
+    color b_rgb(0.70, 0.80, 1.00);
+    // background = sampled_spectrum::fromRgb(
+    //    b_rgb, SpectrumType::Reflectance);
+    background = make_shared<spectrum>(0.70, 0.80, 1.00);
+    samples_per_pixel = 20;
+
+    lookfrom = point3(13, 2, 3);
+    lookat = point3(0, 0, 0);
+    vfov = 20.0;
     break;
   }
   }

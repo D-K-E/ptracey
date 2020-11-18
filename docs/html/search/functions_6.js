@@ -2,7 +2,7 @@ var searchData=
 [
   ['gcd_1368',['gcd',['../MathFunctions_8h.html#a35dbf295d7708e2cffd2428d8d8f109a',1,'Assimp::Math']]],
   ['generatemappingtable_1369',['GenerateMappingTable',['../classAssimp_1_1SpatialSort.html#a336c947f044df7ec093f636cb5b55a88',1,'Assimp::SpatialSort']]],
-  ['get_1370',['Get',['../classAssimp_1_1StreamReader.html#a2bb6d0e3bd6f453fb77c065fa5492b56',1,'Assimp::StreamReader::Get()'],['../classAssimp_1_1DefaultLogger.html#a7d0a53f2db66945ade30094330a77ba4',1,'Assimp::DefaultLogger::get()']]],
+  ['get_1370',['get',['../classAssimp_1_1DefaultLogger.html#a7d0a53f2db66945ade30094330a77ba4',1,'Assimp::DefaultLogger::get()'],['../classAssimp_1_1StreamReader.html#a2bb6d0e3bd6f453fb77c065fa5492b56',1,'Assimp::StreamReader::Get()']]],
   ['get_5fqnan_1371',['get_qnan',['../qnan_8h.html#a1563bfa01954df98282cbaaf632dc95a',1,'qnan.h']]],
   ['get_5fstream_1372',['get_stream',['../classAssimp_1_1LineSplitter.html#ae919ea1da66a85422681c0fbcb4986fe',1,'Assimp::LineSplitter']]],
   ['get_5ftokens_1373',['get_tokens',['../classAssimp_1_1LineSplitter.html#a05e6ea1868bc931c754ef332a4866ae3',1,'Assimp::LineSplitter']]],

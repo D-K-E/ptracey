@@ -4,7 +4,7 @@ var searchData=
   ['deadlyerrorbase_413',['DeadlyErrorBase',['../classDeadlyErrorBase.html',1,'']]],
   ['deadlyexporterror_414',['DeadlyExportError',['../classDeadlyExportError.html',1,'DeadlyExportError'],['../classDeadlyExportError.html#a6ad6cb9df4baa6a7bbf175e4d53fd7a2',1,'DeadlyExportError::DeadlyExportError()']]],
   ['deadlyimporterror_415',['DeadlyImportError',['../classDeadlyImportError.html',1,'DeadlyImportError'],['../classDeadlyImportError.html#a248da94b6368c824937464f942f76bed',1,'DeadlyImportError::DeadlyImportError()']]],
-  ['debug_416',['debug',['../classAssimp_1_1Logger.html#a3b10454ab4c0949f251062376d9c4161',1,'Assimp::Logger::debug(const char *message)'],['../classAssimp_1_1Logger.html#a8b6248a0fd062431e8572556350d29e6a8438e66bce3c4e64d4bfcaea5095e141',1,'Assimp::Logger::DEBUG()']]],
+  ['debug_416',['DEBUG',['../classAssimp_1_1Logger.html#a8b6248a0fd062431e8572556350d29e6a8438e66bce3c4e64d4bfcaea5095e141',1,'Assimp::Logger::DEBUG()'],['../classAssimp_1_1Logger.html#a3b10454ab4c0949f251062376d9c4161',1,'Assimp::Logger::debug(const char *message)']]],
   ['debugging_417',['Debugging',['../classAssimp_1_1Logger.html#acd0b52a87d6fc11e957ed2c6e2ad75b6a0cb475014d27098c3423738c571d857f',1,'Assimp::Logger']]],
   ['defaultiostream_418',['DefaultIOStream',['../classAssimp_1_1DefaultIOStream.html',1,'Assimp']]],
   ['defaultiosystem_419',['DefaultIOSystem',['../classAssimp_1_1DefaultIOSystem.html',1,'Assimp']]],

@@ -86,21 +86,23 @@ Inheritance diagram for ptracey::material_texture:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a3b6061451a0a07b3232dda639c07b2f7"><td class="memItemLeft" align="right" valign="top"><a id="a3b6061451a0a07b3232dda639c07b2f7"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>material_texture</b> (const shared_ptr&lt; <a class="el" href="classptracey_1_1vec3.html">spectrum</a> &gt; &amp;s)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>material_texture</b> (const shared_ptr&lt; <a class="el" href="classptracey_1_1sampled__spectrum.html">spectrum</a> &gt; &amp;s)</td></tr>
 <tr class="separator:a3b6061451a0a07b3232dda639c07b2f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a6e9ea8ef9f269caaa138675a1a3231"><td class="memItemLeft" align="right" valign="top"><a id="a0a6e9ea8ef9f269caaa138675a1a3231"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>material_texture</b> (const path &amp;path_to_csv, const std::string &amp;wave_col_name, const std::string &amp;power_col_name, const std::string &amp;sep=&quot;,&quot;)</td></tr>
-<tr class="separator:a0a6e9ea8ef9f269caaa138675a1a3231"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classptracey_1_1texture"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classptracey_1_1texture')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classptracey_1_1texture.html">ptracey::texture</a></td></tr>
-<tr class="memitem:aeb8a6d700889dfd2cf2aea8ca6a96ec4 inherit pub_methods_classptracey_1_1texture"><td class="memItemLeft" align="right" valign="top"><a id="aeb8a6d700889dfd2cf2aea8ca6a96ec4"></a>
-virtual shared_ptr&lt; <a class="el" href="classptracey_1_1vec3.html">spectrum</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>value</b> (Real u, Real v, const <a class="el" href="classptracey_1_1vec3.html">vec3</a> &amp;p) const =0</td></tr>
-<tr class="separator:aeb8a6d700889dfd2cf2aea8ca6a96ec4 inherit pub_methods_classptracey_1_1texture"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a820080a2128adb937d37361c7ebddaca"><td class="memItemLeft" align="right" valign="top"><a id="a820080a2128adb937d37361c7ebddaca"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>material_texture</b> (shared_ptr&lt; <a class="el" href="classptracey_1_1texture.html">texture</a> &gt; t)</td></tr>
+<tr class="separator:a820080a2128adb937d37361c7ebddaca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a295c806a4285a25e53abaf48e7dfd13f"><td class="memItemLeft" align="right" valign="top"><a id="a295c806a4285a25e53abaf48e7dfd13f"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>material_texture</b> (const path &amp;path_to_csv, const std::string &amp;wave_col_name, const std::string &amp;power_col_name, const std::string &amp;sep=&quot;,&quot;, const unsigned int stride=SPD_STRIDE, SpectrumType stype=SpectrumType::Reflectance)</td></tr>
+<tr class="separator:a295c806a4285a25e53abaf48e7dfd13f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a212f611be543f2c56a8d62359f175f43"><td class="memItemLeft" align="right" valign="top"><a id="a212f611be543f2c56a8d62359f175f43"></a>
+shared_ptr&lt; <a class="el" href="classptracey_1_1sampled__spectrum.html">spectrum</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>value</b> (Real u, Real v, const <a class="el" href="classptracey_1_1vec3.html">vec3</a> &amp;p) const</td></tr>
+<tr class="separator:a212f611be543f2c56a8d62359f175f43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ad62d48e59e50f03b296de1ef51051de6"><td class="memItemLeft" align="right" valign="top"><a id="ad62d48e59e50f03b296de1ef51051de6"></a>
-shared_ptr&lt; <a class="el" href="classptracey_1_1vec3.html">spectrum</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>spect</b></td></tr>
-<tr class="separator:ad62d48e59e50f03b296de1ef51051de6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abce2f4cd1820c562d6c0b2f5a0ce431a"><td class="memItemLeft" align="right" valign="top"><a id="abce2f4cd1820c562d6c0b2f5a0ce431a"></a>
+shared_ptr&lt; <a class="el" href="classptracey_1_1texture.html">texture</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>spect</b></td></tr>
+<tr class="separator:abce2f4cd1820c562d6c0b2f5a0ce431a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li><a class="el" href="texture_8hpp_source.html">texture.hpp</a></li>

@@ -69,36 +69,21 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classptracey_1_1sampled__spectrum-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">ptracey::sampled_spectrum Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="dynheader">
-Inheritance diagram for ptracey::sampled_spectrum:</div>
-<div class="dyncontent">
- <div class="center">
-  <img src="classptracey_1_1sampled__spectrum.png" usemap="#ptracey::sampled_5Fspectrum_map" alt=""/>
-  <map id="ptracey::sampled_5Fspectrum_map" name="ptracey::sampled_5Fspectrum_map">
-<area href="classptracey_1_1abstract__spectrum.html" alt="ptracey::abstract_spectrum" shape="rect" coords="0,0,165,24"/>
-  </map>
-</div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1186d99f995fb6ff4fe9d9051cb3ad26"><td class="memItemLeft" align="right" valign="top"><a id="a1186d99f995fb6ff4fe9d9051cb3ad26"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>sampled_spectrum</b> (const <a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt; &amp;s)</td></tr>
-<tr class="separator:a1186d99f995fb6ff4fe9d9051cb3ad26"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4591bcb5418c56c804f67c9cf433219e"><td class="memItemLeft" align="right" valign="top"><a id="a4591bcb5418c56c804f67c9cf433219e"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>sampled_spectrum</b> (const <a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt; &amp;s, const <a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt; &amp;r)</td></tr>
-<tr class="separator:a4591bcb5418c56c804f67c9cf433219e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84fbf905f1d3bca957eacca1c49b4fa1"><td class="memItemLeft" align="right" valign="top"><a id="a84fbf905f1d3bca957eacca1c49b4fa1"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>update_spect</b> ()</td></tr>
-<tr class="separator:a84fbf905f1d3bca957eacca1c49b4fa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88898a9b6476ed30b905744c26543bdd"><td class="memItemLeft" align="right" valign="top"><a id="a88898a9b6476ed30b905744c26543bdd"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>update_refl_spect</b> ()</td></tr>
-<tr class="separator:a88898a9b6476ed30b905744c26543bdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ed5e204b82c28483a9d8ea8abe8350e"><td class="memItemLeft" align="right" valign="top"><a id="a9ed5e204b82c28483a9d8ea8abe8350e"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>sampled_spectrum</b> (const path &amp;csv_path, const std::string &amp;wave_col_name=&quot;wavelength&quot;, const std::string &amp;power_col_name=&quot;power&quot;, const std::string &amp;sep=&quot;,&quot;, const unsigned int stride=SPD_STRIDE, SpectrumType stype=SpectrumType::Reflectance)</td></tr>
+<tr class="separator:a9ed5e204b82c28483a9d8ea8abe8350e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4eaf2e1c15390f43915746204919279"><td class="memItemLeft" align="right" valign="top"><a id="aa4eaf2e1c15390f43915746204919279"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>sampled_spectrum</b> (const <a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt; &amp;s_lambda, SpectrumType stype)</td></tr>
+<tr class="separator:aa4eaf2e1c15390f43915746204919279"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a512c6af6285f6f041c22f031f09deee1"><td class="memItemLeft" align="right" valign="top"><a id="a512c6af6285f6f041c22f031f09deee1"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>sampled_spectrum</b> (const Real &amp;r, const Real &amp;g, const Real &amp;b, SpectrumType stype=SpectrumType::Reflectance)</td></tr>
 <tr class="separator:a512c6af6285f6f041c22f031f09deee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -106,32 +91,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>update_refl_spect</b>
 &#160;</td><td class="memItemRight" valign="bottom"><b>sampled_spectrum</b> (const Real &amp;r, SpectrumType stype=SpectrumType::Reflectance)</td></tr>
 <tr class="separator:a88fb3c47b0c59d65c29310b581ec9d69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57934bfc6ab94ede887aa5f27c6aef55"><td class="memItemLeft" align="right" valign="top"><a id="a57934bfc6ab94ede887aa5f27c6aef55"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>sampled_spectrum</b> (const <a class="el" href="classptracey_1_1vec3.html">color</a> &amp;_rgb, SpectrumType stype=SpectrumType::Reflectance)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>sampled_spectrum</b> (const <a class="el" href="classptracey_1_1color.html">color</a> &amp;_rgb, SpectrumType stype=SpectrumType::Reflectance)</td></tr>
 <tr class="separator:a57934bfc6ab94ede887aa5f27c6aef55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92c6947539464fe68391003b811fcd12"><td class="memItemLeft" align="right" valign="top"><a id="a92c6947539464fe68391003b811fcd12"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>from_rgb</b> (const <a class="el" href="classptracey_1_1vec3.html">color</a> &amp;rgb)</td></tr>
+<a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>from_rgb</b> (const <a class="el" href="classptracey_1_1color.html">color</a> &amp;rgb)</td></tr>
 <tr class="separator:a92c6947539464fe68391003b811fcd12"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45edccb464d7085a39407fbb5afd8af9"><td class="memItemLeft" align="right" valign="top"><a id="a45edccb464d7085a39407fbb5afd8af9"></a>
-Real&#160;</td><td class="memItemRight" valign="bottom"><b>r</b> () const override</td></tr>
-<tr class="separator:a45edccb464d7085a39407fbb5afd8af9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c61bfd6c7e8b468ba345641c609c14d"><td class="memItemLeft" align="right" valign="top"><a id="a2c61bfd6c7e8b468ba345641c609c14d"></a>
-Real&#160;</td><td class="memItemRight" valign="bottom"><b>g</b> () const override</td></tr>
-<tr class="separator:a2c61bfd6c7e8b468ba345641c609c14d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18f0883149598f135761a914a5c2422d"><td class="memItemLeft" align="right" valign="top"><a id="a18f0883149598f135761a914a5c2422d"></a>
-Real&#160;</td><td class="memItemRight" valign="bottom"><b>b</b> () const override</td></tr>
-<tr class="separator:a18f0883149598f135761a914a5c2422d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23457bd811e5915c57ebb502015937d7"><td class="memItemLeft" align="right" valign="top"><a id="a23457bd811e5915c57ebb502015937d7"></a>
-Real&#160;</td><td class="memItemRight" valign="bottom"><b>x</b> () const override</td></tr>
-<tr class="separator:a23457bd811e5915c57ebb502015937d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e21e061c242614cbc54812215af284f"><td class="memItemLeft" align="right" valign="top"><a id="a3e21e061c242614cbc54812215af284f"></a>
-Real&#160;</td><td class="memItemRight" valign="bottom"><b>y</b> () const override</td></tr>
-<tr class="separator:a3e21e061c242614cbc54812215af284f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70271a271459ef9f1c0a83510adec971"><td class="memItemLeft" align="right" valign="top"><a id="a70271a271459ef9f1c0a83510adec971"></a>
-Real&#160;</td><td class="memItemRight" valign="bottom"><b>z</b> () const override</td></tr>
-<tr class="separator:a70271a271459ef9f1c0a83510adec971"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ba31e7ab0d4702bf084ec2e6056dd6d"><td class="memItemLeft" align="right" valign="top"><a id="a7ba31e7ab0d4702bf084ec2e6056dd6d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>get_spds</b> (<a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt; &amp;sspect, <a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt; &amp;rspect) const</td></tr>
-<tr class="separator:a7ba31e7ab0d4702bf084ec2e6056dd6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd1b790641748d9246585620b9abc42e"><td class="memItemLeft" align="right" valign="top"><a id="abd1b790641748d9246585620b9abc42e"></a>
 shared_ptr&lt; <a class="el" href="classptracey_1_1sampled__spectrum.html">sampled_spectrum</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>add</b> (const shared_ptr&lt; Real &gt; &amp;s) const</td></tr>
 <tr class="separator:abd1b790641748d9246585620b9abc42e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -195,21 +159,12 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a0063d655c170b06068481abda8de9e05"><td class="memItemLeft" align="right" valign="top"><a id="a0063d655c170b06068481abda8de9e05"></a>
 <a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>spect</b></td></tr>
 <tr class="separator:a0063d655c170b06068481abda8de9e05"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a97b208dad44480a62d0cc33c4ed3cd3c"><td class="memItemLeft" align="right" valign="top"><a id="a97b208dad44480a62d0cc33c4ed3cd3c"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>reflectance</b></td></tr>
-<tr class="separator:a97b208dad44480a62d0cc33c4ed3cd3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e128780c722d9815a367e180e3579ee"><td class="memItemLeft" align="right" valign="top"><a id="a3e128780c722d9815a367e180e3579ee"></a>
 SpectrumType&#160;</td><td class="memItemRight" valign="bottom"><b>type</b></td></tr>
 <tr class="separator:a3e128780c722d9815a367e180e3579ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a41bd7f13eaf89f96a90fcf017b7ae3a8"><td class="memItemLeft" align="right" valign="top"><a id="a41bd7f13eaf89f96a90fcf017b7ae3a8"></a>
-<a class="el" href="classptracey_1_1vec3.html">vec3</a>&#160;</td><td class="memItemRight" valign="bottom"><b>xyz</b></td></tr>
-<tr class="separator:a41bd7f13eaf89f96a90fcf017b7ae3a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3f2106984959109b6fcbae79544e995"><td class="memItemLeft" align="right" valign="top"><a id="ae3f2106984959109b6fcbae79544e995"></a>
-<a class="el" href="classptracey_1_1vec3.html">color</a>&#160;</td><td class="memItemRight" valign="bottom"><b>rgb</b></td></tr>
-<tr class="separator:ae3f2106984959109b6fcbae79544e995"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-attribs"></a>
-Static Protected Attributes</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
 <tr class="memitem:ab66e46dbaa1054f92658240bd3b8d1ee"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>cie_xbar</b></td></tr>
 <tr class="separator:ab66e46dbaa1054f92658240bd3b8d1ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a974315215a6d6668eceab7420cd8c6d4"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>cie_ybar</b></td></tr>
@@ -244,7 +199,7 @@ static <a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt;&#160;
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -268,7 +223,7 @@ static <a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt;&#160;
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -292,7 +247,7 @@ static <a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt;&#160;
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -316,7 +271,7 @@ static <a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt;&#160;
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

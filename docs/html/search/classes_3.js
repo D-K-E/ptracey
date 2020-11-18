@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['camera_1014',['camera',['../classptracey_1_1camera.html',1,'ptracey']]],
-  ['checker_5ftexture_1015',['checker_texture',['../classptracey_1_1checker__texture.html',1,'ptracey']]],
+  ['camera_1013',['camera',['../classptracey_1_1camera.html',1,'ptracey']]],
+  ['checker_5ftexture_1014',['checker_texture',['../classptracey_1_1checker__texture.html',1,'ptracey']]],
+  ['color_1015',['color',['../classptracey_1_1color.html',1,'ptracey']]],
   ['commentremover_1016',['CommentRemover',['../classAssimp_1_1CommentRemover.html',1,'Assimp']]],
   ['constant_5fmedium_1017',['constant_medium',['../classptracey_1_1constant__medium.html',1,'ptracey']]],
   ['converter_1018',['Converter',['../classrapidcsv_1_1Converter.html',1,'rapidcsv']]],

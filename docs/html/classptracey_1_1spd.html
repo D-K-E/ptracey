@@ -78,18 +78,22 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0516e87985e2d97d66ef736a7d9959e7"><td class="memItemLeft" align="right" valign="top"><a id="a0516e87985e2d97d66ef736a7d9959e7"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>spd</b> (unsigned int size=471)</td></tr>
-<tr class="separator:a0516e87985e2d97d66ef736a7d9959e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9be61c5b23f93134e338f0a9d328ea24"><td class="memItemLeft" align="right" valign="top"><a id="a9be61c5b23f93134e338f0a9d328ea24"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>spd</b> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&lt; T &gt; &amp;sampled_powers, unsigned int wstart)</td></tr>
-<tr class="separator:a9be61c5b23f93134e338f0a9d328ea24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a848d87b204fb8a2728b4d532a0cb2298"><td class="memItemLeft" align="right" valign="top"><a id="a848d87b204fb8a2728b4d532a0cb2298"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>spd</b> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&lt; T &gt; &amp;sampled_powers, std::vector&lt; unsigned int &gt; wlengths)</td></tr>
-<tr class="separator:a848d87b204fb8a2728b4d532a0cb2298"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53525c058db93354761e4e59516efa5c"><td class="memItemLeft" align="right" valign="top"><a id="a53525c058db93354761e4e59516efa5c"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>spd</b> (const path &amp;csv_path, const std::string &amp;wave_col_name=&quot;wavelength&quot;, const std::string &amp;power_col_name=&quot;power&quot;, const std::string &amp;sep=&quot;,&quot;)</td></tr>
-<tr class="separator:a53525c058db93354761e4e59516efa5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af972d63c756d064e40c7271ee59ca686"><td class="memItemLeft" align="right" valign="top"><a id="af972d63c756d064e40c7271ee59ca686"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>spd</b> (unsigned int size=471/SPD_STRIDE)</td></tr>
+<tr class="separator:af972d63c756d064e40c7271ee59ca686"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac89e7d280708f21ae427669af319f5b8"><td class="memItemLeft" align="right" valign="top"><a id="ac89e7d280708f21ae427669af319f5b8"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>spd</b> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&lt; T &gt; &amp;sampled_powers, unsigned int wstart, unsigned int stride=SPD_STRIDE)</td></tr>
+<tr class="separator:ac89e7d280708f21ae427669af319f5b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1654f9a6154c940b759622c35f121d4"><td class="memItemLeft" align="right" valign="top"><a id="ab1654f9a6154c940b759622c35f121d4"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>spd</b> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&lt; T &gt; &amp;sampled_powers, std::vector&lt; unsigned int &gt; wlengths, unsigned int stride=SPD_STRIDE)</td></tr>
+<tr class="separator:ab1654f9a6154c940b759622c35f121d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3dcd7e393bb2008d9cb1a27e67229c2"><td class="memTemplParams" colspan="2"><a id="ab3dcd7e393bb2008d9cb1a27e67229c2"></a>
+template&lt;typename U &gt; </td></tr>
+<tr class="memitem:ab3dcd7e393bb2008d9cb1a27e67229c2"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>fill_with_stride</b> (std::vector&lt; U &gt; &amp;dest, const std::vector&lt; U &gt; &amp;srcv, unsigned int stride)</td></tr>
+<tr class="separator:ab3dcd7e393bb2008d9cb1a27e67229c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accd0d08ce515cf6c6752730990d7372f"><td class="memItemLeft" align="right" valign="top"><a id="accd0d08ce515cf6c6752730990d7372f"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>spd</b> (const path &amp;csv_path, const std::string &amp;wave_col_name=&quot;wavelength&quot;, const std::string &amp;power_col_name=&quot;power&quot;, const std::string &amp;sep=&quot;,&quot;, const unsigned int stride=SPD_STRIDE)</td></tr>
+<tr class="separator:accd0d08ce515cf6c6752730990d7372f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7809286e291b6f509414d657542481ab"><td class="memItemLeft" align="right" valign="top"><a id="a7809286e291b6f509414d657542481ab"></a>
 <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>power</b> () const</td></tr>
 <tr class="separator:a7809286e291b6f509414d657542481ab"><td class="memSeparator" colspan="2">&#160;</td></tr>

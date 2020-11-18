@@ -1,7 +1,8 @@
 #pragma once
 #include <aabb.hpp>
-#include <external.hpp>
+#include <common.hpp>
 #include <ray.hpp>
+#include <spectrum.hpp>
 #include <utils.hpp>
 #include <vec3.hpp>
 using namespace ptracey;
@@ -12,6 +13,7 @@ struct hit_record {
   point3 p;
   vec3 normal;
   shared_ptr<material> mat_ptr;
+  shared_ptr<spectrum> spec_ptr = nullptr;
   Real t;
   Real u;
   Real v;
@@ -92,7 +94,8 @@ public:
 };
 bool translate::hit(const ray &r, Real t_min, Real t_max,
                     hit_record &rec) const {
-  ray moved_r(r.origin() - offset, r.direction(), r.time());
+  ray moved_r(r.origin() - offset, r.direction(), r.time(),
+              r.wavelength());
   if (!ptr->hit(moved_r, t_min, t_max, rec))
     return false;
 
@@ -181,7 +184,8 @@ bool rotate_y::hit(const ray &r, Real t_min, Real t_max,
   direction[2] = sin_theta * r.direction()[0] +
                  cos_theta * r.direction()[2];
 
-  ray rotated_r(origin, direction, r.time());
+  ray rotated_r(origin, direction, r.time(),
+                r.wavelength());
 
   if (!ptr->hit(rotated_r, t_min, t_max, rec))
     return false;
