@@ -6,16 +6,25 @@
 #include <spectrum.hpp>
 using namespace ptracey;
 namespace ptracey {
+
 /**
   main rendering code equation:
 
 \f[
 L_o(x, w_o, \lambda, t) =
-    L_e(x, w_o, \lambda, t)
+    L_e(x, w_o, \lambda, t) +
     \int_{\omega} f_r(x,w_i,w_o,\lambda,t)
         L_i(x,w_i,\lambda,t)
         (w_i \cdot n) d_w
 \f]
+
+- x: point in surface
+- w_o: outgoing direction
+- w_i: incoming direction
+- lambda: wavelength
+- t: time
+- n: surface normal
+
  */
 shared_ptr<spectrum>
 ray_color(const ray &r,
@@ -25,19 +34,25 @@ ray_color(const ray &r,
 
   // If we've exceeded the ray bounce limit, no more light
   // is gathered.
-  if (depth <= 0)
+  if (depth <= 0) {
+    // L_e + L_r = 0 = L_o
     return make_shared<spectrum>(0.0);
+  }
 
   // If the ray hits nothing, return the background color.
-  if (!world.hit(r, 0.001, FLT_MAX, rec))
+  if (!world.hit(r, 0.001, FLT_MAX, rec)) {
+    // L_e + L_r = background = L_o
     return background;
+  }
 
   scatter_record srec;
   shared_ptr<spectrum> emitted =
       rec.mat_ptr->emitted(r, rec, rec.u, rec.v, rec.p);
 
-  if (!rec.mat_ptr->scatter(r, rec, srec))
+  if (!rec.mat_ptr->scatter(r, rec, srec)) {
+    // L_e + 0 = L_o
     return emitted;
+  }
 
   if (srec.is_specular) {
     shared_ptr<spectrum> rs = ray_color(
