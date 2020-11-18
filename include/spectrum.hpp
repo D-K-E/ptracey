@@ -102,7 +102,13 @@ public:
       : type(stype) {
     spect = from_rgb(_rgb);
   }
-  spd<Real> from_rgb(const color &rgb) {
+  sampled_spectrum(
+      const vec3 &_rgb,
+      SpectrumType stype = SpectrumType::Reflectance)
+      : type(stype) {
+    spect = from_rgb(_rgb);
+  }
+  spd<Real> from_rgb(const vec3 &rgb) {
     // from
     // http://scottburns.us/fast-rgb-to-spectrum-conversion-for-reflectances/
     // convert sRGB to linear rgb in range [0,1]
@@ -126,6 +132,9 @@ public:
     rho += lg * rho_g_wave;
     rho += lb * rho_b_wave;
     return spd<Real>(rho, rho_r.wavelengths());
+  }
+  spd<Real> from_rgb(const color &rgb) {
+    return from_rgb(vec3(rgb.r(), rgb.g(), rgb.b()));
   }
   static sampled_spectrum
   random(SpectrumType stype = SpectrumType::Reflectance) {

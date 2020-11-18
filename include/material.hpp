@@ -67,11 +67,11 @@ public:
         reflect(unit_vector(r_in.direction()), rec.normal);
     srec.specular_ray = ray(
         rec.p, reflected + fuzz * random_in_unit_sphere(),
-        r_in.time(), r.wavelength());
+        r_in.time(), r_in.wavelength());
     shared_ptr<spectrum> rspect = rec.spec_ptr;
     shared_ptr<spectrum> spect =
         albedo->value(rec.u, rec.v, rec.p);
-    srec.attenuation = ;
+    srec.attenuation = spect;
     srec.is_specular = true;
     srec.pdf_ptr = nullptr;
     return true;
@@ -112,7 +112,8 @@ public:
       direction = refract(unit_direction, rec.normal,
                           refraction_ratio);
 
-    srec.specular_ray = ray(rec.p, direction, r_in.time());
+    srec.specular_ray = ray(rec.p, direction, r_in.time(),
+                            r_in.wavelength());
     return true;
   }
 
@@ -152,8 +153,8 @@ public:
 
   bool scatter(const ray &r_in, const hit_record &rec,
                scatter_record &srec) const override {
-    srec.specular_ray =
-        ray(rec.p, random_in_unit_sphere(), r_in.time());
+    srec.specular_ray = ray(rec.p, random_in_unit_sphere(),
+                            r_in.time(), r_in.wavelength());
     srec.attenuation = albedo->value(rec.u, rec.v, rec.p);
     srec.is_specular = true;
     srec.pdf_ptr = nullptr;
