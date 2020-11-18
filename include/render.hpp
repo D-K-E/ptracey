@@ -46,7 +46,7 @@ void ray_color(const ray &r,
     // L_e + L_r = background = L_o
     auto out_lambda = output.evaluate(r.wavelength());
     auto back_lambda = background->evaluate(r.wavelength());
-    auto out_lambda2 = out_lambda + back_lambda;
+    auto out_lambda2 = out_lambda.add(back_lambda);
     output.update(r.wavelength(), out_lambda2);
     return;
   }
@@ -59,7 +59,7 @@ void ray_color(const ray &r,
   if (!rec.mat_ptr->scatter(r, rec, srec)) {
     // L_e + 0 = L_o
     auto out_lambda = output.evaluate(r.wavelength());
-    auto out_lambda2 = out_lambda + emit_power;
+    auto out_lambda2 = out_lambda.add(emit_power);
     output.update(r.wavelength(), out_lambda2);
     return;
   }
@@ -73,7 +73,7 @@ void ray_color(const ray &r,
     auto f_r_power =
         srec.attenuation->evaluate(r.wavelength());
     auto out_lambda = output.evaluate(r.wavelength());
-    auto out_lambda2 = out_lambda * f_r_power;
+    auto out_lambda2 = out_lambda.multip(f_r_power);
     output.update(r.wavelength(), out_lambda2);
     return;
   }
@@ -88,7 +88,7 @@ void ray_color(const ray &r,
   // f_r
   spectrum f_r_lambda =
       srec.attenuation->evaluate(r.wavelength());
-  auto f_r_lambda2 = f_r_lambda * scatter_pdf;
+  auto f_r_lambda2 = f_r_lambda.multip(scatter_pdf);
 
   // L_i
   ray_color(scattered, background, world, depth - 1,
@@ -97,9 +97,9 @@ void ray_color(const ray &r,
       output.evaluate(scattered.wavelength());
 
   //
-  auto out_lambda2 = out_lambda * f_r_lambda2;
-  auto out_lambda3 = out_lambda2 / pdf_val;
-  auto out_lambda4 = out_lambda3 + emit_power;
+  auto out_lambda2 = out_lambda.multip(f_r_lambda2);
+  auto out_lambda3 = out_lambda2.div(pdf_val);
+  auto out_lambda4 = out_lambda3.add(emit_power);
   output.update(scattered.wavelength(), out_lambda4);
 
   return;

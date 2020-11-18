@@ -102,8 +102,8 @@ extern "C" int main(int ac, char **av) {
   // Image
   auto aspect_ratio = 16.0 / 9.0;
   int image_width = 400;
-  int samples_per_pixel = 100;
-  int max_depth = 100;
+  int samples_per_pixel = 10;
+  int max_depth = 10;
   immat imvec;
 
   // World
