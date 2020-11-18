@@ -6,8 +6,9 @@
 #include <spectrum.hpp>
 using namespace ptracey;
 namespace ptracey {
-/*!
+/**
   main rendering code equation:
+
 \f[
 L_o(x, w_o, \lambda, t) =
     L_e(x, w_o, \lambda, t)
