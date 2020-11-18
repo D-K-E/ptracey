@@ -2,13 +2,20 @@
 
 #include <common.hpp>
 #include <utils.hpp>
+#include <vec3.hpp>
 #include <wave.hpp>
+
 using namespace ptracey;
 namespace ptracey {
 
 static const unsigned int SPD_STRIDE = 20;
 static const int VISIBLE_LAMBDA_START = 360;
 static const int VISIBLE_LAMBDA_END = 830;
+
+path CSV_PARENT = "./media/data/spectrum";
+const std::string WCOL_NAME = "wavelength";
+const std::string PCOL_NAME = "power";
+const std::string SEP = ",";
 
 template <class T> class spd {
   // sampled spectrum power distribution
@@ -401,14 +408,58 @@ public:
   friend spd operator/(const Real &s, const spd &ss) {
     return ss / s;
   }
+  T operator[](unsigned int wave_length) const {
+    return eval_wavelength(wave_length);
+  }
+  bool in(unsigned int wave_length) {
+    auto it = wavelength_power.find(wave_length);
+    if (it != wavelength_power.end()) {
+      return true;
+    }
+    return false;
+  }
+  void insert(unsigned int wave_length, T pvalue) {
+    if (!in(wave_length)) {
+      wavelength_power.insert(
+          make_pair(wave_length, pvalue));
+    }
+  }
+  void update(unsigned int wave_length, T pvalue) {
+    insert(wave_length, pvalue);
+    wavelength_power[wave_length] = pvalue;
+  }
+  void apply(unsigned int wave_length, T pvalue,
+             const std::function<T(T, T)> &fn) {
+    if (in(wave_length)) {
+      T power_value = wavelength_power.at(wave_length);
+      wavelength_power[wave_length] =
+          fn(power_value, pvalue);
+    }
+  }
+  void add(unsigned int wave_length, T pvalue) {
+    apply(wave_length, pvalue,
+          [](T i, T j) { return i + j; });
+  }
   spd add(const spd &s) const { return *this + s; }
   spd add(const Real &s) const { return *this + s; }
+  void subt(unsigned int wave_length, T pvalue) {
+    apply(wave_length, pvalue,
+          [](T i, T j) { return i - j; });
+  }
   spd subt(const spd &s) const { return *this - s; }
   spd subt(const Real &s) const { return *this - s; }
   spd multip(const spd &s) const { return *this * s; }
   spd multip(const Real &s) const { return *this * s; }
+  void multip(unsigned int wave_length, T pvalue) {
+    apply(wave_length, pvalue,
+          [](T i, T j) { return i * j; });
+  }
   spd div(const spd &s) const { return *this / s; }
   spd div(const Real &s) const { return *this / s; }
+  void div(unsigned int wave_length, T pvalue) {
+    apply(wave_length, pvalue,
+          [](T i, T j) { return i / j; });
+  }
 };
 Real get_cie_k(const spd<Real> &ss, const spd<Real> &cie_y,
                int wave_length_start, int wave_length_end,
@@ -505,5 +556,85 @@ Real get_cie_value(const spd<Real> &reflectance,
   Real val = get_cie_val(reflectance, illuminant, cie_val,
                          wl_start, wl_end, stepsize);
   return k * val;
+}
+
+auto rho_rspd =
+    spd<Real>(CSV_PARENT / "rho-r-2012.csv", WCOL_NAME,
+              PCOL_NAME, SEP, SPD_STRIDE);
+static spd<Real> rho_r = rho_rspd.normalized();
+
+auto rho_gspd =
+    spd<Real>(CSV_PARENT / "rho-g-2012.csv", WCOL_NAME,
+              PCOL_NAME, SEP, SPD_STRIDE);
+static spd<Real> rho_g = rho_gspd.normalized();
+
+auto rho_bspd =
+    spd<Real>(CSV_PARENT / "rho-b-2012.csv", WCOL_NAME,
+              PCOL_NAME, SEP, SPD_STRIDE);
+static spd<Real> rho_b = rho_bspd.normalized();
+
+auto cie_xbarspd =
+    spd<Real>(CSV_PARENT / "cie-x-bar-1964.csv", WCOL_NAME,
+              PCOL_NAME, SEP, SPD_STRIDE);
+
+static spd<Real> cie_xbar = cie_xbarspd.normalized();
+
+auto cie_ybarspd =
+    spd<Real>(CSV_PARENT / "cie-y-bar-1964.csv", WCOL_NAME,
+              PCOL_NAME, SEP, SPD_STRIDE);
+
+static spd<Real> cie_ybar = cie_ybarspd.normalized();
+
+auto cie_zbarspd =
+    spd<Real>(CSV_PARENT / "cie-z-bar-1964.csv", WCOL_NAME,
+              PCOL_NAME, SEP, SPD_STRIDE);
+static spd<Real> cie_zbar = cie_zbarspd.normalized();
+
+auto stand_d65 =
+    spd<Real>(CSV_PARENT / "cie-d65-standard.csv",
+              WCOL_NAME, PCOL_NAME, SEP, SPD_STRIDE);
+static spd<Real> standard_d65 = stand_d65.normalized();
+//
+
+inline vec3 xyz2rgb(const vec3 xyz) {
+  auto r = 3.240479 * xyz.x() - 1.537150 * xyz.y() -
+           0.498535 * xyz.z();
+  auto g = -0.969256 * xyz.x() + 1.875991 * xyz.y() +
+           0.041556 * xyz.z();
+  auto b = 0.055648 * xyz.x() - 0.204043 * xyz.y() +
+           1.057311 * xyz.z();
+  return vec3(r, g, b);
+}
+vec3 to_xyz(const spd<Real> &s_lambda) {
+  auto X = get_cie_val(s_lambda, cie_xbar);
+  auto Y = get_cie_val(s_lambda, cie_ybar);
+  auto Z = get_cie_val(s_lambda, cie_zbar);
+  auto xyzsum = X + Y + Z;
+  xyzsum = xyzsum == 0 ? 1 : xyzsum;
+  auto xval = X / xyzsum;
+  auto yval = Y / xyzsum;
+  auto zval = 1.0 - (xval + yval);
+  vec3 xyz = vec3(xval, yval, zval);
+  return xyz;
+}
+vec3 to_xyz(const spd<Real> &s_lambda,
+            const spd<Real> &r_lambda) {
+  auto X = get_cie_val(s_lambda, r_lambda, cie_xbar);
+  auto Y = get_cie_val(s_lambda, r_lambda, cie_ybar);
+  auto Z = get_cie_val(s_lambda, r_lambda, cie_zbar);
+  auto xyzsum = X + Y + Z;
+  xyzsum = xyzsum == 0 ? 1 : xyzsum;
+  auto xval = X / xyzsum;
+  auto yval = Y / xyzsum;
+  auto zval = 1.0 - (xval + yval);
+  vec3 xyz = vec3(xval, yval, zval);
+  return xyz;
+}
+vec3 to_color(const spd<Real> &s_lambda) {
+  return xyz2rgb(to_xyz(s_lambda));
+}
+vec3 to_color(const spd<Real> &s_lambda,
+              const spd<Real> &r_lambda) {
+  return xyz2rgb(to_xyz(s_lambda, r_lambda));
 }
 }

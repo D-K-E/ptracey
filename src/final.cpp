@@ -12,8 +12,7 @@
 
 using namespace ptracey;
 namespace ptracey {
-using immat =
-    std::vector<std::vector<shared_ptr<spectrum>>>;
+using immat = std::vector<std::vector<spectrum>>;
 
 struct InnerParams {
   camera cam;
@@ -55,22 +54,22 @@ InnerRet innerLoop(InnerParams params) {
   immat imv;
   imv.resize(xrange);
   for (int i = 0; i < xrange; i++) {
-    imv[i].resize(imheight, make_shared<spectrum>(0.0));
+    imv[i].resize(imheight, spectrum(0.0));
   }
 
   for (int a = 0; a < xrange; a++) {
     for (int j = 0; j < imheight; j++) {
       int i = a + startx;
       //
-      shared_ptr<spectrum> rcolor =
-          make_shared<spectrum>(0.0);
+      spectrum rcolor = spectrum(0.0);
       for (int k = 0; k < psample; k++) {
         Real t = Real(i + random_real()) / (imwidth - 1);
         Real s = Real(j + random_real()) / (imheight - 1);
-        ray r = cam.get_ray(t, s);
-        shared_ptr<spectrum> rcol =
-            ray_color(r, background, scene, mdepth);
-        rcolor = rcolor->add(rcol);
+        unsigned int wavelength =
+            static_cast<unsigned int>(random_int(
+                VISIBLE_LAMBDA_START, VISIBLE_LAMBDA_END));
+        ray r = cam.get_ray(t, s, wavelength);
+        ray_color(r, background, scene, mdepth, rcolor);
       }
       imv[a][j] = rcolor;
     }
@@ -117,8 +116,7 @@ extern "C" int main(int ac, char **av) {
                background);
   imvec.resize(image_width);
   for (int i = 0; i < image_width; i++) {
-    imvec[i].resize(image_height,
-                    make_shared<spectrum>(0.0));
+    imvec[i].resize(image_height, spectrum(0.0));
   }
   int wslicelen = int(image_width / THREAD_NB);
 

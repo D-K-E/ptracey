@@ -121,8 +121,9 @@ hittable_list random_scene() {
               make_shared<spectrum>(color::random());
           shared_ptr<spectrum> randcol2 =
               make_shared<spectrum>(color::random());
-          auto albedo = randcol1->multip(randcol2);
-          sphere_material = make_shared<lambertian>(albedo);
+          spectrum albedo = randcol1->multip(*randcol2);
+          sphere_material = make_shared<lambertian>(
+              make_shared<spectrum>(albedo));
           auto center2 =
               center + vec3(0, random_real(0, .5), 0);
           world.add(make_shared<moving_sphere>(

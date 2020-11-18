@@ -21,16 +21,12 @@
 #include <utils.hpp>
 #include <vec3.hpp>
 #include <wave.hpp>
+#include <wave.hpp>
 // CONSTANTS
 using namespace ptracey;
 namespace ptracey {
 
 static const auto CIE_Y_INTEGRAL = 106.856895;
-
-path CSV_PARENT = "./media/data/spectrum";
-const std::string WCOL_NAME = "wavelength";
-const std::string PCOL_NAME = "power";
-const std::string SEP = ",";
 
 // utility functions for spectrums
 
@@ -59,6 +55,30 @@ public:
   color(const Real e1[3],
         SpectrumType stype = SpectrumType::RGB)
       : vec3(e1), type(stype) {}
+  color(const vec3 &v,
+        SpectrumType stype = SpectrumType::RGB)
+      : vec3(v.x(), v.y(), v.z()), type(stype) {}
+  color(const path &csv_path,
+        const std::string &wave_col_name = "wavelength",
+        const std::string &power_col_name = "power",
+        const std::string &sep = ",",
+        const unsigned int stride = SPD_STRIDE,
+        SpectrumType stype = SpectrumType::RGB)
+      : type(SpectrumType::RGB) {
+    auto rgb_spd = spd<Real>(csv_path, wave_col_name,
+                             power_col_name, sep, stride);
+    auto rgb = to_color(rgb_spd);
+    *this = rgb;
+  }
+
+  color evaluate(unsigned int wave_length) { return *this; }
+  void update(unsigned int wave_length, const color &v) {
+    *this = v;
+  }
+  color operator=(vec3 v) {
+    return color(v.x(), v.y(), v.z());
+  }
+  void insert(unsigned int wl, Real v) { return; }
 };
 
 class sampled_spectrum {
@@ -148,6 +168,10 @@ public:
     return sampled_spectrum(sp1, stype);
   }
 
+  void insert(unsigned int wavelength, Real power) {
+    spect.insert(wavelength, power);
+  }
+
   shared_ptr<sampled_spectrum>
   add(const shared_ptr<Real> &s) const {
     auto ss = *s;
@@ -186,6 +210,7 @@ public:
     auto sp1 = spect - s.spect;
     return sampled_spectrum(sp1, type);
   }
+
   shared_ptr<sampled_spectrum>
   multip(const shared_ptr<Real> &s) const {
     auto ss = *s;
@@ -205,6 +230,7 @@ public:
     auto sp1 = spect * s.spect;
     return sampled_spectrum(sp1, type);
   }
+
   shared_ptr<sampled_spectrum>
   div(const shared_ptr<Real> &s) const {
     auto ss = *s;
@@ -225,56 +251,17 @@ public:
     return sampled_spectrum(sp1, type);
   }
 
-public:
-  static spd<Real> cie_xbar;
-  static spd<Real> cie_ybar;
-  static spd<Real> cie_zbar;
-  static spd<Real> rho_r;
-  static spd<Real> rho_g;
-  static spd<Real> rho_b;
-  static spd<Real> standard_d65;
+  Real evaluate(unsigned int wavelength) {
+    return spect.eval_wavelength(wavelength);
+  }
+
+  void update(unsigned int wlength, Real value) {
+    spect.update(wlength, value);
+  }
 };
-
-auto rho_rspd =
-    spd<Real>(CSV_PARENT / "rho-r-2012.csv", WCOL_NAME,
-              PCOL_NAME, SEP, SPD_STRIDE);
-
-spd<Real> sampled_spectrum::rho_r = rho_rspd.normalized();
-auto rho_gspd =
-    spd<Real>(CSV_PARENT / "rho-g-2012.csv", WCOL_NAME,
-              PCOL_NAME, SEP, SPD_STRIDE);
-spd<Real> sampled_spectrum::rho_g = rho_gspd.normalized();
-auto rho_bspd =
-    spd<Real>(CSV_PARENT / "rho-b-2012.csv", WCOL_NAME,
-              PCOL_NAME, SEP, SPD_STRIDE);
-spd<Real> sampled_spectrum::rho_b = rho_bspd.normalized();
-
-auto cie_xbarspd =
-    spd<Real>(CSV_PARENT / "cie-x-bar-1964.csv", WCOL_NAME,
-              PCOL_NAME, SEP, SPD_STRIDE);
-spd<Real> sampled_spectrum::cie_xbar =
-    cie_xbarspd.normalized();
-
-auto cie_ybarspd =
-    spd<Real>(CSV_PARENT / "cie-y-bar-1964.csv", WCOL_NAME,
-              PCOL_NAME, SEP, SPD_STRIDE);
-spd<Real> sampled_spectrum::cie_ybar =
-    cie_ybarspd.normalized();
-
-auto cie_zbarspd =
-    spd<Real>(CSV_PARENT / "cie-z-bar-1964.csv", WCOL_NAME,
-              PCOL_NAME, SEP, SPD_STRIDE);
-spd<Real> sampled_spectrum::cie_zbar =
-    cie_zbarspd.normalized();
-
-auto stand_d65 =
-    spd<Real>(CSV_PARENT / "cie-d65-standard.csv",
-              WCOL_NAME, PCOL_NAME, SEP, SPD_STRIDE);
-spd<Real> sampled_spectrum::standard_d65 =
-    stand_d65.normalized();
 
 // end static variable initialize
 
-// typedef color spectrum;
-typedef sampled_spectrum spectrum;
+typedef color spectrum;
+// typedef sampled_spectrum spectrum;
 }

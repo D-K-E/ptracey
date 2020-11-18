@@ -37,15 +37,14 @@ public:
     time1 = _time1;
   }
 
-  ray get_ray(Real s, Real t) const {
+  ray get_ray(Real s, Real t,
+              unsigned int wavelength = 1) const {
     vec3 rd = lens_radius * random_in_unit_disk();
     vec3 offset = u * rd.x() + v * rd.y();
-    return ray(
-        origin + offset,
-        lower_left_corner + s * horizontal + t * vertical -
-            origin - offset,
-        random_real(time0, time1),
-        static_cast<unsigned int>(random_int(360, 830)));
+    return ray(origin + offset,
+               lower_left_corner + s * horizontal +
+                   t * vertical - origin - offset,
+               random_real(time0, time1), wavelength);
   }
 
 private:

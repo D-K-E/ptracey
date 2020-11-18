@@ -66,9 +66,8 @@ public:
                              const vec3 &p) const override {
     Real coeff =
         0.5 * (1 + sin(scale * p.z() + 10 * noise.turb(p)));
-    shared_ptr<spectrum> s =
-        spec->multip(make_shared<Real>(coeff));
-    return s;
+    spectrum s = spec->multip(coeff);
+    return make_shared<spectrum>(s);
   }
 
 public:
@@ -152,10 +151,10 @@ public:
       const std::string &sep = ",",
       const unsigned int stride = SPD_STRIDE,
       SpectrumType stype = SpectrumType::Reflectance) {
-    spect = make_shared<solid_color>(
-        make_shared<sampled_spectrum>(
-            CSV_PARENT / path_to_csv, wave_col_name,
-            power_col_name, sep, stride, stype));
+    auto spd_material = make_shared<spectrum>(
+        CSV_PARENT / path_to_csv, wave_col_name,
+        power_col_name, sep, stride, stype);
+    spect = make_shared<solid_color>(spd_material);
   }
 
   shared_ptr<spectrum> value(Real u, Real v,
