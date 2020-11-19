@@ -346,13 +346,45 @@ public:
     auto ss = spd<T>(pw3, wlengths, 1);
     return ss;
   }
-  void apply(unsigned int wave_length, T pvalue,
+  bool apply(unsigned int wave_length, T pvalue,
              const std::function<T(T, T)> &fn) {
     if (in(wave_length)) {
       T power_value = wavelength_power.at(wave_length);
       wavelength_power[wave_length] =
           fn(power_value, pvalue);
+      return true;
     }
+    return false;
+  }
+  /**
+    Slightly more robust implementation of apply.
+
+    The idea is to give two functions: 1 for matching spds,
+    two for not
+    matching spds.
+    If they match we apply the first function if they don't
+    match.
+    We apply the second function for each wavelength and
+    power value.
+    If the wavelength is not present in the spd we insert it
+    with the
+    given power value.
+   */
+  spd rapply(const spd &s,
+             const std::function<spd(spd, spd)> &eqfn,
+             const std::function<bool(spd, unsigned int, T)>
+                 &uneqfn) const {
+    auto waves = wavelengths();
+    auto swaves = s.wavelengths();
+    auto res = *this;
+    if (waves == swaves)
+      return eqfn(res, s);
+    for (const auto &w : swaves) {
+      auto spower = s[w];
+      if (!uneqfn(res, w, spower))
+        res.update(w, spower);
+    }
+    return res;
   }
 
   spd operator+(const spd &s) const {
@@ -454,34 +486,56 @@ public:
     }
   }
   void update(unsigned int wave_length, T pvalue) {
-    insert(wave_length, pvalue);
-    wavelength_power[wave_length] = pvalue;
+    wavelength_power.insert_or_assign(wave_length, pvalue);
   }
-  void add(unsigned int wave_length, T pvalue) {
-    apply(wave_length, pvalue,
-          [](T i, T j) { return i + j; });
+  bool add(unsigned int wave_length, T pvalue) {
+    return apply(wave_length, pvalue,
+                 [](T i, T j) { return i + j; });
   }
   spd add(const spd &s) const {
     // slightly more robust implementation of addition
+    return rapply(
+        s, [](auto res, auto ss) { return res + ss; },
+        [](auto res, auto wave, auto power_value) {
+          return res.add(wave, power_value);
+        });
   }
   spd add(const Real &s) const { return *this + s; }
-  void subt(unsigned int wave_length, T pvalue) {
-    apply(wave_length, pvalue,
-          [](T i, T j) { return i - j; });
+  bool subt(unsigned int wave_length, T pvalue) {
+    return apply(wave_length, pvalue,
+                 [](T i, T j) { return i - j; });
   }
-  spd subt(const spd &s) const { return *this - s; }
+  spd subt(const spd &s) const {
+    return rapply(
+        s, [](auto res, auto ss) { return res - ss; },
+        [](auto res, auto wave, auto power_value) {
+          return res.subt(wave, power_value);
+        });
+  }
   spd subt(const Real &s) const { return *this - s; }
-  spd multip(const spd &s) const { return *this * s; }
-  spd multip(const Real &s) const { return *this * s; }
-  void multip(unsigned int wave_length, T pvalue) {
-    apply(wave_length, pvalue,
-          [](T i, T j) { return i * j; });
+  spd multip(const spd &s) const {
+    return rapply(
+        s, [](auto res, auto ss) { return res * ss; },
+        [](auto res, auto wave, auto power_value) {
+          return res.multip(wave, power_value);
+        });
   }
-  spd div(const spd &s) const { return *this / s; }
+  spd multip(const Real &s) const { return *this * s; }
+  bool multip(unsigned int wave_length, T pvalue) {
+    return apply(wave_length, pvalue,
+                 [](T i, T j) { return i * j; });
+  }
+  spd div(const spd &s) const {
+    return rapply(
+        s, [](auto res, auto ss) { return res / ss; },
+        [](auto res, auto wave, auto power_value) {
+          return res.div(wave, power_value);
+        });
+  }
   spd div(const Real &s) const { return *this / s; }
-  void div(unsigned int wave_length, T pvalue) {
-    apply(wave_length, pvalue,
-          [](T i, T j) { return i / j; });
+  bool div(unsigned int wave_length, T pvalue) {
+    return apply(wave_length, pvalue,
+                 [](T i, T j) { return i / j; });
   }
 };
 Real get_cie_k(const spd<Real> &ss, const spd<Real> &cie_y,
