@@ -71,7 +71,8 @@ InnerRet innerLoop(InnerParams params) {
         ray r = cam.get_ray(t, s, wavelength);
         spectrum r_color = spectrum(0.0);
         ray_color(r, background, scene, mdepth, r_color);
-        rcolor += r_color;
+        //
+        rcolor = rcolor.add(r_color);
       }
       imv[a][j] = rcolor;
     }

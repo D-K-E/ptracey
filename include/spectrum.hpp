@@ -394,8 +394,12 @@ public:
     return make_shared<sampled_spectrum>(sp1, type);
   }
   sampled_spectrum add(const sampled_spectrum &s) const {
-    auto sp1 = spect + s.spect;
-    return sampled_spectrum(sp1, type);
+    try {
+      auto sp1 = spect + s.spect;
+      return sampled_spectrum(sp1, type);
+    } catch (std::runtime_error &err) {
+        //
+    }
   }
   shared_ptr<sampled_spectrum>
   subt(const shared_ptr<Real> &s) const {
@@ -461,11 +465,6 @@ public:
     spect.multip(wlength, s.spect[wlength]);
     return sampled_spectrum(spect, type);
   }
-  sampled_spectrum &operator+=(const sampled_spectrum s) {
-    auto ss = spect + s.spect;
-    auto s_spec = sampled_spectrum(ss, type);
-    return s_spec;
-  }
 
   shared_ptr<sampled_spectrum>
   div(const shared_ptr<Real> &s) const {
@@ -512,6 +511,6 @@ public:
 
 // end static variable initialize
 
-typedef color spectrum;
-// typedef sampled_spectrum spectrum;
+// typedef color spectrum;
+typedef sampled_spectrum spectrum;
 }

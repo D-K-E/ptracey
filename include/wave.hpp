@@ -52,154 +52,143 @@ public:
     values = s.values;
     return *this;
   }
-  sampled_wave &operator+=(const sampled_wave &s) {
+  sampled_wave
+  apply(unsigned int index, T value,
+        const std::function<T(T, T)> &fn) const {
+    std::vector<T> vs;
+    vs.resize(values.size());
+    std::copy(values.begin(), values.end(), vs.begin());
+    vs[index] = fn(values[index], value);
+    auto wave = sampled_wave(values);
+    return wave;
+  }
+  sampled_wave
+  apply(T value, const std::function<T(T, T)> &fn) const {
+    std::vector<T> vs;
+    vs.resize(values.size());
+    for (unsigned int i = 0; i < values.size(); i++) {
+      vs[i] = fn(values[i], value);
+    }
+    auto wave = sampled_wave(vs);
+    return wave;
+  }
+  sampled_wave
+  apply(const sampled_wave &s,
+        const std::function<T(T, T)> &fn) const {
     D_CHECK(!s.has_nans());
     D_CHECK(s.values.size() == values.size());
+    std::vector<T> vs;
+    vs.resize(values.size());
+
     for (unsigned int i = 0; i < values.size(); i++) {
-      values[i] += s.values[i];
+      vs[i] = fn(values[i], s.values[i]);
     }
-    return *this;
+    auto wave = sampled_wave(vs);
+    return wave;
   }
-  sampled_wave &operator+=(const T &s) {
-    for (unsigned int i = 0; i < values.size(); i++) {
-      values[i] += s;
-    }
-    return *this;
+
+  sampled_wave &operator+=(const sampled_wave &s) const {
+    auto wave =
+        apply(s, [](auto i, auto j) { return i + j; });
+    return wave;
+  }
+  sampled_wave &operator+=(const T &s) const {
+    auto wave =
+        apply(s, [](auto i, auto j) { return i + j; });
+    return wave;
   }
   sampled_wave operator+(const sampled_wave &s) const {
-    D_CHECK(!s.has_nans());
-    D_CHECK(s.values.size() == values.size());
-    sampled_wave ss = *this;
-    for (unsigned int i = 0; i < values.size(); i++) {
-      ss.values[i] += s.values[i];
-    }
-    return ss;
+    auto wave =
+        apply(s, [](auto i, auto j) { return i + j; });
+    return wave;
   }
   sampled_wave operator+(const T &s) const {
-    sampled_wave ss = *this;
-    for (unsigned int i = 0; i < values.size(); i++) {
-      ss.values[i] += s;
-    }
-    return ss;
+    auto wave =
+        apply(s, [](auto i, auto j) { return i + j; });
+    return wave;
   }
   friend sampled_wave operator+(const T &s,
                                 const sampled_wave &ss) {
     return ss + s;
   }
-  sampled_wave &operator-=(const sampled_wave &s) {
-    D_CHECK(!s.has_nans());
-    D_CHECK(s.values.size() == values.size());
-    for (unsigned int i = 0; i < values.size(); i++) {
-      values[i] -= s.values[i];
-    }
-    return *this;
+  sampled_wave &operator-=(const sampled_wave &s) const {
+    auto wave =
+        apply(s, [](auto i, auto j) { return i - j; });
+    return wave;
   }
-  sampled_wave &operator-=(const T &s) {
-    for (unsigned int i = 0; i < values.size(); i++) {
-      values[i] -= s;
-    }
-    return *this;
+  sampled_wave &operator-=(const T &s) const {
+    auto wave =
+        apply(s, [](auto i, auto j) { return i - j; });
+    return wave;
   }
   sampled_wave operator-(const sampled_wave &s) const {
-    D_CHECK(!s.has_nans());
-    D_CHECK(s.values.size() == values.size());
-    sampled_wave ss = *this;
-    for (unsigned int i = 0; i < values.size(); i++) {
-      ss.values[i] -= s.values[i];
-    }
-    return ss;
+    auto wave =
+        apply(s, [](auto i, auto j) { return i - j; });
+    return wave;
   }
   sampled_wave operator-(const T &s) const {
-    sampled_wave ss = *this;
-    for (unsigned int i = 0; i < values.size(); i++) {
-      ss.values[i] -= s;
-    }
-    return ss;
+    auto wave =
+        apply(s, [](auto i, auto j) { return i - j; });
+    return wave;
   }
   friend sampled_wave operator-(const T &s,
                                 const sampled_wave &ss) {
     return ss - s;
   }
-  sampled_wave &operator*=(const sampled_wave &s) {
-    D_CHECK(!s.has_nans());
-    D_CHECK(s.values.size() == values.size());
-    for (unsigned int i = 0; i < values.size(); i++) {
-      values[i] *= s.values[i];
-    }
-    return *this;
+  sampled_wave &operator*=(const sampled_wave &s) const {
+    auto wave =
+        apply(s, [](auto i, auto j) { return i * j; });
+    return wave;
   }
-  sampled_wave &operator*=(const T &s) {
-    for (unsigned int i = 0; i < values.size(); i++) {
-      values[i] *= s;
-    }
-    return *this;
+  sampled_wave &operator*=(const T &s) const {
+    auto wave =
+        apply(s, [](auto i, auto j) { return i * j; });
+    return wave;
   }
   sampled_wave operator*(const sampled_wave &s) const {
-    D_CHECK(!s.has_nans());
-    D_CHECK(s.values.size() == values.size());
-    sampled_wave ss = *this;
-    for (unsigned int i = 0; i < values.size(); i++) {
-      ss.values[i] *= s.values[i];
-    }
-    return ss;
+    auto wave =
+        apply(s, [](auto i, auto j) { return i * j; });
+    return wave;
   }
   sampled_wave operator*(const T &s) const {
-    sampled_wave ss = *this;
-    for (unsigned int i = 0; i < values.size(); i++) {
-      ss.values[i] *= s;
-    }
-    return ss;
+    auto wave =
+        apply(s, [](auto i, auto j) { return i * j; });
+    return wave;
   }
   friend sampled_wave operator*(const T &s,
                                 const sampled_wave &ss) {
     return ss * s;
   }
   sampled_wave &operator/=(const sampled_wave &s) {
-    D_CHECK(!s.has_nans());
     D_CHECK(!s.has_zeros());
-    D_CHECK(s.values.size() == values.size());
-    for (unsigned int i = 0; i < values.size(); i++) {
-      values[i] /= s.values[i];
-    }
-    return *this;
+    auto wave =
+        apply(s, [](auto i, auto j) { return i / j; });
+    return wave;
   }
-  sampled_wave &operator/=(const T &s) {
+  sampled_wave &operator/=(const T &s) const {
     D_CHECK(s != 0.0);
-    for (unsigned int i = 0; i < values.size(); i++) {
-      values[i] /= s;
-    }
-    return *this;
+    auto wave =
+        apply(s, [](auto i, auto j) { return i / j; });
+    return wave;
   }
   sampled_wave operator/(const sampled_wave &s) const {
-    D_CHECK(!s.has_nans());
     D_CHECK(!s.has_zeros());
-    D_CHECK(s.values.size() == values.size());
-    sampled_wave ss = *this;
-    for (unsigned int i = 0; i < values.size(); i++) {
-      ss.values[i] /= s.values[i];
-    }
-    return ss;
+    auto wave =
+        apply(s, [](auto i, auto j) { return i / j; });
+    return wave;
   }
   sampled_wave operator/(const T &s) const {
     D_CHECK(s != 0.0);
-    std::vector<T> vs;
-    vs.resize(values.size());
-    for (unsigned int i = 0; i < values.size(); i++) {
-      vs[i] = values[i] / s;
-    }
-    auto ss = sampled_wave(vs);
-    return ss;
+    auto wave =
+        apply(s, [](auto i, auto j) { return i / j; });
+    return wave;
   }
   friend sampled_wave operator/(const T &s,
                                 const sampled_wave &ss) {
-    D_CHECK(!ss.has_nans());
-    D_CHECK(!ss.has_zeros());
     D_CHECK(s != 0.0);
-    sampled_wave sss = ss;
-    for (unsigned int i = 0; i < sss.values.size(); i++) {
-      sss.values[i] = s / sss.values[i];
-    }
-    return sss;
+    auto sval = 1.0 / s;
+    auto wave = ss * sval;
+    return wave;
   }
   T &operator[](int i) {
     D_CHECK(i >= 0 && i < values.size());
@@ -220,19 +209,19 @@ public:
   bool operator!=(const sampled_wave &cs) const {
     return !(*this == cs);
   }
-  double sum() const {
-    double s = 0.0;
+  Real sum() const {
+    Real s = 0.0;
     for (auto v : values)
       s += v;
     return s;
   }
-  double product() const {
-    double s = 0.0;
+  Real product() const {
+    Real s = 0.0;
     for (auto v : values)
       s *= v;
     return s;
   }
-  double average() const {
+  Real average() const {
     return sum() / (int)values.size();
   }
   std::size_t size() const { return values.size(); }

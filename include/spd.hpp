@@ -287,123 +287,120 @@ public:
     return ret;
   }
   spd &operator+=(const spd &s) const {
-    auto pw1 = power();
-    auto pw2 = s.power();
-    pw1 += pw2;
-    auto wlengths = wavelengths();
-    auto ss = spd(pw1, wlengths, 1);
-    return ss;
+    return apply(s, [](sampled_wave<T> p1, spd sp) {
+      return p1 + sp.power();
+    });
   }
   spd &operator+=(const Real &s) const {
-    auto pw1 = power();
-    pw1 += s;
-    auto wlengths = wavelengths();
-    auto ss = spd(pw1, wlengths, 1);
-    return ss;
+    return apply(s, [](sampled_wave<T> p1, Real sp) {
+      return p1 + sp;
+    });
   }
-  spd operator+(const spd &s) const {
+  spd apply(const spd &s,
+            const std::function<sampled_wave<T>(
+                sampled_wave<T>, spd)> &fn) const {
     auto pw1 = power();
-    auto pw2 = s.power();
     auto wlengths = wavelengths();
-    auto pw3 = pw1 + pw2;
+    auto pw3 = fn(pw1, s);
     auto ss = spd<T>(pw3, wlengths, 1);
     return ss;
   }
-  spd operator+(const Real &s) const {
+  spd apply(const Real &s,
+            const std::function<sampled_wave<T>(
+                sampled_wave<T>, Real)> &fn) const {
     auto pw1 = power();
-    auto pw2 = pw1 + s;
     auto wlengths = wavelengths();
-    auto ss = spd(pw2, wlengths, 1);
+    auto pw3 = fn(pw1, s);
+    auto ss = spd<T>(pw3, wlengths, 1);
     return ss;
+  }
+  void apply(unsigned int wave_length, T pvalue,
+             const std::function<T(T, T)> &fn) {
+    if (in(wave_length)) {
+      T power_value = wavelength_power.at(wave_length);
+      wavelength_power[wave_length] =
+          fn(power_value, pvalue);
+    }
+  }
+
+  spd operator+(const spd &s) const {
+    return apply(s, [](sampled_wave<T> p1, spd sp) {
+      return p1 + sp.power();
+    });
+  }
+  spd operator+(const Real &s) const {
+    return apply(s, [](sampled_wave<T> p1, Real sp) {
+      return p1 + sp;
+    });
   }
   friend spd operator+(const Real &s, const spd &ss) {
     return ss + s;
   }
   spd &operator-=(const spd &s) const {
-    auto pw1 = power();
-    auto pw2 = s.power();
-    pw1 -= pw2;
-    auto wlengths = wavelengths();
-    auto ss = spd(pw1, wlengths, 1);
-    return ss;
+    return apply(s, [](sampled_wave<T> p1, spd sp) {
+      return p1 - sp.power();
+    });
   }
   spd &operator-=(const Real &s) const {
-    auto pw1 = power();
-    pw1 -= s;
-    auto wlengths = wavelengths();
-    auto ss = spd(pw1, wlengths, 1);
-    return ss;
+    return apply(s, [](sampled_wave<T> p1, Real sp) {
+      return p1 - sp;
+    });
   }
   spd operator-(const spd &s) const {
-    auto pw1 = power();
-    auto pw2 = s.power();
-    auto wlengths = wavelengths();
-    auto ss = spd(pw1 - pw2, wlengths, 1);
-    return ss;
+    return apply(s, [](sampled_wave<T> p1, spd sp) {
+      return p1 - sp.power();
+    });
   }
   spd operator-(const Real &s) const {
-    auto pw1 = power();
-    auto wlengths = wavelengths();
-    auto ss = spd(pw1 - s, wlengths, 1);
-    return ss;
+    return apply(s, [](sampled_wave<T> p1, Real sp) {
+      return p1 - sp;
+    });
   }
   friend spd operator-(const Real &s, const spd &ss) {
     return ss - s;
   }
   spd &operator*=(const spd &s) const {
-    auto pw1 = power();
-    auto pw2 = s.power();
-    auto wlengths = wavelengths();
-    auto ss = spd(pw1 * pw2, wlengths, 1);
-    return ss;
+    return apply(s, [](sampled_wave<T> p1, spd sp) {
+      return p1 * sp.power();
+    });
   }
   spd &operator*=(const Real &s) const {
-    auto pw1 = power();
-    auto wlengths = wavelengths();
-    auto ss = spd(pw1 * s, wlengths, 1);
-    return ss;
+    return apply(s, [](sampled_wave<T> p1, Real sp) {
+      return p1 * sp;
+    });
   }
   spd operator*(const spd &s) const {
-    auto pw1 = power();
-    auto pw2 = s.power();
-    auto wlengths = wavelengths();
-    auto ss = spd(pw1 * pw2, wlengths, 1);
-    return ss;
+    return apply(s, [](sampled_wave<T> p1, spd sp) {
+      return p1 * sp.power();
+    });
   }
   spd operator*(const Real &s) const {
-    auto pw1 = power();
-    auto wlengths = wavelengths();
-    auto ss = spd(pw1 * s, wlengths, 1);
-    return ss;
+    return apply(s, [](sampled_wave<T> p1, Real sp) {
+      return p1 * sp;
+    });
   }
   friend spd operator*(const Real &s, const spd &ss) {
     return ss * s;
   }
   spd &operator/=(const spd &s) const {
-    auto pw1 = power();
-    auto pw2 = s.power();
-    auto wlengths = wavelengths();
-    auto ss = spd(pw1 / pw2, wlengths, 1);
-    return ss;
+    return apply(s, [](sampled_wave<T> p1, spd sp) {
+      return p1 / sp.power();
+    });
   }
   spd &operator/=(const Real &s) const {
-    auto pw1 = power();
-    auto wlengths = wavelengths();
-    auto ss = spd(pw1 / s, wlengths, 1);
-    return ss;
+    return apply(s, [](sampled_wave<T> p1, Real sp) {
+      return p1 + sp;
+    });
   }
   spd operator/(const spd &s) const {
-    auto pw1 = power();
-    auto pw2 = s.power();
-    auto wlengths = wavelengths();
-    auto ss = spd(pw1 / pw2, wlengths, 1);
-    return ss;
+    return apply(s, [](sampled_wave<T> p1, spd sp) {
+      return p1 / sp.power();
+    });
   }
   spd operator/(const Real &s) const {
-    auto pw1 = power();
-    auto wlengths = wavelengths();
-    auto ss = spd(pw1 / s, wlengths, 1);
-    return ss;
+    return apply(s, [](sampled_wave<T> p1, Real sp) {
+      return p1 + sp;
+    });
   }
   friend spd operator/(const Real &s, const spd &ss) {
     return ss / s;
@@ -427,14 +424,6 @@ public:
   void update(unsigned int wave_length, T pvalue) {
     insert(wave_length, pvalue);
     wavelength_power[wave_length] = pvalue;
-  }
-  void apply(unsigned int wave_length, T pvalue,
-             const std::function<T(T, T)> &fn) {
-    if (in(wave_length)) {
-      T power_value = wavelength_power.at(wave_length);
-      wavelength_power[wave_length] =
-          fn(power_value, pvalue);
-    }
   }
   void add(unsigned int wave_length, T pvalue) {
     apply(wave_length, pvalue,
