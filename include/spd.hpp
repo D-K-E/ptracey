@@ -92,6 +92,38 @@ public:
       wavelength_power.insert(pw);
     }
   }
+  /**
+    Slightly more correct way of making a spds.
+    If the user knows exact functions that generate
+    corresponding
+    power for a given wavelength. That function should be
+    passed in
+    the body of power generator.
+    @power_generator: takes a wavelength as input and
+    generates the
+    corresponding power.
+    @wavelength_generator: maps a discreet range of numbers
+    [0,1,2,...,n] to
+    wavelengths.
+    @wave_range: gives the size of the discreet range of
+    numbers. If the
+    desired range of numbers is [0,1,2,...,n] then n+1
+    should be given.
+   */
+  spd(unsigned int wave_range,
+      const std::function<unsigned int(unsigned int)>
+          &wavelength_generator,
+      const std::function<T(unsigned int)>
+          &power_generator) {
+    wave_start = wavelength_generator(0);
+    wave_end = wavelength_generator(wave_range - 1);
+    wavelength_power.clear();
+    for (unsigned int i = 1; i < wave_range; i++) {
+      unsigned int wave = wavelength_generator(i);
+      T power_value = power_generator(wave);
+      wavelength_power.insert(make_pair(wave, power_value));
+    }
+  }
   template <typename U>
   void fill_with_stride(std::vector<U> &dest,
                         const std::vector<U> &srcv,
@@ -429,7 +461,9 @@ public:
     apply(wave_length, pvalue,
           [](T i, T j) { return i + j; });
   }
-  spd add(const spd &s) const { return *this + s; }
+  spd add(const spd &s) const {
+    // slightly more robust implementation of addition
+  }
   spd add(const Real &s) const { return *this + s; }
   void subt(unsigned int wave_length, T pvalue) {
     apply(wave_length, pvalue,
