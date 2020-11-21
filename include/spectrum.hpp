@@ -511,6 +511,6 @@ public:
 
 // end static variable initialize
 
-// typedef color spectrum;
-typedef sampled_spectrum spectrum;
+typedef color spectrum;
+// typedef sampled_spectrum spectrum;
 }
