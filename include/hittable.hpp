@@ -2,7 +2,6 @@
 #include <aabb.hpp>
 #include <common.hpp>
 #include <ray.hpp>
-#include <spectrum.hpp>
 #include <utils.hpp>
 #include <vec3.hpp>
 using namespace ptracey;
@@ -13,7 +12,6 @@ struct hit_record {
   point3 p;
   vec3 normal;
   shared_ptr<material> mat_ptr;
-  shared_ptr<spectrum> spec_ptr = nullptr;
   Real t;
   Real u;
   Real v;

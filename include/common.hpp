@@ -15,5 +15,9 @@ namespace ptracey {
 path RUNTIME_PATH = current_path();
 
 typedef double Real;
-// typedef float Float;
+// typedef float Real;
+typedef Real Power;
+typedef unsigned int WaveLength;
+typedef WaveLength Index;
+typedef std::pair<WaveLength, Power> WavePower;
 }

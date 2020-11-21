@@ -9,25 +9,24 @@ using namespace ptracey;
 namespace ptracey {
 class texture {
 public:
-  virtual shared_ptr<spectrum>
-  value(Real u, Real v, const vec3 &p) const = 0;
+  virtual color value(Real u, Real v, const vec3 &p,
+                      const WaveLength &w) const = 0;
 };
 class solid_color : public texture {
 public:
   solid_color() {}
-  solid_color(shared_ptr<spectrum> c) : color_value(c) {}
+  solid_color(const spectrum &c) : color_value(c) {}
 
   solid_color(Real red, Real green, Real blue)
-      : solid_color(
-            make_shared<spectrum>(red, green, blue)) {}
+      : solid_color(spectrum(red, green, blue)) {}
 
-  shared_ptr<spectrum> value(Real u, Real v,
-                             const vec3 &p) const override {
+  color value(Real u, Real v, const vec3 &p,
+              const WaveLength &w) const override {
     return color_value;
   }
 
 private:
-  shared_ptr<spectrum> color_value;
+  spectrum color_value;
 };
 class checker_texture : public texture {
 public:
@@ -37,13 +36,11 @@ public:
                   shared_ptr<texture> _odd)
       : even(_even), odd(_odd) {}
 
-  checker_texture(shared_ptr<spectrum> c1,
-                  shared_ptr<spectrum> c2)
-      : even(make_shared<solid_color>(c1)),
-        odd(make_shared<solid_color>(c2)) {}
+  checker_texture(const spectrum &c1, const spectrum &c2)
+      : even(solid_color(c1)), odd(solid_color(c2)) {}
 
-  shared_ptr<spectrum> value(Real u, Real v,
-                             const vec3 &p) const override {
+  spectrum value(Real u, Real v, const vec3 &p,
+                 const WaveLength &w) const override {
     auto sines =
         sin(10 * p.x()) * sin(10 * p.y()) * sin(10 * p.z());
     if (sines < 0)
@@ -62,18 +59,18 @@ public:
   noise_texture(Real sc, shared_ptr<spectrum> sp)
       : scale(sc), spec(sp) {}
 
-  shared_ptr<spectrum> value(Real u, Real v,
-                             const vec3 &p) const override {
+  spectrum value(Real u, Real v, const vec3 &p,
+                 const WaveLength &w) const override {
     Real coeff =
         0.5 * (1 + sin(scale * p.z() + 10 * noise.turb(p)));
     spectrum s = spec->multip(coeff);
-    return make_shared<spectrum>(s);
+    return spectrum(s);
   }
 
 public:
   perlin noise;
   Real scale;
-  shared_ptr<spectrum> spec;
+  spectrum spec;
 };
 class image_texture : public texture {
 public:
@@ -98,8 +95,8 @@ public:
     bytes_per_scanline = bytes_per_pixel * width;
   }
   ~image_texture() { STBI_FREE(data); }
-  shared_ptr<spectrum> value(Real u, Real v,
-                             const vec3 &p) const override {
+  spectrum value(Real u, Real v, const vec3 &p,
+                 const WaveLength &w) const override {
     // If we have no texture data, then return solid cyan as
     // a debugging aid.
     if (data == nullptr) {
@@ -128,8 +125,7 @@ public:
     color pix_rgb(color_scale * pixel[0],
                   color_scale * pixel[1],
                   color_scale * pixel[2]);
-    return make_shared<spectrum>(pix_rgb.x(), pix_rgb.y(),
-                                 pix_rgb.z());
+    return spectrum(pix_rgb.x(), pix_rgb.y(), pix_rgb.z());
   }
 
 private:
@@ -141,7 +137,7 @@ class material_texture : public texture {
   // use material refractive spectral power distribution
   // for color
 public:
-  material_texture(const shared_ptr<spectrum> &s)
+  material_texture(const spectrum &s)
       : spect(make_shared<solid_color>(s)) {}
   material_texture(shared_ptr<texture> t) : spect(t) {}
   material_texture(
@@ -151,14 +147,14 @@ public:
       const std::string &sep = ",",
       const unsigned int stride = SPD_STRIDE,
       SpectrumType stype = SpectrumType::Reflectance) {
-    auto spd_material = make_shared<spectrum>(
-        CSV_PARENT / path_to_csv, wave_col_name,
-        power_col_name, sep, stride, stype);
+    auto spd_material =
+        spectrum(CSV_PARENT / path_to_csv, wave_col_name,
+                 power_col_name, sep, stride, stype);
     spect = make_shared<solid_color>(spd_material);
   }
 
-  shared_ptr<spectrum> value(Real u, Real v,
-                             const vec3 &p) const {
+  spectrum value(Real u, Real v, const vec3 &p,
+                 const WaveLength &w) const {
     return spect->value(u, v, p);
   }
 
