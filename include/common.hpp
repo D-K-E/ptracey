@@ -19,5 +19,6 @@ typedef double Real;
 typedef Real Power;
 typedef unsigned int WaveLength;
 typedef WaveLength Index;
+typedef unsigned int uint;
 typedef std::pair<WaveLength, Power> WavePower;
 }

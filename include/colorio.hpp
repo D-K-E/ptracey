@@ -1,5 +1,5 @@
 #pragma once
-#include <color/color.hpp>
+#include <color/colorable.hpp>
 #include <color/rgb_model.hpp>
 #include <color/spectrum.hpp>
 #include <common.hpp>

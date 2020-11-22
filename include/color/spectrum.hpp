@@ -29,13 +29,12 @@ namespace ptracey {
 
 class sampled_spectrum : public colorable {
 public:
-  spd<Real> spect;
+  spd spect;
   SpectrumType type;
 
 public:
   sampled_spectrum()
-      : spect(spd<Real>()),
-        type(SpectrumType::Reflectance) {}
+      : spect(spd()), type(SpectrumType::Reflectance) {}
   sampled_spectrum(
       const path &csv_path,
       const std::string &wave_col_name = "wavelength",
@@ -43,11 +42,10 @@ public:
       const std::string &sep = ",",
       const unsigned int stride = SPD_STRIDE,
       SpectrumType stype = SpectrumType::Reflectance)
-      : spect(spd<Real>(csv_path, wave_col_name,
-                        power_col_name, sep, stride)),
+      : spect(spd(csv_path, wave_col_name, power_col_name,
+                  sep, stride)),
         type(stype) {}
-  sampled_spectrum(const spd<Real> &s_lambda,
-                   SpectrumType stype)
+  sampled_spectrum(const spd &s_lambda, SpectrumType stype)
       : spect(s_lambda), type(stype) {}
   sampled_spectrum(
       const Real &r, const Real &g, const Real &b,
@@ -74,7 +72,7 @@ public:
       : type(stype) {
     spect = from_rgb(_rgb);
   }
-  spd<Real> from_rgb(const vec3 &rgb) {
+  spd from_rgb(const vec3 &rgb) {
     // from
     // http://scottburns.us/fast-rgb-to-spectrum-conversion-for-reflectances/
     // convert sRGB to linear rgb in range [0,1]
@@ -91,31 +89,52 @@ public:
     auto lg = interp<Real>(rgb.g(), ins, ine, 0.0, 1.0);
     auto lb = interp<Real>(rgb.b(), ins, ine, 0.0, 1.0);
     //
-    auto rho_r_wave = rho_r.power();
-    auto rho_g_wave = rho_g.power();
-    auto rho_b_wave = rho_b.power();
+    auto rho_r_wave = spd::rho_r.power();
+    auto rho_g_wave = spd::rho_g.power();
+    auto rho_b_wave = spd::rho_b.power();
     auto rho = lr * rho_r_wave;
     rho += lg * rho_g_wave;
     rho += lb * rho_b_wave;
-    return spd<Real>(rho, rho_r.wavelengths());
+    return spd(rho, spd::rho_r.wavelengths());
   }
-  spd<Real> from_rgb(const rgb_model &rgb) {
+  spd from_rgb(const rgb_model &rgb) {
     return from_rgb(vec3(rgb.r(), rgb.g(), rgb.b()));
   }
   static sampled_spectrum
   random(SpectrumType stype = SpectrumType::Reflectance) {
-    auto sp1 = spd<Real>::random();
+    auto sp1 = spd::random();
     return sampled_spectrum(sp1, stype);
   }
   static sampled_spectrum
   random(Real mn, Real mx,
          SpectrumType stype = SpectrumType::Reflectance) {
-    auto sp1 = spd<Real>::random(mn, mx);
+    auto sp1 = spd::random(mn, mx);
     return sampled_spectrum(sp1, stype);
   }
-
   void insert(unsigned int wavelength, Real power) {
     spect.insert(wavelength, power);
+  }
+  vec3 to_xyz() const override {
+    vec3 xyz;
+    if (type == SpectrumType::Reflectance) {
+      auto X = get_cie_x(spd::standard_d65, spect);
+      auto Y = get_cie_y(spd::standard_d65, spect);
+      auto Z = get_cie_z(spd::standard_d65, spect);
+      xyz = vec3(X, Y, Z);
+    } else {
+      auto X = get_cie_x(spect);
+      auto Y = get_cie_y(spect);
+      auto Z = get_cie_z(spect);
+      xyz = vec3(X, Y, Z);
+    }
+    Real sum = xyz.sum();
+    if (sum != 0) {
+      xyz = xyz / sum;
+    }
+    return xyz;
+  }
+  Power evaluate(const WaveLength &w) const {
+    return spect[w];
   }
 };
 

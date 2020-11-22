@@ -1,8 +1,8 @@
 #pragma once
 
+#include <color/spectrum.hpp>
 #include <common.hpp>
 #include <pdf.hpp>
-#include <spectrum.hpp>
 #include <texture.hpp>
 #include <utils.hpp>
 using namespace ptracey;

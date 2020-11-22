@@ -11,7 +11,7 @@ public:
   virtual vec3 to_xyz() const = 0;
 
   template <typename T>
-  T evaluate(const WaveLength &w) const;
+  void evaluate(const WaveLength &wn, T &t) const {}
 };
 //
 }

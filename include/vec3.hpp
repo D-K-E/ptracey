@@ -39,6 +39,8 @@ public:
   vec3 add(const vec3 &v) {
     return vec3(x() + v.x(), y() + v.y(), z() + v.z());
   }
+  Real sum() { return x() + y() + z(); }
+  Real average() { return sum() / 3.0; }
   shared_ptr<vec3> add(const shared_ptr<vec3> &v) {
     return make_shared<vec3>(x() + v->x(), y() + v->y(),
                              z() + v->z());

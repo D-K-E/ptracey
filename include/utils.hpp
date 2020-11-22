@@ -60,7 +60,7 @@ std::vector<T> linspace(T start, T end, unsigned int size) {
     return lspaced;
   }
   auto delta = (end - start) / (size - 1);
-  for (int i = 0; i < size - 1; i++) {
+  for (unsigned int i = 0; i < size - 1; i++) {
     lspaced.push_back(start + delta * i);
   }
   lspaced.push_back(end);
