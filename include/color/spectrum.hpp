@@ -27,7 +27,7 @@
 using namespace ptracey;
 namespace ptracey {
 
-class sampled_spectrum {
+class sampled_spectrum  {
 public:
   spd<Real> spect;
   SpectrumType type;

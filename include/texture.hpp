@@ -22,7 +22,7 @@ public:
 
   color value(Real u, Real v, const vec3 &p,
               const WaveLength &w) const override {
-    return color_value;
+    return color_value.evaluate(w);
   }
 
 private:
@@ -39,14 +39,14 @@ public:
   checker_texture(const spectrum &c1, const spectrum &c2)
       : even(solid_color(c1)), odd(solid_color(c2)) {}
 
-  spectrum value(Real u, Real v, const vec3 &p,
-                 const WaveLength &w) const override {
+  color value(Real u, Real v, const vec3 &p,
+              const WaveLength &w) const override {
     auto sines =
         sin(10 * p.x()) * sin(10 * p.y()) * sin(10 * p.z());
     if (sines < 0)
-      return odd->value(u, v, p);
+      return odd->value(u, v, p, w);
     else
-      return even->value(u, v, p);
+      return even->value(u, v, p, w);
   }
 
 public:
@@ -59,12 +59,12 @@ public:
   noise_texture(Real sc, shared_ptr<spectrum> sp)
       : scale(sc), spec(sp) {}
 
-  spectrum value(Real u, Real v, const vec3 &p,
-                 const WaveLength &w) const override {
+  color value(Real u, Real v, const vec3 &p,
+              const WaveLength &w) const override {
     Real coeff =
         0.5 * (1 + sin(scale * p.z() + 10 * noise.turb(p)));
     spectrum s = spec->multip(coeff);
-    return spectrum(s);
+    return s.evaluate(w);
   }
 
 public:
@@ -95,12 +95,12 @@ public:
     bytes_per_scanline = bytes_per_pixel * width;
   }
   ~image_texture() { STBI_FREE(data); }
-  spectrum value(Real u, Real v, const vec3 &p,
-                 const WaveLength &w) const override {
+  color value(Real u, Real v, const vec3 &p,
+              const WaveLength &w) const override {
     // If we have no texture data, then return solid cyan as
     // a debugging aid.
     if (data == nullptr) {
-      return make_shared<spectrum>(0, 1, 1);
+      return spectrum(0, 1, 1).evaluate(w);
     }
 
     // Clamp input texture coordinates to [0,1] x [1,0]
@@ -153,8 +153,8 @@ public:
     spect = make_shared<solid_color>(spd_material);
   }
 
-  spectrum value(Real u, Real v, const vec3 &p,
-                 const WaveLength &w) const {
+  color value(Real u, Real v, const vec3 &p,
+              const WaveLength &w) const {
     return spect->value(u, v, p);
   }
 

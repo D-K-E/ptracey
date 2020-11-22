@@ -8,7 +8,10 @@ namespace ptracey {
 
 class colorable {
 public:
-  virtual vec3 to_xyz(const T &el) const = 0;
+  virtual vec3 to_xyz() const = 0;
+
+  template <typename T>
+  T evaluate(const WaveLength &w) const;
 };
 //
 }

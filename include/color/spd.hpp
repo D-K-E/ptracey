@@ -18,13 +18,22 @@ const std::string WCOL_NAME = "wavelength";
 const std::string PCOL_NAME = "power";
 const std::string SEP = ",";
 
-class spd {
+class spd : public colorable {
 public:
   WaveLength wave_start;
   WaveLength wave_end;
   std::map<WaveLength, Power> wavelength_power;
 
+public: // static members
+  static spd rho_r;
+  static spd rho_g;
+  static spd rho_b;
+  static spd cie_xbar;
+  static spd cie_ybar;
+  static spd cie_zbar;
+
 public:
+  // static methods
   static spd random() { return spd(); }
   static spd random(Real mn, Real mx) {
     auto ss = spd();
@@ -322,7 +331,6 @@ public:
     }
     return res;
   }
-
   Power operator[](WaveLength wave_length) const {
     return wavelength_power.at(wave_length);
   }
@@ -349,6 +357,12 @@ public:
     if (!res) {
       update(wave_length, pvalue);
     }
+  }
+  vec3 to_xyz() override {
+    //
+  }
+  template <> Power evaluate(const WaveLength &w) const {
+    //
   }
 };
 Real get_cie_k(const spd<Real> &ss, const spd<Real> &cie_y,
@@ -445,41 +459,37 @@ Real get_cie_value(const spd<Real> &reflectance,
   return k * val;
 }
 
-auto rho_rspd =
-    spd<Real>(CSV_PARENT / "rho-r-2012.csv", WCOL_NAME,
-              PCOL_NAME, SEP, SPD_STRIDE);
-static spd<Real> rho_r = rho_rspd.normalized();
+auto rho_rspd = spd(CSV_PARENT / "rho-r-2012.csv",
+                    WCOL_NAME, PCOL_NAME, SEP, SPD_STRIDE);
+static spd spd::rho_r = rho_rspd.normalized();
 
-auto rho_gspd =
-    spd<Real>(CSV_PARENT / "rho-g-2012.csv", WCOL_NAME,
-              PCOL_NAME, SEP, SPD_STRIDE);
-static spd<Real> rho_g = rho_gspd.normalized();
+auto rho_gspd = spd(CSV_PARENT / "rho-g-2012.csv",
+                    WCOL_NAME, PCOL_NAME, SEP, SPD_STRIDE);
+static spd spd::rho_g = rho_gspd.normalized();
 
-auto rho_bspd =
-    spd<Real>(CSV_PARENT / "rho-b-2012.csv", WCOL_NAME,
-              PCOL_NAME, SEP, SPD_STRIDE);
-static spd<Real> rho_b = rho_bspd.normalized();
+auto rho_bspd = spd(CSV_PARENT / "rho-b-2012.csv",
+                    WCOL_NAME, PCOL_NAME, SEP, SPD_STRIDE);
+static spd spd::rho_b = rho_bspd.normalized();
 
 auto cie_xbarspd =
-    spd<Real>(CSV_PARENT / "cie-x-bar-1964.csv", WCOL_NAME,
-              PCOL_NAME, SEP, SPD_STRIDE);
+    spd(CSV_PARENT / "cie-x-bar-1964.csv", WCOL_NAME,
+        PCOL_NAME, SEP, SPD_STRIDE);
 
-static spd<Real> cie_xbar = cie_xbarspd.normalized();
+static spd spd::cie_xbar = cie_xbarspd.normalized();
 
 auto cie_ybarspd =
-    spd<Real>(CSV_PARENT / "cie-y-bar-1964.csv", WCOL_NAME,
-              PCOL_NAME, SEP, SPD_STRIDE);
+    spd(CSV_PARENT / "cie-y-bar-1964.csv", WCOL_NAME,
+        PCOL_NAME, SEP, SPD_STRIDE);
 
-static spd<Real> cie_ybar = cie_ybarspd.normalized();
+static spd spd::cie_ybar = cie_ybarspd.normalized();
 
 auto cie_zbarspd =
-    spd<Real>(CSV_PARENT / "cie-z-bar-1964.csv", WCOL_NAME,
-              PCOL_NAME, SEP, SPD_STRIDE);
-static spd<Real> cie_zbar = cie_zbarspd.normalized();
+    spd(CSV_PARENT / "cie-z-bar-1964.csv", WCOL_NAME,
+        PCOL_NAME, SEP, SPD_STRIDE);
+static spd spd::cie_zbar = cie_zbarspd.normalized();
 
-auto stand_d65 =
-    spd<Real>(CSV_PARENT / "cie-d65-standard.csv",
-              WCOL_NAME, PCOL_NAME, SEP, SPD_STRIDE);
-static spd<Real> standard_d65 = stand_d65.normalized();
+auto stand_d65 = spd(CSV_PARENT / "cie-d65-standard.csv",
+                     WCOL_NAME, PCOL_NAME, SEP, SPD_STRIDE);
+static spd spd::standard_d65 = stand_d65.normalized();
 //
 }

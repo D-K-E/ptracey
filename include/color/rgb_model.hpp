@@ -21,5 +21,8 @@ public:
   vec3 to_xyz() const override {
     return rgb2xyz_cie(vec3(x(), y(), z()));
   }
+  template <> vec3 evaluate(const WaveLength &w) const {
+    return vec3(x(), y(), z());
+  }
 };
 }
