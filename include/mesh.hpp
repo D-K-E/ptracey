@@ -15,11 +15,11 @@
 using namespace ptracey;
 namespace ptracey {
 
-color to_color_ai(aiColor3D col) {
+vec3 to_color_ai(aiColor3D col) {
   auto x = static_cast<double>(col.r);
   auto y = static_cast<double>(col.g);
   auto z = static_cast<double>(col.b);
-  return color(x, y, z);
+  return vec3(x, y, z);
 }
 class mesh : public hittable {
 public:
