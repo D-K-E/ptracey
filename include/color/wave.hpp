@@ -190,12 +190,12 @@ public:
     auto wave = ss * sval;
     return wave;
   }
-  T &operator[](int i) {
-    D_CHECK(i >= 0 && i < values.size());
+  T &operator[](uint i) {
+    D_CHECK(i < (uint)values.size());
     return values[i];
   }
-  T operator[](int i) const {
-    D_CHECK(i >= 0 && i < values.size());
+  T operator[](uint i) const {
+    D_CHECK((uint)i < values.size());
     return values[i];
   }
   bool operator==(const sampled_wave &cs) const {

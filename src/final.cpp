@@ -1,12 +1,12 @@
 //
 #include <camera.hpp>
+#include <color/spectrum.hpp>
 #include <colorio.hpp>
 #include <common.hpp>
 #include <hittable_list.hpp>
 #include <ray.hpp>
 #include <render.hpp>
 #include <scenes.hpp>
-#include <spectrum.hpp>
 #include <utils.hpp>
 #include <vec3.hpp>
 
@@ -23,11 +23,10 @@ struct InnerParams {
   int startx;
   int endx;
   hittable_list scene;
-  shared_ptr<spectrum> background;
+  spectrum background;
   InnerParams(int sx, int ex, const camera &c, int imw,
               int imh, int ps, int d,
-              const hittable_list &hs,
-              const shared_ptr<spectrum> &b)
+              const hittable_list &hs, const spectrum &b)
       : startx(sx), endx(ex), cam(c), imwidth(imw),
         imheight(imh), psample(ps), mdepth(d), scene(hs),
         background(b) {}
@@ -49,7 +48,7 @@ InnerRet innerLoop(InnerParams params) {
   int startx = params.startx;
   int endx = params.endx;
   int xrange = endx - startx;
-  shared_ptr<spectrum> background = params.background;
+  spectrum background = params.background;
   hittable_list scene = params.scene;
   immat imv;
   imv.resize(xrange);
@@ -65,14 +64,14 @@ InnerRet innerLoop(InnerParams params) {
       for (int k = 0; k < psample; k++) {
         Real t = Real(i + random_real()) / (imwidth - 1);
         Real s = Real(j + random_real()) / (imheight - 1);
-        unsigned int wavelength =
-            static_cast<unsigned int>(random_int(
+        WaveLength wavel =
+            static_cast<WaveLength>(random_int(
                 VISIBLE_LAMBDA_START, VISIBLE_LAMBDA_END));
-        ray r = cam.get_ray(t, s, wavelength);
-        spectrum r_color = spectrum(0.0);
-        ray_color(r, background, scene, mdepth, r_color);
+        ray r = cam.get_ray(t, s, wavel);
+        color r_color =
+            ray_color(r, background, scene, mdepth);
         //
-        rcolor = rcolor.add(r_color);
+        rcolor.add(r_color, wavel);
       }
       imv[a][j] = rcolor;
     }
@@ -113,7 +112,7 @@ extern "C" int main(int ac, char **av) {
   int choice = 12;
   camera cam;
   int image_height;
-  shared_ptr<spectrum> background;
+  spectrum background;
   choose_scene(choice, cam, world, samples_per_pixel,
                aspect_ratio, image_width, image_height,
                background);

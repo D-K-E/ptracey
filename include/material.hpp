@@ -11,42 +11,43 @@ namespace ptracey {
 struct scatter_record {
   ray specular_ray;
   bool is_specular;
-  shared_ptr<spectrum> attenuation;
+  color attenuation;
   shared_ptr<pdf> pdf_ptr;
 };
 class material {
 public:
-  virtual shared_ptr<spectrum>
-  emitted(const ray &r_in, const hit_record &rec, Real u,
-          Real v, const point3 &p) const {
-    return make_shared<spectrum>(0.0);
+  virtual color emitted(const ray &r_in,
+                        const hit_record &rec, Real u,
+                        Real v, const point3 &p) const {
+    return color(0.0);
   }
   virtual bool scatter(const ray &r_in,
                        const hit_record &rec,
                        scatter_record &srec) const {
     return false;
   }
-  virtual double
-  scattering_pdf(const ray &r_in, const hit_record &rec,
-                 const ray &scattered) const {
+  virtual Real scattering_pdf(const ray &r_in,
+                              const hit_record &rec,
+                              const ray &scattered) const {
     return 0.0;
   }
 };
 class lambertian : public material {
 public:
-  lambertian(const shared_ptr<spectrum> &a)
+  lambertian(const spectrum &a)
       : albedo(make_shared<solid_color>(a)) {}
   lambertian(shared_ptr<texture> a) : albedo(a) {}
   bool scatter(const ray &r_in, const hit_record &rec,
                scatter_record &srec) const override {
     srec.is_specular = false;
-    srec.attenuation = albedo->value(rec.u, rec.v, rec.p);
+    srec.attenuation = albedo->value(rec.u, rec.v, rec.p,
+                                     r_in.wavelength());
     srec.pdf_ptr = make_shared<cosine_pdf>(rec.normal);
     return true;
   }
-  double
-  scattering_pdf(const ray &r_in, const hit_record &rec,
-                 const ray &scattered) const override {
+  Real scattering_pdf(const ray &r_in,
+                      const hit_record &rec,
+                      const ray &scattered) const override {
     auto cosine =
         dot(rec.normal, unit_vector(scattered.direction()));
     return cosine < 0 ? 0 : cosine / M_PI;
@@ -57,7 +58,7 @@ public:
 };
 class metal : public material {
 public:
-  metal(const shared_ptr<spectrum> &a, Real f)
+  metal(const spectrum &a, Real f)
       : albedo(make_shared<solid_color>(a)),
         fuzz(f < 1 ? f : 1) {}
 
@@ -68,10 +69,9 @@ public:
     srec.specular_ray = ray(
         rec.p, reflected + fuzz * random_in_unit_sphere(),
         r_in.time(), r_in.wavelength());
-    shared_ptr<spectrum> rspect = rec.spec_ptr;
-    shared_ptr<spectrum> spect =
-        albedo->value(rec.u, rec.v, rec.p);
-    srec.attenuation = spect;
+    srec.attenuation =
+        albedo->value(rec.u, rec.v, rec.p,
+                      srec.specular_ray.wavelength());
     srec.is_specular = true;
     srec.pdf_ptr = nullptr;
     return true;
@@ -90,8 +90,8 @@ public:
                scatter_record &srec) const override {
     srec.is_specular = true;
     srec.pdf_ptr = nullptr;
-    color white_rgb(1.0);
-    srec.attenuation = make_shared<spectrum>(1.0);
+    color white(1.0);
+    srec.attenuation = white;
     Real refraction_ratio =
         rec.front_face ? (1.0 / ir) : ir;
 
@@ -131,15 +131,15 @@ private:
 class diffuse_light : public material {
 public:
   diffuse_light(shared_ptr<texture> a) : emit(a) {}
-  diffuse_light(shared_ptr<spectrum> c)
+  diffuse_light(const spectrum &c)
       : emit(make_shared<solid_color>(c)) {}
 
-  shared_ptr<spectrum>
-  emitted(const ray &r_in, const hit_record &rec, Real u,
-          Real v, const point3 &p) const override {
+  color emitted(const ray &r_in, const hit_record &rec,
+                Real u, Real v,
+                const point3 &p) const override {
     if (!rec.front_face)
-      return make_shared<spectrum>(0.0);
-    return emit->value(u, v, p);
+      return color(0.0);
+    return emit->value(u, v, p, r_in.wavelength());
   }
 
 public:
@@ -147,7 +147,7 @@ public:
 };
 class isotropic : public material {
 public:
-  isotropic(shared_ptr<spectrum> c)
+  isotropic(const spectrum &c)
       : albedo(make_shared<solid_color>(c)) {}
   isotropic(shared_ptr<texture> a) : albedo(a) {}
 
@@ -155,7 +155,9 @@ public:
                scatter_record &srec) const override {
     srec.specular_ray = ray(rec.p, random_in_unit_sphere(),
                             r_in.time(), r_in.wavelength());
-    srec.attenuation = albedo->value(rec.u, rec.v, rec.p);
+    srec.attenuation =
+        albedo->value(rec.u, rec.v, rec.p,
+                      srec.specular_ray.wavelength());
     srec.is_specular = true;
     srec.pdf_ptr = nullptr;
     return true;

@@ -38,7 +38,7 @@ public:
   static spd random() { return spd(); }
   static spd random(Real mn, Real mx) {
     auto ss = spd();
-    auto pw = ss.power();
+    auto pw = ss.powers();
     std::vector<Real> pws;
     for (uint i = 0; i < (uint)pw.size(); i++) {
       pws.push_back(random_real(mn, mx));
@@ -204,7 +204,7 @@ public:
   // ------------------- End Constructors -----------------
 public:
   // ------------------- Start Methods --------------------
-  sampled_wave<Power> power() const {
+  sampled_wave<Power> powers() const {
     std::vector<Power> ps;
     for (auto pw : wavelength_power) {
       ps.push_back(pw.second);
@@ -221,7 +221,7 @@ public:
     return ps;
   }
   spd normalized() const {
-    sampled_wave<Power> normal_power = power();
+    sampled_wave<Power> normal_power = powers();
     auto normal_power2 = normal_power.interpolate(0.0, 1.0);
     auto wlengths = wavelengths();
     auto ss = spd(normal_power2, wlengths);
@@ -290,6 +290,12 @@ public:
     }
     return val * stepsize;
   }
+  void apply(Real pvalue,
+             const std::function<Power(Power, Power)> &fn) {
+    for (auto &pr : wavelength_power) {
+      pr.second = fn(pr.second, pvalue);
+    }
+  }
   bool apply(WaveLength wave_length, Power pvalue,
              const std::function<Power(Power, Power)> &fn) {
     if (in(wave_length)) {
@@ -357,6 +363,9 @@ public:
       update(wave_length, pvalue);
     }
   }
+  void scale(Real pvalue) {
+    apply(pvalue, [](Real i, Real j) { return i * j; });
+  }
 };
 Power get_cie_k() {
   Power sum = 0.0;
@@ -385,8 +394,8 @@ Power get_cie_k(const spd &ss, const spd &cie_y,
     throw std::runtime_error("if step size is 0, spd and "
                              "cie_y should have same size");
   }
-  auto pw1 = ss.power();
-  auto pw2 = cie_y.power();
+  auto pw1 = ss.powers();
+  auto pw2 = cie_y.powers();
   for (uint i = 0; i < ss.wavelength_power.size(); i++) {
     sum += pw1[i] * pw2[i];
   }
@@ -427,6 +436,37 @@ Power get_cie_z(const spd &qlambda) {
 }
 Power get_cie_z(const spd &qlambda, const spd &rlambda) {
   return get_cie_val(qlambda, rlambda, spd::cie_zbar);
+}
+void get_cie_values(const spd &qlambda, Power &X, Power &Y,
+                    Power &Z) {
+  X = get_cie_x(qlambda);
+  Y = get_cie_y(qlambda);
+  Z = get_cie_z(qlambda);
+}
+void get_cie_values(const spd &qlambda, const spd &rlambda,
+                    Power &X, Power &Y, Power &Z) {
+  X = get_cie_x(qlambda, rlambda);
+  Y = get_cie_y(qlambda, rlambda);
+  Z = get_cie_z(qlambda, rlambda);
+}
+void get_cie_values(const spd &qlambda, vec3 &xyz) {
+  Power X, Y, Z;
+  get_cie_values(qlambda, X, Y, Z);
+  xyz = vec3(X, Y, Z);
+  Real sum = xyz.sum();
+  if (sum != 0) {
+    xyz = xyz / sum;
+  }
+}
+void get_cie_values(const spd &qlambda, const spd &rlambda,
+                    vec3 &xyz) {
+  Power X, Y, Z;
+  get_cie_values(qlambda, rlambda, X, Y, Z);
+  xyz = vec3(X, Y, Z);
+  Real sum = xyz.sum();
+  if (sum != 0) {
+    xyz = xyz / sum;
+  }
 }
 
 auto rho_rspd = spd(CSV_PARENT / "rho-r-2012.csv",

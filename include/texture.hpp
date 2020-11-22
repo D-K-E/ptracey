@@ -37,8 +37,8 @@ public:
       : odd(_odd), even(_even) {}
 
   checker_texture(const spectrum &c1, const spectrum &c2)
-      : even(make_shared<solid_color>(c1)),
-        odd(make_shared<solid_color>(c2)) {}
+      : odd(make_shared<solid_color>(c1)),
+        even(make_shared<solid_color>(c2)) {}
 
   color value(Real u, Real v, const vec3 &p,
               const WaveLength &w) const override {
