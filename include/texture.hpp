@@ -1,9 +1,9 @@
 #pragma once
 //
+#include <color/spectrum.hpp>
 #include <common.hpp>
 #include <perlin.hpp>
 #include <ray.hpp>
-#include <spectrum.hpp>
 #include <vec3.hpp>
 using namespace ptracey;
 namespace ptracey {
@@ -32,12 +32,13 @@ class checker_texture : public texture {
 public:
   checker_texture() {}
 
-  checker_texture(shared_ptr<texture> _even,
-                  shared_ptr<texture> _odd)
-      : even(_even), odd(_odd) {}
+  checker_texture(shared_ptr<texture> _odd,
+                  shared_ptr<texture> _even)
+      : odd(_odd), even(_even) {}
 
   checker_texture(const spectrum &c1, const spectrum &c2)
-      : even(solid_color(c1)), odd(solid_color(c2)) {}
+      : even(make_shared<solid_color>(c1)),
+        odd(make_shared<solid_color>(c2)) {}
 
   color value(Real u, Real v, const vec3 &p,
               const WaveLength &w) const override {
@@ -56,15 +57,16 @@ public:
 class noise_texture : public texture {
 public:
   noise_texture() {}
-  noise_texture(Real sc, shared_ptr<spectrum> sp)
+  noise_texture(Real sc, const spectrum &sp)
       : scale(sc), spec(sp) {}
 
   color value(Real u, Real v, const vec3 &p,
               const WaveLength &w) const override {
     Real coeff =
         0.5 * (1 + sin(scale * p.z() + 10 * noise.turb(p)));
-    spectrum s = spec->multip(coeff);
-    return s.evaluate(w);
+    color eval = spec.evaluate(w);
+    eval *= coeff;
+    return eval;
   }
 
 public:
@@ -96,11 +98,11 @@ public:
   }
   ~image_texture() { STBI_FREE(data); }
   color value(Real u, Real v, const vec3 &p,
-              const WaveLength &w) const override {
+              const WaveLength &wl) const override {
     // If we have no texture data, then return solid cyan as
     // a debugging aid.
     if (data == nullptr) {
-      return spectrum(0, 1, 1).evaluate(w);
+      return spectrum(0, 1, 1).evaluate(wl);
     }
 
     // Clamp input texture coordinates to [0,1] x [1,0]
@@ -122,10 +124,10 @@ public:
     auto pixel =
         data + j * bytes_per_scanline + i * bytes_per_pixel;
 
-    color pix_rgb(color_scale * pixel[0],
-                  color_scale * pixel[1],
-                  color_scale * pixel[2]);
-    return spectrum(pix_rgb.x(), pix_rgb.y(), pix_rgb.z());
+    spectrum pix_rgb(color_scale * pixel[0],
+                     color_scale * pixel[1],
+                     color_scale * pixel[2]);
+    return pix_rgb.evaluate(wl);
   }
 
 private:
@@ -155,7 +157,7 @@ public:
 
   color value(Real u, Real v, const vec3 &p,
               const WaveLength &w) const {
-    return spect->value(u, v, p);
+    return spect->value(u, v, p, w);
   }
 
 public:

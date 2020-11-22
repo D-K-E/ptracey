@@ -141,5 +141,7 @@ public:
 // end static variable initialize
 
 typedef rgb_model spectrum;
+typedef rgb_model color;
 // typedef sampled_spectrum spectrum;
+// typedef Power color;
 }

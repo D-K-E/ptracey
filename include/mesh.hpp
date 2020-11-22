@@ -1,6 +1,7 @@
 #pragma once
 
 #include <bvh.hpp>
+#include <color/spectrum.hpp>
 #include <common.hpp>
 #include <external.hpp>
 #include <hittable.hpp>
@@ -8,7 +9,6 @@
 #include <material.hpp>
 #include <matrix.hpp>
 #include <ray.hpp>
-#include <spectrum.hpp>
 #include <triangle.hpp>
 #include <vec3.hpp>
 
@@ -144,7 +144,7 @@ public:
     aiColor3D col;
     mat->Get(AI_MATKEY_COLOR_EMISSIVE, col);
     auto rgb_c = to_color_ai(col);
-    shared_ptr<spectrum> em = make_shared<spectrum>(rgb_c);
+    spectrum em = spectrum(rgb_c);
     bool res = rgb_c.x() == 0.0 && rgb_c.y() == 0.0 &&
                rgb_c.z() == 0.0;
     if (!res) {
@@ -157,7 +157,7 @@ public:
     if (fuzz != 0.0) {
       mat->Get(AI_MATKEY_COLOR_DIFFUSE, col);
       auto rgb_c = to_color_ai(col);
-      shared_ptr<spectrum> c = make_shared<spectrum>(rgb_c);
+      spectrum c = spectrum(rgb_c);
       res = rgb_c.r() == 0.0 && rgb_c.g() == 0.0 &&
             rgb_c.b() == 0.0;
       if (!res) {
@@ -167,7 +167,7 @@ public:
       }
       mat->Get(AI_MATKEY_COLOR_REFLECTIVE, col);
       rgb_c = to_color_ai(col);
-      c = make_shared<spectrum>(rgb_c);
+      c = spectrum(rgb_c);
       res = rgb_c.x() == 0.0 && rgb_c.y() == 0.0 &&
             rgb_c.z() == 0.0;
       if (!res) {
@@ -178,8 +178,7 @@ public:
     }
     mat->Get(AI_MATKEY_COLOR_DIFFUSE, col);
     rgb_c = to_color_ai(col);
-    shared_ptr<spectrum> diffuse =
-        make_shared<spectrum>(rgb_c);
+    spectrum diffuse = spectrum(rgb_c);
     shared_ptr<material> ret =
         make_shared<lambertian>(diffuse);
     return ret;

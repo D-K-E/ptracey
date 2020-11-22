@@ -1,9 +1,9 @@
 #pragma once
+#include <color/spectrum.hpp>
 #include <common.hpp>
 #include <hittable.hpp>
 #include <material.hpp>
 #include <ray.hpp>
-#include <spectrum.hpp>
 using namespace ptracey;
 namespace ptracey {
 
