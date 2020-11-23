@@ -25,7 +25,8 @@ inline Real degrees_to_radians(Real degrees) {
   return degrees * M_PI / 180.0;
 }
 
-template <typename T> T clamp(T x, T min, T max) {
+template <typename T, typename U, typename V>
+T clamp(T x, U min, V max) {
   if (x < min)
     return min;
   if (x > max)
@@ -33,7 +34,7 @@ template <typename T> T clamp(T x, T min, T max) {
   return x;
 }
 template <typename T> T dclamp(T x, T mn, T mx) {
-  return clamp<T>(x, mn, mx);
+  return clamp<T, T, T>(x, mn, mx);
 }
 
 template <typename T>
@@ -47,6 +48,10 @@ template <typename T> T interp(T t, T s1, T s2) {
   // interpolate from glsl reference
   // https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/mix.xhtml
   return interp(t, 0.0, 1.0, s1, s2);
+}
+template <typename T, typename U, typename V>
+T mix(T t, U v1, V v2) {
+  return (1 - t) * v1 + t * v2;
 }
 
 template <typename T>
@@ -115,5 +120,27 @@ int findInterval(int size, const fn &f) {
     }
   }
   return clamp<int>(first - 1, 0, size - 2);
+}
+
+template <typename T>
+inline std::ostream &operator<<(std::ostream &out,
+                                const std::vector<T> &ss) {
+  std::stringstream s;
+  for (auto r : ss) {
+    s << "," << std::to_string(r);
+  }
+  auto s_str = s.str();
+  out << s_str << std::endl;
+  return out;
+}
+//
+template <typename SrcType, typename DestType>
+inline std::vector<DestType>
+cast_vec(const std::vector<SrcType> &vs) {
+  std::vector<DestType> ds;
+  for (auto &v : vs) {
+    ds.push_back(static_cast<DestType>(v));
+  }
+  return ds;
 }
 }

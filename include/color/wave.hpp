@@ -248,4 +248,15 @@ public:
     return cs;
   }
 };
+template <typename T>
+inline std::ostream &operator<<(std::ostream &out,
+                                const sampled_wave<T> &ss) {
+  std::stringstream s;
+  for (auto r : ss.values) {
+    s << "," << std::to_string(r);
+  }
+  auto s_str = s.str();
+  out << s_str << std::endl;
+  return out;
+}
 }

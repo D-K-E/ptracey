@@ -109,13 +109,13 @@ extern "C" int main(int ac, char **av) {
   // World
 
   hittable_list world;
-  int choice = 12;
+  int choice = 10;
   camera cam;
   int image_height;
   spectrum background;
-  choose_scene(choice, cam, world, samples_per_pixel,
-               aspect_ratio, image_width, image_height,
-               background);
+  choose_scene(choice, cam, world, max_depth,
+               samples_per_pixel, aspect_ratio, image_width,
+               image_height, background);
   imvec.resize(image_width);
   for (int i = 0; i < image_width; i++) {
     imvec[i].resize(image_height, spectrum(0.0));

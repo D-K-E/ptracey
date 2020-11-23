@@ -1,4 +1,5 @@
 #pragma once
+#include <color/color.hpp>
 #include <color/colorable.hpp>
 #include <color/spd.hpp>
 #include <color/specutils.hpp>
@@ -38,13 +39,21 @@ public:
   vec3 to_xyz() const override {
     return rgb2xyz_cie(vec3(x(), y(), z()));
   }
+  vec3 to_rgb() const override {
+    return vec3(x(), y(), z());
+  }
   vec3 evaluate(const WaveLength &w) const {
     return vec3(x(), y(), z());
   }
-  void add(const rgb_model &rgbm, const WaveLength &w) {
-    e[0] += rgbm.x();
-    e[1] += rgbm.y();
-    e[2] += rgbm.z();
+  void add(const color &c, const WaveLength &w) {
+    e[0] += c.vdata.x();
+    e[1] += c.vdata.y();
+    e[2] += c.vdata.z();
+  }
+  void scale(Real coeff) {
+    e[0] *= coeff;
+    e[1] *= coeff;
+    e[2] *= coeff;
   }
 };
 }

@@ -498,7 +498,7 @@ hittable_list model_test2() {
 }
 
 void choose_scene(int choice, camera &cam,
-                  hittable_list &world,
+                  hittable_list &world, int &max_depth,
                   int &samples_per_pixel,
                   float aspect_ratio, int &image_width,
                   int &image_height, spectrum &background) {
@@ -520,7 +520,6 @@ void choose_scene(int choice, camera &cam,
     aperture = 0.1;
     break;
   }
-
   case 2: {
     world = two_spheres();
     color b_rgb(0.70, 0.80, 1.00);
@@ -533,7 +532,6 @@ void choose_scene(int choice, camera &cam,
     vfov = 20.0;
     break;
   }
-
   case 3: {
     world = two_perlin_spheres();
     color b_rgb(0.70, 0.80, 1.00);
@@ -546,7 +544,6 @@ void choose_scene(int choice, camera &cam,
     vfov = 20.0;
     break;
   }
-
   case 4: {
     world = earth();
     color b_rgb(0.70, 0.80, 1.00);
@@ -559,7 +556,6 @@ void choose_scene(int choice, camera &cam,
     vfov = 20.0;
     break;
   }
-
   case 5: {
     world = simple_light();
     samples_per_pixel = 400;
@@ -568,7 +564,6 @@ void choose_scene(int choice, camera &cam,
     vfov = 20.0;
     break;
   }
-
   case 6: {
     world = cornell_box();
     aspect_ratio = 1.0;
@@ -578,7 +573,6 @@ void choose_scene(int choice, camera &cam,
     lookat = point3(278, 278, 0);
     break;
   }
-
   case 7: {
     world = cornell_smoke();
     aspect_ratio = 1.0;
@@ -588,7 +582,6 @@ void choose_scene(int choice, camera &cam,
     lookat = point3(278, 278, 0);
     break;
   }
-
   case 8: {
     world = cornell_box_restlife();
     aspect_ratio = 1.0;
@@ -598,7 +591,6 @@ void choose_scene(int choice, camera &cam,
     lookat = point3(278, 278, 0);
     break;
   }
-
   case 9: {
     hittable_list world2 = final_scene_nextweek();
     shared_ptr<hittable> wh =
@@ -611,12 +603,12 @@ void choose_scene(int choice, camera &cam,
     lookat = point3(278, 278, 0);
     break;
   }
-
   case 10: {
     world = model_cat();
     aspect_ratio = 1.0;
     image_width = 400;
     samples_per_pixel = 10000;
+    max_depth = 10000;
     lookfrom = point3(278, 278, -800);
     lookat = point3(278, 278, 0);
     break;
@@ -625,12 +617,12 @@ void choose_scene(int choice, camera &cam,
     world = model_test2();
     aspect_ratio = 1.0;
     image_width = 300;
-    samples_per_pixel = 50;
+    samples_per_pixel = 10;
+    max_depth = 10;
     lookfrom = point3(278, 278, -800);
     lookat = point3(278, 278, 0);
     break;
   }
-
   case 12: {
     world = two_spheres();
     color b_rgb(0.70, 0.80, 1.00);
@@ -638,7 +630,7 @@ void choose_scene(int choice, camera &cam,
     //    b_rgb, SpectrumType::Reflectance);
     background = spectrum(0.70, 0.80, 1.00);
     samples_per_pixel = 10;
-
+    max_depth = 10;
     lookfrom = point3(13, 2, 3);
     lookat = point3(0, 0, 0);
     vfov = 20.0;

@@ -41,15 +41,8 @@ public:
   }
   Real sum() { return x() + y() + z(); }
   Real average() { return sum() / 3.0; }
-  shared_ptr<vec3> add(const shared_ptr<vec3> &v) {
-    return make_shared<vec3>(x() + v->x(), y() + v->y(),
-                             z() + v->z());
-  }
   vec3 add(const Real &v) {
     return vec3(x() + v, y() + v, z() + v);
-  }
-  shared_ptr<vec3> add(const shared_ptr<Real> vptr) {
-    return make_shared<vec3>(add(*vptr));
   }
   vec3 subt(const Real &v) {
     return vec3(x() - v, y() - v, z() - v);
@@ -57,22 +50,8 @@ public:
   vec3 subt(const vec3 &v) {
     return vec3(x() - v.x(), y() - v.y(), z() - v.z());
   }
-  shared_ptr<vec3> subt(const shared_ptr<vec3> &v) {
-    return make_shared<vec3>(x() - v->x(), y() - v->y(),
-                             z() - v->z());
-  }
-  shared_ptr<vec3> subt(const shared_ptr<Real> vptr) {
-    return make_shared<vec3>(subt(*vptr));
-  }
   vec3 multip(const vec3 &v) {
     return vec3(x() * v.x(), y() * v.y(), z() * v.z());
-  }
-  shared_ptr<vec3> multip(const shared_ptr<vec3> &v) {
-    return make_shared<vec3>(x() * v->x(), y() * v->y(),
-                             z() * v->z());
-  }
-  shared_ptr<vec3> multip(const shared_ptr<Real> &v) {
-    return make_shared<vec3>(multip(*v));
   }
   vec3 multip(const Real &v) {
     return vec3(x() * v, y() * v, z() * v);
@@ -93,14 +72,6 @@ public:
       throw std::runtime_error(
           "no zero division z is zero");
     return vec3(x() / v.x(), y() / v.y(), z() / v.z());
-  }
-  shared_ptr<vec3> div(const shared_ptr<vec3> &v) {
-    auto vs = *v;
-    vs = div(vs);
-    return make_shared<vec3>(vs.x(), vs.y(), vs.z());
-  }
-  shared_ptr<vec3> div(const shared_ptr<Real> &v) {
-    return make_shared<vec3>(div(*v));
   }
   Real length() const { return sqrt(length_squared()); }
   Real length_squared() const {
@@ -142,31 +113,31 @@ inline std::ostream &operator<<(std::ostream &out,
                                 const vec3 &v) {
   return out << v.e[0] << ' ' << v.e[1] << ' ' << v.e[2];
 }
-
 inline vec3 operator+(const vec3 &u, const vec3 &v) {
   return vec3(u.e[0] + v.e[0], u.e[1] + v.e[1],
               u.e[2] + v.e[2]);
 }
-
 inline vec3 operator-(const vec3 &u, const vec3 &v) {
   return vec3(u.e[0] - v.e[0], u.e[1] - v.e[1],
               u.e[2] - v.e[2]);
 }
-
 inline vec3 operator*(const vec3 &u, const vec3 &v) {
   return vec3(u.e[0] * v.e[0], u.e[1] * v.e[1],
               u.e[2] * v.e[2]);
 }
-
 inline vec3 operator*(Real t, const vec3 &v) {
   return vec3(t * v.e[0], t * v.e[1], t * v.e[2]);
 }
-
 inline vec3 operator*(const vec3 &v, Real t) {
   return t * v;
 }
-
 inline vec3 operator/(vec3 v, Real t) {
+  return (1 / t) * v;
+}
+inline vec3 operator/(Real t, vec3 v) {
+  return (1 / t) * v;
+}
+inline vec3 operator/(vec3 v, vec3 t) {
   return (1 / t) * v;
 }
 
