@@ -2,8 +2,8 @@
 #include <common.hpp>
 namespace ptracey {
 struct AxisInfo {
-  Real aligned1;
-  Real aligned2;
-  Real notAligned;
+  Index aligned1;
+  Index aligned2;
+  Index notAligned;
 };
 }

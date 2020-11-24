@@ -24,8 +24,7 @@ public:
       const path &path_to_csv,
       const std::string &wave_col_name,
       const std::string &power_col_name,
-      const std::string &sep = ",",
-      const uint stride = SPD_STRIDE,
+      const char &sep = ',', const uint stride = SPD_STRIDE,
       SpectrumType stype = SpectrumType::Reflectance) {
     spd csv_spect = spd(path_to_csv, wave_col_name,
                         power_col_name, sep, stride);

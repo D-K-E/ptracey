@@ -12,7 +12,9 @@ public:
   virtual vec3 to_rgb() const = 0;
 
   template <typename T>
-  void evaluate(const WaveLength &wn, T &t) const {}
+  void evaluate(const WaveLength &wn, T &t) const {
+    return;
+  }
 };
 //
 }

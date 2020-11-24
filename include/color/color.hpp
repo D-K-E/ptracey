@@ -12,11 +12,13 @@ struct color {
   Power pdata;
   color() {}
   color(const Power &p)
-      : pdata(p), type(SpectrumType::Illuminant) {}
+      : type(SpectrumType::Illuminant), vdata(0.0),
+        pdata(p) {}
   color(const Real &p1, const Real &p2, const Real &p3)
-      : vdata(p1, p2, p3), type(SpectrumType::RGB) {}
+      : type(SpectrumType::RGB), vdata(p1, p2, p3),
+        pdata(0) {}
   color(const vec3 &rgb)
-      : vdata(rgb), type(SpectrumType::RGB) {}
+      : type(SpectrumType::RGB), vdata(rgb), pdata(0) {}
 
   static vec3 random() { return vec3::random(); }
   static vec3 random(Real t1, Real t2) {

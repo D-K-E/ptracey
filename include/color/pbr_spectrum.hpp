@@ -2,7 +2,9 @@
 #include <color/spd.hpp>
 #include <color/specdata.hpp>
 #include <color/specutils.hpp>
+#include <color/wave.hpp>
 #include <common.hpp>
+#include <utils.hpp>
 #include <vec3.hpp>
 
 using namespace ptracey;
@@ -38,7 +40,8 @@ Power averageSpectrum(spd in_spd, WaveLength waveLStart,
   uint i = 0;
   while (waveLStart > wavels[i])
     i++;
-  D_CHECK((i + 1) == (uint)wavels.size());
+  COMP_CHECK((i + 1) == (uint)wavels.size(), (i + 1),
+             (uint)wavels.size());
 
   auto interpSeg = [](auto w, uint j, auto ws, auto ps) {
     auto t1 = (w - ws[j]) / (ws[j + 1] - ws[j]);
@@ -67,15 +70,20 @@ Power averageSpectrum(spd in_spd, WaveLength waveLStart,
 spd rgb_to_spect(std::vector<Real> rgb_wavelength,
                  std::vector<Real> rgb_spect) {
   //
-  D_CHECK(rgb_spect.size() == rgb_wavelength.size());
-  std::vector<WaveLength> waves;
-  std::vector<Power> powers;
-  for (uint i = 0; i < (uint)rgb_spect.size(); i++) {
-    waves[i] = static_cast<WaveLength>(rgb_wavelength[i]);
-    powers[i] = static_cast<Power>(rgb_spect[i]);
-  }
-  auto sampled_powers = sampled_wave<Power>(powers);
-  auto sp = spd(sampled_powers, waves, 1);
+  COMP_CHECK(rgb_spect.size() == rgb_wavelength.size(),
+             rgb_spect.size(), rgb_wavelength.size());
+  std::vector<WaveLength> waves =
+      cast_vec<Real, WaveLength>(
+          rgb_wavelength, [](auto rgbw) {
+            return static_cast<WaveLength>(round(rgbw));
+          });
+  std::vector<Power> powers =
+      cast_vec<Real, Power>(rgb_spect, [](auto rgbp) {
+        return static_cast<Power>(rgbp);
+      });
+
+  sampled_wave sampled_powers(powers);
+  auto sp = spd(sampled_powers, waves);
   return sp;
 }
 

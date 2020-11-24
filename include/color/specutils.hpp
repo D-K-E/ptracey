@@ -16,7 +16,7 @@ static const int VISIBLE_LAMBDA_END = 820;
 path CSV_PARENT = "./media/data/spectrum";
 const std::string WCOL_NAME = "wavelength";
 const std::string PCOL_NAME = "power";
-const std::string SEP = ",";
+const char SEP = ',';
 
 vec3 xyz2rgb_cie(const vec3 xyz) {
   //

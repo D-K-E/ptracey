@@ -97,8 +97,28 @@ void get_uvwprims(T x, T y, T &uprim, T &vprim, T &wprim) {
     bool res = call;                                       \
     if (!res) {                                            \
       std::stringstream txt;                               \
-      txt << #call << " :: " << res << " :: " << __FILE__  \
-          << " :: " << __LINE__ << std::endl;              \
+      txt << #call << " :: "                               \
+          << "false"                                       \
+          << " :: " << __FILE__ << " :: " << __LINE__      \
+          << std::endl;                                    \
+      throw std::runtime_error(txt.str());                 \
+    }                                                      \
+  }
+
+#define COMP_CHECK(call, el1, el2)                         \
+  {                                                        \
+    bool res = call;                                       \
+    auto el1v = el1;                                       \
+    auto el2v = el2;                                       \
+    if (!res) {                                            \
+      std::stringstream txt;                               \
+      txt << #call << " values: " << std::endl             \
+          << #el1 << ": " << el1v << std::endl             \
+          << #el2 << ": " << el2v << std::endl             \
+          << " :: "                                        \
+          << "false"                                       \
+          << " :: " << __FILE__ << " :: " << __LINE__      \
+          << std::endl;                                    \
       throw std::runtime_error(txt.str());                 \
     }                                                      \
   }
@@ -133,6 +153,17 @@ inline std::ostream &operator<<(std::ostream &out,
   out << s_str << std::endl;
   return out;
 }
+template <typename SrcType, typename DestType>
+inline std::vector<DestType>
+cast_vec(const std::vector<SrcType> &vs,
+         const std::function<DestType(SrcType)> &fn) {
+  std::vector<DestType> ds;
+  for (auto &v : vs) {
+    ds.push_back(fn(v));
+  }
+  return ds;
+}
+
 //
 template <typename SrcType, typename DestType>
 inline std::vector<DestType>

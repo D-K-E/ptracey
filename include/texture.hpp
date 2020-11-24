@@ -146,7 +146,7 @@ public:
       const path &path_to_csv,
       const std::string &wave_col_name,
       const std::string &power_col_name,
-      const std::string &sep = ",",
+      const char &sep = ',',
       const unsigned int stride = SPD_STRIDE,
       SpectrumType stype = SpectrumType::Reflectance) {
     auto spd_material =

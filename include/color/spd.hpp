@@ -63,13 +63,13 @@ public:
     auto ws = linspace<WaveLength>(VISIBLE_LAMBDA_START,
                                    VISIBLE_LAMBDA_END,
                                    powers.size());
-    for (uint i = 0; i < (uint)powers.size(); i++) {
+    for (uint i = 0; i < powers.size(); i++) {
       auto pw = make_pair(ws[i], powers[i]);
       wavelength_power.insert(pw);
     }
   }
   spd(const sampled_wave<Power> &sampled_powers,
-      WaveLength wstart, uint stride = SPD_STRIDE)
+      WaveLength wstart)
       : wave_start(wstart) {
     wavelength_power.clear();
     for (uint i = 0; i < sampled_powers.size(); i++) {
@@ -83,10 +83,11 @@ public:
                                 sampled_powers.size() - 1);
   }
   spd(const sampled_wave<Power> &sampled_powers,
-      std::vector<WaveLength> wlengths,
-      uint stride = SPD_STRIDE) {
+      const std::vector<WaveLength> &wlengths) {
     wavelength_power.clear();
-    D_CHECK(sampled_powers.size() == wlengths.size());
+    COMP_CHECK(
+        sampled_powers.size() == (uint)wlengths.size(),
+        sampled_powers.size(), (uint)wlengths.size());
     for (auto wl : wlengths) {
       if (wl < 0) {
         throw std::runtime_error(
@@ -98,13 +99,19 @@ public:
       temp.insert(
           make_pair(wlengths[i], sampled_powers[i]));
     }
-    std::sort(wlengths.begin(), wlengths.end(),
+    std::vector<WaveLength> nwlengths(wlengths.size());
+
+    std::copy(wlengths.begin(), wlengths.end(),
+              nwlengths.begin());
+
+    std::sort(nwlengths.begin(), nwlengths.end(),
               [](auto i, auto j) { return i < j; });
-    wave_start = wlengths[0];
-    wave_end = wlengths[wlengths.size() - 1];
-    for (uint i = 0; i < wlengths.size(); i++) {
+
+    wave_start = nwlengths[0];
+    wave_end = nwlengths[wlengths.size() - 1];
+    for (uint i = 0; i < nwlengths.size(); i++) {
       auto pw =
-          make_pair(wlengths[i], temp.at(wlengths[i]));
+          make_pair(nwlengths[i], temp.at(nwlengths[i]));
       wavelength_power.insert(pw);
     }
   }
@@ -144,20 +151,21 @@ public:
   void fill_with_stride(std::vector<V> &dest,
                         const std::vector<V> &srcv,
                         unsigned int stride) {
-    for (unsigned int i = 0; i < srcv.size(); i += stride) {
+    for (unsigned int i = 0; i < (uint)srcv.size();
+         i += stride) {
       dest.push_back(srcv[i]);
     }
   }
   spd(const path &csv_path,
       const std::string &wave_col_name = "wavelength",
       const std::string &power_col_name = "power",
-      const std::string &sep = ",",
+      const char &sep = ',',
       const unsigned int stride = SPD_STRIDE) {
     wavelength_power.clear();
     path csv_path_abs = RUNTIME_PATH / csv_path;
     rapidcsv::Document doc(csv_path_abs.string(),
                            rapidcsv::LabelParams(0, -1),
-                           rapidcsv::SeparatorParams(','));
+                           rapidcsv::SeparatorParams(sep));
     std::vector<Power> temp;
     try {
       temp = doc.GetColumn<Power>(power_col_name);
@@ -178,12 +186,14 @@ public:
                                " in file :: " +
                                csv_path_abs.string());
     }
-    D_CHECK(tempv.size() == temp.size());
+    COMP_CHECK(tempv.size() == temp.size(), tempv.size(),
+               temp.size());
     std::vector<WaveLength> wlengths;
     fill_with_stride<WaveLength>(wlengths, tempv, stride);
 
     wavelength_power.clear();
-    D_CHECK(powers.size() == wlengths.size());
+    COMP_CHECK(powers.size() == wlengths.size(),
+               powers.size(), wlengths.size());
     for (auto wl : wlengths) {
       if (wl < 0) {
         throw std::runtime_error(
@@ -191,7 +201,7 @@ public:
       }
     }
     std::map<WaveLength, Power> tempwp;
-    for (uint i = 0; i < wlengths.size(); i++) {
+    for (uint i = 0; i < (uint)wlengths.size(); i++) {
       tempwp.insert(make_pair(wlengths[i], powers[i]));
     }
     std::sort(wlengths.begin(), wlengths.end(),
@@ -289,19 +299,18 @@ public:
         it == wavelength_power.end() ? -1.0 : it->second;
     return p;
   }
-  std::size_t size() const {
-    return wavelength_power.size();
+  uint size() const {
+    return (uint)wavelength_power.size();
   }
   Power integrate(const spd &nspd) const {
-    D_CHECK(size() == nspd.size());
+    COMP_CHECK(size() == nspd.size(), size(), nspd.size());
     WaveLength x1 = min_wave();
     WaveLength x2 = max_wave();
 
     Power stepsize = (x2 - x1) / static_cast<Power>(size());
     Power val = 0.0;
     auto waves = wavelengths();
-    for (unsigned int i = 0; i < (unsigned int)size();
-         i++) {
+    for (unsigned int i = 0; i < size(); i++) {
       auto pw = wavelength_power.at(waves[i]);
       auto v = nspd[waves[i]];
       val += pw * v;
@@ -314,9 +323,9 @@ public:
       pr.second = fn(pr.second, pvalue);
     }
   }
-  spd apply_c(Power pvalue,
-              const std::function<WaveLength(
-                  WaveLength, WaveLength)> &fn) const {
+  spd apply_c(
+      Power pvalue,
+      const std::function<Power(Power, Power)> &fn) const {
     std::vector<WaveLength> waves;
     std::vector<Power> powers;
     for (auto &pr : wavelength_power) {
@@ -345,7 +354,7 @@ public:
     auto swaves = s.wavelengths();
     auto res = *this;
     if (waves == swaves) {
-      ss = eqfn(res, s);
+      ss = fn(res, s);
       return true;
     }
     return false;
@@ -368,16 +377,17 @@ public:
              const std::function<spd(spd, spd)> &eqfn,
              const std::function<bool(
                  spd, WaveLength, Power)> &uneqfn) const {
-    spd ss();
+    spd ss;
     if (apply(s, eqfn, ss)) {
       return ss;
     }
+    auto swaves = s.wavelengths();
     for (const auto &w : swaves) {
       auto spower = s[w];
-      if (!uneqfn(res, w, spower))
-        res.update(w, spower);
+      if (!uneqfn(ss, w, spower))
+        ss.update(w, spower);
     }
-    return res;
+    return ss;
   }
   Power interpolate_wave_power(WaveLength wl) const {
     //
@@ -467,9 +477,17 @@ public:
     return s;
   }
   spd &operator+=(const spd &s) const {
-    auto s = rapply(pvalue,
-                    [](auto i, auto j) { return i + j; });
-    return s;
+    spd s_s;
+    auto resp = apply(s,
+                      [](spd i, spd j) {
+                        auto pwrs = i.powers() + j.powers();
+                        return spd(pwrs, i.wavelengths());
+                      },
+                      s_s);
+    if (resp) {
+      return s_s;
+    }
+    throw std::runtime_error("spd's don't match");
   }
 
   //

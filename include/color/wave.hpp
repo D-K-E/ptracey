@@ -14,10 +14,7 @@ public:
     }
     D_CHECK(!has_nans());
   }
-  sampled_wave(std::vector<T> vals) {
-    values.clear();
-    for (const auto &v : vals)
-      values.push_back(v);
+  sampled_wave(const std::vector<T> &vals) : values(vals) {
     D_CHECK(!has_nans());
   }
   T max() const {
@@ -224,7 +221,7 @@ public:
   Real average() const {
     return sum() / (int)values.size();
   }
-  std::size_t size() const { return values.size(); }
+  uint size() const { return (uint)values.size(); }
   sampled_wave clamp(T low = 0.0, T high = FLT_MAX) {
     sampled_wave cs = *this;
     for (int i = 0; i < values.size(); i++) {
