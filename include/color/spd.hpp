@@ -51,6 +51,14 @@ public:
     return ss;
   }
 
+  static spd zeros_like(const spd &s) {
+    auto waves = s.wavelengths();
+    std::vector<Power> pws(waves.size(), 0.0);
+    sampled_wave<Power> powers(pws);
+    auto sp = spd(powers, waves);
+    return sp;
+  }
+
 public:
   // ----------------- Start Constructors ---------------
   spd(uint size = 471 / SPD_STRIDE) {
@@ -219,10 +227,12 @@ public:
 
   void resample(const spd &s);
   void resample(const WaveLength &waveLStart,
-                const WaveLength &waveLEnd, uint outSize);
+                const WaveLength &waveLEnd,
+                const uint &outSize);
   spd resample_c(const spd &s) const;
   spd resample_c(const WaveLength &waveLStart,
-                 const WaveLength &waveLEnd, uint outSize);
+                 const WaveLength &waveLEnd,
+                 const uint &outSize) const;
 
   sampled_wave<Power> powers() const {
     std::vector<Power> ps;

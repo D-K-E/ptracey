@@ -845,6 +845,7 @@ const std::vector<Real> CIE_LAMBDA_REAL =
     cast_vec<uint, Real>(CIE_LAMBDA);
 
 static const int NB_RGB_SPEC_SAMPLES = 32;
+static const Real CIE_Y_integral = 106.856895;
 
 const std::vector<Real> RGB2SpectLambda = {
     380.000000, 390.967743, 401.935486, 412.903229,

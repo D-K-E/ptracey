@@ -29,9 +29,10 @@ inline std::ostream &operator<<(std::ostream &out,
   return out << " spectrum type: " << s << std::endl;
 }
 
-static const unsigned int SPD_STRIDE = 5;
-static const int VISIBLE_LAMBDA_START = 360;
-static const int VISIBLE_LAMBDA_END = 820;
+static const uint SPD_STRIDE = 5;
+static const uint SPD_NB_SAMPLE = 60;
+static const uint VISIBLE_LAMBDA_START = 380;
+static const uint VISIBLE_LAMBDA_END = 720;
 
 path CSV_PARENT = "./media/data/spectrum";
 const std::string WCOL_NAME = "wavelength";

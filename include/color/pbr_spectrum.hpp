@@ -24,7 +24,7 @@ Power averageSpectrum(const sampled_wave<Power> &powers,
     return powers[0];
   if (waveLEnd >= waves[end])
     return powers[end];
-  if ((uint)wavels.size() == 1)
+  if ((uint)waves.size() == 1)
     return powers[0];
   //
   Power psum = 0.0;
@@ -37,8 +37,8 @@ Power averageSpectrum(const sampled_wave<Power> &powers,
   uint i = 0;
   while (waveLStart > waves[i + 1])
     i++;
-  COMP_CHECK((i + 1) == (uint)waves.size(), (i + 1),
-             (uint)waves.size());
+  auto wsize = (uint)waves.size();
+  COMP_CHECK((i + 1) < wsize, (i + 1), wsize);
   auto interpSeg = [waves, powers](auto w, uint j) {
     auto t1 = (w - waves[j]) / (waves[j + 1] - waves[j]);
     auto t2 = powers[j];
@@ -71,10 +71,12 @@ Power averageSpectrum(const spd &in_spd,
 void resample_wave_power(
     const sampled_wave<Power> &in_powers,
     const std::vector<WaveLength> &in_waves,
-    sampled_wave<Power> &out_powers,
+    std::vector<Power> &out_powers,
     std::vector<WaveLength> &out_waves,
-    WaveLength waveLStart, WaveLength waveLEnd,
-    uint out_size) {
+    const WaveLength &waveLStart,
+    const WaveLength &waveLEnd, const uint &out_size) {
+  out_waves.clear();
+  out_powers.clear();
   //
   uint wsize = (uint)in_waves.size();
   COMP_CHECK(wsize > 2, wsize, 2);
@@ -165,7 +167,8 @@ void resample_wave_power(
                                     (out_size - 1),
                                 waveLStart, waveLEnd);
     out_waves.push_back(wave);
-    Power pwr = sample(
+    Power pwr = samplingfn(wave);
+    out_powers.push_back(pwr);
   }
 }
 
@@ -192,82 +195,34 @@ spd spd::resample_c(const spd &s) const {
   auto miwave2 = s.min_wave();
   auto miwave = miwave1 > miwave2 ? miwave1 : miwave2;
   //
-  WaveLength delta = (mwave - miwave) / (wsize - 1);
+  std::vector<Power> out_powers;
+  std::vector<WaveLength> out_waves;
+  resample_wave_power(pwrs, waves, out_powers, out_waves,
+                      miwave, mwave, wsize);
+  sampled_wave<Power> spowers(out_powers);
+  auto sp = spd(spowers, out_waves);
+  return sp;
+}
+spd spd::resample_c(const WaveLength &waveLStart,
+                    const WaveLength &waveLEnd,
+                    const uint &outSize) const {
   //
-  auto wlstartClamp = [miwave, mwave, waves, wsize,
-                       delta](int index) -> WaveLength {
-    //
-    COMP_CHECK(index >= -1 && index <= wsize, index, wsize);
-    if (index == -1) {
-      //
-      COMP_CHECK(miwave - delta < waves[0], miwave - delta,
-                 waves[0]);
-      return miwave - delta;
-    } else if (index == wsize) {
-      COMP_CHECK(mwave + delta > waves[wsize - 1],
-                 mwave + delta, waves[wsize - 1]);
-      return mwave + delta;
-    }
-    return waves[index];
-  };
+  auto waves = wavelengths();
+  auto spowers = powers();
+  std::vector<Power> out_powers;
+  std::vector<WaveLength> out_waves;
+  resample_wave_power(spowers, waves, out_powers, out_waves,
+                      waveLStart, waveLEnd, outSize);
+  sampled_wave<Power> sspowers(out_powers);
+  auto sp = spd(sspowers, out_waves);
+  return sp;
+}
 
-  //
-  auto pwClamped = [wsize, pwrs](int index) -> Power {
-    COMP_CHECK(index >= -1 && index <= wsize, index, wsize);
-    return pwrs[dclamp<uint>(index, 0, wsize - 1)];
-  };
-
-  auto sample = [waves, pwrs, delta, wsize, pwClamped,
-                 wlstartClamp](WaveLength wl) -> Power {
-    if (wl + delta / 2 <= waves[0])
-      return pwrs[0];
-    if (wl - delta / 2 >= waves[wsize - 1])
-      return pwrs[wsize - 1];
-    //
-    if (wsize == 1)
-      return pwrs[0];
-    //
-
-    int start, end;
-
-    if (wl - delta < waves[0]) {
-      start = -1;
-    } else {
-      auto intervalfn = [waves, delta, wl](int i) -> bool {
-        return waves[i] <= wl - delta;
-      };
-      start = findInterval(wsize, intervalfn);
-      bool sb1 = start >= 0;
-      bool sb2 = start < wsize;
-      COMP_CHECK(sb1 && sb2, start, wsize);
-    }
-    //
-    if (wl + delta > waves[wsize - 1]) {
-      end = (int)wsize;
-    } else {
-      end = start > 0 ? start : 0;
-      while (end < (int)wsize && wl + delta > waves[end])
-        end++;
-    }
-    //
-    bool cond1 = end - start == 2;
-    bool cond2 = (wlstartClamp(start) <= (wl - delta));
-    bool cond3 = waves[start + 1] == wl;
-    bool cond4 = wlstartClamp(end) >= wl + delta;
-    if (cond1 && cond2 && cond3 && cond4) {
-      return pwrs[start + 1];
-    } else if (end - start == 1) {
-      //
-      WaveLength t =
-          (wl - wlstartClamp(start)) /
-          (wlstartClamp(end) - wlstartClamp(start));
-      COMP_CHECK(t >= 0 && t <= 1, t, t);
-      return mix(t, pwClamped(start), pwClamped(end));
-    } else {
-      //
-      return averageSpectrum();
-    }
-  };
+void spd::resample(const spd &s) { *this = resample_c(s); }
+void spd::resample(const WaveLength &waveLStart,
+                   const WaveLength &waveLEnd,
+                   const uint &outSize) {
+  *this = resample_c(waveLStart, waveLEnd, outSize);
 }
 
 //
@@ -341,90 +296,4 @@ spd spd::Y = rgb_to_spect(CIE_LAMBDA_REAL, CIE_Y);
 spd spd::Z = rgb_to_spect(CIE_LAMBDA_REAL, CIE_Z);
 
 //
-
-spd FromRGB(const vec3 &rgb, SpectrumType type) {
-  spd r;
-  if (type == SpectrumType::Reflectance) {
-    // Convert reflectance spectrum to RGB
-    if (rgb.x() <= rgb.y() && rgb.x() <= rgb.z()) {
-      // Compute reflectance _SampledSpectrum_ with _rgb[0]_
-      // as minimum
-      r += rgb.x() * spd::rgbRefl2SpectWhite;
-      if (rgb.y() <= rgb.z()) {
-        r += (rgb.y() - rgb.x()) * spd::rgbRefl2SpectCyan;
-        r += (rgb.z() - rgb.y()) * spd::rgbRefl2SpectBlue;
-      } else {
-        r += (rgb.z() - rgb.x()) * spd::rgbRefl2SpectCyan;
-        r += (rgb.y() - rgb.z()) * spd::rgbRefl2SpectGreen;
-      }
-    } else if (rgb.y() <= rgb.x() && rgb.y() <= rgb.z()) {
-      // Compute reflectance _SampledSpectrum_ with _rgb[1]_
-      // as minimum
-      r += rgb.y() * spd::rgbRefl2SpectWhite;
-      if (rgb.x() <= rgb.z()) {
-        r +=
-            (rgb.x() - rgb.y()) * spd::rgbRefl2SpectMagenta;
-        r += (rgb.z() - rgb.x()) * spd::rgbRefl2SpectBlue;
-      } else {
-        r +=
-            (rgb.z() - rgb.y()) * spd::rgbRefl2SpectMagenta;
-        r += (rgb.x() - rgb.z()) * spd::rgbRefl2SpectRed;
-      }
-    } else {
-      // Compute reflectance _SampledSpectrum_ with _rgb[2]_
-      // as minimum
-      r += rgb.z() * spd::rgbRefl2SpectWhite;
-      if (rgb.x() <= rgb.y()) {
-        r += (rgb.x() - rgb.z()) * spd::rgbRefl2SpectYellow;
-        r += (rgb.y() - rgb.x()) * spd::rgbRefl2SpectGreen;
-      } else {
-        r += (rgb.y() - rgb.z()) * spd::rgbRefl2SpectYellow;
-        r += (rgb.x() - rgb.y()) * spd::rgbRefl2SpectRed;
-      }
-    }
-    r *= .94;
-  } else {
-    // Convert illuminant spectrum to RGB
-    if (rgb.x() <= rgb.y() && rgb.x() <= rgb.z()) {
-      // Compute illuminant _SampledSpectrum_ with _rgb[0]_
-      // as minimum
-      r += rgb.x() * spd::rgbIllum2SpectWhite;
-      if (rgb.y() <= rgb.z()) {
-        r += (rgb.y() - rgb.x()) * spd::rgbIllum2SpectCyan;
-        r += (rgb.z() - rgb.y()) * spd::rgbIllum2SpectBlue;
-      } else {
-        r += (rgb.z() - rgb.x()) * spd::rgbIllum2SpectCyan;
-        r += (rgb.y() - rgb.z()) * spd::rgbIllum2SpectGreen;
-      }
-    } else if (rgb.y() <= rgb.x() && rgb.y() <= rgb.z()) {
-      // Compute illuminant _SampledSpectrum_ with _rgb[1]_
-      // as minimum
-      r += rgb.y() * spd::rgbIllum2SpectWhite;
-      if (rgb.x() <= rgb.z()) {
-        r += (rgb.x() - rgb.y()) *
-             spd::rgbIllum2SpectMagenta;
-        r += (rgb.z() - rgb.x()) * spd::rgbIllum2SpectBlue;
-      } else {
-        r += (rgb.z() - rgb.y()) *
-             spd::rgbIllum2SpectMagenta;
-        r += (rgb.x() - rgb.z()) * spd::rgbIllum2SpectRed;
-      }
-    } else {
-      // Compute illuminant _SampledSpectrum_ with _rgb.z()_
-      // as minimum
-      r += rgb.z() * spd::rgbIllum2SpectWhite;
-      if (rgb.x() <= rgb.y()) {
-        r +=
-            (rgb.x() - rgb.z()) * spd::rgbIllum2SpectYellow;
-        r += (rgb.y() - rgb.x()) * spd::rgbIllum2SpectGreen;
-      } else {
-        r +=
-            (rgb.y() - rgb.z()) * spd::rgbIllum2SpectYellow;
-        r += (rgb.x() - rgb.y()) * spd::rgbIllum2SpectRed;
-      }
-    }
-    r *= 0.86445;
-  }
-  return r.clamp();
-}
 }
