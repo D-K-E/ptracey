@@ -608,8 +608,8 @@ void choose_scene(int choice, camera &cam,
     world = model_cat();
     aspect_ratio = 1.0;
     image_width = 400;
-    samples_per_pixel = 10000;
-    max_depth = 10000;
+    samples_per_pixel = 1000;
+    max_depth = 1000;
     lookfrom = point3(278, 278, -800);
     lookat = point3(278, 278, 0);
     break;
