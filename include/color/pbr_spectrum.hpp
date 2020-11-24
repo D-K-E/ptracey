@@ -135,8 +135,6 @@ spd spd::Y = rgb_to_spect(CIE_LAMBDA_REAL, CIE_Y);
 
 spd spd::Z = rgb_to_spect(CIE_LAMBDA_REAL, CIE_Z);
 
-void spd::Init() {}
-
 //
 
 spd FromRGB(const vec3 &rgb, SpectrumType type) {

@@ -11,9 +11,12 @@ struct color {
   vec3 vdata;
   Power pdata;
   color() {}
+  color(const SpectrumType &t, const vec3 &v,
+        const Power &p)
+      : type(t), vdata(v), pdata(p) {}
   color(const Power &p)
-      : type(SpectrumType::Illuminant), vdata(0.0),
-        pdata(p) {}
+      : type(SpectrumType::Illuminant), vdata(p), pdata(p) {
+  }
   color(const Real &p1, const Real &p2, const Real &p3)
       : type(SpectrumType::RGB), vdata(p1, p2, p3),
         pdata(0) {}
@@ -41,38 +44,31 @@ struct color {
   color operator/(const color &c) const {
     auto nvdata = vdata / c.vdata;
     auto npdata = pdata / c.pdata;
-    color nc;
-    nc.type = type;
-    nc.vdata = nvdata;
-    nc.pdata = npdata;
+    color nc(type, nvdata, npdata);
     return nc;
   }
   color operator/(const Real &c) const {
     auto nvdata = vdata / c;
     auto npdata = pdata / c;
-    color nc;
-    nc.type = type;
-    nc.vdata = nvdata;
-    nc.pdata = npdata;
+    color nc(type, nvdata, npdata);
     return nc;
   }
   color operator+(const Real &c) const {
     auto nvdata = vdata + c;
     auto npdata = pdata + c;
-    color nc;
-    nc.type = type;
-    nc.vdata = nvdata;
-    nc.pdata = npdata;
+    color nc(type, nvdata, npdata);
     return nc;
   }
   color operator+(const color &c) const {
     auto nvdata = vdata + c.vdata;
     auto npdata = pdata + c.pdata;
-    color nc;
-    nc.type = type;
-    nc.vdata = nvdata;
-    nc.pdata = npdata;
+    color nc(type, nvdata, npdata);
     return nc;
   }
 };
+inline std::ostream &operator<<(std::ostream &out,
+                                const color &c) {
+  return out << " color v: " << c.vdata << " p: " << c.pdata
+             << " t: " << c.type << std::endl;
+}
 }

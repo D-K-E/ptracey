@@ -568,7 +568,8 @@ void choose_scene(int choice, camera &cam,
     world = cornell_box();
     aspect_ratio = 1.0;
     image_width = 320;
-    samples_per_pixel = 200;
+    samples_per_pixel = 50;
+    max_depth = 50;
     lookfrom = point3(278, 278, -800);
     lookat = point3(278, 278, 0);
     break;

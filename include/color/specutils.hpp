@@ -8,6 +8,26 @@ using namespace ptracey;
 
 namespace ptracey {
 enum class SpectrumType { Reflectance, Illuminant, RGB };
+inline std::ostream &operator<<(std::ostream &out,
+                                const SpectrumType &c) {
+
+  std::string s;
+  switch (c) {
+  case SpectrumType::Reflectance: {
+    s = "reflectance";
+    break;
+  }
+  case SpectrumType::Illuminant: {
+    s = "illuminant";
+    break;
+  }
+  case SpectrumType::RGB: {
+    s = "rgb";
+    break;
+  }
+  }
+  return out << " spectrum type: " << s << std::endl;
+}
 
 static const unsigned int SPD_STRIDE = 5;
 static const int VISIBLE_LAMBDA_START = 360;

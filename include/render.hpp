@@ -30,7 +30,6 @@ color ray_color(const ray &r, const spectrum background,
                 const hittable &world, int depth) {
   hit_record rec;
   auto wlength = r.wavelength();
-  color output(0.0);
   // add the wavelength if it is not already present
 
   // If we've exceeded the ray bounce limit, no more light
@@ -60,9 +59,11 @@ color ray_color(const ray &r, const spectrum background,
     // f_r * L_i + 0 = L_r + L_e = 0
     // TODO what if the material changes the wavelength of
     // the ray ??
-    return srec.attenuation * ray_color(srec.specular_ray,
-                                        background, world,
-                                        depth - 1);
+    color atten_color = srec.attenuation;
+    color r_col = ray_color(srec.specular_ray, background,
+                            world, depth - 1);
+    auto spec_color = atten_color * r_col;
+    return spec_color;
   }
 
   // w_o
@@ -74,6 +75,7 @@ color ray_color(const ray &r, const spectrum background,
   color r_color =
       ray_color(scattered, background, world, depth - 1);
   color f_r = srec.attenuation;
+  //
 
   return emitted + f_r * scatter_pdf * r_color / pdf_val;
 }

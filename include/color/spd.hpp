@@ -145,7 +145,6 @@ public:
       Power power_value = power_generator(wave);
       wavelength_power.insert(make_pair(wave, power_value));
     }
-    Init();
   }
   template <typename V>
   void fill_with_stride(std::vector<V> &dest,
@@ -217,7 +216,14 @@ public:
   // ------------------- End Constructors -----------------
 public:
   // ------------------- Start Methods --------------------
-  void Init();
+
+  void resample(const spd &s);
+  void resample(const WaveLength &waveLStart,
+                const WaveLength &waveLEnd, uint outSize);
+  spd resample_c(const spd &s) const;
+  spd resample_c(const WaveLength &waveLStart,
+                 const WaveLength &waveLEnd, uint outSize);
+
   sampled_wave<Power> powers() const {
     std::vector<Power> ps;
     for (auto pw : wavelength_power) {

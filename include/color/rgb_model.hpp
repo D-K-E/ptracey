@@ -38,6 +38,7 @@ public:
   vec3 to_xyz() const override {
     return rgb2xyz_cie(vec3(x(), y(), z()));
   }
+  vec3 to_vec3() const { return vec3(x(), y(), z()); }
   vec3 to_rgb() const override {
     return vec3(x(), y(), z());
   }
@@ -48,6 +49,11 @@ public:
     e[0] += c.vdata.x();
     e[1] += c.vdata.y();
     e[2] += c.vdata.z();
+  }
+  rgb_model operator*(Real coeff) const {
+    auto ps = to_vec3() * coeff;
+    auto rm = rgb_model(ps);
+    return rm;
   }
   void scale(Real coeff) {
     e[0] *= coeff;

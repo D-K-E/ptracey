@@ -60,7 +60,7 @@ InnerRet innerLoop(InnerParams params) {
     for (int j = 0; j < imheight; j++) {
       int i = a + startx;
       //
-      spectrum rcolor = spectrum(0.0);
+      spectrum rcolor(0.0);
       for (int k = 0; k < psample; k++) {
         Real t = Real(i + random_real()) / (imwidth - 1);
         Real s = Real(j + random_real()) / (imheight - 1);
