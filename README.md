@@ -103,5 +103,5 @@ box setting"/>
 
 - Glow me Thy Name Kitty 
 
-<img src="image/phosphorkitty.png" alt="Greenish colored kitty in cornell box
+<img src="image/glowmekitty.png" alt="Greenish colored kitty in cornell box
 setting"/>

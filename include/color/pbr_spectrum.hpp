@@ -10,59 +10,264 @@
 using namespace ptracey;
 namespace ptracey {
 //
-
-Power averageSpectrum(spd in_spd, WaveLength waveLStart,
+Power averageSpectrum(const sampled_wave<Power> &powers,
+                      const std::vector<WaveLength> &waves,
+                      WaveLength waveLStart,
                       WaveLength waveLEnd) {
   // adapted
   // from
   // https://github.com/mmp/pbrt-v3/blob/master/src/core/spectrum.cpp
   //
-  auto wavels = in_spd.wavelengths();
-  auto powers = in_spd.powers();
-  auto minw = in_spd.min_wave();
-  auto maxw = in_spd.max_wave();
-  if (waveLStart <= minw)
-    return in_spd[minw];
-  if (waveLEnd >= maxw)
-    return in_spd[maxw];
+
+  uint end = (uint)waves.size() - 1;
+  if (waveLStart <= waves[0])
+    return powers[0];
+  if (waveLEnd >= waves[end])
+    return powers[end];
   if ((uint)wavels.size() == 1)
-    return in_spd[minw];
+    return powers[0];
   //
   Power psum = 0.0;
+  if (waveLStart < waves[0])
+    psum += powers[0] * (waves[0] - waveLStart);
+
+  if (waveLEnd > waves[end])
+    psum += powers[end] * (waveLEnd - waves[end]);
   //
-  if (waveLStart < minw)
-    psum += in_spd[minw] * (minw - waveLStart);
-
-  if (waveLEnd > maxw)
-    psum += in_spd[maxw] * (maxw - waveLEnd);
-
-  // advance to relative segment
   uint i = 0;
-  while (waveLStart > wavels[i])
+  while (waveLStart > waves[i + 1])
     i++;
-  COMP_CHECK((i + 1) == (uint)wavels.size(), (i + 1),
-             (uint)wavels.size());
-
-  auto interpSeg = [](auto w, uint j, auto ws, auto ps) {
-    auto t1 = (w - ws[j]) / (ws[j + 1] - ws[j]);
-    auto t2 = ps[j];
-    auto t3 = ps[j + 1];
+  COMP_CHECK((i + 1) == (uint)waves.size(), (i + 1),
+             (uint)waves.size());
+  auto interpSeg = [waves, powers](auto w, uint j) {
+    auto t1 = (w - waves[j]) / (waves[j + 1] - waves[j]);
+    auto t2 = powers[j];
+    auto t3 = powers[j + 1];
     return mix(t1, t2, t3);
   };
-
+  //
   for (uint j = i;
-       j + 1 < (uint)wavels.size() && waveLEnd >= wavels[j];
+       j + 1 < (uint)waves.size() && waveLEnd >= waves[j];
        j++) {
-    auto segLambdaStart = std::max(waveLStart, wavels[j]);
-    auto segLambdaEnd = std::min(waveLEnd, wavels[j + 1]);
-    auto interp_seg_start =
-        interpSeg(segLambdaStart, j, wavels, powers);
-    auto interp_seg_end =
-        interpSeg(segLambdaEnd, j, wavels, powers);
+    auto segLambdaStart = std::max(waveLStart, waves[j]);
+    auto segLambdaEnd = std::min(waveLEnd, waves[j + 1]);
+    auto interp_seg_start = interpSeg(segLambdaStart, j);
+    auto interp_seg_end = interpSeg(segLambdaEnd, j);
     psum += 0.5 * (interp_seg_start + interp_seg_end) *
             (segLambdaEnd - segLambdaStart);
   }
   return psum / (waveLEnd - waveLStart);
+}
+
+Power averageSpectrum(const spd &in_spd,
+                      WaveLength waveLStart,
+                      WaveLength waveLEnd) {
+  auto powers2 = in_spd.powers();
+  auto waves = in_spd.wavelengths();
+  return averageSpectrum(powers2, waves, waveLStart,
+                         waveLEnd);
+}
+
+void resample_wave_power(
+    const sampled_wave<Power> &in_powers,
+    const std::vector<WaveLength> &in_waves,
+    sampled_wave<Power> &out_powers,
+    std::vector<WaveLength> &out_waves,
+    WaveLength waveLStart, WaveLength waveLEnd,
+    uint out_size) {
+  //
+  uint wsize = (uint)in_waves.size();
+  COMP_CHECK(wsize > 2, wsize, 2);
+  auto mwave = waveLStart;
+  auto miwave = waveLEnd;
+  auto waves = in_waves;
+  auto pwrs = in_powers;
+  //
+  WaveLength delta = (mwave - miwave) / (wsize - 1);
+
+  //
+  auto wlstartClamp = [miwave, mwave, waves, wsize,
+                       delta](int index) -> WaveLength {
+    //
+    COMP_CHECK(index >= -1 && index <= wsize, index, wsize);
+    if (index == -1) {
+      //
+      COMP_CHECK(miwave - delta < waves[0], miwave - delta,
+                 waves[0]);
+      return miwave - delta;
+    } else if (index == wsize) {
+      COMP_CHECK(mwave + delta > waves[wsize - 1],
+                 mwave + delta, waves[wsize - 1]);
+      return mwave + delta;
+    }
+    return waves[index];
+  };
+  auto pwClamped = [wsize, pwrs](int index) -> Power {
+    COMP_CHECK(index >= -1 && index <= wsize, index, wsize);
+    return pwrs[dclamp<uint>(index, 0, wsize - 1)];
+  };
+  //
+  auto samplingfn = [waves, pwrs, delta, wsize, pwClamped,
+                     wlstartClamp](WaveLength wl) -> Power {
+    if (wl + delta / 2 <= waves[0])
+      return pwrs[0];
+    if (wl - delta / 2 >= waves[wsize - 1])
+      return pwrs[wsize - 1];
+    //
+    if (wsize == 1)
+      return pwrs[0];
+    //
+
+    int start, end;
+
+    if (wl - delta < waves[0]) {
+      start = -1;
+    } else {
+      auto intervalfn = [waves, delta, wl](int i) -> bool {
+        return waves[i] <= wl - delta;
+      };
+      start = findInterval(wsize, intervalfn);
+      bool sb1 = start >= 0;
+      bool sb2 = start < wsize;
+      COMP_CHECK(sb1 && sb2, start, wsize);
+    }
+    //
+    if (wl + delta > waves[wsize - 1]) {
+      end = (int)wsize;
+    } else {
+      end = start > 0 ? start : 0;
+      while (end < (int)wsize && wl + delta > waves[end])
+        end++;
+    }
+    bool cond1 = end - start == 2;
+    bool cond2 = (wlstartClamp(start) <= (wl - delta));
+    bool cond3 = waves[start + 1] == wl;
+    bool cond4 = wlstartClamp(end) >= wl + delta;
+    if (cond1 && cond2 && cond3 && cond4) {
+      return pwrs[start + 1];
+    } else if (end - start == 1) {
+      //
+      WaveLength t =
+          (wl - wlstartClamp(start)) /
+          (wlstartClamp(end) - wlstartClamp(start));
+      COMP_CHECK(t >= 0 && t <= 1, t, t);
+      return mix(t, pwClamped(start), pwClamped(end));
+    } else {
+      return averageSpectrum(pwrs, waves, wl - delta / 2,
+                             wl + delta / 2);
+    }
+  };
+
+  for (int outOffset = 0; outOffset < out_size;
+       outOffset++) {
+    //
+    auto wave = mix<WaveLength>(WaveLength(outOffset) /
+                                    (out_size - 1),
+                                waveLStart, waveLEnd);
+    out_waves.push_back(wave);
+    Power pwr = sample(
+  }
+}
+
+spd spd::resample_c(const spd &s) const {
+  //
+  auto waves1 = wavelengths();
+  auto waves2 = s.wavelengths();
+  auto powers1 = powers();
+  auto powers2 = s.powers();
+
+  auto wsize1 = waves1.size();
+  auto wsize2 = waves2.size();
+  auto wsize = wsize1 > wsize2 ? wsize1 : wsize2;
+  COMP_CHECK(wsize > 2, wsize, 2);
+  //
+  auto waves = wsize == wsize1 ? waves1 : waves2;
+  auto pwrs = wsize == wsize1 ? powers1 : powers2;
+  //
+  auto mwave1 = max_wave();
+  auto mwave2 = s.max_wave();
+  auto mwave = mwave1 > mwave2 ? mwave1 : mwave2;
+  //
+  auto miwave1 = min_wave();
+  auto miwave2 = s.min_wave();
+  auto miwave = miwave1 > miwave2 ? miwave1 : miwave2;
+  //
+  WaveLength delta = (mwave - miwave) / (wsize - 1);
+  //
+  auto wlstartClamp = [miwave, mwave, waves, wsize,
+                       delta](int index) -> WaveLength {
+    //
+    COMP_CHECK(index >= -1 && index <= wsize, index, wsize);
+    if (index == -1) {
+      //
+      COMP_CHECK(miwave - delta < waves[0], miwave - delta,
+                 waves[0]);
+      return miwave - delta;
+    } else if (index == wsize) {
+      COMP_CHECK(mwave + delta > waves[wsize - 1],
+                 mwave + delta, waves[wsize - 1]);
+      return mwave + delta;
+    }
+    return waves[index];
+  };
+
+  //
+  auto pwClamped = [wsize, pwrs](int index) -> Power {
+    COMP_CHECK(index >= -1 && index <= wsize, index, wsize);
+    return pwrs[dclamp<uint>(index, 0, wsize - 1)];
+  };
+
+  auto sample = [waves, pwrs, delta, wsize, pwClamped,
+                 wlstartClamp](WaveLength wl) -> Power {
+    if (wl + delta / 2 <= waves[0])
+      return pwrs[0];
+    if (wl - delta / 2 >= waves[wsize - 1])
+      return pwrs[wsize - 1];
+    //
+    if (wsize == 1)
+      return pwrs[0];
+    //
+
+    int start, end;
+
+    if (wl - delta < waves[0]) {
+      start = -1;
+    } else {
+      auto intervalfn = [waves, delta, wl](int i) -> bool {
+        return waves[i] <= wl - delta;
+      };
+      start = findInterval(wsize, intervalfn);
+      bool sb1 = start >= 0;
+      bool sb2 = start < wsize;
+      COMP_CHECK(sb1 && sb2, start, wsize);
+    }
+    //
+    if (wl + delta > waves[wsize - 1]) {
+      end = (int)wsize;
+    } else {
+      end = start > 0 ? start : 0;
+      while (end < (int)wsize && wl + delta > waves[end])
+        end++;
+    }
+    //
+    bool cond1 = end - start == 2;
+    bool cond2 = (wlstartClamp(start) <= (wl - delta));
+    bool cond3 = waves[start + 1] == wl;
+    bool cond4 = wlstartClamp(end) >= wl + delta;
+    if (cond1 && cond2 && cond3 && cond4) {
+      return pwrs[start + 1];
+    } else if (end - start == 1) {
+      //
+      WaveLength t =
+          (wl - wlstartClamp(start)) /
+          (wlstartClamp(end) - wlstartClamp(start));
+      COMP_CHECK(t >= 0 && t <= 1, t, t);
+      return mix(t, pwClamped(start), pwClamped(end));
+    } else {
+      //
+      return averageSpectrum();
+    }
+  };
 }
 
 //
