@@ -109,6 +109,9 @@ glass sphere"/>
 <img src="image/im6.png" alt="cornell box with box rotations"/>
 <img src="image/im7.png" alt="cornell box with smoke boxes"/>
 
+Spectral Rendering Output <img src="image/hspec.png" alt="checker texture with
+spheres touching each other in reddish color temparature"/>
+
 ## A Special Hallmark for #RTKitty
 
 The model is made by 
