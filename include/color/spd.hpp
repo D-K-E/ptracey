@@ -464,10 +464,9 @@ public:
     return apply_c(pvalue,
                    [](auto i, auto j) { return i * j; });
   }
-  spd &operator*=(Power pvalue) const {
-    auto s = apply_c(pvalue,
-                     [](auto i, auto j) { return i * j; });
-    return s;
+  spd &operator*=(Power pvalue) {
+    apply(pvalue, [](Power i, Power j) { return i * j; });
+    return *this;
   }
   friend spd operator*(Power pvalue, const spd &s) {
     return s * pvalue;
@@ -487,21 +486,19 @@ public:
   friend spd operator+(Power pvalue, const spd &s) {
     return s + pvalue;
   }
-  spd &operator+=(Power pvalue) const {
-    auto s = apply_c(pvalue,
-                     [](auto i, auto j) { return i + j; });
-    return s;
+  spd &operator+=(Power pvalue) {
+    apply(pvalue, [](Power i, Power j) { return i + j; });
+    return *this;
   }
-  spd &operator+=(const spd &s) const {
-    spd s_s;
+  spd &operator+=(const spd &s) {
     auto resp = apply(s,
                       [](spd i, spd j) {
                         auto pwrs = i.powers() + j.powers();
                         return spd(pwrs, i.wavelengths());
                       },
-                      s_s);
+                      *this);
     if (resp) {
-      return s_s;
+      return *this;
     }
     throw std::runtime_error("spd's don't match");
   }

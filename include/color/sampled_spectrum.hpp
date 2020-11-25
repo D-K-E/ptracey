@@ -109,14 +109,15 @@ public:
   spd spect; //
   //
   spd sX, sY, sZ;
-  spd sRgbRefl2SpectWhite, sRgbRefl2SpectCyan;
-  spd sRgbRefl2SpectMagenta, sRgbRefl2SpectYellow;
-  spd sRgbRefl2SpectRed, sRgbRefl2SpectGreen;
-  spd sRgbRefl2SpectBlue;
-  spd sRgbIllum2SpectWhite, sRgbIllum2SpectCyan;
-  spd sRgbIllum2SpectMagenta, sRgbIllum2SpectYellow;
-  spd sRgbIllum2SpectRed, sRgbIllum2SpectGreen;
-  spd sRgbIllum2SpectBlue;
+
+  // spd sRgbRefl2SpectWhite, sRgbRefl2SpectCyan;
+  // spd sRgbRefl2SpectMagenta, sRgbRefl2SpectYellow;
+  // spd sRgbRefl2SpectRed, sRgbRefl2SpectGreen;
+  // spd sRgbRefl2SpectBlue;
+  // spd sRgbIllum2SpectWhite, sRgbIllum2SpectCyan;
+  // spd sRgbIllum2SpectMagenta, sRgbIllum2SpectYellow;
+  // spd sRgbIllum2SpectRed, sRgbIllum2SpectGreen;
+  // spd sRgbIllum2SpectBlue;
 
   SpectrumType type;
 
@@ -244,41 +245,46 @@ public:
     sY = spd::Y.resample_c(wstart, wend, wsize);
     sZ = spd::Z.resample_c(wstart, wend, wsize);
 
-    sRgbRefl2SpectWhite =
-        spd::rgbRefl2SpectWhite.resample_c(wstart, wend,
-                                           wsize);
-    sRgbRefl2SpectBlue = spd::rgbRefl2SpectBlue.resample_c(
-        wstart, wend, wsize);
-    sRgbRefl2SpectGreen =
-        spd::rgbRefl2SpectGreen.resample_c(wstart, wend,
-                                           wsize);
-    sRgbRefl2SpectRed = spd::rgbRefl2SpectRed.resample_c(
-        wstart, wend, wsize);
+    // sRgbRefl2SpectWhite =
+    //     spd::rgbRefl2SpectWhite.resample_c(wstart, wend,
+    //                                        wsize);
+    // sRgbRefl2SpectBlue =
+    // spd::rgbRefl2SpectBlue.resample_c(
+    //     wstart, wend, wsize);
+    // sRgbRefl2SpectGreen =
+    //     spd::rgbRefl2SpectGreen.resample_c(wstart, wend,
+    //                                        wsize);
+    // sRgbRefl2SpectRed = spd::rgbRefl2SpectRed.resample_c(
+    //     wstart, wend, wsize);
 
-    sRgbRefl2SpectMagenta =
-        spd::rgbRefl2SpectMagenta.resample_c(wstart, wend,
-                                             wsize);
-    sRgbRefl2SpectCyan = spd::rgbRefl2SpectCyan.resample_c(
-        wstart, wend, wsize);
+    // sRgbRefl2SpectMagenta =
+    //     spd::rgbRefl2SpectMagenta.resample_c(wstart,
+    //     wend,
+    //                                          wsize);
+    // sRgbRefl2SpectCyan =
+    // spd::rgbRefl2SpectCyan.resample_c(
+    //     wstart, wend, wsize);
 
-    sRgbIllum2SpectWhite =
-        spd::rgbIllum2SpectWhite.resample_c(wstart, wend,
-                                            wsize);
-    sRgbIllum2SpectBlue =
-        spd::rgbIllum2SpectBlue.resample_c(wstart, wend,
-                                           wsize);
-    sRgbIllum2SpectGreen =
-        spd::rgbIllum2SpectGreen.resample_c(wstart, wend,
-                                            wsize);
-    sRgbIllum2SpectRed = spd::rgbIllum2SpectRed.resample_c(
-        wstart, wend, wsize);
+    // sRgbIllum2SpectWhite =
+    //     spd::rgbIllum2SpectWhite.resample_c(wstart, wend,
+    //                                         wsize);
+    // sRgbIllum2SpectBlue =
+    //     spd::rgbIllum2SpectBlue.resample_c(wstart, wend,
+    //                                        wsize);
+    // sRgbIllum2SpectGreen =
+    //     spd::rgbIllum2SpectGreen.resample_c(wstart, wend,
+    //                                         wsize);
+    // sRgbIllum2SpectRed =
+    // spd::rgbIllum2SpectRed.resample_c(
+    //     wstart, wend, wsize);
 
-    sRgbIllum2SpectMagenta =
-        spd::rgbIllum2SpectMagenta.resample_c(wstart, wend,
-                                              wsize);
-    sRgbIllum2SpectCyan =
-        spd::rgbIllum2SpectCyan.resample_c(wstart, wend,
-                                           wsize);
+    // sRgbIllum2SpectMagenta =
+    //     spd::rgbIllum2SpectMagenta.resample_c(wstart,
+    //     wend,
+    //                                           wsize);
+    // sRgbIllum2SpectCyan =
+    //     spd::rgbIllum2SpectCyan.resample_c(wstart, wend,
+    //                                        wsize);
   }
 };
 inline std::ostream &

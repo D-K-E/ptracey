@@ -1,9 +1,15 @@
 #pragma once
+//
+#include <algorithm>
 #include <cstdlib>
 #include <exception>
+#include <filesystem>
 #include <float.h>
 #include <functional>
+#include <iostream>
+#include <iterator>
 #include <limits>
+#include <map>
 #include <math.h>
 #include <memory>
 #include <random>
@@ -11,10 +17,9 @@
 #include <time.h>
 #include <vector>
 //
-#include <algorithm>
-#include <vector>
+#include <thread>
 //
-#include <iostream>
+#include <future>
 //
 #include <assimp/Importer.hpp>
 #include <assimp/material.h>
@@ -25,14 +30,7 @@
 //
 #define STB_IMAGE_IMPLEMENTATION
 #include <thirdparty/stb_image.h>
-
 //
 #include <thirdparty/rapidcsv.hpp>
-
 //
-#include <filesystem>
-//
-#include <thread>
-//
-#include <future>
 #define THREAD_NB 4

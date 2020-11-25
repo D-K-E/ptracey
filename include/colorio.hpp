@@ -11,8 +11,10 @@ namespace ptracey {
 void write_color(std::ostream &out, spectrum pix_spec,
                  int samples_per_pixel) {
   Real anti_aliasing_scale = 1.0 / (Real)samples_per_pixel;
+  std::cerr << "spectrum: " << pix_spec << std::endl;
   pix_spec.scale(anti_aliasing_scale);
   vec3 pixel_color = pix_spec.to_rgb();
+  std::cerr << "color: " << pixel_color << std::endl;
   auto r = pixel_color.r(); // scale;
   auto g = pixel_color.g(); // scale;
   auto b = pixel_color.b(); // scale;
