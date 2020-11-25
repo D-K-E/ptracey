@@ -33,4 +33,4 @@
 //
 #include <thirdparty/rapidcsv.hpp>
 //
-#define THREAD_NB 4
+#define THREAD_NB 5

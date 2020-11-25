@@ -1,5 +1,6 @@
 #pragma once
 
+#include <color/specdata.hpp>
 #include <color/specutils.hpp>
 #include <color/wave.hpp>
 #include <common.hpp>
@@ -23,7 +24,6 @@ public: // static members
   static spd cie_ybar;
   static spd cie_zbar;
   static spd standard_d65;
-  static Power K;
   //
   static spd X, Y, Z;
   static spd rgbRefl2SpectWhite, rgbRefl2SpectCyan;
@@ -230,6 +230,7 @@ public:
                 const WaveLength &waveLEnd,
                 const uint &outSize);
   spd resample_c(const spd &s) const;
+  spd resample_c(const uint &outSize) const;
   spd resample_c(const WaveLength &waveLStart,
                  const WaveLength &waveLEnd,
                  const uint &outSize) const;
@@ -506,32 +507,38 @@ public:
   //
 };
 
-Power get_cie_k() {
-  Power sum = 0.0;
-  auto waves = spd::standard_d65.wavelengths();
-  for (const auto &wave : waves) {
-    sum += spd::standard_d65[wave] * spd::cie_ybar[wave];
-  }
-  return 100.0 / sum;
-}
-
 Power get_cie_val(const spd &qlambda, const spd &cie_bar) {
   Power sum = 0.0;
-  auto waves = qlambda.wavelengths();
-  for (const auto &wave : waves) {
-    sum += qlambda[wave] * cie_bar[wave];
+  auto qwaves = qlambda.wavelengths();
+  auto qmaxwave = qlambda.max_wave();
+  auto qminwave = qlambda.min_wave();
+  auto qwsize = (uint)qwaves.size();
+  auto cie = cie_bar.resample_c(qminwave, qmaxwave, qwsize);
+  for (const auto &wave : qwaves) {
+    sum += qlambda[wave] * cie[wave];
   }
-  return spd::K * sum;
+  auto scale = (qmaxwave - qminwave) / Real(qwsize);
+  return scale * sum;
 }
 
 Power get_cie_val(const spd &qlambda, const spd &rlambda,
                   const spd &cie_bar) {
   Power sum = 0.0;
+  auto rmaxwave = rlambda.max_wave();
+  auto rminwave = rlambda.min_wave();
+  auto rwaves = rlambda.wavelengths();
+  auto rwsize = (uint)rwaves.size();
+  spd q_lambda =
+      qlambda.resample_c(rminwave, rmaxwave, rwsize);
+  spd cie = cie_bar.resample_c(rminwave, rmaxwave, rwsize);
   auto waves = qlambda.wavelengths();
-  for (const auto &wave : waves) {
-    sum += qlambda[wave] * rlambda[wave] * cie_bar[wave];
+  for (const auto &wave : rwaves) {
+    sum += q_lambda[wave] * rlambda[wave] * cie[wave];
   }
-  return spd::K * sum;
+  auto scale =
+      (rmaxwave - rminwave) / Real(CIE_Y_integral * rwsize);
+
+  return scale * sum;
 }
 
 Power get_cie_x(const spd &qlambda) {
@@ -558,24 +565,24 @@ Power get_cie_z(const spd &qlambda, const spd &rlambda) {
   return get_cie_val(qlambda, rlambda, spd::cie_zbar);
 }
 
-void get_cie_values(const spd &qlambda, Power &X, Power &Y,
-                    Power &Z) {
-  X = get_cie_x(qlambda);
-  Y = get_cie_y(qlambda);
-  Z = get_cie_z(qlambda);
+void get_cie_values(const spd &qlambda, Power &x, Power &y,
+                    Power &z) {
+  x = get_cie_x(qlambda);
+  y = get_cie_y(qlambda);
+  z = get_cie_z(qlambda);
 }
 
 void get_cie_values(const spd &qlambda, const spd &rlambda,
-                    Power &X, Power &Y, Power &Z) {
-  X = get_cie_x(qlambda, rlambda);
-  Y = get_cie_y(qlambda, rlambda);
-  Z = get_cie_z(qlambda, rlambda);
+                    Power &x, Power &y, Power &z) {
+  x = get_cie_x(qlambda, rlambda);
+  y = get_cie_y(qlambda, rlambda);
+  z = get_cie_z(qlambda, rlambda);
 }
 
 void get_cie_values(const spd &qlambda, vec3 &xyz) {
-  Power X, Y, Z;
-  get_cie_values(qlambda, X, Y, Z);
-  xyz = vec3(X, Y, Z);
+  Power x, y, z;
+  get_cie_values(qlambda, x, y, z);
+  xyz = vec3(x, y, z);
   Power sum = xyz.sum();
   if (sum != 0) {
     xyz = xyz / sum;
@@ -584,9 +591,9 @@ void get_cie_values(const spd &qlambda, vec3 &xyz) {
 
 void get_cie_values(const spd &qlambda, const spd &rlambda,
                     vec3 &xyz) {
-  Power X, Y, Z;
-  get_cie_values(qlambda, rlambda, X, Y, Z);
-  xyz = vec3(X, Y, Z);
+  Power x, y, z;
+  get_cie_values(qlambda, rlambda, x, y, z);
+  xyz = vec3(x, y, z);
   Power sum = xyz.sum();
   if (sum != 0) {
     xyz = xyz / sum;
@@ -601,12 +608,12 @@ spd spd::rho_r = rho_rspd.normalized();
 auto rho_gspd = spd(CSV_PARENT / "rho-g-2012.csv",
                     WCOL_NAME, PCOL_NAME, SEP, SPD_STRIDE);
 
-spd spd::rho_g = rho_gspd.normalized();
+spd spd::rho_g = rho_gspd;
 
 auto rho_bspd = spd(CSV_PARENT / "rho-b-2012.csv",
                     WCOL_NAME, PCOL_NAME, SEP, SPD_STRIDE);
 
-spd spd::rho_b = rho_bspd.normalized();
+spd spd::rho_b = rho_bspd;
 
 auto cie_xbarspd =
     spd(CSV_PARENT / "cie-x-bar-1964.csv", WCOL_NAME,
@@ -631,8 +638,6 @@ auto stand_d65 = spd(CSV_PARENT / "cie-d65-standard.csv",
 
 spd spd::standard_d65 = stand_d65.normalized();
 //
-
-Power spd::K = get_cie_k();
 
 inline std::ostream &operator<<(std::ostream &out,
                                 const spd &ss) {

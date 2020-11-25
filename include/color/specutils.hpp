@@ -30,7 +30,7 @@ inline std::ostream &operator<<(std::ostream &out,
 }
 
 static const uint SPD_STRIDE = 5;
-static const uint SPD_NB_SAMPLE = 60;
+static const uint SPD_NB_SAMPLE = 90;
 static const uint VISIBLE_LAMBDA_START = 380;
 static const uint VISIBLE_LAMBDA_END = 720;
 

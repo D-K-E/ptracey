@@ -219,6 +219,12 @@ spd spd::resample_c(const WaveLength &waveLStart,
   auto sp = spd(sspowers, out_waves);
   return sp;
 }
+spd spd::resample_c(const uint &outSize) const {
+  auto miwave = min_wave();
+  auto mwave = max_wave();
+  auto sp = resample_c(miwave, mwave, outSize);
+  return sp;
+}
 
 void spd::resample(const spd &s) { *this = resample_c(s); }
 void spd::resample(const WaveLength &waveLStart,
