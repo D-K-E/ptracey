@@ -30,7 +30,7 @@ inline std::ostream &operator<<(std::ostream &out,
 }
 
 static const uint SPD_STRIDE = 5;
-static const uint SPD_NB_SAMPLE = 90;
+static const uint SPD_NB_SAMPLE = 30;
 static const uint VISIBLE_LAMBDA_START = 380;
 static const uint VISIBLE_LAMBDA_END = 720;
 
@@ -86,6 +86,16 @@ vec3 xyz2rgb_srgb(const vec3 xyz) {
   mat.x[3][2] = 0.0;
   mat.x[3][3] = 1.0;
   return mat * xyz;
+}
+vec3 xyz2rgb_pbr(const vec3 &xyz) {
+  vec3 rgb(0.0);
+  rgb.e[0] = 3.240479f * xyz.e[0] - 1.537150f * xyz.e[1] -
+             0.498535f * xyz.e[2];
+  rgb.e[1] = -0.969256f * xyz.e[0] + 1.875991f * xyz.e[1] +
+             0.041556f * xyz.e[2];
+  rgb.e[2] = 0.055648f * xyz.e[0] - 0.204043f * xyz.e[1] +
+             1.057311f * xyz.e[2];
+  return rgb;
 }
 vec3 rgb2xyz_srgb(const vec3 rgb) {
   matrix mat;

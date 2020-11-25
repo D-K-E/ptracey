@@ -261,10 +261,10 @@ public:
   void add(const color &r_color, const WaveLength &w) {
     spect.add(w, r_color.pdata);
   }
-  void scale(Real coeff) { spect.scale(coeff); }
+  void scale(Real coeff) {}
   vec3 to_rgb() const override {
     vec3 xyz = to_xyz();
-    vec3 rgb = xyz2rgb_cie(xyz);
+    vec3 rgb = xyz2rgb_pbr(xyz);
     return rgb;
   }
   void Init() {

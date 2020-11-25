@@ -630,7 +630,7 @@ void choose_scene(int choice, camera &cam,
     // background = sampled_spectrum::fromRgb(
     //    b_rgb, SpectrumType::Reflectance);
     background = spectrum(0.70, 0.80, 1.00);
-    samples_per_pixel = 10;
+    samples_per_pixel = 50;
     max_depth = 10;
     lookfrom = point3(13, 2, 3);
     lookat = point3(0, 0, 0);

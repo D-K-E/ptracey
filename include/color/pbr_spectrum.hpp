@@ -14,10 +14,8 @@ Power averageSpectrum(const sampled_wave<Power> &powers,
                       const std::vector<WaveLength> &waves,
                       WaveLength waveLStart,
                       WaveLength waveLEnd) {
-  // adapted
   // from
   // https://github.com/mmp/pbrt-v3/blob/master/src/core/spectrum.cpp
-  //
 
   uint end = (uint)waves.size() - 1;
   if (waveLStart <= waves[0])
@@ -243,15 +241,35 @@ spd rgb_to_spect(std::vector<Real> rgb_wavelength,
   std::vector<WaveLength> waves =
       cast_vec<Real, WaveLength>(
           rgb_wavelength, [](auto rgbw) {
-            return static_cast<WaveLength>(round(rgbw));
+            return static_cast<WaveLength>(rgbw);
           });
+  WaveLength mx_wave = *std::max_element(
+      rgb_wavelength.begin(), rgb_wavelength.end());
+  WaveLength mn_wave = *std::min_element(
+      rgb_wavelength.begin(), rgb_wavelength.end());
+
   std::vector<Power> powers =
       cast_vec<Real, Power>(rgb_spect, [](auto rgbp) {
         return static_cast<Power>(rgbp);
       });
-
   sampled_wave sampled_powers(powers);
-  auto sp = spd(sampled_powers, waves);
+  std::vector<Power> pwrs;
+  std::vector<WaveLength> wvs;
+  for (uint i = 0; i < SPD_NB_SAMPLE; i++) {
+    WaveLength wl0 = mix<WaveLength>(
+        WaveLength(i) / WaveLength(SPD_NB_SAMPLE),
+        VISIBLE_LAMBDA_START, VISIBLE_LAMBDA_END);
+    WaveLength wl1 = mix<WaveLength>(
+        WaveLength(i + 1) / WaveLength(SPD_NB_SAMPLE),
+        VISIBLE_LAMBDA_START, VISIBLE_LAMBDA_END);
+    Power p =
+        averageSpectrum(sampled_powers, waves, wl0, wl1);
+    pwrs.push_back(p);
+    wvs.push_back((wl0 + wl1) / 2);
+  }
+  sampled_wave spower_s(pwrs);
+
+  auto sp = spd(spower_s, wvs);
   return sp;
 }
 
