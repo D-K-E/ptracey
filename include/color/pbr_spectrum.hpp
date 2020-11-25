@@ -80,8 +80,8 @@ void resample_wave_power(
   //
   uint wsize = (uint)in_waves.size();
   COMP_CHECK(wsize > 2, wsize, 2);
-  auto mwave = waveLStart;
-  auto miwave = waveLEnd;
+  auto miwave = waveLStart;
+  auto mwave = waveLEnd;
   auto waves = in_waves;
   auto pwrs = in_powers;
   //
@@ -91,7 +91,8 @@ void resample_wave_power(
   auto wlstartClamp = [miwave, mwave, waves, wsize,
                        delta](int index) -> WaveLength {
     //
-    COMP_CHECK(index >= -1 && index <= wsize, index, wsize);
+    COMP_CHECK((index >= -1) && (index <= (int)wsize),
+               index, wsize);
     if (index == -1) {
       //
       COMP_CHECK(miwave - delta < waves[0], miwave - delta,
@@ -105,7 +106,8 @@ void resample_wave_power(
     return waves[index];
   };
   auto pwClamped = [wsize, pwrs](int index) -> Power {
-    COMP_CHECK(index >= -1 && index <= wsize, index, wsize);
+    COMP_CHECK(index >= -1 && index <= (int)wsize, index,
+               wsize);
     return pwrs[dclamp<uint>(index, 0, wsize - 1)];
   };
   //
@@ -126,11 +128,11 @@ void resample_wave_power(
       start = -1;
     } else {
       auto intervalfn = [waves, delta, wl](int i) -> bool {
-        return waves[i] <= wl - delta;
+        return waves[i] <= (wl - delta);
       };
-      start = findInterval(wsize, intervalfn);
+      start = findInterval((int)wsize, intervalfn);
       bool sb1 = start >= 0;
-      bool sb2 = start < wsize;
+      bool sb2 = start < (int)wsize;
       COMP_CHECK(sb1 && sb2, start, wsize);
     }
     //
