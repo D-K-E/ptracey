@@ -444,6 +444,105 @@ hittable_list model_cat() {
 
   return objects;
 }
+hittable_list model_cat2() {
+  matrix modelMat =
+      scale_translate(point3(150, 167, 45), vec3(55.0));
+  std::string modelpath = "media/models/kedi.obj";
+
+  auto earth_texture =
+      make_shared<image_texture>("media/earthmap.jpg");
+  auto earth_surface =
+      make_shared<lambertian>(earth_texture);
+
+  shared_ptr<hittable> cat = make_shared<model>(
+      modelpath, modelMat, earth_surface);
+
+  hittable_list objects;
+
+  auto red =
+      make_shared<lambertian>(spectrum(.65, .05, .05));
+  auto white =
+      make_shared<lambertian>(spectrum(.73, .73, .73));
+  auto green =
+      make_shared<lambertian>(spectrum(.12, .45, .15));
+  auto light = make_shared<diffuse_light>(
+      spectrum(15.0, 15.0, 15.0));
+
+  objects.add(make_shared<yz_rect>(0.0, 555.0, 0.0, 555.0,
+                                   555.0, green));
+  objects.add(make_shared<yz_rect>(0.0, 555.0, 0.0, 555.0,
+                                   0.0, red));
+  objects.add(make_shared<flip_face>(make_shared<xz_rect>(
+      213, 343, 227, 332, 554, light)));
+  objects.add(
+      make_shared<xz_rect>(0, 555, 0, 555, 555, white));
+  objects.add(
+      make_shared<xz_rect>(0, 555, 0, 555, 0, white));
+  objects.add(
+      make_shared<xy_rect>(0, 555, 0, 555, 555, white));
+
+  shared_ptr<hittable> box1 = make_shared<box>(
+      point3(0, 0, 0), point3(165, 330, 165), white);
+  box1 = make_shared<rotate_y>(box1, 15);
+  box1 = make_shared<translate>(box1, vec3(265, 0, 295));
+  objects.add(box1);
+
+  shared_ptr<hittable> box2 = make_shared<box>(
+      point3(0, 0, 0), point3(165, 165, 165), white);
+  box2 = make_shared<rotate_y>(box2, -18);
+  box2 = make_shared<translate>(box2, point3(130, 0, 65));
+
+  objects.add(box2);
+  objects.add(cat);
+
+  return objects;
+}
+hittable_list cornell_image2() {
+  auto earth_texture =
+      make_shared<image_texture>("media/earthmap.jpg");
+  auto earth_surface =
+      make_shared<lambertian>(earth_texture);
+
+  hittable_list objects;
+
+  auto red =
+      make_shared<lambertian>(spectrum(.65, .05, .05));
+  auto white =
+      make_shared<lambertian>(spectrum(.73, .73, .73));
+  auto green =
+      make_shared<lambertian>(spectrum(.12, .45, .15));
+  auto light = make_shared<diffuse_light>(
+      spectrum(15.0, 15.0, 15.0));
+
+  objects.add(make_shared<yz_rect>(0.0, 555.0, 0.0, 555.0,
+                                   555.0, green));
+  objects.add(make_shared<yz_rect>(0.0, 555.0, 0.0, 555.0,
+                                   0.0, red));
+  objects.add(make_shared<flip_face>(make_shared<xz_rect>(
+      213, 343, 227, 332, 554, light)));
+  objects.add(
+      make_shared<xz_rect>(0, 555, 0, 555, 555, white));
+  objects.add(
+      make_shared<xz_rect>(0, 555, 0, 555, 0, white));
+  objects.add(
+      make_shared<xy_rect>(0, 555, 0, 555, 555, white));
+
+  shared_ptr<hittable> box1 = make_shared<box>(
+      point3(0, 0, 0), point3(165, 330, 165), white);
+  box1 = make_shared<rotate_y>(box1, 15);
+  box1 = make_shared<translate>(box1, vec3(265, 0, 295));
+  objects.add(box1);
+
+  shared_ptr<hittable> box2 = make_shared<box>(
+      point3(0, 0, 0), point3(165, 165, 165),
+      earth_surface);
+  box2 = make_shared<rotate_y>(box2, -18);
+  box2 = make_shared<translate>(box2, point3(130, 0, 65));
+
+  objects.add(box2);
+
+  return objects;
+}
 hittable_list model_test2() {
   matrix modelMat =
       scale_translate(point3(130, 167, 65), vec3(5.0));
@@ -493,6 +592,54 @@ hittable_list model_test2() {
 
   // objects.add(box2);
   objects.add(cat);
+
+  return objects;
+}
+hittable_list model_test3() {
+  matrix modelMat =
+      scale_translate(point3(150, 167, 45), vec3(55.0));
+  std::string modelpath =
+      "media/models/buddha-head/buddha_head_ma2.obj";
+
+  auto buddha_texture = make_shared<image_texture>(
+      "media/models/buddha-head/buddha_head.jpg");
+  auto buddha_surface =
+      make_shared<lambertian>(buddha_texture);
+
+  shared_ptr<hittable> buddha = make_shared<model>(
+      modelpath, modelMat, buddha_surface);
+
+  hittable_list objects;
+
+  auto red =
+      make_shared<lambertian>(spectrum(.65, .05, .05));
+  auto white =
+      make_shared<lambertian>(spectrum(.73, .73, .73));
+  auto green =
+      make_shared<lambertian>(spectrum(.12, .45, .15));
+  auto light = make_shared<diffuse_light>(
+      spectrum(15.0, 15.0, 15.0));
+
+  objects.add(make_shared<yz_rect>(0.0, 555.0, 0.0, 555.0,
+                                   555.0, green));
+  objects.add(make_shared<yz_rect>(0.0, 555.0, 0.0, 555.0,
+                                   0.0, red));
+  objects.add(make_shared<flip_face>(make_shared<xz_rect>(
+      213, 343, 227, 332, 554, light)));
+  objects.add(
+      make_shared<xz_rect>(0, 555, 0, 555, 555, white));
+  objects.add(
+      make_shared<xz_rect>(0, 555, 0, 555, 0, white));
+  objects.add(
+      make_shared<xy_rect>(0, 555, 0, 555, 555, white));
+
+  shared_ptr<hittable> box1 = make_shared<box>(
+      point3(0, 0, 0), point3(165, 330, 165), white);
+  box1 = make_shared<rotate_y>(box1, 15);
+  box1 = make_shared<translate>(box1, vec3(265, 0, 295));
+  objects.add(box1);
+
+  objects.add(buddha);
 
   return objects;
 }
@@ -635,6 +782,36 @@ void choose_scene(int choice, camera &cam,
     lookfrom = point3(13, 2, 3);
     lookat = point3(0, 0, 0);
     vfov = 20.0;
+    break;
+  }
+  case 13: {
+    world = model_cat2();
+    aspect_ratio = 1.0;
+    image_width = 400;
+    samples_per_pixel = 1000;
+    max_depth = 1000;
+    lookfrom = point3(278, 278, -800);
+    lookat = point3(278, 278, 0);
+    break;
+  }
+  case 14: {
+    world = cornell_image2();
+    aspect_ratio = 1.0;
+    image_width = 400;
+    samples_per_pixel = 1000;
+    max_depth = 1000;
+    lookfrom = point3(278, 278, -800);
+    lookat = point3(278, 278, 0);
+    break;
+  }
+  case 15: {
+    world = model_test3();
+    aspect_ratio = 1.0;
+    image_width = 400;
+    samples_per_pixel = 5000;
+    max_depth = 10;
+    lookfrom = point3(278, 278, -800);
+    lookat = point3(278, 278, 0);
     break;
   }
   }

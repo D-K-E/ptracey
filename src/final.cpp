@@ -109,7 +109,7 @@ extern "C" int main(int ac, char **av) {
   // World
 
   hittable_list world;
-  int choice = 12;
+  int choice = 15;
   camera cam;
   int image_height;
   spectrum background;
