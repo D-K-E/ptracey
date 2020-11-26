@@ -1,6 +1,6 @@
 #pragma once
-#include <ray.hpp>
-#include <vec3.hpp>
+#include <camera/ray.hpp>
+#include <math3d/vec3.hpp>
 using namespace ptracey;
 namespace ptracey {
 class onb {

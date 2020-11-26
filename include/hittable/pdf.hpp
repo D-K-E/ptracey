@@ -1,7 +1,7 @@
 #pragma once
-#include <onb.hpp>
-#include <ray.hpp>
-#include <vec3.hpp>
+#include <math3d/onb.hpp>
+#include <camera/ray.hpp>
+#include <math3d/vec3.hpp>
 using namespace ptracey;
 namespace ptracey {
 class pdf {

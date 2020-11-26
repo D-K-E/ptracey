@@ -1,10 +1,10 @@
 #pragma once
-#include <aabb.hpp>
+#include <acceleration/aabb.hpp>
+#include <camera/ray.hpp>
 #include <external.hpp>
-#include <hittable.hpp>
-#include <hittable_list.hpp>
-#include <ray.hpp>
-#include <vec3.hpp>
+#include <hittable/hittable.hpp>
+#include <hittable/hittable_list.hpp>
+#include <math3d/vec3.hpp>
 
 using namespace ptracey;
 

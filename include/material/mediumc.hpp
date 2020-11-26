@@ -1,9 +1,9 @@
 #pragma once
-#include <hittable.hpp>
-#include <material.hpp>
-#include <ray.hpp>
-#include <texture.hpp>
-#include <vec3.hpp>
+#include <hittable/hittable.hpp>
+#include <material/material.hpp>
+#include <camera/ray.hpp>
+#include <texture/texture.hpp>
+#include <math3d/vec3.hpp>
 using namespace ptracey;
 namespace ptracey {
 class constant_medium : public hittable {

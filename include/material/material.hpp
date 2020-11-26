@@ -2,8 +2,8 @@
 
 #include <color/spectrum.hpp>
 #include <common.hpp>
-#include <pdf.hpp>
-#include <texture.hpp>
+#include <hittable/pdf.hpp>
+#include <texture/texture.hpp>
 #include <utils.hpp>
 using namespace ptracey;
 namespace ptracey {

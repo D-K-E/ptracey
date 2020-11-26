@@ -1,6 +1,6 @@
 #pragma once
 // matrix library from P. Shirley, Realistic Ray Tracing
-#include <vec3.hpp>
+#include <math3d/vec3.hpp>
 using namespace ptracey;
 namespace ptracey {
 //

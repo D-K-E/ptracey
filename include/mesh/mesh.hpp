@@ -1,16 +1,16 @@
 #pragma once
 
-#include <bvh.hpp>
+#include <acceleration/bvh.hpp>
+#include <camera/ray.hpp>
 #include <color/spectrum.hpp>
 #include <common.hpp>
 #include <external.hpp>
-#include <hittable.hpp>
-#include <hittable_list.hpp>
-#include <material.hpp>
-#include <matrix.hpp>
-#include <ray.hpp>
-#include <triangle.hpp>
-#include <vec3.hpp>
+#include <hittable/hittable.hpp>
+#include <hittable/hittable_list.hpp>
+#include <material/material.hpp>
+#include <math3d/matrix.hpp>
+#include <math3d/vec3.hpp>
+#include <primitive/triangle.hpp>
 
 using namespace ptracey;
 namespace ptracey {

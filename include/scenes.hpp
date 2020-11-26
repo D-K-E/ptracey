@@ -1,22 +1,22 @@
 #pragma once
 //
-#include <aarect.hpp>
-#include <box.hpp>
-#include <bvh.hpp>
-#include <camera.hpp>
+#include <acceleration/bvh.hpp>
+#include <camera/camera.hpp>
+#include <camera/ray.hpp>
 #include <color/spectrum.hpp>
 #include <common.hpp>
-#include <hittable.hpp>
-#include <hittable_list.hpp>
+#include <hittable/hittable.hpp>
+#include <hittable/hittable_list.hpp>
 #include <iostream>
-#include <mediumc.hpp>
-#include <mesh.hpp>
-#include <moving_sphere.hpp>
-#include <ray.hpp>
-#include <sphere.hpp>
-#include <texture.hpp>
+#include <material/mediumc.hpp>
+#include <math3d/vec3.hpp>
+#include <mesh/box.hpp>
+#include <mesh/mesh.hpp>
+#include <primitive/aarect.hpp>
+#include <primitive/moving_sphere.hpp>
+#include <primitive/sphere.hpp>
+#include <texture/texture.hpp>
 #include <utils.hpp>
-#include <vec3.hpp>
 
 using namespace ptracey;
 namespace ptracey {

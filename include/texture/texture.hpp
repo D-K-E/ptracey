@@ -2,9 +2,9 @@
 //
 #include <color/spectrum.hpp>
 #include <common.hpp>
-#include <perlin.hpp>
-#include <ray.hpp>
-#include <vec3.hpp>
+#include <texture/perlin.hpp>
+#include <camera/ray.hpp>
+#include <math3d/vec3.hpp>
 using namespace ptracey;
 namespace ptracey {
 class texture {

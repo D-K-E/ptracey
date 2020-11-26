@@ -1,14 +1,14 @@
 //
-#include <camera.hpp>
+#include <camera/camera.hpp>
+#include <camera/ray.hpp>
 #include <color/spectrum.hpp>
 #include <colorio.hpp>
 #include <common.hpp>
-#include <hittable_list.hpp>
-#include <ray.hpp>
+#include <hittable/hittable_list.hpp>
+#include <math3d/vec3.hpp>
 #include <render.hpp>
 #include <scenes.hpp>
 #include <utils.hpp>
-#include <vec3.hpp>
 
 using namespace ptracey;
 namespace ptracey {

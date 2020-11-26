@@ -1,10 +1,10 @@
 #pragma once
-#include <aarect.hpp>
-#include <hittable.hpp>
-#include <hittable_list.hpp>
-#include <material.hpp>
-#include <ray.hpp>
-#include <vec3.hpp>
+#include <primitive/aarect.hpp>
+#include <hittable/hittable.hpp>
+#include <hittable/hittable_list.hpp>
+#include <material/material.hpp>
+#include <camera/ray.hpp>
+#include <math3d/vec3.hpp>
 using namespace ptracey;
 namespace ptracey {
 

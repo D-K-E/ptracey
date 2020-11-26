@@ -1,9 +1,9 @@
 #pragma once
-#include <aabb.hpp>
-#include <hittable.hpp>
+#include <acceleration/aabb.hpp>
+#include <camera/ray.hpp>
+#include <hittable/hittable.hpp>
 #include <info.hpp>
-#include <ray.hpp>
-#include <vec3.hpp>
+#include <math3d/vec3.hpp>
 using namespace ptracey;
 namespace ptracey {
 class AaRect : public hittable {
@@ -91,7 +91,6 @@ public:
     return true;
   }
 };
-
 class xy_rect : public AaRect {
 public:
   double x0, x1, y0, y1;

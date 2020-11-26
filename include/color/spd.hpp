@@ -5,7 +5,7 @@
 #include <color/wave.hpp>
 #include <common.hpp>
 #include <utils.hpp>
-#include <vec3.hpp>
+#include <math3d/vec3.hpp>
 
 using namespace ptracey;
 namespace ptracey {

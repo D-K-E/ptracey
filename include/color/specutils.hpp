@@ -1,8 +1,8 @@
 #pragma once
 // spectrum utils
 #include <common.hpp>
-#include <matrix.hpp>
-#include <vec3.hpp>
+#include <math3d/matrix.hpp>
+#include <math3d/vec3.hpp>
 
 using namespace ptracey;
 
