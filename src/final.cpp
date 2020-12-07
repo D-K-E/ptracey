@@ -61,17 +61,37 @@ InnerRet innerLoop(InnerParams params) {
       int i = a + startx;
       //
       spectrum rcolor(0.0);
-      for (int k = 0; k < psample; k++) {
-        Real t = Real(i + random_real()) / (imwidth - 1);
-        Real s = Real(j + random_real()) / (imheight - 1);
-        WaveLength wavel =
-            static_cast<WaveLength>(random_int(
-                VISIBLE_LAMBDA_START, VISIBLE_LAMBDA_END));
-        ray r = cam.get_ray(t, s, wavel);
-        color r_color =
-            ray_color(r, background, scene, mdepth);
-        //
-        rcolor.add(r_color, wavel);
+      if (rcolor.type == SpectrumType::RGB) {
+        for (int k = 0; k < psample; k++) {
+          Real t = Real(i + random_real()) / (imwidth - 1);
+          Real s = Real(j + random_real()) / (imheight - 1);
+          WaveLength wavel = static_cast<WaveLength>(
+              random_int(VISIBLE_LAMBDA_START,
+                         VISIBLE_LAMBDA_END));
+          ray r = cam.get_ray(t, s, wavel);
+          color r_color =
+              ray_color(r, background, scene, mdepth);
+          //
+          rcolor.add(r_color, wavel);
+        }
+      } else {
+        for (int k = 0; k < psample; k++) {
+          Real t = Real(i + random_real()) / (imwidth - 1);
+          Real s = Real(j + random_real()) / (imheight - 1);
+          ray r = cam.get_ray(t, s, 1);
+          uint wrange =
+              VISIBLE_LAMBDA_END - VISIBLE_LAMBDA_START;
+          for (uint ss = 0; ss < wrange; ss++) {
+            WaveLength wavel = static_cast<WaveLength>(
+                random_int(VISIBLE_LAMBDA_START,
+                           VISIBLE_LAMBDA_END));
+            r.wlength = wavel;
+            color r_color =
+                ray_color(r, background, scene, mdepth);
+            //
+            rcolor.add(r_color, wavel);
+          }
+        }
       }
       imv[a][j] = rcolor;
     }
@@ -109,7 +129,7 @@ extern "C" int main(int ac, char **av) {
   // World
 
   hittable_list world;
-  int choice = 15;
+  int choice = 12;
   camera cam;
   int image_height;
   spectrum background;
@@ -153,14 +173,8 @@ extern "C" int main(int ac, char **av) {
     InnerRet ret = innerLoop(params);
     fill_imvec(ret, imvec, image_height);
   }
-  for (int j = image_height - 1; j >= 0; j -= 1) {
-    std::cerr << "\rKalan Tarama Çizgisi:" << ' ' << j
-              << ' ' << std::flush;
-    for (int i = 0; i < image_width; i += 1) {
-      write_color(std::cout, imvec[i][j],
-                  samples_per_pixel);
-    }
-  }
+  write_color(imvec, image_height, image_width,
+              samples_per_pixel);
   auto stop = std::chrono::high_resolution_clock::now();
   std::chrono::duration<Real> elapsed = stop - start;
 

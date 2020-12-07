@@ -4,8 +4,8 @@
 #include <color/specutils.hpp>
 #include <color/wave.hpp>
 #include <common.hpp>
-#include <utils.hpp>
 #include <math3d/vec3.hpp>
+#include <utils.hpp>
 
 using namespace ptracey;
 namespace ptracey {
@@ -273,53 +273,53 @@ spd rgb_to_spect(std::vector<Real> rgb_wavelength,
   return sp;
 }
 
-spd spd::rgbRefl2SpectWhite =
+static spd rgbRefl2SpectWhite =
     rgb_to_spect(RGB2SpectLambda, RGBRefl2SpectWhite);
 
-spd spd::rgbRefl2SpectCyan =
+static spd rgbRefl2SpectCyan =
     rgb_to_spect(RGB2SpectLambda, RGBRefl2SpectCyan);
 
-spd spd::rgbRefl2SpectMagenta =
+static spd rgbRefl2SpectMagenta =
     rgb_to_spect(RGB2SpectLambda, RGBRefl2SpectMagenta);
 
-spd spd::rgbRefl2SpectYellow =
+static spd rgbRefl2SpectYellow =
     rgb_to_spect(RGB2SpectLambda, RGBRefl2SpectYellow);
 
-spd spd::rgbRefl2SpectRed =
+static spd rgbRefl2SpectRed =
     rgb_to_spect(RGB2SpectLambda, RGBRefl2SpectRed);
 
-spd spd::rgbRefl2SpectGreen =
+static spd rgbRefl2SpectGreen =
     rgb_to_spect(RGB2SpectLambda, RGBRefl2SpectGreen);
 
-spd spd::rgbRefl2SpectBlue =
+static spd rgbRefl2SpectBlue =
     rgb_to_spect(RGB2SpectLambda, RGBRefl2SpectBlue);
 
-spd spd::rgbIllum2SpectWhite =
+static spd rgbIllum2SpectWhite =
     rgb_to_spect(RGB2SpectLambda, RGBIllum2SpectWhite);
 
-spd spd::rgbIllum2SpectCyan =
+static spd rgbIllum2SpectCyan =
     rgb_to_spect(RGB2SpectLambda, RGBIllum2SpectCyan);
 
-spd spd::rgbIllum2SpectBlue =
+static spd rgbIllum2SpectBlue =
     rgb_to_spect(RGB2SpectLambda, RGBIllum2SpectBlue);
 
-spd spd::rgbIllum2SpectGreen =
+static spd rgbIllum2SpectGreen =
     rgb_to_spect(RGB2SpectLambda, RGBIllum2SpectGreen);
 
-spd spd::rgbIllum2SpectRed =
+static spd rgbIllum2SpectRed =
     rgb_to_spect(RGB2SpectLambda, RGBIllum2SpectRed);
 
-spd spd::rgbIllum2SpectMagenta =
+static spd rgbIllum2SpectMagenta =
     rgb_to_spect(RGB2SpectLambda, RGBIllum2SpectMagenta);
 
-spd spd::rgbIllum2SpectYellow =
+static spd rgbIllum2SpectYellow =
     rgb_to_spect(RGB2SpectLambda, RGBIllum2SpectYellow);
 
-spd spd::X = rgb_to_spect(CIE_LAMBDA_REAL, CIE_X);
+static spd Xspd = rgb_to_spect(CIE_LAMBDA_REAL, CIE_X);
 
-spd spd::Y = rgb_to_spect(CIE_LAMBDA_REAL, CIE_Y);
+static spd Yspd = rgb_to_spect(CIE_LAMBDA_REAL, CIE_Y);
 
-spd spd::Z = rgb_to_spect(CIE_LAMBDA_REAL, CIE_Z);
+static spd Zspd = rgb_to_spect(CIE_LAMBDA_REAL, CIE_Z);
 
 //
 }

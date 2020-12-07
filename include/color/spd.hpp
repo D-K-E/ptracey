@@ -4,8 +4,8 @@
 #include <color/specutils.hpp>
 #include <color/wave.hpp>
 #include <common.hpp>
-#include <utils.hpp>
 #include <math3d/vec3.hpp>
+#include <utils.hpp>
 
 using namespace ptracey;
 namespace ptracey {
@@ -15,25 +15,6 @@ public:
   WaveLength wave_start;
   WaveLength wave_end;
   std::map<WaveLength, Power> wavelength_power;
-
-public: // static members
-  static spd rho_r;
-  static spd rho_g;
-  static spd rho_b;
-  static spd cie_xbar;
-  static spd cie_ybar;
-  static spd cie_zbar;
-  static spd standard_d65;
-  //
-  static spd X, Y, Z;
-  static spd rgbRefl2SpectWhite, rgbRefl2SpectCyan;
-  static spd rgbRefl2SpectMagenta, rgbRefl2SpectYellow;
-  static spd rgbRefl2SpectRed, rgbRefl2SpectGreen;
-  static spd rgbRefl2SpectBlue;
-  static spd rgbIllum2SpectWhite, rgbIllum2SpectCyan;
-  static spd rgbIllum2SpectMagenta, rgbIllum2SpectYellow;
-  static spd rgbIllum2SpectRed, rgbIllum2SpectGreen;
-  static spd rgbIllum2SpectBlue;
 
 public:
   // static methods
@@ -167,7 +148,11 @@ public:
       const std::string &wave_col_name = "wavelength",
       const std::string &power_col_name = "power",
       const char &sep = ',',
-      const unsigned int stride = SPD_STRIDE) {
+      const unsigned int stride = SPD_STRIDE,
+      const std::function<WaveLength(WaveLength)>
+          &wave_transform = [](auto j) { return j; },
+      const std::function<Power(Power)> &power_transform =
+          [](auto j) { return j; }) {
     wavelength_power.clear();
     path csv_path_abs = RUNTIME_PATH / csv_path;
     rapidcsv::Document doc(csv_path_abs.string(),
@@ -209,7 +194,9 @@ public:
     }
     std::map<WaveLength, Power> tempwp;
     for (uint i = 0; i < (uint)wlengths.size(); i++) {
-      tempwp.insert(make_pair(wlengths[i], powers[i]));
+      auto wave_value = wave_transform(wlengths[i]);
+      auto power_value = power_transform(powers[i]);
+      tempwp.insert(make_pair(wave_value, power_value));
     }
     std::sort(wlengths.begin(), wlengths.end(),
               [](auto i, auto j) { return i < j; });
@@ -503,9 +490,47 @@ public:
     }
     throw std::runtime_error("spd's don't match");
   }
-
   //
 };
+
+auto rho_rspd = spd(CSV_PARENT / "rho-r-2012.csv",
+                    WCOL_NAME, PCOL_NAME, SEP, SPD_STRIDE);
+
+static spd rho_r = rho_rspd.normalized();
+
+auto rho_gspd = spd(CSV_PARENT / "rho-g-2012.csv",
+                    WCOL_NAME, PCOL_NAME, SEP, SPD_STRIDE);
+
+static spd rho_g = rho_gspd;
+
+auto rho_bspd = spd(CSV_PARENT / "rho-b-2012.csv",
+                    WCOL_NAME, PCOL_NAME, SEP, SPD_STRIDE);
+
+static spd rho_b = rho_bspd;
+
+auto cie_xbarspd =
+    spd(CSV_PARENT / "cie-x-bar-1964.csv", WCOL_NAME,
+        PCOL_NAME, SEP, SPD_STRIDE);
+
+static spd cie_xbar_spd = cie_xbarspd.normalized();
+
+auto cie_ybarspd =
+    spd(CSV_PARENT / "cie-y-bar-1964.csv", WCOL_NAME,
+        PCOL_NAME, SEP, SPD_STRIDE);
+
+static spd cie_ybar_spd = cie_ybarspd.normalized();
+
+auto cie_zbarspd =
+    spd(CSV_PARENT / "cie-z-bar-1964.csv", WCOL_NAME,
+        PCOL_NAME, SEP, SPD_STRIDE);
+
+static spd cie_zbar_spd = cie_zbarspd.normalized();
+
+auto stand_d65 = spd(CSV_PARENT / "cie-d65-standard.csv",
+                     WCOL_NAME, PCOL_NAME, SEP, SPD_STRIDE);
+
+static spd standard_d65 = stand_d65.normalized();
+//
 
 Power get_cie_val(const spd &qlambda, const spd &cie_bar) {
   Power sum = 0.0;
@@ -542,27 +567,27 @@ Power get_cie_val(const spd &qlambda, const spd &rlambda,
 }
 
 Power get_cie_x(const spd &qlambda) {
-  return get_cie_val(qlambda, spd::cie_xbar);
+  return get_cie_val(qlambda, cie_xbar_spd);
 }
 
 Power get_cie_x(const spd &qlambda, const spd &rlambda) {
-  return get_cie_val(qlambda, rlambda, spd::cie_xbar);
+  return get_cie_val(qlambda, rlambda, cie_xbar_spd);
 }
 
 Power get_cie_y(const spd &qlambda) {
-  return get_cie_val(qlambda, spd::cie_ybar);
+  return get_cie_val(qlambda, cie_ybar_spd);
 }
 
 Power get_cie_y(const spd &qlambda, const spd &rlambda) {
-  return get_cie_val(qlambda, rlambda, spd::cie_ybar);
+  return get_cie_val(qlambda, rlambda, cie_ybar_spd);
 }
 
 Power get_cie_z(const spd &qlambda) {
-  return get_cie_val(qlambda, spd::cie_zbar);
+  return get_cie_val(qlambda, cie_zbar_spd);
 }
 
 Power get_cie_z(const spd &qlambda, const spd &rlambda) {
-  return get_cie_val(qlambda, rlambda, spd::cie_zbar);
+  return get_cie_val(qlambda, rlambda, cie_zbar_spd);
 }
 
 void get_cie_values(const spd &qlambda, Power &x, Power &y,
@@ -599,45 +624,6 @@ void get_cie_values(const spd &qlambda, const spd &rlambda,
     xyz = xyz / sum;
   }
 }
-
-auto rho_rspd = spd(CSV_PARENT / "rho-r-2012.csv",
-                    WCOL_NAME, PCOL_NAME, SEP, SPD_STRIDE);
-
-spd spd::rho_r = rho_rspd.normalized();
-
-auto rho_gspd = spd(CSV_PARENT / "rho-g-2012.csv",
-                    WCOL_NAME, PCOL_NAME, SEP, SPD_STRIDE);
-
-spd spd::rho_g = rho_gspd;
-
-auto rho_bspd = spd(CSV_PARENT / "rho-b-2012.csv",
-                    WCOL_NAME, PCOL_NAME, SEP, SPD_STRIDE);
-
-spd spd::rho_b = rho_bspd;
-
-auto cie_xbarspd =
-    spd(CSV_PARENT / "cie-x-bar-1964.csv", WCOL_NAME,
-        PCOL_NAME, SEP, SPD_STRIDE);
-
-spd spd::cie_xbar = cie_xbarspd.normalized();
-
-auto cie_ybarspd =
-    spd(CSV_PARENT / "cie-y-bar-1964.csv", WCOL_NAME,
-        PCOL_NAME, SEP, SPD_STRIDE);
-
-spd spd::cie_ybar = cie_ybarspd.normalized();
-
-auto cie_zbarspd =
-    spd(CSV_PARENT / "cie-z-bar-1964.csv", WCOL_NAME,
-        PCOL_NAME, SEP, SPD_STRIDE);
-
-spd spd::cie_zbar = cie_zbarspd.normalized();
-
-auto stand_d65 = spd(CSV_PARENT / "cie-d65-standard.csv",
-                     WCOL_NAME, PCOL_NAME, SEP, SPD_STRIDE);
-
-spd spd::standard_d65 = stand_d65.normalized();
-//
 
 inline std::ostream &operator<<(std::ostream &out,
                                 const spd &ss) {

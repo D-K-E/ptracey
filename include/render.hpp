@@ -4,6 +4,7 @@
 #include <hittable/hittable.hpp>
 #include <material/material.hpp>
 #include <camera/ray.hpp>
+
 using namespace ptracey;
 namespace ptracey {
 

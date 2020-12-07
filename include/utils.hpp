@@ -93,7 +93,7 @@ void get_uvwprims(T x, T y, T &uprim, T &vprim, T &wprim) {
 }
 
 #define D_CHECK(call)                                      \
-  {                                                        \
+  do {                                                     \
     bool res = call;                                       \
     if (!res) {                                            \
       std::stringstream txt;                               \
@@ -103,10 +103,10 @@ void get_uvwprims(T x, T y, T &uprim, T &vprim, T &wprim) {
           << std::endl;                                    \
       throw std::runtime_error(txt.str());                 \
     }                                                      \
-  }
+  } while (0)
 
 #define COMP_CHECK(call, el1, el2)                         \
-  {                                                        \
+  do {                                                     \
     bool res = call;                                       \
     auto el1v = el1;                                       \
     auto el2v = el2;                                       \
@@ -121,7 +121,7 @@ void get_uvwprims(T x, T y, T &uprim, T &vprim, T &wprim) {
           << std::endl;                                    \
       throw std::runtime_error(txt.str());                 \
     }                                                      \
-  }
+  } while (0)
 
 using fn = std::function<bool(int)>;
 int findInterval(int size, const fn &f) {

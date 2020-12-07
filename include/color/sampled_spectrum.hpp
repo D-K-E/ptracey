@@ -8,60 +8,60 @@
 #include <color/specutils.hpp>
 #include <color/wave.hpp>
 #include <common.hpp>
-#include <utils.hpp>
 #include <math3d/vec3.hpp>
+#include <utils.hpp>
 
 using namespace ptracey;
 namespace ptracey {
 
 spd FromRGB(const vec3 &rgb, SpectrumType type) {
-  spd r = spd::zeros_like(spd::rgbRefl2SpectWhite);
+  spd r = spd::zeros_like(rgbRefl2SpectWhite);
   if (type == SpectrumType::Reflectance) {
     // Convert reflectance spectrum to RGB
     if (rgb.x() <= rgb.y() && rgb.x() <= rgb.z()) {
       // Compute reflectance _SampledSpectrum_ with _rgb[0]_
       // as minimum
-      r += rgb.x() * spd::rgbRefl2SpectWhite.normalized();
+      r += rgb.x() * rgbRefl2SpectWhite.normalized();
       if (rgb.y() <= rgb.z()) {
         r += (rgb.y() - rgb.x()) *
-             spd::rgbRefl2SpectCyan.normalized();
+             rgbRefl2SpectCyan.normalized();
         r += (rgb.z() - rgb.y()) *
-             spd::rgbRefl2SpectBlue.normalized();
+             rgbRefl2SpectBlue.normalized();
       } else {
         r += (rgb.z() - rgb.x()) *
-             spd::rgbRefl2SpectCyan.normalized();
+             rgbRefl2SpectCyan.normalized();
         r += (rgb.y() - rgb.z()) *
-             spd::rgbRefl2SpectGreen.normalized();
+             rgbRefl2SpectGreen.normalized();
       }
     } else if (rgb.y() <= rgb.x() && rgb.y() <= rgb.z()) {
       // Compute reflectance _SampledSpectrum_ with _rgb[1]_
       // as minimum
-      r += rgb.y() * spd::rgbRefl2SpectWhite.normalized();
+      r += rgb.y() * rgbRefl2SpectWhite.normalized();
       if (rgb.x() <= rgb.z()) {
         r += (rgb.x() - rgb.y()) *
-             spd::rgbRefl2SpectMagenta.normalized();
+             rgbRefl2SpectMagenta.normalized();
         r += (rgb.z() - rgb.x()) *
-             spd::rgbRefl2SpectBlue.normalized();
+             rgbRefl2SpectBlue.normalized();
       } else {
         r += (rgb.z() - rgb.y()) *
-             spd::rgbRefl2SpectMagenta.normalized();
+             rgbRefl2SpectMagenta.normalized();
         r += (rgb.x() - rgb.z()) *
-             spd::rgbRefl2SpectRed.normalized();
+             rgbRefl2SpectRed.normalized();
       }
     } else {
       // Compute reflectance _SampledSpectrum_ with _rgb[2]_
       // as minimum
-      r += rgb.z() * spd::rgbRefl2SpectWhite.normalized();
+      r += rgb.z() * rgbRefl2SpectWhite.normalized();
       if (rgb.x() <= rgb.y()) {
         r += (rgb.x() - rgb.z()) *
-             spd::rgbRefl2SpectYellow.normalized();
+             rgbRefl2SpectYellow.normalized();
         r += (rgb.y() - rgb.x()) *
-             spd::rgbRefl2SpectGreen.normalized();
+             rgbRefl2SpectGreen.normalized();
       } else {
         r += (rgb.y() - rgb.z()) *
-             spd::rgbRefl2SpectYellow.normalized();
+             rgbRefl2SpectYellow.normalized();
         r += (rgb.x() - rgb.y()) *
-             spd::rgbRefl2SpectRed.normalized();
+             rgbRefl2SpectRed.normalized();
       }
     }
     r *= .94;
@@ -70,47 +70,47 @@ spd FromRGB(const vec3 &rgb, SpectrumType type) {
     if (rgb.x() <= rgb.y() && rgb.x() <= rgb.z()) {
       // Compute illuminant _SampledSpectrum_ with _rgb[0]_
       // as minimum
-      r += rgb.x() * spd::rgbIllum2SpectWhite.normalized();
+      r += rgb.x() * rgbIllum2SpectWhite.normalized();
       if (rgb.y() <= rgb.z()) {
         r += (rgb.y() - rgb.x()) *
-             spd::rgbIllum2SpectCyan.normalized();
+             rgbIllum2SpectCyan.normalized();
         r += (rgb.z() - rgb.y()) *
-             spd::rgbIllum2SpectBlue.normalized();
+             rgbIllum2SpectBlue.normalized();
       } else {
         r += (rgb.z() - rgb.x()) *
-             spd::rgbIllum2SpectCyan.normalized();
+             rgbIllum2SpectCyan.normalized();
         r += (rgb.y() - rgb.z()) *
-             spd::rgbIllum2SpectGreen.normalized();
+             rgbIllum2SpectGreen.normalized();
       }
     } else if (rgb.y() <= rgb.x() && rgb.y() <= rgb.z()) {
       // Compute illuminant _SampledSpectrum_ with _rgb[1]_
       // as minimum
-      r += rgb.y() * spd::rgbIllum2SpectWhite.normalized();
+      r += rgb.y() * rgbIllum2SpectWhite.normalized();
       if (rgb.x() <= rgb.z()) {
         r += (rgb.x() - rgb.y()) *
-             spd::rgbIllum2SpectMagenta.normalized();
+             rgbIllum2SpectMagenta.normalized();
         r += (rgb.z() - rgb.x()) *
-             spd::rgbIllum2SpectBlue.normalized();
+             rgbIllum2SpectBlue.normalized();
       } else {
         r += (rgb.z() - rgb.y()) *
-             spd::rgbIllum2SpectMagenta.normalized();
+             rgbIllum2SpectMagenta.normalized();
         r += (rgb.x() - rgb.z()) *
-             spd::rgbIllum2SpectRed.normalized();
+             rgbIllum2SpectRed.normalized();
       }
     } else {
       // Compute illuminant _SampledSpectrum_ with _rgb.z()_
       // as minimum
-      r += rgb.z() * spd::rgbIllum2SpectWhite.normalized();
+      r += rgb.z() * rgbIllum2SpectWhite.normalized();
       if (rgb.x() <= rgb.y()) {
         r += (rgb.x() - rgb.z()) *
-             spd::rgbIllum2SpectYellow.normalized();
+             rgbIllum2SpectYellow.normalized();
         r += (rgb.y() - rgb.x()) *
-             spd::rgbIllum2SpectGreen.normalized();
+             rgbIllum2SpectGreen.normalized();
       } else {
         r += (rgb.y() - rgb.z()) *
-             spd::rgbIllum2SpectYellow.normalized();
+             rgbIllum2SpectYellow.normalized();
         r += (rgb.x() - rgb.y()) *
-             spd::rgbIllum2SpectRed.normalized();
+             rgbIllum2SpectRed.normalized();
       }
     }
     r *= 0.86445;
@@ -201,13 +201,13 @@ public:
     auto lg = interp<Real>(rgb.g(), ins, ine, 0.0, 1.0);
     auto lb = interp<Real>(rgb.b(), ins, ine, 0.0, 1.0);
     //
-    auto rho_r_wave = spd::rho_r.powers();
-    auto rho_g_wave = spd::rho_g.powers();
-    auto rho_b_wave = spd::rho_b.powers();
+    auto rho_r_wave = rho_r.powers();
+    auto rho_g_wave = rho_g.powers();
+    auto rho_b_wave = rho_b.powers();
     auto rho = lr * rho_r_wave;
     rho += lg * rho_g_wave;
     rho += lb * rho_b_wave;
-    return spd(rho, spd::rho_r.wavelengths());
+    return spd(rho, rho_r.wavelengths());
   }
 
   spd from_rgb(const vec3 &rgb) {
@@ -249,7 +249,7 @@ public:
     //
     vec3 xyz(0.0);
     if (type == SpectrumType::Reflectance) {
-      get_cie_values(spd::standard_d65, spect, xyz);
+      get_cie_values(standard_d65, spect, xyz);
     } else {
       get_cie_values(spect, xyz);
     }
@@ -261,7 +261,7 @@ public:
   void add(const color &r_color, const WaveLength &w) {
     spect.add(w, r_color.pdata);
   }
-  void scale(Real coeff) {}
+  void scale(Real coeff) { spect *= coeff; }
   vec3 to_rgb() const override {
     vec3 xyz = to_xyz();
     vec3 rgb = xyz2rgb_pbr(xyz);
@@ -272,12 +272,9 @@ public:
     auto wsize = (uint)spect.wavelengths().size();
     auto wstart = spect.wave_start;
     auto wend = spect.wave_end;
-    sX =
-        spd::X.resample_c(wstart, wend, wsize).normalized();
-    sY =
-        spd::Y.resample_c(wstart, wend, wsize).normalized();
-    sZ =
-        spd::Z.resample_c(wstart, wend, wsize).normalized();
+    sX = Xspd.resample_c(wstart, wend, wsize).normalized();
+    sY = Yspd.resample_c(wstart, wend, wsize).normalized();
+    sZ = Zspd.resample_c(wstart, wend, wsize).normalized();
 
     // sRgbRefl2SpectWhite =
     //     spd::rgbRefl2SpectWhite.resample_c(wstart, wend,

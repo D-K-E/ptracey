@@ -47,4 +47,22 @@ void write_color(std::ostream &out, spectrum pix_spec,
       << static_cast<int>(256 * g) << ' '
       << static_cast<int>(256 * b) << std::endl;
 }
+void write_color(
+    const std::vector<std::vector<spectrum>> &imvec,
+    int image_height, int image_width,
+    int samples_per_pixel) {
+  for (int j = image_height - 1; j >= 0; j -= 1) {
+    std::cerr << "\rKalan Tarama Çizgisi:" << ' ' << j
+              << ' ' << std::flush;
+    for (int i = 0; i < image_width; i += 1) {
+      write_color(std::cout, imvec[i][j],
+                  samples_per_pixel);
+    }
+  }
+}
+
+void write_color(
+    const char *fpath,
+    const std::vector<std::vector<spectrum>> &specs,
+    int image_height, int image_width) {}
 }

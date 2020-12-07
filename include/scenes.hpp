@@ -601,13 +601,15 @@ hittable_list model_test3() {
   std::string modelpath =
       "media/models/buddha-head/buddha_head_ma2.obj";
 
-  auto buddha_texture = make_shared<image_texture>(
-      "media/models/buddha-head/buddha_head.jpg");
-  auto buddha_surface =
-      make_shared<lambertian>(buddha_texture);
+  // auto buddha_texture = make_shared<image_texture>(
+  //     "media/models/buddha-head/buddha_head.jpg");
+  // auto buddha_surface =
+  //    make_shared<lambertian>(buddha_texture);
 
-  shared_ptr<hittable> buddha = make_shared<model>(
-      modelpath, modelMat, buddha_surface);
+  // shared_ptr<hittable> buddha = make_shared<model>(
+  //    modelpath, modelMat, buddha_surface);
+  shared_ptr<hittable> buddha =
+      make_shared<model>(modelpath, modelMat);
 
   hittable_list objects;
 
@@ -772,12 +774,12 @@ void choose_scene(int choice, camera &cam,
     break;
   }
   case 12: {
-    world = two_spheres();
+    world = two_spheres2();
     color b_rgb(0.70, 0.80, 1.00);
     // background = sampled_spectrum::fromRgb(
     //    b_rgb, SpectrumType::Reflectance);
     background = spectrum(0.70, 0.80, 1.00);
-    samples_per_pixel = 50;
+    samples_per_pixel = 10;
     max_depth = 10;
     lookfrom = point3(13, 2, 3);
     lookat = point3(0, 0, 0);
