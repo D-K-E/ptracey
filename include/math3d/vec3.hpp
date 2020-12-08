@@ -99,6 +99,29 @@ public:
                 random_real(min, max),
                 random_real(min, max));
   }
+  std::vector<Real> to_vector() const {
+    std::vector<Real> vdata(3);
+    vdata[0] = x();
+    vdata[1] = y();
+    vdata[2] = z();
+    return vdata;
+  }
+  void conditional_set(
+      Real setval, int index,
+      const std::function<bool(Real indval)> &fn) {
+    if (fn(e[index])) {
+      e[index] = setval;
+    }
+  }
+  void conditional_set(
+      Real setval,
+      const std::function<bool(Real indval)> &fn) {
+    for (int index = 0; index < 3; index++) {
+      if (fn(e[index])) {
+        e[index] = setval;
+      }
+    }
+  }
 
 public:
   Real e[3];
@@ -145,7 +168,19 @@ inline Real dot(const vec3 &u, const vec3 &v) {
   return u.e[0] * v.e[0] + u.e[1] * v.e[1] +
          u.e[2] * v.e[2];
 }
-
+vec3 sqrt_vec(const vec3 &v) {
+  auto r = sqrt(v.x());
+  auto g = sqrt(v.y());
+  auto b = sqrt(v.z());
+  vec3 rgb = vec3(r, g, b);
+  return rgb;
+}
+vec3 clamp(const vec3 &v, Real mn, Real mx) {
+  auto r = clamp(v.x(), mn, mx);
+  auto g = clamp(v.y(), mn, mx);
+  auto b = clamp(v.z(), mn, mx);
+  return vec3(r, g, b);
+}
 inline vec3 cross(const vec3 &u, const vec3 &v) {
   return vec3(u.e[1] * v.e[2] - u.e[2] * v.e[1],
               u.e[2] * v.e[0] - u.e[0] * v.e[2],

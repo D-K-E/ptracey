@@ -173,8 +173,14 @@ extern "C" int main(int ac, char **av) {
     InnerRet ret = innerLoop(params);
     fill_imvec(ret, imvec, image_height);
   }
-  write_color(imvec, image_height, image_width,
-              samples_per_pixel);
+  if (spectrum_io) {
+
+    write_color("./imagejs.json", imvec, image_height,
+                image_width, samples_per_pixel);
+  } else {
+    write_color(imvec, image_height, image_width,
+                samples_per_pixel);
+  }
   auto stop = std::chrono::high_resolution_clock::now();
   std::chrono::duration<Real> elapsed = stop - start;
 

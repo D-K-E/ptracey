@@ -21,6 +21,7 @@
 using namespace ptracey;
 namespace ptracey {
 
-typedef rgb_model spectrum;
-// typedef sampled_spectrum spectrum;
+// typedef rgb_model spectrum;
+typedef sampled_spectrum spectrum;
+static bool spectrum_io = true;
 }
