@@ -91,7 +91,10 @@ bool isLittleEndian() {
 void convert_uint_to_bytes_little(uint32_t t,
                                   char bytes[4]) {
   // https://stackoverflow.com/a/3784478/7330813
-  bytes = (char *)&t;
+  char *tchar = (char *)&t;
+  for (int i = 0; i < 4; i++) {
+    bytes[i] = tchar[i];
+  }
 }
 void convert_uint_to_bytes_big(uint32_t t, char bytes[4]) {
   convert_uint_to_bytes_little(t, bytes);
@@ -101,7 +104,10 @@ void convert_uint_to_bytes_big(uint32_t t, char bytes[4]) {
 }
 void convert_float_to_bytes_little(float t, char bytes[4]) {
   // https://stackoverflow.com/a/3784478/7330813
-  bytes = (char *)&t;
+  char *tchar = (char *)&t;
+  for (int i = 0; i < 4; i++) {
+    bytes[i] = tchar[i];
+  }
 }
 void convert_float_to_bytes_big(float t, char bytes[4]) {
   convert_uint_to_bytes_little(t, bytes);

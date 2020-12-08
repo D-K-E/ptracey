@@ -82,6 +82,23 @@ void write_color_spb(
   spb::write_file(fpath, width, height, nb_channels,
                   first_wavelength, wavelength_resolution,
                   last_wavelength, data);
+  bool test_spb = true;
+  if (test_spb) {
+    //
+    std::cout << "width: " << width << std::endl;
+    std::cout << "height: " << height << std::endl;
+    std::cout << "nb channels: " << nb_channels
+              << std::endl;
+    std::cout << "first wave: " << first_wavelength
+              << std::endl;
+    std::cout << "last wave: " << last_wavelength
+              << std::endl;
+    std::cout << "wavelength resolution: "
+              << wavelength_resolution << std::endl;
+    std::vector<std::vector<sampled_spectrum>> sspec;
+    sspec = SpbIo::from_file(fpath);
+    std::cout << "3 specs equal" << std::endl;
+  }
 }
 void write_color_json(
     const char *fpath,

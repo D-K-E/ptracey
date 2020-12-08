@@ -1,12 +1,13 @@
 #pragma once
 
+#include <color/sampled_spectrum.hpp>
+#include <color/spd.hpp>
 #include <color/spectrum.hpp>
-#include <color/specutils.hpp>
 #include <color/specutils.hpp>
 #include <common.hpp>
 #include <string>
 #include <thirdparty/json.hpp>
-#include <thirdparty/spb/spbwriter.hpp>
+#include <thirdparty/spb/spbreader.hpp>
 
 using namespace ptracey;
 using json = nlohmann::json;
@@ -85,6 +86,42 @@ public:
       }
     }
     return vd;
+  }
+  static imspec from_file(const char *path) {
+    uint32_t width, height, nb_channels;
+    float first_wavelength, wavelength_resolution;
+    float last_wavelength;
+    spb::read_header(
+        path, width, height, nb_channels, first_wavelength,
+        wavelength_resolution, last_wavelength);
+    float *data = new float[width * height * nb_channels];
+    spb::read_file(path, width, height, nb_channels, data);
+    float wave_length = first_wavelength;
+    std::vector<WaveLength> wavelengths;
+    while (wave_length < last_wavelength) {
+      wavelengths.push_back((WaveLength)wave_length);
+      wave_length += wavelength_resolution;
+    }
+    //
+    imspec spec(width,
+                std::vector<sampled_spectrum>(height));
+    int imsize = width * height;
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        int xyval = y + x;
+        std::vector<Power> pwrs(nb_channels);
+        for (int j = 0; j < nb_channels; j++) {
+          pwrs[j] = (Power)data[xyval + j];
+        }
+        sampled_wave<Power> spower(pwrs);
+        spd sspd(spower, wavelengths);
+        sampled_spectrum sspec(sspd,
+                               SpectrumType::Reflectance);
+        spec[x][y] = sspec;
+      }
+    }
+    delete[] data;
+    return spec;
   }
 };
 

@@ -106,19 +106,17 @@ void get_sub(unsigned int &start, char arr[4],
     start++;
   }
 }
-void get_sub_ui(unsigned int &start, uint32_t val,
+void get_sub_ui(unsigned int &start, uint32_t &val,
                 char headerInfo[HEADER_SIZE]) {
   char arr[4];
   get_sub(start, arr, headerInfo);
-  std::string s(arr);
-  val = std::stoul(s);
+  val = *(uint32_t *)(arr);
 }
-void get_sub_f(unsigned int &start, float val,
+void get_sub_f(unsigned int &start, float &val,
                char headerInfo[HEADER_SIZE]) {
   char arr[4];
   get_sub(start, arr, headerInfo);
-  std::string s(arr);
-  val = std::stof(s);
+  val = *(float *)(arr);
 }
 void parseFileHeader(char headerInfo[HEADER_SIZE],
                      uint32_t &width, uint32_t &height,
@@ -134,40 +132,51 @@ void parseFileHeader(char headerInfo[HEADER_SIZE],
   get_sub_f(start, wavelength_resolution, headerInfo);
   get_sub_f(start, last_wavelength, headerInfo);
 }
-void getImageData(std::ifstream &file, float *&data,
+void getImageData(std::ifstream &file, float *data,
                   const uint32_t &width,
                   const uint32_t &height,
                   const uint32_t &nb_channels) {
   file.seekg(0);
-  char headerInfo[HEADER_SIZE];
-  get_header(file, headerInfo);
-  file.seekg(HEADER_SIZE);
-  uint32_t total_size = width * height * nb_channels;
+  file.seekg(HEADER_SIZE, file.end);
+  int data_length = file.tellg();
+  char *buffer = new char[data_length];
+  file.read(buffer, data_length);
+  //
   uint32_t stride = 4;
-  data = new float[total_size];
-  uint32_t gpos = HEADER_SIZE;
+  uint32_t total_size = width * height * nb_channels;
+  //
   for (uint32_t pos = 0; pos < total_size; pos++) {
     char arr[stride];
-    file.seekg(gpos);
-    file.read(arr, stride);
-    std::string s(arr);
-    data[pos] = std::stof(s);
-    gpos += stride;
+    for (int i = 0; i < stride; i++) {
+      arr[i] = buffer[pos + i];
+    }
+    data[pos] = *(float *)arr;
   }
+  delete[] buffer;
 }
 
-void read_file(const char *fpath, uint32_t &width,
-               uint32_t &height, uint32_t &nb_channels,
-               float &first_wavelength,
-               float &wavelength_resolution,
-               float &last_wavelength, float *&data) {
+void read_header(const char *fpath, uint32_t &width,
+                 uint32_t &height, uint32_t &nb_channels,
+                 float &first_wavelength,
+                 float &wavelength_resolution,
+                 float &last_wavelength) {
   std::ifstream file;
-  file.open(fpath, std::ifstream::in);
+  file.open(fpath, std::ios::in | std::ios::binary);
   char headerInfo[HEADER_SIZE];
   get_header(file, headerInfo);
+  //
   parseFileHeader(headerInfo, width, height, nb_channels,
                   first_wavelength, wavelength_resolution,
                   last_wavelength);
+  file.close();
+}
+
+void read_file(const char *fpath, const uint32_t &width,
+               const uint32_t &height,
+               const uint32_t &nb_channels, float *data) {
+  //
+  std::ifstream file;
+  file.open(fpath, std::ios::in | std::ios::binary);
   getImageData(file, data, width, height, nb_channels);
   file.close();
 }
