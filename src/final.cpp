@@ -175,7 +175,7 @@ extern "C" int main(int ac, char **av) {
   }
   if (spectrum_io) {
 
-    write_color("./imagejs.json", imvec, image_height,
+    write_color("./imagespec.spb", imvec, image_height,
                 image_width, samples_per_pixel);
   } else {
     write_color(imvec, image_height, image_width,

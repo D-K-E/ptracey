@@ -14,7 +14,8 @@ For the code checkout
 with model loading capabilities of assimp, which is available in 
 [here](https://github.com/assimp/assimp/tree/master)
 
-It has couple of extra features as well:
+
+## Features
 
 - Very simple multi threaded rendering with c++11 `<future>`.
 
@@ -25,6 +26,30 @@ It has couple of extra features as well:
 
 - Spectral Rendering switch.
 
+- Spectral Power Distribution IO in several formats:
+
+  - Json: Dumps spds to a json file as they come out from rendering function.
+    The structure of the json file is quite simple. `x` and `y` denote the
+    placement of image pixel, `values` is the array whose elements are
+    wave length - power value pairs. The first element is the wave length.
+    The second element is the power value. The structure of the io object is
+    very simple. Checkout `spdio.hpp` for more details.
+
+  - Spb: Spectral Binary Format is an acknowledged format by
+    [CIE](http://cie.co.at/publications/multispectral-image-formats). Its
+    [specification](http://multispectral.org/spb/spb_fileformat.pdf) is really
+    simple. The parser I use come from another
+    [project](https://github.com/D-K-E/spbparser) of mine. It is a little
+    rough around edges, but it gets the job done. However, in order to support
+    serialization into .spb we need to resample the image spectra into a more
+    homogeneous structure. Since specification of spb requires that each
+    spectrum needs to have the same amount of wave length resolution and same
+    amount of number of channels (number of channels correspond to number of
+    sampled wave lengths, and wave length resolution corresponds to distance
+    between each wave, if I understood the specification correctly), we do an
+    additional resampling of spectra before passing them to its corresponding
+    io object.
+
 ## In Progress
 
 - Metropolis Light Transport algorithm for rendering
@@ -32,6 +57,8 @@ It has couple of extra features as well:
 - Refactoring...
 
 - Other bsdfs.
+
+- Csv output for spectra.
 
 ## Requirements
 
@@ -41,9 +68,11 @@ It has couple of extra features as well:
 
 - cmake 3+
 
-- rapidcsv for reading csv files (included in headers)
+- [rapidcsv](https://github.com/d99kris/rapidcsv/) for reading csv files (included in headers)
 
 - stb for reading images.
+
+- [Json for Modern C++](https://github.com/nlohmann/json) parser 
 
 ## Building 
 

@@ -73,9 +73,8 @@ values are reflectance values stored as float32.
 #define HEADER_SIZE 27
 #define NB_HEADER_BYTE 4
 
-void put_header(unsigned char hinfo[HEADER_SIZE],
-                uint32_t &start_pos,
-                const unsigned char *put_arr,
+void put_header(char hinfo[HEADER_SIZE],
+                uint32_t &start_pos, const char *put_arr,
                 uint32_t size) {
   for (uint32_t i = 0; i < size; i++) {
     hinfo[start_pos] = put_arr[i];
@@ -90,47 +89,44 @@ bool isLittleEndian() {
   return false;
 }
 void convert_uint_to_bytes_little(uint32_t t,
-                                  unsigned char bytes[4]) {
+                                  char bytes[4]) {
   // https://stackoverflow.com/a/3784478/7330813
-  bytes = (unsigned char *)&t;
+  bytes = (char *)&t;
 }
-void convert_uint_to_bytes_big(uint32_t t,
-                               unsigned char bytes[4]) {
+void convert_uint_to_bytes_big(uint32_t t, char bytes[4]) {
   convert_uint_to_bytes_little(t, bytes);
-  unsigned char last = bytes[3];
+  char last = bytes[3];
   bytes[3] = bytes[0];
   bytes[0] = last;
 }
-void convert_float_to_bytes_little(float t,
-                                   unsigned char bytes[4]) {
+void convert_float_to_bytes_little(float t, char bytes[4]) {
   // https://stackoverflow.com/a/3784478/7330813
-  bytes = (unsigned char *)&t;
+  bytes = (char *)&t;
 }
-void convert_float_to_bytes_big(float t,
-                                unsigned char bytes[4]) {
+void convert_float_to_bytes_big(float t, char bytes[4]) {
   convert_uint_to_bytes_little(t, bytes);
-  unsigned char last = bytes[3];
+  char last = bytes[3];
   bytes[3] = bytes[0];
   bytes[0] = last;
 }
 
-void write_header(unsigned char headerInfo[HEADER_SIZE],
+void write_header(char headerInfo[HEADER_SIZE],
                   uint32_t width, uint32_t height,
                   uint32_t nb_channels,
                   float first_wavelength,
                   float wavelength_resolution,
                   float last_wavelength) {
   //
-  const unsigned char file_h[] = "SPB";
+  const char file_h[] = "SPB";
   uint32_t start = 0;
   put_header(headerInfo, start, file_h, 3);
 
-  unsigned char ws[NB_HEADER_BYTE];
-  unsigned char hs[NB_HEADER_BYTE];
-  unsigned char nb_chs[NB_HEADER_BYTE];
-  unsigned char first_ws[NB_HEADER_BYTE];
-  unsigned char waveres[NB_HEADER_BYTE];
-  unsigned char last_ws[NB_HEADER_BYTE];
+  char ws[NB_HEADER_BYTE];
+  char hs[NB_HEADER_BYTE];
+  char nb_chs[NB_HEADER_BYTE];
+  char first_ws[NB_HEADER_BYTE];
+  char waveres[NB_HEADER_BYTE];
+  char last_ws[NB_HEADER_BYTE];
 
   if (isLittleEndian()) {
     convert_uint_to_bytes_little(width, ws);
@@ -157,14 +153,14 @@ void write_header(unsigned char headerInfo[HEADER_SIZE],
   put_header(headerInfo, start, waveres, NB_HEADER_BYTE);
   put_header(headerInfo, start, last_ws, NB_HEADER_BYTE);
 }
-void write_data(unsigned char *spb_data, uint32_t imsize,
+void write_data(char *spb_data, uint32_t imsize,
                 float *data) {
   auto convfn = isLittleEndian()
                     ? convert_float_to_bytes_little
                     : convert_float_to_bytes_big;
   for (unsigned int i = 0; i < imsize; i++) {
     float d = data[i];
-    unsigned char darr[NB_HEADER_BYTE];
+    char darr[NB_HEADER_BYTE];
     convfn(d, darr);
     unsigned int start = i * 4;
     for (unsigned int k = 0; k < 4; k++) {
@@ -179,15 +175,26 @@ void write_file(const char *path, uint32_t width,
                 float wavelength_resolution,
                 float last_wavelength, float *data) {
   std::ofstream file;
-  file.open(path);
-  unsigned char hinfo[HEADER_SIZE];
+  file.open(path, std::ios::binary | std::ios::out);
+  char hinfo[HEADER_SIZE];
   write_header(hinfo, width, height, nb_channels,
                first_wavelength, wavelength_resolution,
                last_wavelength);
-  unsigned char *spb_data =
-      new unsigned char[width * height * nb_channels * 4];
+  int spb_size = width * height * nb_channels * 4;
+  char *spb_data = new char[spb_size];
   uint32_t imsize = width * height * nb_channels;
   write_data(spb_data, imsize, data);
+  int spb_file_size = spb_size + HEADER_SIZE;
+  char *spb_file = new char[spb_file_size];
+  for (int i = 0; i < HEADER_SIZE; i++) {
+    spb_file[i] = hinfo[i];
+  }
+  for (int i = HEADER_SIZE; i < spb_size; i++) {
+    spb_file[i] = spb_data[i];
+  }
+  file.write(spb_file, spb_file_size);
+  delete[] spb_data;
+  delete[] spb_file;
 }
 }
 
