@@ -195,8 +195,8 @@ void write_file(const char *path, uint32_t width,
   for (int i = 0; i < HEADER_SIZE; i++) {
     spb_file[i] = hinfo[i];
   }
-  for (int i = HEADER_SIZE; i < spb_size; i++) {
-    spb_file[i] = spb_data[i];
+  for (int i = 0; i < spb_size; i++) {
+    spb_file[HEADER_SIZE + i] = spb_data[i];
   }
   file.write(spb_file, spb_file_size);
   delete[] spb_data;

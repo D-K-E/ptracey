@@ -33,6 +33,7 @@
 //
 #include <thirdparty/rapidcsv.hpp>
 //
+#include <thirdparty/json.hpp>
 #include <thirdparty/spb/spbreader.hpp>
 #include <thirdparty/spb/spbwriter.hpp>
 //

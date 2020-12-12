@@ -5,9 +5,6 @@
 #include <color/spectrum.hpp>
 #include <color/specutils.hpp>
 #include <common.hpp>
-#include <string>
-#include <thirdparty/json.hpp>
-#include <thirdparty/spb/spbreader.hpp>
 
 using namespace ptracey;
 using json = nlohmann::json;
@@ -153,6 +150,80 @@ public:
       }
     }
     return obj;
+  }
+};
+
+struct CsvData {
+  std::pair<uint, uint> xy;
+  std::vector<std::pair<Real, Real>> wavelength_power;
+  std::size_t data_size;
+};
+
+class SpdCsvIo {
+public:
+  imspec imgspec;
+  Real antialiasing_coeff;
+  std::vector<CsvData> csvds;
+  std::size_t max_row_size = 0;
+
+public:
+  SpdCsvIo(const imspec &imgs, Real coeff)
+      : imgspec(imgs), antialiasing_coeff(coeff) {
+    csvds = get_csv_data();
+  }
+
+  std::vector<CsvData> get_csv_data() {
+    std::vector<CsvData> datas;
+    for (int y = 0; y < imgspec.size(); y++) {
+      for (int x = 0; x < imgspec[0].size(); x++) {
+        auto sample = imgspec[y][x];
+        auto waves = sample.spect.wavelengths();
+        auto powers = sample.spect.powers();
+        std::vector<std::pair<Real, Real>> pws;
+        for (std::size_t i = 0; i < waves.size(); i++) {
+          pws.push_back(std::pair<Real, Real>(
+              (Real)waves[(uint)i],
+              powers[(uint)i] * antialiasing_coeff));
+        }
+        CsvData csvd;
+        csvd.wavelength_power = pws;
+        csvd.xy = std::pair<uint, uint>((uint)x, (uint)y);
+        csvd.data_size = pws.size();
+        if (csvd.data_size > max_row_size) {
+          max_row_size = csvd.data_size;
+        }
+        datas.push_back(csvd);
+      }
+    }
+    return datas;
+  }
+  std::vector<std::pair<Real, Real>>
+  get_power_row(std::size_t nb_row) {
+    std::vector<std::pair<Real, Real>> row;
+    for (const auto &csvd : csvds) {
+      const auto wpowers = csvd.wavelength_power;
+      if (wpowers.size() <= nb_row) {
+        row.push_back(std::pair<Real, Real>(0.0, 0.0));
+      } else {
+        row.push_back(std::pair<Real, Real>(
+            wpowers[nb_row].first, wpowers[nb_row].second));
+      }
+    }
+    return row;
+  }
+  std::vector<std::pair<uint, uint>> get_first_row() {
+    std::vector<std::pair<uint, uint>> first_row;
+    for (const auto &csvd : csvds) {
+      first_row.push_back(csvd.xy);
+    }
+    return first_row;
+  }
+  std::vector<std::vector<std::pair<Real, Real>>> data() {
+    std::vector<std::vector<std::pair<Real, Real>>> rowds;
+    for (std::size_t i = 0; i < max_row_size; i++) {
+      rowds.push_back(get_power_row(i));
+    }
+    return rowds;
   }
 };
 }

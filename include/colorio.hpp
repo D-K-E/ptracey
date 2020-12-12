@@ -6,6 +6,7 @@
 #include <color/specutils.hpp>
 #include <common.hpp>
 #include <math3d/vec3.hpp>
+#include <sstream>
 #include <stdexcept>
 
 using namespace ptracey;
@@ -85,6 +86,8 @@ void write_color_spb(
   bool test_spb = true;
   if (test_spb) {
     //
+    std::vector<std::vector<sampled_spectrum>> sspec;
+    sspec = SpbIo::from_file(fpath);
     std::cout << "width: " << width << std::endl;
     std::cout << "height: " << height << std::endl;
     std::cout << "nb channels: " << nb_channels
@@ -95,8 +98,6 @@ void write_color_spb(
               << std::endl;
     std::cout << "wavelength resolution: "
               << wavelength_resolution << std::endl;
-    std::vector<std::vector<sampled_spectrum>> sspec;
-    sspec = SpbIo::from_file(fpath);
     std::cout << "3 specs equal" << std::endl;
   }
 }
@@ -112,6 +113,40 @@ void write_color_json(
   o << std::setw(2) << jdata << std::endl;
 }
 
+void write_color_csv(
+    const char *fpath,
+    const std::vector<std::vector<sampled_spectrum>> &specs,
+    int samples_per_pixel) {
+  Real anti_aliasing_scale = 1.0 / (Real)samples_per_pixel;
+  SpdCsvIo sio(specs, anti_aliasing_scale);
+  std::ofstream o(fpath);
+  auto xyrow = sio.get_first_row();
+  std::stringstream ss2;
+  ss2 << std::to_string(xyrow[0].first) << ","
+      << std::to_string(xyrow[0].second);
+  for (std::size_t i = 1; i < xyrow.size(); i++) {
+    ss2 << "," << std::to_string(xyrow[i].first) << ","
+        << std::to_string(xyrow[i].second);
+  }
+  ss2 << std::endl;
+  std::string ssout = ss2.str();
+  o << ssout;
+
+  auto prows = sio.data();
+  for (const auto &row : prows) {
+    std::stringstream ss;
+    ss << std::to_string(row[0].first) << ","
+       << std::to_string(row[0].second);
+    for (std::size_t i = 1; i < row.size(); i++) {
+      ss << "," << std::to_string(row[i].first) << ","
+         << std::to_string(row[i].second);
+    }
+    ss << std::endl;
+    std::string ssout2 = ss.str();
+    o << ssout2;
+  }
+}
+
 void write_color(
     const char *fpath,
     const std::vector<std::vector<sampled_spectrum>> &specs,
@@ -124,6 +159,8 @@ void write_color(
   } else if (fspath.find(".json") != std::string::npos) {
     write_color_json(fpath, specs, image_height,
                      image_width, samples_per_pixel);
+  } else if (fspath.find(".csv") != std::string::npos) {
+    write_color_csv(fpath, specs, samples_per_pixel);
   } else {
     throw std::runtime_error("unknown file format: " +
                              fspath);
