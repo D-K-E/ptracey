@@ -35,6 +35,15 @@ with model loading capabilities of assimp, which is available in
     The second element is the power value. The structure of the io object is
     very simple. Checkout `spdio.hpp` for more details.
 
+  - Csv: Dumps spds to a Comma Separated Value (CSV) file. It should be much
+    more compact than json.  The structure of the file is quite simple. First
+    row is x,y values for pixels. From the second row and below, values under
+    the x column are wavelength values, values under y column are power
+    values. The separator for the csv file is ','. When the length of two spds
+    don't match, we pad the shorter spd with zeros, so that both wavelength
+    value and the associated power value would be zero. This should help to
+    distinguish padded rows from actual values.
+
   - Spb: Spectral Binary Format is an acknowledged format by
     [CIE](http://cie.co.at/publications/multispectral-image-formats). Its
     [specification](http://multispectral.org/spb/spb_fileformat.pdf) is really
@@ -58,25 +67,25 @@ with model loading capabilities of assimp, which is available in
 
 - Other bsdfs.
 
-- Csv output for spectra.
-
 ## Requirements
 
 - Assimp
 
-- c++11+
+- c++17+
 
 - cmake 3+
 
 - [rapidcsv](https://github.com/d99kris/rapidcsv/) for reading csv files (included in headers)
 
-- stb for reading images.
+- [stb](https://github.com/nothings/stb) for reading images.
 
 - [Json for Modern C++](https://github.com/nlohmann/json) parser 
 
 ## Building 
 
-Just create a build directory in the project.
+The only dependency that might be problematic is Assimp.  Just set the
+absolute path to its shared library to AssimpSOPath variable in CMakeLists.txt
+file and proceed regularly that is, once the value of AssimpSOPath is set: 
 
 - `mkdir build`
 
@@ -138,8 +147,9 @@ glass sphere"/>
 <img src="image/im6.png" alt="cornell box with box rotations"/>
 <img src="image/im7.png" alt="cornell box with smoke boxes"/>
 
-Spectral Rendering Output <img src="image/hspec.png" alt="checker texture with
-spheres touching each other in reddish color temparature"/>
+Spectral Rendering Output 
+
+<img src="image/hspec.png" alt="checker texture with spheres touching each other in reddish color temparature"/>
 
 ## A Special Hallmark for #RTKitty
 
