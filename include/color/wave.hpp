@@ -110,7 +110,7 @@ vector
 index.
     \return a new wave where the desired element is changed.
 
-TODO \todo This operation is probably very costly for large
+\todo This operation is probably very costly for large
 samples.
    */
   sampled_wave
@@ -132,7 +132,7 @@ samples.
       \param fn function to be applied to power values
       \return a new wave
 
-TODO: \todo for basic arithmetic operations it might be
+ \todo for basic arithmetic operations it might be
 enough to check for
 minimum and maximum power values for the given function.
    */
@@ -176,7 +176,7 @@ minimum and maximum power values for the given function.
   /**
     \brief add and assign values of given sampled wave
 
-TODO \todo this pointer changes value after this operation.
+\todo this pointer changes value after this operation.
 This
 is probably not
 the intention of the user if she is using += operator.
@@ -189,7 +189,7 @@ the intention of the user if she is using += operator.
   /**
       \brief add and the given power value to this wave.
 
-  TODO \todo this pointer changes value after this
+  \todo this pointer changes value after this
   operation.
   This is probably not
   the intention of the user if she is using += operator.
@@ -227,7 +227,7 @@ the intention of the user if she is using += operator.
   /**
     \brief subtract and assign values of given sampled wave
 
-TODO \todo this pointer changes value after this operation.
+\todo this pointer changes value after this operation.
 This is probably not the intention of the user if she is
 using -= operator.
    */
@@ -240,7 +240,7 @@ using -= operator.
       \brief subtract and the given power value to this
   wave.
 
-  TODO \todo this pointer changes value after this
+  \todo this pointer changes value after this
   operation.  This is
   probably not the intention of the user if she is using -=
   operator.
@@ -294,7 +294,7 @@ using -= operator.
       \brief multiply and assign values of given sampled
   wave
 
-  TODO \todo this pointer changes value after this
+  \todo this pointer changes value after this
   operation.
   This
   is probably not
@@ -307,10 +307,10 @@ using -= operator.
     return wave;
   }
   /**
-      \brief multiply and the given power value to this
+    \brief multiply and the given power value to this
   wave.
 
-  TODO \todo this pointer changes value after this
+  \todo this pointer changes value after this
   operation.
   This is probably not
   the intention of the user if she is using *= operator.
@@ -348,9 +348,9 @@ using -= operator.
   /**
     \brief divide and assign values of given sampled wave
 
-TODO \todo this pointer changes value after this operation.
-This is probably not the intention of the user if she is
-using /= operator.
+    \todo this pointer changes value after this operation.
+    This is probably not the intention of the user if she is
+    using /= operator.
    */
   sampled_wave &operator/=(const sampled_wave &s) {
     D_CHECK(!s.has_zeros());
@@ -362,7 +362,7 @@ using /= operator.
       \brief divide and the given power value to this
   wave.
 
-  TODO \todo this pointer changes value after this
+  \todo this pointer changes value after this
   operation. This is probably not the intention of the user
   if she is using /= operator.
   */
@@ -372,10 +372,10 @@ using /= operator.
         apply(s, [](auto i, auto j) { return i / j; });
     return wave;
   }
+
   /**
     \brief divide two same sized sampled waves
   */
-
   sampled_wave operator/(const sampled_wave &s) const {
     D_CHECK(!s.has_zeros());
     auto wave =
@@ -383,10 +383,10 @@ using /= operator.
     return wave;
   }
   /**
-      \brief divide power value from this wave
+    \brief divide power value from this wave
 
-      \param s value to divide
-      We check if s is 0 then perform the division.
+    \param s value to divide
+    We check if s is 0 then perform the division.
   */
   sampled_wave operator/(const T &s) const {
     D_CHECK(s != 0.0);
@@ -470,7 +470,8 @@ using /= operator.
         },
         0.0);
   }
-  /** \brief reduce sampled wave by multiplication*/
+  /** \brief reduce sampled wave by multiplication
+   */
   T product() const {
     return reduce(
         [](T counter_value, T element) {
