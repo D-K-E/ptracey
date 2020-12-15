@@ -31,10 +31,11 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <thirdparty/stb_image.h>
 //
-#include <thirdparty/rapidcsv.hpp>
-//
+#include <thirdparty/Eigen/Dense>
 #include <thirdparty/json.hpp>
+#include <thirdparty/rapidcsv.hpp>
 #include <thirdparty/spb/spbreader.hpp>
 #include <thirdparty/spb/spbwriter.hpp>
+//
 //
 #define THREAD_NB 5
