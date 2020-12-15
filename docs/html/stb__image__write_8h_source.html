@@ -923,14 +923,14 @@ $(function() {
 <div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160; </div>
 <div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160;<span class="keyword">static</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> stbiw__zhash(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *data)</div>
 <div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160;{</div>
-<div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160;   stbiw_uint32 hash = data[0] + (data[1] &lt;&lt; 8) + (data[2] &lt;&lt; 16);</div>
-<div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160;   hash ^= hash &lt;&lt; 3;</div>
-<div class="line"><a name="l00858"></a><span class="lineno">  858</span>&#160;   hash += hash &gt;&gt; 5;</div>
-<div class="line"><a name="l00859"></a><span class="lineno">  859</span>&#160;   hash ^= hash &lt;&lt; 4;</div>
-<div class="line"><a name="l00860"></a><span class="lineno">  860</span>&#160;   hash += hash &gt;&gt; 17;</div>
-<div class="line"><a name="l00861"></a><span class="lineno">  861</span>&#160;   hash ^= hash &lt;&lt; 25;</div>
-<div class="line"><a name="l00862"></a><span class="lineno">  862</span>&#160;   hash += hash &gt;&gt; 6;</div>
-<div class="line"><a name="l00863"></a><span class="lineno">  863</span>&#160;   <span class="keywordflow">return</span> hash;</div>
+<div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160;   stbiw_uint32 <a class="code" href="namespacenlohmann_1_1detail.html#a679e5e522ac6afa5d5923292fab450b8">hash</a> = data[0] + (data[1] &lt;&lt; 8) + (data[2] &lt;&lt; 16);</div>
+<div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160;   <a class="code" href="namespacenlohmann_1_1detail.html#a679e5e522ac6afa5d5923292fab450b8">hash</a> ^= <a class="code" href="namespacenlohmann_1_1detail.html#a679e5e522ac6afa5d5923292fab450b8">hash</a> &lt;&lt; 3;</div>
+<div class="line"><a name="l00858"></a><span class="lineno">  858</span>&#160;   <a class="code" href="namespacenlohmann_1_1detail.html#a679e5e522ac6afa5d5923292fab450b8">hash</a> += <a class="code" href="namespacenlohmann_1_1detail.html#a679e5e522ac6afa5d5923292fab450b8">hash</a> &gt;&gt; 5;</div>
+<div class="line"><a name="l00859"></a><span class="lineno">  859</span>&#160;   <a class="code" href="namespacenlohmann_1_1detail.html#a679e5e522ac6afa5d5923292fab450b8">hash</a> ^= <a class="code" href="namespacenlohmann_1_1detail.html#a679e5e522ac6afa5d5923292fab450b8">hash</a> &lt;&lt; 4;</div>
+<div class="line"><a name="l00860"></a><span class="lineno">  860</span>&#160;   <a class="code" href="namespacenlohmann_1_1detail.html#a679e5e522ac6afa5d5923292fab450b8">hash</a> += <a class="code" href="namespacenlohmann_1_1detail.html#a679e5e522ac6afa5d5923292fab450b8">hash</a> &gt;&gt; 17;</div>
+<div class="line"><a name="l00861"></a><span class="lineno">  861</span>&#160;   <a class="code" href="namespacenlohmann_1_1detail.html#a679e5e522ac6afa5d5923292fab450b8">hash</a> ^= <a class="code" href="namespacenlohmann_1_1detail.html#a679e5e522ac6afa5d5923292fab450b8">hash</a> &lt;&lt; 25;</div>
+<div class="line"><a name="l00862"></a><span class="lineno">  862</span>&#160;   <a class="code" href="namespacenlohmann_1_1detail.html#a679e5e522ac6afa5d5923292fab450b8">hash</a> += <a class="code" href="namespacenlohmann_1_1detail.html#a679e5e522ac6afa5d5923292fab450b8">hash</a> &gt;&gt; 6;</div>
+<div class="line"><a name="l00863"></a><span class="lineno">  863</span>&#160;   <span class="keywordflow">return</span> <a class="code" href="namespacenlohmann_1_1detail.html#a679e5e522ac6afa5d5923292fab450b8">hash</a>;</div>
 <div class="line"><a name="l00864"></a><span class="lineno">  864</span>&#160;}</div>
 <div class="line"><a name="l00865"></a><span class="lineno">  865</span>&#160; </div>
 <div class="line"><a name="l00866"></a><span class="lineno">  866</span>&#160;<span class="preprocessor">#define stbiw__zlib_flush() (out = stbiw__zlib_flushf(out, &amp;bitbuf, &amp;bitcount))</span></div>
@@ -1759,6 +1759,7 @@ $(function() {
 <div class="line"><a name="l01689"></a><span class="lineno"> 1689</span>&#160;<span class="comment">------------------------------------------------------------------------------</span></div>
 <div class="line"><a name="l01690"></a><span class="lineno"> 1690</span>&#160;<span class="comment">*/</span></div>
 </div><!-- fragment --></div><!-- contents -->
+<div class="ttc" id="anamespacenlohmann_1_1detail_html_a679e5e522ac6afa5d5923292fab450b8"><div class="ttname"><a href="namespacenlohmann_1_1detail.html#a679e5e522ac6afa5d5923292fab450b8">nlohmann::detail::hash</a></div><div class="ttdeci">std::size_t hash(const BasicJsonType &amp;j)</div><div class="ttdoc">hash a JSON value</div><div class="ttdef"><b>Definition:</b> json.hpp:4680</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

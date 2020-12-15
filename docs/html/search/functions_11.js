@@ -1,10 +1,4 @@
 var searchData=
 [
-  ['unregisterexporter_1572',['UnregisterExporter',['../classAssimp_1_1Exporter.html#afa5956ce18138b90396c505468d1e52b',1,'Assimp::Exporter']]],
-  ['unregisterloader_1573',['UnregisterLoader',['../classAssimp_1_1Importer.html#a3b1f5af2c763b13aca0f324b19001722',1,'Assimp::Importer']]],
-  ['unregisterppstep_1574',['UnregisterPPStep',['../classAssimp_1_1Importer.html#a3a683671c7c40638b1103c5d3648d86c',1,'Assimp::Importer']]],
-  ['update_1575',['Update',['../classAssimp_1_1ProgressHandler.html#ab08a1d300d434f6dd86ca41747cba448',1,'Assimp::ProgressHandler']]],
-  ['updatefileread_1576',['UpdateFileRead',['../classAssimp_1_1ProgressHandler.html#a0c867692ee9d1e25dec1e2f08fb5e20d',1,'Assimp::ProgressHandler']]],
-  ['updatefilewrite_1577',['UpdateFileWrite',['../classAssimp_1_1ProgressHandler.html#a9e20cd6efa21bb174e1185c6737405e9',1,'Assimp::ProgressHandler']]],
-  ['updatepostprocess_1578',['UpdatePostProcess',['../classAssimp_1_1ProgressHandler.html#a57b30d2a9b2ae1f932918f18c30196ed',1,'Assimp::ProgressHandler']]]
+  ['quaternion_8225',['Quaternion',['../classEigen_1_1Quaternion.html#a7f8e93e2615e56344fd0d89c2916f9be',1,'Eigen::Quaternion::Quaternion()'],['../classEigen_1_1Quaternion.html#a90c179492cd3ca296c85815e20773d60',1,'Eigen::Quaternion::Quaternion(const Scalar &amp;w, const Scalar &amp;x, const Scalar &amp;y, const Scalar &amp;z)'],['../classEigen_1_1Quaternion.html#abb9e33e5d10806b5bc8b0683e94e8f72',1,'Eigen::Quaternion::Quaternion(const Scalar *data)'],['../classEigen_1_1Quaternion.html#a272ce2dc4e30e6e0d68f455c7b1cc407',1,'Eigen::Quaternion::Quaternion(const QuaternionBase&lt; Derived &gt; &amp;other)'],['../classEigen_1_1Quaternion.html#a7ce40a727b6532e52d7d58d399328ce7',1,'Eigen::Quaternion::Quaternion(const AngleAxisType &amp;aa)'],['../classEigen_1_1Quaternion.html#a3a7ed649b5c8c80ec7e78baf1ed0ba4c',1,'Eigen::Quaternion::Quaternion(const MatrixBase&lt; Derived &gt; &amp;other)'],['../classEigen_1_1Quaternion.html#af6430466427b40d7ed79bfb6818cccc2',1,'Eigen::Quaternion::Quaternion(const Quaternion&lt; OtherScalar, OtherOptions &gt; &amp;other)']]]
 ];

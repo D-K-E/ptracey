@@ -61,7 +61,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_6ae583b193843763738887ac89f8eec7.html">material</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -71,10 +71,10 @@ $(function() {
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;common.hpp&gt;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;pdf.hpp&gt;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;spectrum.hpp&gt;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;texture.hpp&gt;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;color/spectrum.hpp&gt;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;common.hpp&gt;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;hittable/pdf.hpp&gt;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;texture/texture.hpp&gt;</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;utils.hpp&gt;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">using namespace </span>ptracey;</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">namespace </span>ptracey {</div>
@@ -82,67 +82,67 @@ $(function() {
 <div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="structptracey_1_1scatter__record.html">   11</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structptracey_1_1scatter__record.html">scatter_record</a> {</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;  <a class="code" href="classptracey_1_1ray.html">ray</a> specular_ray;</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;  <span class="keywordtype">bool</span> is_specular;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  shared_ptr&lt;spectrum&gt; attenuation;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  <a class="code" href="structptracey_1_1color.html">color</a> attenuation;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;  shared_ptr&lt;pdf&gt; pdf_ptr;</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;};</div>
 <div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="classptracey_1_1material.html">   17</a></span>&#160;<span class="keyword">class </span><a class="code" href="classptracey_1_1material.html">material</a> {</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;  <span class="keyword">virtual</span> shared_ptr&lt;spectrum&gt;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  emitted(<span class="keyword">const</span> <a class="code" href="classptracey_1_1ray.html">ray</a> &amp;r_in, <span class="keyword">const</span> <a class="code" href="structptracey_1_1hit__record.html">hit_record</a> &amp;rec, Real u,</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;          Real v, <span class="keyword">const</span> <a class="code" href="classptracey_1_1vec3.html">point3</a> &amp;p)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keywordflow">return</span> make_shared&lt;spectrum&gt;(0.0);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="structptracey_1_1color.html">color</a> emitted(<span class="keyword">const</span> <a class="code" href="classptracey_1_1ray.html">ray</a> &amp;r_in,</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;                        <span class="keyword">const</span> <a class="code" href="structptracey_1_1hit__record.html">hit_record</a> &amp;rec, Real u,</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;                        Real v, <span class="keyword">const</span> <a class="code" href="classptracey_1_1vec3.html">point3</a> &amp;p)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structptracey_1_1color.html">color</a>(0.0);</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;  }</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> scatter(<span class="keyword">const</span> <a class="code" href="classptracey_1_1ray.html">ray</a> &amp;r_in,</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;                       <span class="keyword">const</span> <a class="code" href="structptracey_1_1hit__record.html">hit_record</a> &amp;rec,</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;                       <a class="code" href="structptracey_1_1scatter__record.html">scatter_record</a> &amp;srec)<span class="keyword"> const </span>{</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  }</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">double</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  scattering_pdf(<span class="keyword">const</span> <a class="code" href="classptracey_1_1ray.html">ray</a> &amp;r_in, <span class="keyword">const</span> <a class="code" href="structptracey_1_1hit__record.html">hit_record</a> &amp;rec,</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;                 <span class="keyword">const</span> <a class="code" href="classptracey_1_1ray.html">ray</a> &amp;scattered)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  <span class="keyword">virtual</span> Real scattering_pdf(<span class="keyword">const</span> <a class="code" href="classptracey_1_1ray.html">ray</a> &amp;r_in,</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;                              <span class="keyword">const</span> <a class="code" href="structptracey_1_1hit__record.html">hit_record</a> &amp;rec,</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;                              <span class="keyword">const</span> <a class="code" href="classptracey_1_1ray.html">ray</a> &amp;scattered)<span class="keyword"> const </span>{</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keywordflow">return</span> 0.0;</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  }</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;};</div>
 <div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="classptracey_1_1lambertian.html">   35</a></span>&#160;<span class="keyword">class </span><a class="code" href="classptracey_1_1lambertian.html">lambertian</a> : <span class="keyword">public</span> <a class="code" href="classptracey_1_1material.html">material</a> {</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <a class="code" href="classptracey_1_1lambertian.html">lambertian</a>(<span class="keyword">const</span> shared_ptr&lt;spectrum&gt; &amp;a)</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <a class="code" href="classptracey_1_1lambertian.html">lambertian</a>(<span class="keyword">const</span> <a class="code" href="classptracey_1_1sampled__spectrum.html">spectrum</a> &amp;a)</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;      : albedo(make_shared&lt;solid_color&gt;(a)) {}</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <a class="code" href="classptracey_1_1lambertian.html">lambertian</a>(shared_ptr&lt;texture&gt; a) : albedo(a) {}</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <span class="keywordtype">bool</span> scatter(<span class="keyword">const</span> <a class="code" href="classptracey_1_1ray.html">ray</a> &amp;r_in, <span class="keyword">const</span> <a class="code" href="structptracey_1_1hit__record.html">hit_record</a> &amp;rec,</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;               <a class="code" href="structptracey_1_1scatter__record.html">scatter_record</a> &amp;srec)<span class="keyword"> const override </span>{</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    srec.is_specular = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    srec.attenuation = albedo-&gt;value(rec.u, rec.v, rec.p);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    srec.pdf_ptr = make_shared&lt;cosine_pdf&gt;(rec.normal);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  }</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="keywordtype">double</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  scattering_pdf(<span class="keyword">const</span> <a class="code" href="classptracey_1_1ray.html">ray</a> &amp;r_in, <span class="keyword">const</span> <a class="code" href="structptracey_1_1hit__record.html">hit_record</a> &amp;rec,</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                 <span class="keyword">const</span> <a class="code" href="classptracey_1_1ray.html">ray</a> &amp;scattered)<span class="keyword"> const override </span>{</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">auto</span> cosine =</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        dot(rec.normal, unit_vector(scattered.direction()));</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordflow">return</span> cosine &lt; 0 ? 0 : cosine / M_PI;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  }</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  shared_ptr&lt;texture&gt; albedo;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;};</div>
-<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="classptracey_1_1metal.html">   58</a></span>&#160;<span class="keyword">class </span><a class="code" href="classptracey_1_1metal.html">metal</a> : <span class="keyword">public</span> <a class="code" href="classptracey_1_1material.html">material</a> {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <a class="code" href="classptracey_1_1metal.html">metal</a>(<span class="keyword">const</span> shared_ptr&lt;spectrum&gt; &amp;a, Real f)</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      : albedo(make_shared&lt;solid_color&gt;(a)),</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        fuzz(f &lt; 1 ? f : 1) {}</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordtype">bool</span> scatter(<span class="keyword">const</span> <a class="code" href="classptracey_1_1ray.html">ray</a> &amp;r_in, <span class="keyword">const</span> <a class="code" href="structptracey_1_1hit__record.html">hit_record</a> &amp;rec,</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;               <a class="code" href="structptracey_1_1scatter__record.html">scatter_record</a> &amp;srec)<span class="keyword"> const override </span>{</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <a class="code" href="classptracey_1_1vec3.html">vec3</a> reflected =</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        reflect(unit_vector(r_in.direction()), rec.normal);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    srec.specular_ray = <a class="code" href="classptracey_1_1ray.html">ray</a>(</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        rec.p, reflected + fuzz * random_in_unit_sphere(),</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        r_in.time(), r_in.wavelength());</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    shared_ptr&lt;spectrum&gt; rspect = rec.spec_ptr;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    shared_ptr&lt;spectrum&gt; spect =</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        albedo-&gt;value(rec.u, rec.v, rec.p);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    srec.attenuation = spect;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    srec.attenuation = albedo-&gt;value(rec.u, rec.v, rec.p,</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                                     r_in.wavelength());</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    srec.pdf_ptr = make_shared&lt;cosine_pdf&gt;(rec.normal);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  }</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  Real scattering_pdf(<span class="keyword">const</span> <a class="code" href="classptracey_1_1ray.html">ray</a> &amp;r_in,</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                      <span class="keyword">const</span> <a class="code" href="structptracey_1_1hit__record.html">hit_record</a> &amp;rec,</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                      <span class="keyword">const</span> <a class="code" href="classptracey_1_1ray.html">ray</a> &amp;scattered)<span class="keyword"> const override </span>{</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">auto</span> cosine =</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        dot(rec.normal, unit_vector(scattered.direction()));</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordflow">return</span> cosine &lt; 0 ? 0 : cosine / M_PI;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  }</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  shared_ptr&lt;texture&gt; albedo;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;};</div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="classptracey_1_1metal.html">   59</a></span>&#160;<span class="keyword">class </span><a class="code" href="classptracey_1_1metal.html">metal</a> : <span class="keyword">public</span> <a class="code" href="classptracey_1_1material.html">material</a> {</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <a class="code" href="classptracey_1_1metal.html">metal</a>(<span class="keyword">const</span> <a class="code" href="classptracey_1_1sampled__spectrum.html">spectrum</a> &amp;a, Real f)</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      : albedo(make_shared&lt;solid_color&gt;(a)),</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        fuzz(f &lt; 1 ? f : 1) {}</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordtype">bool</span> scatter(<span class="keyword">const</span> <a class="code" href="classptracey_1_1ray.html">ray</a> &amp;r_in, <span class="keyword">const</span> <a class="code" href="structptracey_1_1hit__record.html">hit_record</a> &amp;rec,</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;               <a class="code" href="structptracey_1_1scatter__record.html">scatter_record</a> &amp;srec)<span class="keyword"> const override </span>{</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <a class="code" href="classptracey_1_1vec3.html">vec3</a> reflected =</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        reflect(unit_vector(r_in.direction()), rec.normal);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    srec.specular_ray = <a class="code" href="classptracey_1_1ray.html">ray</a>(</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        rec.p, reflected + fuzz * random_in_unit_sphere(),</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        r_in.time(), r_in.wavelength());</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    srec.attenuation =</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        albedo-&gt;value(rec.u, rec.v, rec.p,</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                      srec.specular_ray.wavelength());</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    srec.is_specular = <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    srec.pdf_ptr = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
@@ -161,8 +161,8 @@ $(function() {
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;               <a class="code" href="structptracey_1_1scatter__record.html">scatter_record</a> &amp;srec)<span class="keyword"> const override </span>{</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    srec.is_specular = <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    srec.pdf_ptr = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <a class="code" href="classptracey_1_1color.html">color</a> white_rgb(1.0);</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    srec.attenuation = make_shared&lt;spectrum&gt;(1.0);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <a class="code" href="structptracey_1_1color.html">color</a> white(1.0);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    srec.attenuation = white;</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    Real refraction_ratio =</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        rec.front_face ? (1.0 / ir) : ir;</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
@@ -202,15 +202,15 @@ $(function() {
 <div class="line"><a name="l00131"></a><span class="lineno"><a class="line" href="classptracey_1_1diffuse__light.html">  131</a></span>&#160;<span class="keyword">class </span><a class="code" href="classptracey_1_1diffuse__light.html">diffuse_light</a> : <span class="keyword">public</span> <a class="code" href="classptracey_1_1material.html">material</a> {</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  <a class="code" href="classptracey_1_1diffuse__light.html">diffuse_light</a>(shared_ptr&lt;texture&gt; a) : emit(a) {}</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  <a class="code" href="classptracey_1_1diffuse__light.html">diffuse_light</a>(shared_ptr&lt;spectrum&gt; c)</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  <a class="code" href="classptracey_1_1diffuse__light.html">diffuse_light</a>(<span class="keyword">const</span> <a class="code" href="classptracey_1_1sampled__spectrum.html">spectrum</a> &amp;c)</div>
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;      : emit(make_shared&lt;solid_color&gt;(c)) {}</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160; </div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;  shared_ptr&lt;spectrum&gt;</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;  emitted(<span class="keyword">const</span> <a class="code" href="classptracey_1_1ray.html">ray</a> &amp;r_in, <span class="keyword">const</span> <a class="code" href="structptracey_1_1hit__record.html">hit_record</a> &amp;rec, Real u,</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;          Real v, <span class="keyword">const</span> <a class="code" href="classptracey_1_1vec3.html">point3</a> &amp;p)<span class="keyword"> const override </span>{</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;  <a class="code" href="structptracey_1_1color.html">color</a> emitted(<span class="keyword">const</span> <a class="code" href="classptracey_1_1ray.html">ray</a> &amp;r_in, <span class="keyword">const</span> <a class="code" href="structptracey_1_1hit__record.html">hit_record</a> &amp;rec,</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;                Real u, Real v,</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;                <span class="keyword">const</span> <a class="code" href="classptracey_1_1vec3.html">point3</a> &amp;p)<span class="keyword"> const override </span>{</div>
 <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="keywordflow">if</span> (!rec.front_face)</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;      <span class="keywordflow">return</span> make_shared&lt;spectrum&gt;(0.0);</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <span class="keywordflow">return</span> emit-&gt;value(u, v, p);</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="structptracey_1_1color.html">color</a>(0.0);</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <span class="keywordflow">return</span> emit-&gt;value(u, v, p, r_in.wavelength());</div>
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;  }</div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160; </div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="keyword">public</span>:</div>
@@ -218,7 +218,7 @@ $(function() {
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;};</div>
 <div class="line"><a name="l00148"></a><span class="lineno"><a class="line" href="classptracey_1_1isotropic.html">  148</a></span>&#160;<span class="keyword">class </span><a class="code" href="classptracey_1_1isotropic.html">isotropic</a> : <span class="keyword">public</span> <a class="code" href="classptracey_1_1material.html">material</a> {</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  <a class="code" href="classptracey_1_1isotropic.html">isotropic</a>(shared_ptr&lt;spectrum&gt; c)</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  <a class="code" href="classptracey_1_1isotropic.html">isotropic</a>(<span class="keyword">const</span> <a class="code" href="classptracey_1_1sampled__spectrum.html">spectrum</a> &amp;c)</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;      : albedo(make_shared&lt;solid_color&gt;(c)) {}</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;  <a class="code" href="classptracey_1_1isotropic.html">isotropic</a>(shared_ptr&lt;texture&gt; a) : albedo(a) {}</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160; </div>
@@ -226,25 +226,28 @@ $(function() {
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;               <a class="code" href="structptracey_1_1scatter__record.html">scatter_record</a> &amp;srec)<span class="keyword"> const override </span>{</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    srec.specular_ray = <a class="code" href="classptracey_1_1ray.html">ray</a>(rec.p, random_in_unit_sphere(),</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;                            r_in.time(), r_in.wavelength());</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    srec.attenuation = albedo-&gt;value(rec.u, rec.v, rec.p);</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    srec.is_specular = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    srec.pdf_ptr = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;  }</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;  shared_ptr&lt;texture&gt; albedo;</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;};</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;}</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    srec.attenuation =</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        albedo-&gt;value(rec.u, rec.v, rec.p,</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                      srec.specular_ray.wavelength());</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    srec.is_specular = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    srec.pdf_ptr = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;  }</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;  shared_ptr&lt;texture&gt; albedo;</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;};</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassptracey_1_1diffuse__light_html"><div class="ttname"><a href="classptracey_1_1diffuse__light.html">ptracey::diffuse_light</a></div><div class="ttdef"><b>Definition:</b> material.hpp:131</div></div>
-<div class="ttc" id="aclassptracey_1_1ray_html"><div class="ttname"><a href="classptracey_1_1ray.html">ptracey::ray</a></div><div class="ttdef"><b>Definition:</b> ray.hpp:6</div></div>
-<div class="ttc" id="astructptracey_1_1hit__record_html"><div class="ttname"><a href="structptracey_1_1hit__record.html">ptracey::hit_record</a></div><div class="ttdef"><b>Definition:</b> hittable.hpp:12</div></div>
-<div class="ttc" id="aclassptracey_1_1color_html"><div class="ttname"><a href="classptracey_1_1color.html">ptracey::color</a></div><div class="ttdef"><b>Definition:</b> spectrum.hpp:48</div></div>
+<div class="ttc" id="aclassptracey_1_1ray_html"><div class="ttname"><a href="classptracey_1_1ray.html">ptracey::ray</a></div><div class="ttdef"><b>Definition:</b> ray.hpp:8</div></div>
+<div class="ttc" id="astructptracey_1_1hit__record_html"><div class="ttname"><a href="structptracey_1_1hit__record.html">ptracey::hit_record</a></div><div class="ttdef"><b>Definition:</b> hittable.hpp:11</div></div>
 <div class="ttc" id="aclassptracey_1_1lambertian_html"><div class="ttname"><a href="classptracey_1_1lambertian.html">ptracey::lambertian</a></div><div class="ttdef"><b>Definition:</b> material.hpp:35</div></div>
-<div class="ttc" id="aclassptracey_1_1metal_html"><div class="ttname"><a href="classptracey_1_1metal.html">ptracey::metal</a></div><div class="ttdef"><b>Definition:</b> material.hpp:58</div></div>
+<div class="ttc" id="aclassptracey_1_1metal_html"><div class="ttname"><a href="classptracey_1_1metal.html">ptracey::metal</a></div><div class="ttdef"><b>Definition:</b> material.hpp:59</div></div>
 <div class="ttc" id="astructptracey_1_1scatter__record_html"><div class="ttname"><a href="structptracey_1_1scatter__record.html">ptracey::scatter_record</a></div><div class="ttdef"><b>Definition:</b> material.hpp:11</div></div>
 <div class="ttc" id="aclassptracey_1_1vec3_html"><div class="ttname"><a href="classptracey_1_1vec3.html">ptracey::vec3</a></div><div class="ttdef"><b>Definition:</b> vec3.hpp:7</div></div>
+<div class="ttc" id="aclassptracey_1_1sampled__spectrum_html"><div class="ttname"><a href="classptracey_1_1sampled__spectrum.html">ptracey::sampled_spectrum</a></div><div class="ttdef"><b>Definition:</b> sampled_spectrum.hpp:126</div></div>
+<div class="ttc" id="astructptracey_1_1color_html"><div class="ttname"><a href="structptracey_1_1color.html">ptracey::color</a></div><div class="ttdef"><b>Definition:</b> color.hpp:9</div></div>
 <div class="ttc" id="aclassptracey_1_1dielectric_html"><div class="ttname"><a href="classptracey_1_1dielectric.html">ptracey::dielectric</a></div><div class="ttdef"><b>Definition:</b> material.hpp:84</div></div>
 <div class="ttc" id="aclassptracey_1_1isotropic_html"><div class="ttname"><a href="classptracey_1_1isotropic.html">ptracey::isotropic</a></div><div class="ttdef"><b>Definition:</b> material.hpp:148</div></div>
 <div class="ttc" id="aclassptracey_1_1material_html"><div class="ttname"><a href="classptracey_1_1material.html">ptracey::material</a></div><div class="ttdef"><b>Definition:</b> material.hpp:17</div></div>

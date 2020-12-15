@@ -74,107 +74,131 @@ $(function() {
 <div class="title">ptracey::sampled_wave&lt; T &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>a wave sample representing a continuous wave in discreet form  
+ <a href="classptracey_1_1sampled__wave.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="wave_8hpp_source.html">wave.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a26085338bc2bd80d5eb88954f0dda305"><td class="memItemLeft" align="right" valign="top"><a id="a26085338bc2bd80d5eb88954f0dda305"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>sampled_wave</b> (T val, unsigned int size)</td></tr>
+<tr class="memitem:a26085338bc2bd80d5eb88954f0dda305"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#a26085338bc2bd80d5eb88954f0dda305">sampled_wave</a> (T val, unsigned int <a class="el" href="classptracey_1_1sampled__wave.html#ad3497b355f9f524784801dad77542b8b">size</a>)</td></tr>
+<tr class="memdesc:a26085338bc2bd80d5eb88954f0dda305"><td class="mdescLeft">&#160;</td><td class="mdescRight">a constant value constructor  <a href="classptracey_1_1sampled__wave.html#a26085338bc2bd80d5eb88954f0dda305">More...</a><br /></td></tr>
 <tr class="separator:a26085338bc2bd80d5eb88954f0dda305"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6b70c87ee68d383a70ada9c31ce4dce"><td class="memItemLeft" align="right" valign="top"><a id="ad6b70c87ee68d383a70ada9c31ce4dce"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>sampled_wave</b> (std::vector&lt; T &gt; vals)</td></tr>
-<tr class="separator:ad6b70c87ee68d383a70ada9c31ce4dce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec49fab5103a999b6dc5d273276239fc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#aec49fab5103a999b6dc5d273276239fc">sampled_wave</a> (const std::vector&lt; T &gt; &amp;vals)</td></tr>
+<tr class="memdesc:aec49fab5103a999b6dc5d273276239fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">directly construct from given values.  <a href="classptracey_1_1sampled__wave.html#aec49fab5103a999b6dc5d273276239fc">More...</a><br /></td></tr>
+<tr class="separator:aec49fab5103a999b6dc5d273276239fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa6c782c40922493ce5b812235b71d562"><td class="memItemLeft" align="right" valign="top"><a id="aa6c782c40922493ce5b812235b71d562"></a>
-T&#160;</td><td class="memItemRight" valign="bottom"><b>max</b> () const</td></tr>
+T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#aa6c782c40922493ce5b812235b71d562">max</a> () const</td></tr>
+<tr class="memdesc:aa6c782c40922493ce5b812235b71d562"><td class="mdescLeft">&#160;</td><td class="mdescRight">gives the maximum value among sampled points <br /></td></tr>
 <tr class="separator:aa6c782c40922493ce5b812235b71d562"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a301207a25858a74432ff4a832532a734"><td class="memItemLeft" align="right" valign="top"><a id="a301207a25858a74432ff4a832532a734"></a>
-T&#160;</td><td class="memItemRight" valign="bottom"><b>min</b> () const</td></tr>
+T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#a301207a25858a74432ff4a832532a734">min</a> () const</td></tr>
+<tr class="memdesc:a301207a25858a74432ff4a832532a734"><td class="mdescLeft">&#160;</td><td class="mdescRight">gives the minimum value among sampled points <br /></td></tr>
 <tr class="separator:a301207a25858a74432ff4a832532a734"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7470e8e33f8f015e50c5da02afdcfb9a"><td class="memItemLeft" align="right" valign="top"><a id="a7470e8e33f8f015e50c5da02afdcfb9a"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>has_nans</b> () const</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#a7470e8e33f8f015e50c5da02afdcfb9a">has_nans</a> () const</td></tr>
+<tr class="memdesc:a7470e8e33f8f015e50c5da02afdcfb9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">check if sampled power values contain nan value. <br /></td></tr>
 <tr class="separator:a7470e8e33f8f015e50c5da02afdcfb9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a724420e0af06d4b30d4497fe4b73355f"><td class="memItemLeft" align="right" valign="top"><a id="a724420e0af06d4b30d4497fe4b73355f"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>has_zeros</b> () const</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#a724420e0af06d4b30d4497fe4b73355f">has_zeros</a> () const</td></tr>
+<tr class="memdesc:a724420e0af06d4b30d4497fe4b73355f"><td class="mdescLeft">&#160;</td><td class="mdescRight">check if sampled power values contain 0 value. <br /></td></tr>
 <tr class="separator:a724420e0af06d4b30d4497fe4b73355f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0731cd55a2fbca767633b0db19a4a8d4"><td class="memItemLeft" align="right" valign="top"><a id="a0731cd55a2fbca767633b0db19a4a8d4"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_black</b> () const</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#a0731cd55a2fbca767633b0db19a4a8d4">is_black</a> () const</td></tr>
+<tr class="memdesc:a0731cd55a2fbca767633b0db19a4a8d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">check if sampled power values contain only 0 value. <br /></td></tr>
 <tr class="separator:a0731cd55a2fbca767633b0db19a4a8d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7ab142d6102f1ba186fc9432ddcda98"><td class="memItemLeft" align="right" valign="top"><a id="ab7ab142d6102f1ba186fc9432ddcda98"></a>
-<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;s)</td></tr>
+<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#ab7ab142d6102f1ba186fc9432ddcda98">operator=</a> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;s)</td></tr>
+<tr class="memdesc:ab7ab142d6102f1ba186fc9432ddcda98"><td class="mdescLeft">&#160;</td><td class="mdescRight">assign a sample wave to this wave if it does not contain nan values <br /></td></tr>
 <tr class="separator:ab7ab142d6102f1ba186fc9432ddcda98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c7dc6f5f40c28da0fbe10de02cbd963"><td class="memItemLeft" align="right" valign="top"><a id="a1c7dc6f5f40c28da0fbe10de02cbd963"></a>
-<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator+=</b> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;s)</td></tr>
-<tr class="separator:a1c7dc6f5f40c28da0fbe10de02cbd963"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1bb58e78c6bc6ac2d9de106163de4b3"><td class="memItemLeft" align="right" valign="top"><a id="ae1bb58e78c6bc6ac2d9de106163de4b3"></a>
-<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator+=</b> (const T &amp;s)</td></tr>
-<tr class="separator:ae1bb58e78c6bc6ac2d9de106163de4b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5632e8157081749891fcc88c565c8f9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#af5632e8157081749891fcc88c565c8f9">apply</a> (unsigned int index, T value, const std::function&lt; T(T, T)&gt; &amp;fn) const</td></tr>
+<tr class="separator:af5632e8157081749891fcc88c565c8f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2ed9215dce2aadc1a9ae0240905c1be"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#ae2ed9215dce2aadc1a9ae0240905c1be">apply</a> (T value, const std::function&lt; T(T, T)&gt; &amp;fn) const</td></tr>
+<tr class="separator:ae2ed9215dce2aadc1a9ae0240905c1be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a326c9e59c59ff82e3dca40e2bb3a19d8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#a326c9e59c59ff82e3dca40e2bb3a19d8">apply</a> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;s, const std::function&lt; T(T, T)&gt; &amp;fn) const</td></tr>
+<tr class="memdesc:a326c9e59c59ff82e3dca40e2bb3a19d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">apply a function to same sized wave samples  <a href="classptracey_1_1sampled__wave.html#a326c9e59c59ff82e3dca40e2bb3a19d8">More...</a><br /></td></tr>
+<tr class="separator:a326c9e59c59ff82e3dca40e2bb3a19d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a648613b83a393dd076846e2526b0a059"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#a648613b83a393dd076846e2526b0a059">operator+=</a> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;s) const</td></tr>
+<tr class="separator:a648613b83a393dd076846e2526b0a059"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87046bac929f8b9ea159c725dba819e9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#a87046bac929f8b9ea159c725dba819e9">operator+=</a> (const T &amp;s) const</td></tr>
+<tr class="separator:a87046bac929f8b9ea159c725dba819e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab00dd38ab4bf35f9974a11d5e8c03d8a"><td class="memItemLeft" align="right" valign="top"><a id="ab00dd38ab4bf35f9974a11d5e8c03d8a"></a>
-<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator+</b> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;s) const</td></tr>
+<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#ab00dd38ab4bf35f9974a11d5e8c03d8a">operator+</a> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;s) const</td></tr>
+<tr class="memdesc:ab00dd38ab4bf35f9974a11d5e8c03d8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">add two same sized sampled waves <br /></td></tr>
 <tr class="separator:ab00dd38ab4bf35f9974a11d5e8c03d8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab4c453090ec67a25f8a722862e1587b4"><td class="memItemLeft" align="right" valign="top"><a id="ab4c453090ec67a25f8a722862e1587b4"></a>
-<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator+</b> (const T &amp;s) const</td></tr>
+<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#ab4c453090ec67a25f8a722862e1587b4">operator+</a> (const T &amp;s) const</td></tr>
+<tr class="memdesc:ab4c453090ec67a25f8a722862e1587b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">add given power value to all of the elements of the sampled wave. <br /></td></tr>
 <tr class="separator:ab4c453090ec67a25f8a722862e1587b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1a1a370717b1ae4f1dedef451f5f9e1"><td class="memItemLeft" align="right" valign="top"><a id="aa1a1a370717b1ae4f1dedef451f5f9e1"></a>
-<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator-=</b> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;s)</td></tr>
-<tr class="separator:aa1a1a370717b1ae4f1dedef451f5f9e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1de540ead8006cae78cc0f2ae478178"><td class="memItemLeft" align="right" valign="top"><a id="ab1de540ead8006cae78cc0f2ae478178"></a>
-<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator-=</b> (const T &amp;s)</td></tr>
-<tr class="separator:ab1de540ead8006cae78cc0f2ae478178"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59c7e50450c3906f38542dc6289dd1d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#a59c7e50450c3906f38542dc6289dd1d1">operator-=</a> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;s) const</td></tr>
+<tr class="separator:a59c7e50450c3906f38542dc6289dd1d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae304aac7e31a170bffa9a4d06ff9fe6e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#ae304aac7e31a170bffa9a4d06ff9fe6e">operator-=</a> (const T &amp;s) const</td></tr>
+<tr class="separator:ae304aac7e31a170bffa9a4d06ff9fe6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63907af715ff5b0a9476e6b1f0352d9a"><td class="memItemLeft" align="right" valign="top"><a id="a63907af715ff5b0a9476e6b1f0352d9a"></a>
-<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator-</b> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;s) const</td></tr>
+<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#a63907af715ff5b0a9476e6b1f0352d9a">operator-</a> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;s) const</td></tr>
+<tr class="memdesc:a63907af715ff5b0a9476e6b1f0352d9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">subtract two same sized sampled waves <br /></td></tr>
 <tr class="separator:a63907af715ff5b0a9476e6b1f0352d9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a835f9d88eba4152dc28735a6aeedab3b"><td class="memItemLeft" align="right" valign="top"><a id="a835f9d88eba4152dc28735a6aeedab3b"></a>
-<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator-</b> (const T &amp;s) const</td></tr>
+<tr class="memitem:a835f9d88eba4152dc28735a6aeedab3b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#a835f9d88eba4152dc28735a6aeedab3b">operator-</a> (const T &amp;s) const</td></tr>
+<tr class="memdesc:a835f9d88eba4152dc28735a6aeedab3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">subtract power value from this wave  <a href="classptracey_1_1sampled__wave.html#a835f9d88eba4152dc28735a6aeedab3b">More...</a><br /></td></tr>
 <tr class="separator:a835f9d88eba4152dc28735a6aeedab3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7fcdf9b0b07e96fb592328989e6963ae"><td class="memItemLeft" align="right" valign="top"><a id="a7fcdf9b0b07e96fb592328989e6963ae"></a>
-<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator*=</b> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;s)</td></tr>
-<tr class="separator:a7fcdf9b0b07e96fb592328989e6963ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a51774c7f40b4edc3b4e136481271d0ce"><td class="memItemLeft" align="right" valign="top"><a id="a51774c7f40b4edc3b4e136481271d0ce"></a>
-<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator*=</b> (const T &amp;s)</td></tr>
-<tr class="separator:a51774c7f40b4edc3b4e136481271d0ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75f71addf631e28cd7edbdb5787f6d1c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#a75f71addf631e28cd7edbdb5787f6d1c">operator*=</a> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;s) const</td></tr>
+<tr class="separator:a75f71addf631e28cd7edbdb5787f6d1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a649e521d0dfebbbcc8637a2784ade393"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#a649e521d0dfebbbcc8637a2784ade393">operator*=</a> (const T &amp;s) const</td></tr>
+<tr class="separator:a649e521d0dfebbbcc8637a2784ade393"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0169a1daddea7d23e93ab0b781941663"><td class="memItemLeft" align="right" valign="top"><a id="a0169a1daddea7d23e93ab0b781941663"></a>
-<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;s) const</td></tr>
+<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#a0169a1daddea7d23e93ab0b781941663">operator*</a> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;s) const</td></tr>
+<tr class="memdesc:a0169a1daddea7d23e93ab0b781941663"><td class="mdescLeft">&#160;</td><td class="mdescRight">multiply two same sized sampled waves <br /></td></tr>
 <tr class="separator:a0169a1daddea7d23e93ab0b781941663"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d85b1d9eec07723094e75349b1ed346"><td class="memItemLeft" align="right" valign="top"><a id="a6d85b1d9eec07723094e75349b1ed346"></a>
-<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (const T &amp;s) const</td></tr>
+<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#a6d85b1d9eec07723094e75349b1ed346">operator*</a> (const T &amp;s) const</td></tr>
+<tr class="memdesc:a6d85b1d9eec07723094e75349b1ed346"><td class="mdescLeft">&#160;</td><td class="mdescRight">multiply given power value to all of the elements of the sampled wave. <br /></td></tr>
 <tr class="separator:a6d85b1d9eec07723094e75349b1ed346"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32f411dfeb1ebf66ab9305ad025f320a"><td class="memItemLeft" align="right" valign="top"><a id="a32f411dfeb1ebf66ab9305ad025f320a"></a>
-<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator/=</b> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;s)</td></tr>
+<tr class="memitem:a32f411dfeb1ebf66ab9305ad025f320a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#a32f411dfeb1ebf66ab9305ad025f320a">operator/=</a> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;s)</td></tr>
 <tr class="separator:a32f411dfeb1ebf66ab9305ad025f320a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa8ac4e27748fb3e7937cceab2e01e9a"><td class="memItemLeft" align="right" valign="top"><a id="afa8ac4e27748fb3e7937cceab2e01e9a"></a>
-<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator/=</b> (const T &amp;s)</td></tr>
-<tr class="separator:afa8ac4e27748fb3e7937cceab2e01e9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a674d4ced8c230402c0e57a8f8b61ed40"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#a674d4ced8c230402c0e57a8f8b61ed40">operator/=</a> (const T &amp;s) const</td></tr>
+<tr class="separator:a674d4ced8c230402c0e57a8f8b61ed40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a990bff87474875a337fb13883055220a"><td class="memItemLeft" align="right" valign="top"><a id="a990bff87474875a337fb13883055220a"></a>
-<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator/</b> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;s) const</td></tr>
+<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#a990bff87474875a337fb13883055220a">operator/</a> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;s) const</td></tr>
+<tr class="memdesc:a990bff87474875a337fb13883055220a"><td class="mdescLeft">&#160;</td><td class="mdescRight">divide two same sized sampled waves <br /></td></tr>
 <tr class="separator:a990bff87474875a337fb13883055220a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87d01668a5bde0bbef9251f97e42a0fb"><td class="memItemLeft" align="right" valign="top"><a id="a87d01668a5bde0bbef9251f97e42a0fb"></a>
-<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator/</b> (const T &amp;s) const</td></tr>
+<tr class="memitem:a87d01668a5bde0bbef9251f97e42a0fb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#a87d01668a5bde0bbef9251f97e42a0fb">operator/</a> (const T &amp;s) const</td></tr>
+<tr class="memdesc:a87d01668a5bde0bbef9251f97e42a0fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">divide power value from this wave  <a href="classptracey_1_1sampled__wave.html#a87d01668a5bde0bbef9251f97e42a0fb">More...</a><br /></td></tr>
 <tr class="separator:a87d01668a5bde0bbef9251f97e42a0fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe9732f0c365b972576028e9ad31e146"><td class="memItemLeft" align="right" valign="top"><a id="abe9732f0c365b972576028e9ad31e146"></a>
-T &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (int i)</td></tr>
-<tr class="separator:abe9732f0c365b972576028e9ad31e146"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a0dcd34baba7580c16946fde1e6bcdc"><td class="memItemLeft" align="right" valign="top"><a id="a9a0dcd34baba7580c16946fde1e6bcdc"></a>
-T&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (int i) const</td></tr>
-<tr class="separator:a9a0dcd34baba7580c16946fde1e6bcdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a898c54a3c44a81833a76094e4844ea12"><td class="memItemLeft" align="right" valign="top"><a id="a898c54a3c44a81833a76094e4844ea12"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;cs) const</td></tr>
+<tr class="memitem:a3e01b74598d4cd89abdee83c23673fc8"><td class="memItemLeft" align="right" valign="top">T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#a3e01b74598d4cd89abdee83c23673fc8">operator[]</a> (uint i)</td></tr>
+<tr class="memdesc:a3e01b74598d4cd89abdee83c23673fc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">access to power value at given index. Mostly used for setting a new value for the given index;  <a href="classptracey_1_1sampled__wave.html#a3e01b74598d4cd89abdee83c23673fc8">More...</a><br /></td></tr>
+<tr class="separator:a3e01b74598d4cd89abdee83c23673fc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa56897498bad50344b04e3eafb996b8f"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#aa56897498bad50344b04e3eafb996b8f">operator[]</a> (uint i) const</td></tr>
+<tr class="memdesc:aa56897498bad50344b04e3eafb996b8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">access to power value at given index. Mostly used for reading the value of the given index;  <a href="classptracey_1_1sampled__wave.html#aa56897498bad50344b04e3eafb996b8f">More...</a><br /></td></tr>
+<tr class="separator:aa56897498bad50344b04e3eafb996b8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a898c54a3c44a81833a76094e4844ea12"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#a898c54a3c44a81833a76094e4844ea12">operator==</a> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;cs) const</td></tr>
+<tr class="memdesc:a898c54a3c44a81833a76094e4844ea12"><td class="mdescLeft">&#160;</td><td class="mdescRight">check if given sampled wave has same power with this one.  <a href="classptracey_1_1sampled__wave.html#a898c54a3c44a81833a76094e4844ea12">More...</a><br /></td></tr>
 <tr class="separator:a898c54a3c44a81833a76094e4844ea12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab81f8b2f6b75bada05d07d152fe1cdae"><td class="memItemLeft" align="right" valign="top"><a id="ab81f8b2f6b75bada05d07d152fe1cdae"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator!=</b> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;cs) const</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#ab81f8b2f6b75bada05d07d152fe1cdae">operator!=</a> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;cs) const</td></tr>
+<tr class="memdesc:ab81f8b2f6b75bada05d07d152fe1cdae"><td class="mdescLeft">&#160;</td><td class="mdescRight">check if given <a class="el" href="classptracey_1_1sampled__wave.html" title="a wave sample representing a continuous wave in discreet form">sampled_wave</a> is not equal to this or not <br /></td></tr>
 <tr class="separator:ab81f8b2f6b75bada05d07d152fe1cdae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f69d6d230eceeded7a5e5b250bbbbc2"><td class="memItemLeft" align="right" valign="top"><a id="a3f69d6d230eceeded7a5e5b250bbbbc2"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>sum</b> () const</td></tr>
-<tr class="separator:a3f69d6d230eceeded7a5e5b250bbbbc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ad100d4fc309ea1f78dcd62ab390ced"><td class="memItemLeft" align="right" valign="top"><a id="a7ad100d4fc309ea1f78dcd62ab390ced"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>product</b> () const</td></tr>
-<tr class="separator:a7ad100d4fc309ea1f78dcd62ab390ced"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3bd53231d3053a74a1478662d1e2666e"><td class="memItemLeft" align="right" valign="top"><a id="a3bd53231d3053a74a1478662d1e2666e"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>average</b> () const</td></tr>
-<tr class="separator:a3bd53231d3053a74a1478662d1e2666e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeebd18213a585b2da84501210ab0e5cd"><td class="memItemLeft" align="right" valign="top"><a id="aeebd18213a585b2da84501210ab0e5cd"></a>
-std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> () const</td></tr>
-<tr class="separator:aeebd18213a585b2da84501210ab0e5cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a536a39ff7d4ef3d371d6cb616eaa17"><td class="memItemLeft" align="right" valign="top"><a id="a7a536a39ff7d4ef3d371d6cb616eaa17"></a>
-<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&#160;</td><td class="memItemRight" valign="bottom"><b>clamp</b> (T low=0.0, T high=FLT_MAX)</td></tr>
+<tr class="memitem:ae73447b6d164b04c2d35d30e68bfb76a"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#ae73447b6d164b04c2d35d30e68bfb76a">reduce</a> (const std::function&lt; T(T, T)&gt; &amp;fn, T counter_value) const</td></tr>
+<tr class="memdesc:ae73447b6d164b04c2d35d30e68bfb76a"><td class="mdescLeft">&#160;</td><td class="mdescRight">reduce power values of this wave to a single value using given function  <a href="classptracey_1_1sampled__wave.html#ae73447b6d164b04c2d35d30e68bfb76a">More...</a><br /></td></tr>
+<tr class="separator:ae73447b6d164b04c2d35d30e68bfb76a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81748d8d404b685901bf8161c95bd9c5"><td class="memItemLeft" align="right" valign="top"><a id="a81748d8d404b685901bf8161c95bd9c5"></a>
+T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#a81748d8d404b685901bf8161c95bd9c5">sum</a> () const</td></tr>
+<tr class="memdesc:a81748d8d404b685901bf8161c95bd9c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">reduce sampled wave by summation <br /></td></tr>
+<tr class="separator:a81748d8d404b685901bf8161c95bd9c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa54752d3688dd456020cda180beaacc"><td class="memItemLeft" align="right" valign="top"><a id="afa54752d3688dd456020cda180beaacc"></a>
+T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#afa54752d3688dd456020cda180beaacc">product</a> () const</td></tr>
+<tr class="memdesc:afa54752d3688dd456020cda180beaacc"><td class="mdescLeft">&#160;</td><td class="mdescRight">reduce sampled wave by multiplication <br /></td></tr>
+<tr class="separator:afa54752d3688dd456020cda180beaacc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16ab34b620ccc2ae40ebe6f4fb21145a"><td class="memItemLeft" align="right" valign="top"><a id="a16ab34b620ccc2ae40ebe6f4fb21145a"></a>
+Real&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#a16ab34b620ccc2ae40ebe6f4fb21145a">average</a> () const</td></tr>
+<tr class="memdesc:a16ab34b620ccc2ae40ebe6f4fb21145a"><td class="mdescLeft">&#160;</td><td class="mdescRight">find the average value of this wave <br /></td></tr>
+<tr class="separator:a16ab34b620ccc2ae40ebe6f4fb21145a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3497b355f9f524784801dad77542b8b"><td class="memItemLeft" align="right" valign="top"><a id="ad3497b355f9f524784801dad77542b8b"></a>
+uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#ad3497b355f9f524784801dad77542b8b">size</a> () const</td></tr>
+<tr class="memdesc:ad3497b355f9f524784801dad77542b8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">find the number of samples inside this wave <br /></td></tr>
+<tr class="separator:ad3497b355f9f524784801dad77542b8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a536a39ff7d4ef3d371d6cb616eaa17"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#a7a536a39ff7d4ef3d371d6cb616eaa17">clamp</a> (T low=0.0, T high=FLT_MAX)</td></tr>
+<tr class="memdesc:a7a536a39ff7d4ef3d371d6cb616eaa17"><td class="mdescLeft">&#160;</td><td class="mdescRight">clamp power values of this wave to given range We also check if the resulting wave has nan values.  <a href="classptracey_1_1sampled__wave.html#a7a536a39ff7d4ef3d371d6cb616eaa17">More...</a><br /></td></tr>
 <tr class="separator:a7a536a39ff7d4ef3d371d6cb616eaa17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b38807a421e84a2421625611156a351"><td class="memItemLeft" align="right" valign="top"><a id="a0b38807a421e84a2421625611156a351"></a>
 <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&#160;</td><td class="memItemRight" valign="bottom"><b>interpolate</b> (Real low=0.0, Real high=FLT_MAX)</td></tr>
@@ -183,24 +207,893 @@ std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> () co
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a3c7e0d9242733e7fe2c457c5b83c79bd"><td class="memItemLeft" align="right" valign="top"><a id="a3c7e0d9242733e7fe2c457c5b83c79bd"></a>
-std::vector&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>values</b></td></tr>
+std::vector&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#a3c7e0d9242733e7fe2c457c5b83c79bd">values</a></td></tr>
+<tr class="memdesc:a3c7e0d9242733e7fe2c457c5b83c79bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">holds observed power values of the wave <br /></td></tr>
 <tr class="separator:a3c7e0d9242733e7fe2c457c5b83c79bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
-<tr class="memitem:a09b5504711a782962c49097272235cac"><td class="memItemLeft" align="right" valign="top"><a id="a09b5504711a782962c49097272235cac"></a>
-<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator+</b> (const T &amp;s, const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;ss)</td></tr>
+<tr class="memitem:a09b5504711a782962c49097272235cac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#a09b5504711a782962c49097272235cac">operator+</a> (const T &amp;s, const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;ss)</td></tr>
 <tr class="separator:a09b5504711a782962c49097272235cac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe5c79c39d01839e552597fff9bdb250"><td class="memItemLeft" align="right" valign="top"><a id="afe5c79c39d01839e552597fff9bdb250"></a>
-<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator-</b> (const T &amp;s, const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;ss)</td></tr>
+<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#afe5c79c39d01839e552597fff9bdb250">operator-</a> (const T &amp;s, const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;ss)</td></tr>
+<tr class="memdesc:afe5c79c39d01839e552597fff9bdb250"><td class="mdescLeft">&#160;</td><td class="mdescRight">subtract every element of given <a class="el" href="classptracey_1_1sampled__wave.html" title="a wave sample representing a continuous wave in discreet form">sampled_wave</a> from the value <br /></td></tr>
 <tr class="separator:afe5c79c39d01839e552597fff9bdb250"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa946f932d034759413f97482053f7fbe"><td class="memItemLeft" align="right" valign="top"><a id="aa946f932d034759413f97482053f7fbe"></a>
-<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (const T &amp;s, const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;ss)</td></tr>
+<tr class="memitem:aa946f932d034759413f97482053f7fbe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#aa946f932d034759413f97482053f7fbe">operator*</a> (const T &amp;s, const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;ss)</td></tr>
 <tr class="separator:aa946f932d034759413f97482053f7fbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae019ebc2d2b6e4b431526c5f021a43ef"><td class="memItemLeft" align="right" valign="top"><a id="ae019ebc2d2b6e4b431526c5f021a43ef"></a>
-<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator/</b> (const T &amp;s, const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;ss)</td></tr>
+<tr class="memitem:ae019ebc2d2b6e4b431526c5f021a43ef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1sampled__wave.html#ae019ebc2d2b6e4b431526c5f021a43ef">operator/</a> (const T &amp;s, const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> &amp;ss)</td></tr>
+<tr class="memdesc:ae019ebc2d2b6e4b431526c5f021a43ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">divide power value from this wave  <a href="classptracey_1_1sampled__wave.html#ae019ebc2d2b6e4b431526c5f021a43ef">More...</a><br /></td></tr>
 <tr class="separator:ae019ebc2d2b6e4b431526c5f021a43ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;class T&gt;<br />
+class ptracey::sampled_wave&lt; T &gt;</h3>
+
+<p>a wave sample representing a continuous wave in discreet form </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a26085338bc2bd80d5eb88954f0dda305"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26085338bc2bd80d5eb88954f0dda305">&#9670;&nbsp;</a></span>sampled_wave() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classptracey_1_1sampled__wave.html">ptracey::sampled_wave</a>&lt; T &gt;::<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> </td>
+          <td>(</td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>val</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>a constant value constructor </p>
+<p>We give the number of samples and a constant value in order to initialize the sampled wave with a single value like 0, or 420</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">size</td><td>determines the number of samples of the wave </td></tr>
+    <tr><td class="paramname">val</td><td>the constant power value. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aec49fab5103a999b6dc5d273276239fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec49fab5103a999b6dc5d273276239fc">&#9670;&nbsp;</a></span>sampled_wave() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classptracey_1_1sampled__wave.html">ptracey::sampled_wave</a>&lt; T &gt;::<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>vals</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>directly construct from given values. </p>
+<p>We construct the wave directly from samples. We only check for nan values.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">vals</td><td>a vector of values </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a326c9e59c59ff82e3dca40e2bb3a19d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a326c9e59c59ff82e3dca40e2bb3a19d8">&#9670;&nbsp;</a></span>apply() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> <a class="el" href="classptracey_1_1sampled__wave.html">ptracey::sampled_wave</a>&lt; T &gt;::apply </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::function&lt; T(T, T)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>fn</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>apply a function to same sized wave samples </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fn</td><td>function to be applied to power values </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a new wave </dd></dl>
+
+</div>
+</div>
+<a id="ae2ed9215dce2aadc1a9ae0240905c1be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2ed9215dce2aadc1a9ae0240905c1be">&#9670;&nbsp;</a></span>apply() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> <a class="el" href="classptracey_1_1sampled__wave.html">ptracey::sampled_wave</a>&lt; T &gt;::apply </td>
+          <td>(</td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::function&lt; T(T, T)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>fn</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">  \brief apply a function to all power values.
+
+  \param fn function to be applied to power values
+  \return a new wave
+</pre><p>TODO: </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>for basic arithmetic operations it might be enough to check for minimum and maximum power values for the given function.</dd></dl>
+
+</div>
+</div>
+<a id="af5632e8157081749891fcc88c565c8f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5632e8157081749891fcc88c565c8f9">&#9670;&nbsp;</a></span>apply() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> <a class="el" href="classptracey_1_1sampled__wave.html">ptracey::sampled_wave</a>&lt; T &gt;::apply </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::function&lt; T(T, T)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>fn</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">\brief apply a function to a single power value.
+
+We check whether the operation produces a negative value
+</pre><p> as well. </p><pre class="fragment">\param index index of the power value among values
+</pre><p> vector </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fn</td><td>function to be applied to the power value at index. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a new wave where the desired element is changed.</dd></dl>
+<p>TODO </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>This operation is probably very costly for large samples.</dd></dl>
+
+</div>
+</div>
+<a id="a7a536a39ff7d4ef3d371d6cb616eaa17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a536a39ff7d4ef3d371d6cb616eaa17">&#9670;&nbsp;</a></span>clamp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> <a class="el" href="classptracey_1_1sampled__wave.html">ptracey::sampled_wave</a>&lt; T &gt;::clamp </td>
+          <td>(</td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>low</em> = <code>0.0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>high</em> = <code>FLT_MAX</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>clamp power values of this wave to given range We also check if the resulting wave has nan values. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">low</td><td>low end of the range </td></tr>
+    <tr><td class="paramname">high</td><td>high end of the range </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classptracey_1_1sampled__wave.html" title="a wave sample representing a continuous wave in discreet form">sampled_wave</a> with values between the range [low, high] </dd></dl>
+
+</div>
+</div>
+<a id="a75f71addf631e28cd7edbdb5787f6d1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75f71addf631e28cd7edbdb5787f6d1c">&#9670;&nbsp;</a></span>operator*=() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&amp; <a class="el" href="classptracey_1_1sampled__wave.html">ptracey::sampled_wave</a>&lt; T &gt;::operator*= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">\brief multiply and assign values of given sampled
+</pre><p> wave</p>
+<p>TODO </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd>this pointer changes value after this operation. This is probably not the intention of the user if she is using *= operator.</dd></dl>
+
+</div>
+</div>
+<a id="a649e521d0dfebbbcc8637a2784ade393"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a649e521d0dfebbbcc8637a2784ade393">&#9670;&nbsp;</a></span>operator*=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&amp; <a class="el" href="classptracey_1_1sampled__wave.html">ptracey::sampled_wave</a>&lt; T &gt;::operator*= </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">\brief multiply and the given power value to this
+</pre><p> wave.</p>
+<p>TODO </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000008">Todo:</a></b></dt><dd>this pointer changes value after this operation. This is probably not the intention of the user if she is using *= operator.</dd></dl>
+
+</div>
+</div>
+<a id="a648613b83a393dd076846e2526b0a059"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a648613b83a393dd076846e2526b0a059">&#9670;&nbsp;</a></span>operator+=() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&amp; <a class="el" href="classptracey_1_1sampled__wave.html">ptracey::sampled_wave</a>&lt; T &gt;::operator+= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">\brief add and assign values of given sampled wave
+</pre><p>TODO </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>this pointer changes value after this operation. This is probably not the intention of the user if she is using += operator.</dd></dl>
+
+</div>
+</div>
+<a id="a87046bac929f8b9ea159c725dba819e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87046bac929f8b9ea159c725dba819e9">&#9670;&nbsp;</a></span>operator+=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&amp; <a class="el" href="classptracey_1_1sampled__wave.html">ptracey::sampled_wave</a>&lt; T &gt;::operator+= </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">\brief add and the given power value to this wave.
+</pre><p>TODO </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>this pointer changes value after this operation. This is probably not the intention of the user if she is using += operator.</dd></dl>
+
+</div>
+</div>
+<a id="a835f9d88eba4152dc28735a6aeedab3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a835f9d88eba4152dc28735a6aeedab3b">&#9670;&nbsp;</a></span>operator-()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> <a class="el" href="classptracey_1_1sampled__wave.html">ptracey::sampled_wave</a>&lt; T &gt;::operator- </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>subtract power value from this wave </p>
+<p>We check whether the new value is producing negative power values. </p>
+
+</div>
+</div>
+<a id="a59c7e50450c3906f38542dc6289dd1d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59c7e50450c3906f38542dc6289dd1d1">&#9670;&nbsp;</a></span>operator-=() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&amp; <a class="el" href="classptracey_1_1sampled__wave.html">ptracey::sampled_wave</a>&lt; T &gt;::operator-= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">\brief subtract and assign values of given sampled wave
+</pre><p>TODO </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>this pointer changes value after this operation. This is probably not the intention of the user if she is using -= operator.</dd></dl>
+
+</div>
+</div>
+<a id="ae304aac7e31a170bffa9a4d06ff9fe6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae304aac7e31a170bffa9a4d06ff9fe6e">&#9670;&nbsp;</a></span>operator-=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&amp; <a class="el" href="classptracey_1_1sampled__wave.html">ptracey::sampled_wave</a>&lt; T &gt;::operator-= </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">\brief subtract and the given power value to this
+</pre><p> wave.</p>
+<p>TODO </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd>this pointer changes value after this operation. This is probably not the intention of the user if she is using -= operator.</dd></dl>
+
+</div>
+</div>
+<a id="a87d01668a5bde0bbef9251f97e42a0fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87d01668a5bde0bbef9251f97e42a0fb">&#9670;&nbsp;</a></span>operator/()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> <a class="el" href="classptracey_1_1sampled__wave.html">ptracey::sampled_wave</a>&lt; T &gt;::operator/ </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>divide power value from this wave </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">s</td><td>value to divide We check if s is 0 then perform the division. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a32f411dfeb1ebf66ab9305ad025f320a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32f411dfeb1ebf66ab9305ad025f320a">&#9670;&nbsp;</a></span>operator/=() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&amp; <a class="el" href="classptracey_1_1sampled__wave.html">ptracey::sampled_wave</a>&lt; T &gt;::operator/= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">\brief divide and assign values of given sampled wave
+</pre><p>TODO </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000009">Todo:</a></b></dt><dd>this pointer changes value after this operation. This is probably not the intention of the user if she is using /= operator.</dd></dl>
+
+</div>
+</div>
+<a id="a674d4ced8c230402c0e57a8f8b61ed40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a674d4ced8c230402c0e57a8f8b61ed40">&#9670;&nbsp;</a></span>operator/=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&amp; <a class="el" href="classptracey_1_1sampled__wave.html">ptracey::sampled_wave</a>&lt; T &gt;::operator/= </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">\brief divide and the given power value to this
+</pre><p> wave.</p>
+<p>TODO </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000010">Todo:</a></b></dt><dd>this pointer changes value after this operation. This is probably not the intention of the user if she is using /= operator. </dd></dl>
+
+</div>
+</div>
+<a id="a898c54a3c44a81833a76094e4844ea12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a898c54a3c44a81833a76094e4844ea12">&#9670;&nbsp;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classptracey_1_1sampled__wave.html">ptracey::sampled_wave</a>&lt; T &gt;::operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>cs</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>check if given sampled wave has same power with this one. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cs</td><td>comparison wave </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a3e01b74598d4cd89abdee83c23673fc8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e01b74598d4cd89abdee83c23673fc8">&#9670;&nbsp;</a></span>operator[]() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T&amp; <a class="el" href="classptracey_1_1sampled__wave.html">ptracey::sampled_wave</a>&lt; T &gt;::operator[] </td>
+          <td>(</td>
+          <td class="paramtype">uint&#160;</td>
+          <td class="paramname"><em>i</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>access to power value at given index. Mostly used for setting a new value for the given index; </p>
+<dl class="section return"><dt>Returns</dt><dd>a reference </dd></dl>
+
+</div>
+</div>
+<a id="aa56897498bad50344b04e3eafb996b8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa56897498bad50344b04e3eafb996b8f">&#9670;&nbsp;</a></span>operator[]() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T <a class="el" href="classptracey_1_1sampled__wave.html">ptracey::sampled_wave</a>&lt; T &gt;::operator[] </td>
+          <td>(</td>
+          <td class="paramtype">uint&#160;</td>
+          <td class="paramname"><em>i</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>access to power value at given index. Mostly used for reading the value of the given index; </p>
+<dl class="section return"><dt>Returns</dt><dd>a value </dd></dl>
+
+</div>
+</div>
+<a id="ae73447b6d164b04c2d35d30e68bfb76a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae73447b6d164b04c2d35d30e68bfb76a">&#9670;&nbsp;</a></span>reduce()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T <a class="el" href="classptracey_1_1sampled__wave.html">ptracey::sampled_wave</a>&lt; T &gt;::reduce </td>
+          <td>(</td>
+          <td class="paramtype">const std::function&lt; T(T, T)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>fn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>counter_value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>reduce power values of this wave to a single value using given function </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fn</td><td>function that is applied during reduction </td></tr>
+    <tr><td class="paramname">counter_value</td><td>initial value assigned to aggregating variable </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="aa946f932d034759413f97482053f7fbe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa946f932d034759413f97482053f7fbe">&#9670;&nbsp;</a></span>operator*</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> operator* </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>ss</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classptracey_1_1sampled__wave.html" title="a wave sample representing a continuous wave in discreet form">sampled_wave</a> <a class="el" href="classptracey_1_1sampled__wave.html#a6d85b1d9eec07723094e75349b1ed346" title="multiply given power value to all of the elements of the sampled wave.">operator*(const T &amp;s) const</a> </dd></dl>
+
+</div>
+</div>
+<a id="a09b5504711a782962c49097272235cac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09b5504711a782962c49097272235cac">&#9670;&nbsp;</a></span>operator+</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> operator+ </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>ss</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classptracey_1_1sampled__wave.html" title="a wave sample representing a continuous wave in discreet form">sampled_wave</a> <a class="el" href="classptracey_1_1sampled__wave.html#ab4c453090ec67a25f8a722862e1587b4" title="add given power value to all of the elements of the sampled wave.">operator+(const T &amp;s) const</a> </dd></dl>
+
+</div>
+</div>
+<a id="ae019ebc2d2b6e4b431526c5f021a43ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae019ebc2d2b6e4b431526c5f021a43ef">&#9670;&nbsp;</a></span>operator/</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a> operator/ </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>ss</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>divide power value from this wave </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">s</td><td>value to divide </td></tr>
+    <tr><td class="paramname">ss</td><td>wave to divide.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>We check if s is 0, then divide 1 by s. Then we perform a mutliplication of the resulting value with the ss. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li><a class="el" href="wave_8hpp_source.html">wave.hpp</a></li>
 </ul>

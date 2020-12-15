@@ -61,7 +61,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_46b4ca9cfc9a703c87a0dfe6e2f3cac8.html">camera</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -72,9 +72,9 @@ $(function() {
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;common.hpp&gt;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;ray.hpp&gt;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;camera/ray.hpp&gt;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;utils.hpp&gt;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;vec3.hpp&gt;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;math3d/vec3.hpp&gt;</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">using namespace </span>ptracey;</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">namespace </span>ptracey {</div>
@@ -108,29 +108,28 @@ $(function() {
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    time1 = _time1;</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  }</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <a class="code" href="classptracey_1_1ray.html">ray</a> get_ray(Real s, Real t)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <a class="code" href="classptracey_1_1vec3.html">vec3</a> rd = lens_radius * random_in_unit_disk();</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <a class="code" href="classptracey_1_1vec3.html">vec3</a> offset = u * rd.x() + v * rd.y();</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classptracey_1_1ray.html">ray</a>(</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        origin + offset,</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        lower_left_corner + s * horizontal + t * vertical -</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            origin - offset,</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        random_real(time0, time1),</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(random_int(360, 830)));</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  }</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <a class="code" href="classptracey_1_1vec3.html">point3</a> origin;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <a class="code" href="classptracey_1_1vec3.html">point3</a> lower_left_corner;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <a class="code" href="classptracey_1_1vec3.html">vec3</a> horizontal;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <a class="code" href="classptracey_1_1vec3.html">vec3</a> vertical;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <a class="code" href="classptracey_1_1vec3.html">vec3</a> u, v, w;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  Real lens_radius;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  Real time0, time1; <span class="comment">// shutter open/close times</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;};</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;}</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <a class="code" href="classptracey_1_1ray.html">ray</a> get_ray(Real s, Real t,</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;              <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> wavelength = 1)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <a class="code" href="classptracey_1_1vec3.html">vec3</a> rd = lens_radius * random_in_unit_disk();</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="code" href="classptracey_1_1vec3.html">vec3</a> offset = u * rd.x() + v * rd.y();</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classptracey_1_1ray.html">ray</a>(origin + offset,</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;               lower_left_corner + s * horizontal +</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                   t * vertical - origin - offset,</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;               random_real(time0, time1), wavelength);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  }</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <a class="code" href="classptracey_1_1vec3.html">point3</a> origin;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <a class="code" href="classptracey_1_1vec3.html">point3</a> lower_left_corner;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <a class="code" href="classptracey_1_1vec3.html">vec3</a> horizontal;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <a class="code" href="classptracey_1_1vec3.html">vec3</a> vertical;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <a class="code" href="classptracey_1_1vec3.html">vec3</a> u, v, w;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  Real lens_radius;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  Real time0, time1; <span class="comment">// shutter open/close times</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;};</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclassptracey_1_1ray_html"><div class="ttname"><a href="classptracey_1_1ray.html">ptracey::ray</a></div><div class="ttdef"><b>Definition:</b> ray.hpp:6</div></div>
+<div class="ttc" id="aclassptracey_1_1ray_html"><div class="ttname"><a href="classptracey_1_1ray.html">ptracey::ray</a></div><div class="ttdef"><b>Definition:</b> ray.hpp:8</div></div>
 <div class="ttc" id="aclassptracey_1_1camera_html"><div class="ttname"><a href="classptracey_1_1camera.html">ptracey::camera</a></div><div class="ttdef"><b>Definition:</b> camera.hpp:10</div></div>
 <div class="ttc" id="aclassptracey_1_1vec3_html"><div class="ttname"><a href="classptracey_1_1vec3.html">ptracey::vec3</a></div><div class="ttdef"><b>Definition:</b> vec3.hpp:7</div></div>
 <!-- start footer part -->

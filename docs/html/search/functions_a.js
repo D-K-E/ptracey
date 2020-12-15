@@ -1,9 +1,8 @@
 var searchData=
 [
-  ['labelparams_1457',['LabelParams',['../structrapidcsv_1_1LabelParams.html#a410048d60e7012e586e40d15692b748a',1,'rapidcsv::LabelParams']]],
-  ['lcm_1458',['lcm',['../MathFunctions_8h.html#a918eb7bddac3741e7cf72dd900a90a0c',1,'Assimp::Math']]],
-  ['linesplitter_1459',['LineSplitter',['../classAssimp_1_1LineSplitter.html#a04e78a827cbd501d920a9bb8245b817f',1,'Assimp::LineSplitter']]],
-  ['load_1460',['Load',['../classrapidcsv_1_1Document.html#a55ea19679c1118af87b4ab42d2eff4a5',1,'rapidcsv::Document::Load(const std::string &amp;pPath)'],['../classrapidcsv_1_1Document.html#ab129dd8e98fd623a8b404c4f7bc8ec95',1,'rapidcsv::Document::Load(std::istream &amp;pStream)']]],
-  ['logger_1461',['Logger',['../classAssimp_1_1Logger.html#a17f4cbc042c26935e16eb204ca77c2c1',1,'Assimp::Logger::Logger() AI_NO_EXCEPT'],['../classAssimp_1_1Logger.html#accc0ffea63ddf0982d8c2ba7e07f0716',1,'Assimp::Logger::Logger(LogSeverity severity)']]],
-  ['logstream_1462',['LogStream',['../classAssimp_1_1LogStream.html#aca07b1b2d95a8ffd4c3704e033facb26',1,'Assimp::LogStream']]]
+  ['jacobirotation_8019',['JacobiRotation',['../classEigen_1_1JacobiRotation.html#a9f1779d96696779574df6989d05e47cc',1,'Eigen::JacobiRotation::JacobiRotation()'],['../classEigen_1_1JacobiRotation.html#ac919e031415b573fdbe2fc4f93458ae9',1,'Eigen::JacobiRotation::JacobiRotation(const Scalar &amp;c, const Scalar &amp;s)']]],
+  ['jacobisvd_8020',['JacobiSVD',['../classEigen_1_1JacobiSVD.html#a55315ab9cd060019a5ad07be798ff3b9',1,'Eigen::JacobiSVD::JacobiSVD()'],['../classEigen_1_1JacobiSVD.html#a5d9ea7c8f361337727260efd77ee03ac',1,'Eigen::JacobiSVD::JacobiSVD(Index rows, Index cols, unsigned int computationOptions=0)'],['../classEigen_1_1JacobiSVD.html#abfd1dd454a6e3edec7feecd97c818a78',1,'Eigen::JacobiSVD::JacobiSVD(const MatrixType &amp;matrix, unsigned int computationOptions=0)'],['../classEigen_1_1MatrixBase.html#a5745dca9c54390633b434e54a1d1eedd',1,'Eigen::MatrixBase::jacobiSvd()']]],
+  ['json_5fpointer_8021',['json_pointer',['../classnlohmann_1_1json__pointer.html#a7f32d7c62841f0c4a6784cf741a6e4f8',1,'nlohmann::json_pointer']]],
+  ['json_5freverse_5fiterator_8022',['json_reverse_iterator',['../classnlohmann_1_1detail_1_1json__reverse__iterator.html#a0246de16ece16293f2917dfa5d96e278',1,'nlohmann::detail::json_reverse_iterator::json_reverse_iterator(const typename base_iterator::iterator_type &amp;it) noexcept'],['../classnlohmann_1_1detail_1_1json__reverse__iterator.html#a6c2d025530114ed989188e8adfc8467e',1,'nlohmann::detail::json_reverse_iterator::json_reverse_iterator(const base_iterator &amp;it) noexcept']]],
+  ['json_5fsax_5fdom_5fparser_8023',['json_sax_dom_parser',['../classnlohmann_1_1detail_1_1json__sax__dom__parser.html#afc50fee0a92ce84afb84041ebbdfba80',1,'nlohmann::detail::json_sax_dom_parser']]]
 ];

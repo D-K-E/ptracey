@@ -61,7 +61,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_c60f5c854645a487cb9547c3a2043b53.html">mesh</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -71,26 +71,26 @@ $(function() {
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;bvh.hpp&gt;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;common.hpp&gt;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;external.hpp&gt;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;hittable.hpp&gt;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;hittable_list.hpp&gt;</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;material.hpp&gt;</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;matrix.hpp&gt;</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &lt;ray.hpp&gt;</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;spectrum.hpp&gt;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;triangle.hpp&gt;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;vec3.hpp&gt;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;acceleration/bvh.hpp&gt;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;camera/ray.hpp&gt;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;color/spectrum.hpp&gt;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;common.hpp&gt;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;external.hpp&gt;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;hittable/hittable.hpp&gt;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;hittable/hittable_list.hpp&gt;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &lt;material/material.hpp&gt;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;math3d/matrix.hpp&gt;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;math3d/vec3.hpp&gt;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;primitive/triangle.hpp&gt;</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">using namespace </span>ptracey;</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">namespace </span>ptracey {</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<a class="code" href="classptracey_1_1color.html">color</a> to_color_ai(<a class="code" href="structaiColor3D.html">aiColor3D</a> col) {</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;  <span class="keyword">auto</span> x = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(col.<a class="code" href="structaiColor3D.html#a9244c589dc4c8d95e4107951f2a9a386">r</a>);</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<a class="code" href="classptracey_1_1vec3.html">vec3</a> to_color_ai(<a class="code" href="structaiColor3D.html">aiColor3D</a> col) {</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;  <span class="keyword">auto</span> x = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(col.r);</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  <span class="keyword">auto</span> y = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(col.g);</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  <span class="keyword">auto</span> z = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(col.b);</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="classptracey_1_1color.html">color</a>(x, y, z);</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="classptracey_1_1vec3.html">vec3</a>(x, y, z);</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;}</div>
 <div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="classptracey_1_1mesh.html">   24</a></span>&#160;<span class="keyword">class </span><a class="code" href="classptracey_1_1mesh.html">mesh</a> : <span class="keyword">public</span> <a class="code" href="classptracey_1_1hittable.html">hittable</a> {</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">public</span>:</div>
@@ -215,7 +215,7 @@ $(function() {
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <a class="code" href="structaiColor3D.html">aiColor3D</a> col;</div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    mat-&gt;Get(AI_MATKEY_COLOR_EMISSIVE, col);</div>
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <span class="keyword">auto</span> rgb_c = to_color_ai(col);</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    shared_ptr&lt;spectrum&gt; em = make_shared&lt;spectrum&gt;(rgb_c);</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <a class="code" href="classptracey_1_1sampled__spectrum.html">spectrum</a> em = <a class="code" href="classptracey_1_1sampled__spectrum.html">spectrum</a>(rgb_c);</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <span class="keywordtype">bool</span> res = rgb_c.x() == 0.0 &amp;&amp; rgb_c.y() == 0.0 &amp;&amp;</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;               rgb_c.z() == 0.0;</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <span class="keywordflow">if</span> (!res) {</div>
@@ -228,7 +228,7 @@ $(function() {
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="keywordflow">if</span> (fuzz != 0.0) {</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;      mat-&gt;Get(AI_MATKEY_COLOR_DIFFUSE, col);</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;      <span class="keyword">auto</span> rgb_c = to_color_ai(col);</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;      shared_ptr&lt;spectrum&gt; c = make_shared&lt;spectrum&gt;(rgb_c);</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;      <a class="code" href="classptracey_1_1sampled__spectrum.html">spectrum</a> c = <a class="code" href="classptracey_1_1sampled__spectrum.html">spectrum</a>(rgb_c);</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;      res = rgb_c.r() == 0.0 &amp;&amp; rgb_c.g() == 0.0 &amp;&amp;</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;            rgb_c.b() == 0.0;</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;      <span class="keywordflow">if</span> (!res) {</div>
@@ -238,7 +238,7 @@ $(function() {
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;      }</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;      mat-&gt;Get(AI_MATKEY_COLOR_REFLECTIVE, col);</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;      rgb_c = to_color_ai(col);</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;      c = make_shared&lt;spectrum&gt;(rgb_c);</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;      c = <a class="code" href="classptracey_1_1sampled__spectrum.html">spectrum</a>(rgb_c);</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;      res = rgb_c.x() == 0.0 &amp;&amp; rgb_c.y() == 0.0 &amp;&amp;</div>
 <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;            rgb_c.z() == 0.0;</div>
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;      <span class="keywordflow">if</span> (!res) {</div>
@@ -249,60 +249,58 @@ $(function() {
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    }</div>
 <div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    mat-&gt;Get(AI_MATKEY_COLOR_DIFFUSE, col);</div>
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    rgb_c = to_color_ai(col);</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    shared_ptr&lt;spectrum&gt; diffuse =</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        make_shared&lt;spectrum&gt;(rgb_c);</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    shared_ptr&lt;material&gt; ret =</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        make_shared&lt;lambertian&gt;(diffuse);</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <span class="keywordflow">return</span> ret;</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  }</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;  shared_ptr&lt;hittable&gt; processMesh(<a class="code" href="structaiMesh.html">aiMesh</a> *msh,</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;                                   <span class="keyword">const</span> <a class="code" href="structaiScene.html">aiScene</a> *scene,</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;                                   <span class="keywordtype">int</span> mesh_id) {</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <a class="code" href="structaiMaterial.html">aiMaterial</a> *mat =</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        scene-&gt;<a class="code" href="structaiScene.html#a52bc7089a5b943ad7c7c386e616df35e">mMaterials</a>[msh-&gt;<a class="code" href="structaiMesh.html#aa2807c7ba172115203ed16047ad65f9e">mMaterialIndex</a>];</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    shared_ptr&lt;material&gt; mat_ptr = processMaterial(mat);</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160; </div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    std::vector&lt;shared_ptr&lt;hittable&gt;&gt; triangles =</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        processTriangles(msh, mat_ptr);</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160; </div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    shared_ptr&lt;hittable&gt; m;</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    <span class="keywordflow">if</span> (!mat) {</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;      m = make_shared&lt;mesh&gt;(triangles, mesh_id);</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;      m = make_shared&lt;mesh&gt;(triangles, mesh_id);</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    }</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    <span class="keywordflow">return</span> m;</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;  }</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;  <span class="keywordtype">bool</span> hit(<span class="keyword">const</span> <a class="code" href="classptracey_1_1ray.html">ray</a> &amp;r, <span class="keywordtype">double</span> t_min, <span class="keywordtype">double</span> t_max,</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;           <a class="code" href="structptracey_1_1hit__record.html">hit_record</a> &amp;rec)<span class="keyword"> const override </span>{</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <span class="keywordtype">bool</span> res = meshes-&gt;hit(r, t_min, t_max, rec);</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    <span class="keywordflow">return</span> res;</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;  }</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;  <span class="keywordtype">bool</span> bounding_box(<span class="keywordtype">double</span> time0, <span class="keywordtype">double</span> time1,</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;                    <a class="code" href="classptracey_1_1aabb.html">aabb</a> &amp;output_box)<span class="keyword"> const override </span>{</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    <span class="keywordflow">return</span> meshes-&gt;bounding_box(time0, time1, output_box);</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;  }</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;  <span class="keywordtype">double</span> pdf_value(<span class="keyword">const</span> <a class="code" href="classptracey_1_1vec3.html">vec3</a> &amp;o,</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;                   <span class="keyword">const</span> <a class="code" href="classptracey_1_1vec3.html">vec3</a> &amp;v)<span class="keyword"> const override </span>{</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    <span class="keywordflow">return</span> list.pdf_value(o, v);</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;  }</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;  <a class="code" href="classptracey_1_1vec3.html">vec3</a> random(<span class="keyword">const</span> <a class="code" href="classptracey_1_1vec3.html">vec3</a> &amp;o)<span class="keyword"> const override </span>{</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    <span class="keywordflow">return</span> list.random(o);</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;  }</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;};</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;}</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <a class="code" href="classptracey_1_1sampled__spectrum.html">spectrum</a> diffuse = <a class="code" href="classptracey_1_1sampled__spectrum.html">spectrum</a>(rgb_c);</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    shared_ptr&lt;material&gt; ret =</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        make_shared&lt;lambertian&gt;(diffuse);</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <span class="keywordflow">return</span> ret;</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;  }</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  shared_ptr&lt;hittable&gt; processMesh(<a class="code" href="structaiMesh.html">aiMesh</a> *msh,</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;                                   <span class="keyword">const</span> <a class="code" href="structaiScene.html">aiScene</a> *scene,</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;                                   <span class="keywordtype">int</span> mesh_id) {</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    <a class="code" href="structaiMaterial.html">aiMaterial</a> *mat =</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        scene-&gt;<a class="code" href="structaiScene.html#a52bc7089a5b943ad7c7c386e616df35e">mMaterials</a>[msh-&gt;<a class="code" href="structaiMesh.html#aa2807c7ba172115203ed16047ad65f9e">mMaterialIndex</a>];</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    shared_ptr&lt;material&gt; mat_ptr = processMaterial(mat);</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160; </div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    std::vector&lt;shared_ptr&lt;hittable&gt;&gt; triangles =</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        processTriangles(msh, mat_ptr);</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    shared_ptr&lt;hittable&gt; m;</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <span class="keywordflow">if</span> (!mat) {</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;      m = make_shared&lt;mesh&gt;(triangles, mesh_id);</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;      m = make_shared&lt;mesh&gt;(triangles, mesh_id);</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    }</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <span class="keywordflow">return</span> m;</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;  }</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;  <span class="keywordtype">bool</span> hit(<span class="keyword">const</span> <a class="code" href="classptracey_1_1ray.html">ray</a> &amp;r, <span class="keywordtype">double</span> t_min, <span class="keywordtype">double</span> t_max,</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;           <a class="code" href="structptracey_1_1hit__record.html">hit_record</a> &amp;rec)<span class="keyword"> const override </span>{</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <span class="keywordtype">bool</span> res = meshes-&gt;hit(r, t_min, t_max, rec);</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <span class="keywordflow">return</span> res;</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;  }</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;  <span class="keywordtype">bool</span> bounding_box(<span class="keywordtype">double</span> time0, <span class="keywordtype">double</span> time1,</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;                    <a class="code" href="classptracey_1_1aabb.html">aabb</a> &amp;output_box)<span class="keyword"> const override </span>{</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="keywordflow">return</span> meshes-&gt;bounding_box(time0, time1, output_box);</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;  }</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;  <span class="keywordtype">double</span> pdf_value(<span class="keyword">const</span> <a class="code" href="classptracey_1_1vec3.html">vec3</a> &amp;o,</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;                   <span class="keyword">const</span> <a class="code" href="classptracey_1_1vec3.html">vec3</a> &amp;v)<span class="keyword"> const override </span>{</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    <span class="keywordflow">return</span> list.pdf_value(o, v);</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;  }</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;  <a class="code" href="classptracey_1_1vec3.html">vec3</a> random(<span class="keyword">const</span> <a class="code" href="classptracey_1_1vec3.html">vec3</a> &amp;o)<span class="keyword"> const override </span>{</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    <span class="keywordflow">return</span> list.random(o);</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;  }</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;};</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassptracey_1_1mesh_html"><div class="ttname"><a href="classptracey_1_1mesh.html">ptracey::mesh</a></div><div class="ttdef"><b>Definition:</b> mesh.hpp:24</div></div>
 <div class="ttc" id="astructaiFace_html_adda2698cec0ebfe651572f4a5701360b"><div class="ttname"><a href="structaiFace.html#adda2698cec0ebfe651572f4a5701360b">aiFace::mNumIndices</a></div><div class="ttdeci">unsigned int mNumIndices</div><div class="ttdef"><b>Definition:</b> mesh.h:139</div></div>
 <div class="ttc" id="ascene_8h_html_a64c3b662e066126207bb842fc406a745"><div class="ttname"><a href="scene_8h.html#a64c3b662e066126207bb842fc406a745">AI_SCENE_FLAGS_INCOMPLETE</a></div><div class="ttdeci">#define AI_SCENE_FLAGS_INCOMPLETE</div><div class="ttdef"><b>Definition:</b> scene.h:188</div></div>
 <div class="ttc" id="astructaiMesh_html_afd4588abb3e1c72821ae0234a3850662"><div class="ttname"><a href="structaiMesh.html#afd4588abb3e1c72821ae0234a3850662">aiMesh::mVertices</a></div><div class="ttdeci">C_STRUCT aiVector3D * mVertices</div><div class="ttdef"><b>Definition:</b> mesh.h:599</div></div>
-<div class="ttc" id="aclassptracey_1_1ray_html"><div class="ttname"><a href="classptracey_1_1ray.html">ptracey::ray</a></div><div class="ttdef"><b>Definition:</b> ray.hpp:6</div></div>
+<div class="ttc" id="aclassptracey_1_1ray_html"><div class="ttname"><a href="classptracey_1_1ray.html">ptracey::ray</a></div><div class="ttdef"><b>Definition:</b> ray.hpp:8</div></div>
 <div class="ttc" id="aclassAssimp_1_1Importer_html"><div class="ttname"><a href="classAssimp_1_1Importer.html">Assimp::Importer</a></div><div class="ttdef"><b>Definition:</b> Importer.hpp:120</div></div>
-<div class="ttc" id="astructptracey_1_1hit__record_html"><div class="ttname"><a href="structptracey_1_1hit__record.html">ptracey::hit_record</a></div><div class="ttdef"><b>Definition:</b> hittable.hpp:12</div></div>
+<div class="ttc" id="astructptracey_1_1hit__record_html"><div class="ttname"><a href="structptracey_1_1hit__record.html">ptracey::hit_record</a></div><div class="ttdef"><b>Definition:</b> hittable.hpp:11</div></div>
 <div class="ttc" id="astructaiNode_html"><div class="ttname"><a href="structaiNode.html">aiNode</a></div><div class="ttdef"><b>Definition:</b> scene.h:85</div></div>
 <div class="ttc" id="astructaiNode_html_acd1706d6508b31916c18e39b7085ca63"><div class="ttname"><a href="structaiNode.html#acd1706d6508b31916c18e39b7085ca63">aiNode::mMeshes</a></div><div class="ttdeci">unsigned int * mMeshes</div><div class="ttdef"><b>Definition:</b> scene.h:128</div></div>
-<div class="ttc" id="aclassptracey_1_1hittable_html"><div class="ttname"><a href="classptracey_1_1hittable.html">ptracey::hittable</a></div><div class="ttdef"><b>Definition:</b> hittable.hpp:37</div></div>
-<div class="ttc" id="aclassptracey_1_1color_html"><div class="ttname"><a href="classptracey_1_1color.html">ptracey::color</a></div><div class="ttdef"><b>Definition:</b> spectrum.hpp:48</div></div>
+<div class="ttc" id="aclassptracey_1_1hittable_html"><div class="ttname"><a href="classptracey_1_1hittable.html">ptracey::hittable</a></div><div class="ttdef"><b>Definition:</b> hittable.hpp:35</div></div>
 <div class="ttc" id="astructaiFace_html"><div class="ttname"><a href="structaiFace.html">aiFace</a></div><div class="ttdoc">A single face in a mesh, referring to multiple vertices.</div><div class="ttdef"><b>Definition:</b> mesh.h:136</div></div>
 <div class="ttc" id="apostprocess_8h_html_a64795260b95f5a4b3f3dc1be4f52e410a9c3de834f0307f31fa2b1b6d05dd592b"><div class="ttname"><a href="postprocess_8h.html#a64795260b95f5a4b3f3dc1be4f52e410a9c3de834f0307f31fa2b1b6d05dd592b">aiProcess_Triangulate</a></div><div class="ttdeci">@ aiProcess_Triangulate</div><div class="ttdef"><b>Definition:</b> postprocess.h:130</div></div>
 <div class="ttc" id="aclassAssimp_1_1Importer_html_a3ac36c9ab8668bd368de516c19bdcc11"><div class="ttname"><a href="classAssimp_1_1Importer.html#a3ac36c9ab8668bd368de516c19bdcc11">Assimp::Importer::GetErrorString</a></div><div class="ttdeci">const char * GetErrorString() const</div></div>
@@ -321,8 +319,8 @@ $(function() {
 <div class="ttc" id="astructaiFace_html_a2026b434c40cf1636f9f464a592ec36c"><div class="ttname"><a href="structaiFace.html#a2026b434c40cf1636f9f464a592ec36c">aiFace::mIndices</a></div><div class="ttdeci">unsigned int * mIndices</div><div class="ttdoc">Pointer to the indices array. Size of the array is given in numIndices.</div><div class="ttdef"><b>Definition:</b> mesh.h:142</div></div>
 <div class="ttc" id="astructaiScene_html_a52bc7089a5b943ad7c7c386e616df35e"><div class="ttname"><a href="structaiScene.html#a52bc7089a5b943ad7c7c386e616df35e">aiScene::mMaterials</a></div><div class="ttdeci">C_STRUCT aiMaterial ** mMaterials</div><div class="ttdef"><b>Definition:</b> scene.h:286</div></div>
 <div class="ttc" id="aclassptracey_1_1hittable__list_html"><div class="ttname"><a href="classptracey_1_1hittable__list.html">ptracey::hittable_list</a></div><div class="ttdef"><b>Definition:</b> hittable_list.hpp:11</div></div>
+<div class="ttc" id="aclassptracey_1_1sampled__spectrum_html"><div class="ttname"><a href="classptracey_1_1sampled__spectrum.html">ptracey::sampled_spectrum</a></div><div class="ttdef"><b>Definition:</b> sampled_spectrum.hpp:126</div></div>
 <div class="ttc" id="aclassptracey_1_1matrix_html"><div class="ttname"><a href="classptracey_1_1matrix.html">ptracey::matrix</a></div><div class="ttdef"><b>Definition:</b> matrix.hpp:7</div></div>
-<div class="ttc" id="astructaiColor3D_html_a9244c589dc4c8d95e4107951f2a9a386"><div class="ttname"><a href="structaiColor3D.html#a9244c589dc4c8d95e4107951f2a9a386">aiColor3D::r</a></div><div class="ttdeci">ai_real r</div><div class="ttdoc">Red, green and blue color values.</div><div class="ttdef"><b>Definition:</b> types.h:242</div></div>
 <div class="ttc" id="astructaiMesh_html_a5a65fbc7fdea7f8d36f39047425ece07"><div class="ttname"><a href="structaiMesh.html#a5a65fbc7fdea7f8d36f39047425ece07">aiMesh::mFaces</a></div><div class="ttdeci">C_STRUCT aiFace * mFaces</div><div class="ttdef"><b>Definition:</b> mesh.h:674</div></div>
 <div class="ttc" id="astructaiNode_html_a7a411079096f86d1e96b6368d237d897"><div class="ttname"><a href="structaiNode.html#a7a411079096f86d1e96b6368d237d897">aiNode::mNumMeshes</a></div><div class="ttdeci">unsigned int mNumMeshes</div><div class="ttdef"><b>Definition:</b> scene.h:123</div></div>
 <div class="ttc" id="aclassptracey_1_1aabb_html"><div class="ttname"><a href="classptracey_1_1aabb.html">ptracey::aabb</a></div><div class="ttdef"><b>Definition:</b> aabb.hpp:12</div></div>

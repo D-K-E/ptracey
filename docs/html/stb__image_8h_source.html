@@ -1869,7 +1869,7 @@ $(function() {
 <div class="line"><a name="l01806"></a><span class="lineno"> 1806</span>&#160;   <span class="keywordflow">if</span> (comp &amp; 1) n = comp; <span class="keywordflow">else</span> n = comp-1;</div>
 <div class="line"><a name="l01807"></a><span class="lineno"> 1807</span>&#160;   <span class="keywordflow">for</span> (i=0; i &lt; x*y; ++i) {</div>
 <div class="line"><a name="l01808"></a><span class="lineno"> 1808</span>&#160;      <span class="keywordflow">for</span> (k=0; k &lt; n; ++k) {</div>
-<div class="line"><a name="l01809"></a><span class="lineno"> 1809</span>&#160;         output[i*comp + k] = (float) (pow(data[i*comp+k]/255.0f, stbi__l2h_gamma) * stbi__l2h_scale);</div>
+<div class="line"><a name="l01809"></a><span class="lineno"> 1809</span>&#160;         output[i*comp + k] = (float) (<a class="code" href="classEigen_1_1ArrayBase.html#acb769e1ab1d809abb77c7ab98021ad81">pow</a>(data[i*comp+k]/255.0f, stbi__l2h_gamma) * stbi__l2h_scale);</div>
 <div class="line"><a name="l01810"></a><span class="lineno"> 1810</span>&#160;      }</div>
 <div class="line"><a name="l01811"></a><span class="lineno"> 1811</span>&#160;   }</div>
 <div class="line"><a name="l01812"></a><span class="lineno"> 1812</span>&#160;   <span class="keywordflow">if</span> (n &lt; comp) {</div>
@@ -1895,7 +1895,7 @@ $(function() {
 <div class="line"><a name="l01832"></a><span class="lineno"> 1832</span>&#160;   <span class="keywordflow">if</span> (comp &amp; 1) n = comp; <span class="keywordflow">else</span> n = comp-1;</div>
 <div class="line"><a name="l01833"></a><span class="lineno"> 1833</span>&#160;   <span class="keywordflow">for</span> (i=0; i &lt; x*y; ++i) {</div>
 <div class="line"><a name="l01834"></a><span class="lineno"> 1834</span>&#160;      <span class="keywordflow">for</span> (k=0; k &lt; n; ++k) {</div>
-<div class="line"><a name="l01835"></a><span class="lineno"> 1835</span>&#160;         <span class="keywordtype">float</span> z = (float) pow(data[i*comp+k]*stbi__h2l_scale_i, stbi__h2l_gamma_i) * 255 + 0.5f;</div>
+<div class="line"><a name="l01835"></a><span class="lineno"> 1835</span>&#160;         <span class="keywordtype">float</span> z = (float) <a class="code" href="classEigen_1_1ArrayBase.html#acb769e1ab1d809abb77c7ab98021ad81">pow</a>(data[i*comp+k]*stbi__h2l_scale_i, stbi__h2l_gamma_i) * 255 + 0.5f;</div>
 <div class="line"><a name="l01836"></a><span class="lineno"> 1836</span>&#160;         <span class="keywordflow">if</span> (z &lt; 0) z = 0;</div>
 <div class="line"><a name="l01837"></a><span class="lineno"> 1837</span>&#160;         <span class="keywordflow">if</span> (z &gt; 255) z = 255;</div>
 <div class="line"><a name="l01838"></a><span class="lineno"> 1838</span>&#160;         output[i*comp + k] = (stbi_uc) stbi__float2int(z);</div>
@@ -4052,7 +4052,7 @@ $(function() {
 <div class="line"><a name="l03990"></a><span class="lineno"> 3990</span>&#160;   <span class="keywordtype">int</span> maxcode[17];</div>
 <div class="line"><a name="l03991"></a><span class="lineno"> 3991</span>&#160;   stbi__uint16 firstsymbol[16];</div>
 <div class="line"><a name="l03992"></a><span class="lineno"> 3992</span>&#160;   stbi_uc  size[288];</div>
-<div class="line"><a name="l03993"></a><span class="lineno"> 3993</span>&#160;   stbi__uint16 value[288];</div>
+<div class="line"><a name="l03993"></a><span class="lineno"> 3993</span>&#160;   stbi__uint16 <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a>[288];</div>
 <div class="line"><a name="l03994"></a><span class="lineno"> 3994</span>&#160;} stbi__zhuffman;</div>
 <div class="line"><a name="l03995"></a><span class="lineno"> 3995</span>&#160; </div>
 <div class="line"><a name="l03996"></a><span class="lineno"> 3996</span>&#160;stbi_inline <span class="keyword">static</span> <span class="keywordtype">int</span> stbi__bitreverse16(<span class="keywordtype">int</span> n)</div>
@@ -6322,7 +6322,7 @@ $(function() {
 <div class="line"><a name="l06260"></a><span class="lineno"> 6260</span>&#160;                  <span class="keywordtype">int</span> left=width, i;</div>
 <div class="line"><a name="l06261"></a><span class="lineno"> 6261</span>&#160; </div>
 <div class="line"><a name="l06262"></a><span class="lineno"> 6262</span>&#160;                  <span class="keywordflow">while</span> (left&gt;0) {</div>
-<div class="line"><a name="l06263"></a><span class="lineno"> 6263</span>&#160;                     stbi_uc count,value[4];</div>
+<div class="line"><a name="l06263"></a><span class="lineno"> 6263</span>&#160;                     stbi_uc count,<a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a>[4];</div>
 <div class="line"><a name="l06264"></a><span class="lineno"> 6264</span>&#160; </div>
 <div class="line"><a name="l06265"></a><span class="lineno"> 6265</span>&#160;                     count=stbi__get8(s);</div>
 <div class="line"><a name="l06266"></a><span class="lineno"> 6266</span>&#160;                     <span class="keywordflow">if</span> (stbi__at_eof(s))   <span class="keywordflow">return</span> stbi__errpuc(<span class="stringliteral">&quot;bad file&quot;</span>,<span class="stringliteral">&quot;file too short (pure read count)&quot;</span>);</div>
@@ -6346,7 +6346,7 @@ $(function() {
 <div class="line"><a name="l06284"></a><span class="lineno"> 6284</span>&#160;                  <span class="keywordflow">if</span> (stbi__at_eof(s))  <span class="keywordflow">return</span> stbi__errpuc(<span class="stringliteral">&quot;bad file&quot;</span>,<span class="stringliteral">&quot;file too short (mixed read count)&quot;</span>);</div>
 <div class="line"><a name="l06285"></a><span class="lineno"> 6285</span>&#160; </div>
 <div class="line"><a name="l06286"></a><span class="lineno"> 6286</span>&#160;                  <span class="keywordflow">if</span> (count &gt;= 128) { <span class="comment">// Repeated</span></div>
-<div class="line"><a name="l06287"></a><span class="lineno"> 6287</span>&#160;                     stbi_uc value[4];</div>
+<div class="line"><a name="l06287"></a><span class="lineno"> 6287</span>&#160;                     stbi_uc <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a>[4];</div>
 <div class="line"><a name="l06288"></a><span class="lineno"> 6288</span>&#160; </div>
 <div class="line"><a name="l06289"></a><span class="lineno"> 6289</span>&#160;                     <span class="keywordflow">if</span> (count==128)</div>
 <div class="line"><a name="l06290"></a><span class="lineno"> 6290</span>&#160;                        count = stbi__get16be(s);</div>
@@ -7026,7 +7026,7 @@ $(function() {
 <div class="line"><a name="l06964"></a><span class="lineno"> 6964</span>&#160;   stbi_uc *scanline;</div>
 <div class="line"><a name="l06965"></a><span class="lineno"> 6965</span>&#160;   <span class="keywordtype">float</span> *hdr_data;</div>
 <div class="line"><a name="l06966"></a><span class="lineno"> 6966</span>&#160;   <span class="keywordtype">int</span> len;</div>
-<div class="line"><a name="l06967"></a><span class="lineno"> 6967</span>&#160;   <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> count, value;</div>
+<div class="line"><a name="l06967"></a><span class="lineno"> 6967</span>&#160;   <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> count, <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a>;</div>
 <div class="line"><a name="l06968"></a><span class="lineno"> 6968</span>&#160;   <span class="keywordtype">int</span> i, j, k, c1,c2, z;</div>
 <div class="line"><a name="l06969"></a><span class="lineno"> 6969</span>&#160;   <span class="keyword">const</span> <span class="keywordtype">char</span> *headerToken;</div>
 <div class="line"><a name="l06970"></a><span class="lineno"> 6970</span>&#160;   STBI_NOTUSED(ri);</div>
@@ -7125,7 +7125,7 @@ $(function() {
 <div class="line"><a name="l07063"></a><span class="lineno"> 7063</span>&#160;               count = stbi__get8(s);</div>
 <div class="line"><a name="l07064"></a><span class="lineno"> 7064</span>&#160;               <span class="keywordflow">if</span> (count &gt; 128) {</div>
 <div class="line"><a name="l07065"></a><span class="lineno"> 7065</span>&#160;                  <span class="comment">// Run</span></div>
-<div class="line"><a name="l07066"></a><span class="lineno"> 7066</span>&#160;                  value = stbi__get8(s);</div>
+<div class="line"><a name="l07066"></a><span class="lineno"> 7066</span>&#160;                  <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a> = stbi__get8(s);</div>
 <div class="line"><a name="l07067"></a><span class="lineno"> 7067</span>&#160;                  count -= 128;</div>
 <div class="line"><a name="l07068"></a><span class="lineno"> 7068</span>&#160;                  <span class="keywordflow">if</span> (count &gt; nleft) { STBI_FREE(hdr_data); STBI_FREE(scanline); <span class="keywordflow">return</span> stbi__errpf(<span class="stringliteral">&quot;corrupt&quot;</span>, <span class="stringliteral">&quot;bad RLE data in HDR&quot;</span>); }</div>
 <div class="line"><a name="l07069"></a><span class="lineno"> 7069</span>&#160;                  <span class="keywordflow">for</span> (z = 0; z &lt; count; ++z)</div>
@@ -7420,14 +7420,14 @@ $(function() {
 <div class="line"><a name="l07358"></a><span class="lineno"> 7358</span>&#160; </div>
 <div class="line"><a name="l07359"></a><span class="lineno"> 7359</span>&#160;<span class="keyword">static</span> <span class="keywordtype">int</span>      stbi__pnm_getinteger(stbi__context *s, <span class="keywordtype">char</span> *c)</div>
 <div class="line"><a name="l07360"></a><span class="lineno"> 7360</span>&#160;{</div>
-<div class="line"><a name="l07361"></a><span class="lineno"> 7361</span>&#160;   <span class="keywordtype">int</span> value = 0;</div>
+<div class="line"><a name="l07361"></a><span class="lineno"> 7361</span>&#160;   <span class="keywordtype">int</span> <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a> = 0;</div>
 <div class="line"><a name="l07362"></a><span class="lineno"> 7362</span>&#160; </div>
 <div class="line"><a name="l07363"></a><span class="lineno"> 7363</span>&#160;   <span class="keywordflow">while</span> (!stbi__at_eof(s) &amp;&amp; stbi__pnm_isdigit(*c)) {</div>
-<div class="line"><a name="l07364"></a><span class="lineno"> 7364</span>&#160;      value = value*10 + (*c - <span class="charliteral">&#39;0&#39;</span>);</div>
+<div class="line"><a name="l07364"></a><span class="lineno"> 7364</span>&#160;      <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a> = <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a>*10 + (*c - <span class="charliteral">&#39;0&#39;</span>);</div>
 <div class="line"><a name="l07365"></a><span class="lineno"> 7365</span>&#160;      *c = (char) stbi__get8(s);</div>
 <div class="line"><a name="l07366"></a><span class="lineno"> 7366</span>&#160;   }</div>
 <div class="line"><a name="l07367"></a><span class="lineno"> 7367</span>&#160; </div>
-<div class="line"><a name="l07368"></a><span class="lineno"> 7368</span>&#160;   <span class="keywordflow">return</span> value;</div>
+<div class="line"><a name="l07368"></a><span class="lineno"> 7368</span>&#160;   <span class="keywordflow">return</span> <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a>;</div>
 <div class="line"><a name="l07369"></a><span class="lineno"> 7369</span>&#160;}</div>
 <div class="line"><a name="l07370"></a><span class="lineno"> 7370</span>&#160; </div>
 <div class="line"><a name="l07371"></a><span class="lineno"> 7371</span>&#160;<span class="keyword">static</span> <span class="keywordtype">int</span>      stbi__pnm_info(stbi__context *s, <span class="keywordtype">int</span> *x, <span class="keywordtype">int</span> *y, <span class="keywordtype">int</span> *comp)</div>
@@ -7825,6 +7825,8 @@ $(function() {
 <div class="line"><a name="l07763"></a><span class="lineno"> 7763</span>&#160;<span class="comment">*/</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="astructstbi__io__callbacks_html"><div class="ttname"><a href="structstbi__io__callbacks.html">stbi_io_callbacks</a></div><div class="ttdef"><b>Definition:</b> stb_image.h:382</div></div>
+<div class="ttc" id="aclassEigen_1_1ArrayBase_html_acb769e1ab1d809abb77c7ab98021ad81"><div class="ttname"><a href="classEigen_1_1ArrayBase.html#acb769e1ab1d809abb77c7ab98021ad81">Eigen::ArrayBase::pow</a></div><div class="ttdeci">const Eigen::CwiseBinaryOp&lt; Eigen::internal::scalar_pow_op&lt; typename Derived::Scalar, typename ExponentDerived::Scalar &gt;, const Derived, const ExponentDerived &gt; pow(const Eigen::ArrayBase&lt; Derived &gt; &amp;x, const Eigen::ArrayBase&lt; ExponentDerived &gt; &amp;exponents)</div><div class="ttdef"><b>Definition:</b> GlobalFunctions.h:143</div></div>
+<div class="ttc" id="anamespacenlohmann_1_1detail_html_a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26"><div class="ttname"><a href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">nlohmann::detail::parse_event_t::object_start</a></div><div class="ttdeci">@ object_start</div><div class="ttdoc">the parser read { and started to process a JSON object</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

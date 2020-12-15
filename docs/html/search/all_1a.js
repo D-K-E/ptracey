@@ -1,17 +1,9 @@
 var searchData=
 [
-  ['_7ebaseimporter_936',['~BaseImporter',['../classAssimp_1_1BaseImporter.html#a26c31a016f1249acac85d81ecb7fa252',1,'Assimp::BaseImporter']]],
-  ['_7edefaultiostream_937',['~DefaultIOStream',['../classAssimp_1_1DefaultIOStream.html#ad21769a2e865f8522ba2ebd97b75beda',1,'Assimp::DefaultIOStream']]],
-  ['_7eexporter_938',['~Exporter',['../classAssimp_1_1Exporter.html#a52c3ba6c76c778fb5dd70ad30589fb2c',1,'Assimp::Exporter']]],
-  ['_7eimporter_939',['~Importer',['../classAssimp_1_1Importer.html#a3d65af5286ba22f46220a72a6eb2a1c9',1,'Assimp::Importer']]],
-  ['_7eiostream_940',['~IOStream',['../classAssimp_1_1IOStream.html#ae4c9bcff461dba7e26631e691ad8ed2f',1,'Assimp::IOStream']]],
-  ['_7eiostreambuffer_941',['~IOStreamBuffer',['../classAssimp_1_1IOStreamBuffer.html#a4f080570778732e58da136e28d96235d',1,'Assimp::IOStreamBuffer']]],
-  ['_7eiosystem_942',['~IOSystem',['../classAssimp_1_1IOSystem.html#a617417f1c5125770606fea3b41068b36',1,'Assimp::IOSystem']]],
-  ['_7elogger_943',['~Logger',['../classAssimp_1_1Logger.html#a27dd2bd4fd3b9cde0635ed22aad687c3',1,'Assimp::Logger']]],
-  ['_7elogstream_944',['~LogStream',['../classAssimp_1_1LogStream.html#a2cf7080efeb4999a02689f2a31843da2',1,'Assimp::LogStream']]],
-  ['_7ememoryiosystem_945',['~MemoryIOSystem',['../classAssimp_1_1MemoryIOSystem.html#addb4958e6a1492b5bea1695be4ca5744',1,'Assimp::MemoryIOSystem']]],
-  ['_7eprogresshandler_946',['~ProgressHandler',['../classAssimp_1_1ProgressHandler.html#a3ec465a62e1feaae00f585ca0cffb81e',1,'Assimp::ProgressHandler']]],
-  ['_7esgspatialsort_947',['~SGSpatialSort',['../classAssimp_1_1SGSpatialSort.html#afe7e34a71c28f2e66e7d41d3fbaec0ca',1,'Assimp::SGSpatialSort']]],
-  ['_7esmallvector_948',['~SmallVector',['../classAssimp_1_1SmallVector.html#a5ed292445a3b5900534b964f720a01e1',1,'Assimp::SmallVector']]],
-  ['_7espatialsort_949',['~SpatialSort',['../classAssimp_1_1SpatialSort.html#a78a54017e7f8957a4e7736aba3599567',1,'Assimp::SpatialSort']]]
+  ['z_4432',['z',['../classEigen_1_1DenseCoeffsBase_3_01Derived_00_01ReadOnlyAccessors_01_4.html#a9040af2dcad8961168daafe09c1b1dc4',1,'Eigen::DenseCoeffsBase&lt; Derived, ReadOnlyAccessors &gt;::z()'],['../classEigen_1_1DenseCoeffsBase_3_01Derived_00_01WriteAccessors_01_4.html#ad64b8fa3ee1cda9eb3df918eaf8b0396',1,'Eigen::DenseCoeffsBase&lt; Derived, WriteAccessors &gt;::z()'],['../classEigen_1_1QuaternionBase.html#af76afdeb1d1441cbf09d4989437a930e',1,'Eigen::QuaternionBase::z() const'],['../classEigen_1_1QuaternionBase.html#a39397e0e9fa7e0a02512fc3f50c95542',1,'Eigen::QuaternionBase::z()'],['../classEigen_1_1Translation.html#aaa45458b73e467934dd3a98e9e76ad99',1,'Eigen::Translation::z() const'],['../classEigen_1_1Translation.html#a2005b284cac066c63e22541afbe3af39',1,'Eigen::Translation::z()']]],
+  ['zcoeffs_4433',['zCoeffs',['../classEigen_1_1CompleteOrthogonalDecomposition.html#a0b28c24992d313d4b04d109dcc7e5220',1,'Eigen::CompleteOrthogonalDecomposition']]],
+  ['zero_4434',['Zero',['../classEigen_1_1DenseBase.html#a3832aa9b2ee9ebdb4458003c742c9027',1,'Eigen::DenseBase::Zero(Index rows, Index cols)'],['../classEigen_1_1DenseBase.html#a55794ebb0c1cba3b998063a45b18378c',1,'Eigen::DenseBase::Zero(Index size)'],['../classEigen_1_1DenseBase.html#a8c4be762b10041d64a2b2ce85bb14ba0',1,'Eigen::DenseBase::Zero()']]],
+  ['zerodiag_4435',['ZeroDiag',['../group__enums.html#gga39e3366ff5554d731e7dc8bb642f83cdac4dc554a61510151ddd5bafaf6040223',1,'Eigen']]],
+  ['ziparchiveiosystem_4436',['ZipArchiveIOSystem',['../classAssimp_1_1ZipArchiveIOSystem.html',1,'Assimp::ZipArchiveIOSystem'],['../classAssimp_1_1ZipArchiveIOSystem.html#a18d906305d6d694db6b2f560e94c8169',1,'Assimp::ZipArchiveIOSystem::ZipArchiveIOSystem()']]],
+  ['ziparchiveiosystem_2eh_4437',['ZipArchiveIOSystem.h',['../ZipArchiveIOSystem_8h.html',1,'']]]
 ];

@@ -69,87 +69,74 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classptracey_1_1sampled__spectrum-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">ptracey::sampled_spectrum Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+<div class="dynheader">
+Inheritance diagram for ptracey::sampled_spectrum:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classptracey_1_1sampled__spectrum.png" usemap="#ptracey::sampled_5Fspectrum_map" alt=""/>
+  <map id="ptracey::sampled_5Fspectrum_map" name="ptracey::sampled_5Fspectrum_map">
+<area href="classptracey_1_1colorable.html" alt="ptracey::colorable" shape="rect" coords="0,0,165,24"/>
+  </map>
+</div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9ed5e204b82c28483a9d8ea8abe8350e"><td class="memItemLeft" align="right" valign="top"><a id="a9ed5e204b82c28483a9d8ea8abe8350e"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>sampled_spectrum</b> (const path &amp;csv_path, const std::string &amp;wave_col_name=&quot;wavelength&quot;, const std::string &amp;power_col_name=&quot;power&quot;, const std::string &amp;sep=&quot;,&quot;, const unsigned int stride=SPD_STRIDE, SpectrumType stype=SpectrumType::Reflectance)</td></tr>
-<tr class="separator:a9ed5e204b82c28483a9d8ea8abe8350e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4eaf2e1c15390f43915746204919279"><td class="memItemLeft" align="right" valign="top"><a id="aa4eaf2e1c15390f43915746204919279"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>sampled_spectrum</b> (const <a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt; &amp;s_lambda, SpectrumType stype)</td></tr>
-<tr class="separator:aa4eaf2e1c15390f43915746204919279"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a919e25c710a25c14b6d2e5379984f9e3"><td class="memItemLeft" align="right" valign="top"><a id="a919e25c710a25c14b6d2e5379984f9e3"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>sampled_spectrum</b> (const path &amp;csv_path, const std::string &amp;wave_col_name=&quot;wavelength&quot;, const std::string &amp;power_col_name=&quot;power&quot;, const char &amp;sep=',', const unsigned int stride=SPD_STRIDE, SpectrumType stype=SpectrumType::Reflectance)</td></tr>
+<tr class="separator:a919e25c710a25c14b6d2e5379984f9e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83dd178ecb8deaca67a543de48b65e92"><td class="memItemLeft" align="right" valign="top"><a id="a83dd178ecb8deaca67a543de48b65e92"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>sampled_spectrum</b> (const <a class="el" href="classptracey_1_1spd.html">spd</a> &amp;s_lambda, SpectrumType stype)</td></tr>
+<tr class="separator:a83dd178ecb8deaca67a543de48b65e92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a512c6af6285f6f041c22f031f09deee1"><td class="memItemLeft" align="right" valign="top"><a id="a512c6af6285f6f041c22f031f09deee1"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>sampled_spectrum</b> (const Real &amp;r, const Real &amp;g, const Real &amp;b, SpectrumType stype=SpectrumType::Reflectance)</td></tr>
 <tr class="separator:a512c6af6285f6f041c22f031f09deee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88fb3c47b0c59d65c29310b581ec9d69"><td class="memItemLeft" align="right" valign="top"><a id="a88fb3c47b0c59d65c29310b581ec9d69"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>sampled_spectrum</b> (const Real &amp;r, SpectrumType stype=SpectrumType::Reflectance)</td></tr>
 <tr class="separator:a88fb3c47b0c59d65c29310b581ec9d69"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a57934bfc6ab94ede887aa5f27c6aef55"><td class="memItemLeft" align="right" valign="top"><a id="a57934bfc6ab94ede887aa5f27c6aef55"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>sampled_spectrum</b> (const <a class="el" href="classptracey_1_1color.html">color</a> &amp;_rgb, SpectrumType stype=SpectrumType::Reflectance)</td></tr>
-<tr class="separator:a57934bfc6ab94ede887aa5f27c6aef55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaae7e8d1e4bba4af84a1d9bc714a65a2"><td class="memItemLeft" align="right" valign="top"><a id="aaae7e8d1e4bba4af84a1d9bc714a65a2"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>sampled_spectrum</b> (const <a class="el" href="classptracey_1_1rgb__model.html">rgb_model</a> &amp;_rgb, SpectrumType stype=SpectrumType::Reflectance)</td></tr>
+<tr class="separator:aaae7e8d1e4bba4af84a1d9bc714a65a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05b1cf281747b0ee18c420317063bd68"><td class="memItemLeft" align="right" valign="top"><a id="a05b1cf281747b0ee18c420317063bd68"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>sampled_spectrum</b> (const <a class="el" href="classptracey_1_1vec3.html">vec3</a> &amp;_rgb, SpectrumType stype=SpectrumType::Reflectance)</td></tr>
 <tr class="separator:a05b1cf281747b0ee18c420317063bd68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f8bbc637af990a3b562330a3ada5ff1"><td class="memItemLeft" align="right" valign="top"><a id="a0f8bbc637af990a3b562330a3ada5ff1"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>from_rgb</b> (const <a class="el" href="classptracey_1_1vec3.html">vec3</a> &amp;rgb)</td></tr>
-<tr class="separator:a0f8bbc637af990a3b562330a3ada5ff1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92c6947539464fe68391003b811fcd12"><td class="memItemLeft" align="right" valign="top"><a id="a92c6947539464fe68391003b811fcd12"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>from_rgb</b> (const <a class="el" href="classptracey_1_1color.html">color</a> &amp;rgb)</td></tr>
-<tr class="separator:a92c6947539464fe68391003b811fcd12"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd1b790641748d9246585620b9abc42e"><td class="memItemLeft" align="right" valign="top"><a id="abd1b790641748d9246585620b9abc42e"></a>
-shared_ptr&lt; <a class="el" href="classptracey_1_1sampled__spectrum.html">sampled_spectrum</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>add</b> (const shared_ptr&lt; Real &gt; &amp;s) const</td></tr>
-<tr class="separator:abd1b790641748d9246585620b9abc42e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90a0fd9bd440c29d1aabfbee10f765ee"><td class="memItemLeft" align="right" valign="top"><a id="a90a0fd9bd440c29d1aabfbee10f765ee"></a>
-shared_ptr&lt; <a class="el" href="classptracey_1_1sampled__spectrum.html">sampled_spectrum</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>add</b> (const shared_ptr&lt; <a class="el" href="classptracey_1_1sampled__spectrum.html">sampled_spectrum</a> &gt; &amp;s) const</td></tr>
-<tr class="separator:a90a0fd9bd440c29d1aabfbee10f765ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a77a516a02859aae05aa93fb81777f14e"><td class="memItemLeft" align="right" valign="top"><a id="a77a516a02859aae05aa93fb81777f14e"></a>
-<a class="el" href="classptracey_1_1sampled__spectrum.html">sampled_spectrum</a>&#160;</td><td class="memItemRight" valign="bottom"><b>add</b> (const Real &amp;s) const</td></tr>
-<tr class="separator:a77a516a02859aae05aa93fb81777f14e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a49bfba8d0f192aefdab54fcdd427f715"><td class="memItemLeft" align="right" valign="top"><a id="a49bfba8d0f192aefdab54fcdd427f715"></a>
-<a class="el" href="classptracey_1_1sampled__spectrum.html">sampled_spectrum</a>&#160;</td><td class="memItemRight" valign="bottom"><b>add</b> (const <a class="el" href="classptracey_1_1sampled__spectrum.html">sampled_spectrum</a> &amp;s) const</td></tr>
-<tr class="separator:a49bfba8d0f192aefdab54fcdd427f715"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad592e951dc0e621774e0b09d5d03a86c"><td class="memItemLeft" align="right" valign="top"><a id="ad592e951dc0e621774e0b09d5d03a86c"></a>
-shared_ptr&lt; <a class="el" href="classptracey_1_1sampled__spectrum.html">sampled_spectrum</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>subt</b> (const shared_ptr&lt; Real &gt; &amp;s) const</td></tr>
-<tr class="separator:ad592e951dc0e621774e0b09d5d03a86c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85026b1e058138414ef07cfa15aa21a1"><td class="memItemLeft" align="right" valign="top"><a id="a85026b1e058138414ef07cfa15aa21a1"></a>
-shared_ptr&lt; <a class="el" href="classptracey_1_1sampled__spectrum.html">sampled_spectrum</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>subt</b> (const shared_ptr&lt; <a class="el" href="classptracey_1_1sampled__spectrum.html">sampled_spectrum</a> &gt; &amp;s) const</td></tr>
-<tr class="separator:a85026b1e058138414ef07cfa15aa21a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0bfc1e7bb6af65673dbf4e15da90ae60"><td class="memItemLeft" align="right" valign="top"><a id="a0bfc1e7bb6af65673dbf4e15da90ae60"></a>
-<a class="el" href="classptracey_1_1sampled__spectrum.html">sampled_spectrum</a>&#160;</td><td class="memItemRight" valign="bottom"><b>subt</b> (const Real &amp;s) const</td></tr>
-<tr class="separator:a0bfc1e7bb6af65673dbf4e15da90ae60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63276a4e7d14ee00abfd3942dfb7ec79"><td class="memItemLeft" align="right" valign="top"><a id="a63276a4e7d14ee00abfd3942dfb7ec79"></a>
-<a class="el" href="classptracey_1_1sampled__spectrum.html">sampled_spectrum</a>&#160;</td><td class="memItemRight" valign="bottom"><b>subt</b> (const <a class="el" href="classptracey_1_1sampled__spectrum.html">sampled_spectrum</a> &amp;s) const</td></tr>
-<tr class="separator:a63276a4e7d14ee00abfd3942dfb7ec79"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a28f9b85f8487cf268a91c1ba581ce6be"><td class="memItemLeft" align="right" valign="top"><a id="a28f9b85f8487cf268a91c1ba581ce6be"></a>
-shared_ptr&lt; <a class="el" href="classptracey_1_1sampled__spectrum.html">sampled_spectrum</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>multip</b> (const shared_ptr&lt; Real &gt; &amp;s) const</td></tr>
-<tr class="separator:a28f9b85f8487cf268a91c1ba581ce6be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3f5fd8278eb209c1bd5d5939efeeb8d"><td class="memItemLeft" align="right" valign="top"><a id="ad3f5fd8278eb209c1bd5d5939efeeb8d"></a>
-shared_ptr&lt; <a class="el" href="classptracey_1_1sampled__spectrum.html">sampled_spectrum</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>multip</b> (const shared_ptr&lt; <a class="el" href="classptracey_1_1sampled__spectrum.html">sampled_spectrum</a> &gt; &amp;s) const</td></tr>
-<tr class="separator:ad3f5fd8278eb209c1bd5d5939efeeb8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa350de6d22422885ff1157444818bbcc"><td class="memItemLeft" align="right" valign="top"><a id="aa350de6d22422885ff1157444818bbcc"></a>
-<a class="el" href="classptracey_1_1sampled__spectrum.html">sampled_spectrum</a>&#160;</td><td class="memItemRight" valign="bottom"><b>multip</b> (const Real &amp;s) const</td></tr>
-<tr class="separator:aa350de6d22422885ff1157444818bbcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a482cd086fd0fe3dbeceac58fe416d39d"><td class="memItemLeft" align="right" valign="top"><a id="a482cd086fd0fe3dbeceac58fe416d39d"></a>
-<a class="el" href="classptracey_1_1sampled__spectrum.html">sampled_spectrum</a>&#160;</td><td class="memItemRight" valign="bottom"><b>multip</b> (const <a class="el" href="classptracey_1_1sampled__spectrum.html">sampled_spectrum</a> &amp;s) const</td></tr>
-<tr class="separator:a482cd086fd0fe3dbeceac58fe416d39d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9df8dfb9d9a007ed9226c271379ac358"><td class="memItemLeft" align="right" valign="top"><a id="a9df8dfb9d9a007ed9226c271379ac358"></a>
-shared_ptr&lt; <a class="el" href="classptracey_1_1sampled__spectrum.html">sampled_spectrum</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>div</b> (const shared_ptr&lt; Real &gt; &amp;s) const</td></tr>
-<tr class="separator:a9df8dfb9d9a007ed9226c271379ac358"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad070422615341b9fdab2442b186e846b"><td class="memItemLeft" align="right" valign="top"><a id="ad070422615341b9fdab2442b186e846b"></a>
-shared_ptr&lt; <a class="el" href="classptracey_1_1sampled__spectrum.html">sampled_spectrum</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>div</b> (const shared_ptr&lt; <a class="el" href="classptracey_1_1sampled__spectrum.html">sampled_spectrum</a> &gt; &amp;s) const</td></tr>
-<tr class="separator:ad070422615341b9fdab2442b186e846b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe0a0b94f4614378429d1f1cbe1c2bbc"><td class="memItemLeft" align="right" valign="top"><a id="afe0a0b94f4614378429d1f1cbe1c2bbc"></a>
-<a class="el" href="classptracey_1_1sampled__spectrum.html">sampled_spectrum</a>&#160;</td><td class="memItemRight" valign="bottom"><b>div</b> (const Real &amp;s) const</td></tr>
-<tr class="separator:afe0a0b94f4614378429d1f1cbe1c2bbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a58bee1f49a64e081230bd8aefad5c247"><td class="memItemLeft" align="right" valign="top"><a id="a58bee1f49a64e081230bd8aefad5c247"></a>
-<a class="el" href="classptracey_1_1sampled__spectrum.html">sampled_spectrum</a>&#160;</td><td class="memItemRight" valign="bottom"><b>div</b> (const <a class="el" href="classptracey_1_1sampled__spectrum.html">sampled_spectrum</a> &amp;s) const</td></tr>
-<tr class="separator:a58bee1f49a64e081230bd8aefad5c247"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2ea417460f309d6131abaa2e97f682b"><td class="memItemLeft" align="right" valign="top"><a id="ab2ea417460f309d6131abaa2e97f682b"></a>
+<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>_from_rgb</b> (const <a class="el" href="classptracey_1_1vec3.html">vec3</a> &amp;rgb)</td></tr>
+<tr class="separator:ab2ea417460f309d6131abaa2e97f682b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fded453f9196efc3449232febc6c7c7"><td class="memItemLeft" align="right" valign="top"><a id="a7fded453f9196efc3449232febc6c7c7"></a>
+<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>from_rgb</b> (const <a class="el" href="classptracey_1_1vec3.html">vec3</a> &amp;rgb)</td></tr>
+<tr class="separator:a7fded453f9196efc3449232febc6c7c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae00e9015b257f2847de24474c3ea32a4"><td class="memItemLeft" align="right" valign="top"><a id="ae00e9015b257f2847de24474c3ea32a4"></a>
+<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>from_rgb</b> (const <a class="el" href="classptracey_1_1rgb__model.html">rgb_model</a> &amp;rgb)</td></tr>
+<tr class="separator:ae00e9015b257f2847de24474c3ea32a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62d91ad96c8a632cbd7e11efc1dadb0c"><td class="memItemLeft" align="right" valign="top"><a id="a62d91ad96c8a632cbd7e11efc1dadb0c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>insert</b> (unsigned int wavelength, Real power)</td></tr>
+<tr class="separator:a62d91ad96c8a632cbd7e11efc1dadb0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45317295f96e3bee9f82026b779158d5"><td class="memItemLeft" align="right" valign="top"><a id="a45317295f96e3bee9f82026b779158d5"></a>
+<a class="el" href="classptracey_1_1vec3.html">vec3</a>&#160;</td><td class="memItemRight" valign="bottom"><b>to_xyz</b> () const override</td></tr>
+<tr class="separator:a45317295f96e3bee9f82026b779158d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a285e7a54b107728ff8919e251a10e549"><td class="memItemLeft" align="right" valign="top"><a id="a285e7a54b107728ff8919e251a10e549"></a>
+<a class="el" href="classptracey_1_1vec3.html">vec3</a>&#160;</td><td class="memItemRight" valign="bottom"><b>_to_xyz</b> () const</td></tr>
+<tr class="separator:a285e7a54b107728ff8919e251a10e549"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac97cb97c077fc6aafa71c8d87584d715"><td class="memItemLeft" align="right" valign="top"><a id="ac97cb97c077fc6aafa71c8d87584d715"></a>
+Power&#160;</td><td class="memItemRight" valign="bottom"><b>evaluate</b> (const WaveLength &amp;w) const</td></tr>
+<tr class="separator:ac97cb97c077fc6aafa71c8d87584d715"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a549c14a97a2087c744f8bf331e1ead11"><td class="memItemLeft" align="right" valign="top"><a id="a549c14a97a2087c744f8bf331e1ead11"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>add</b> (const <a class="el" href="structptracey_1_1color.html">color</a> &amp;r_color, const WaveLength &amp;w)</td></tr>
+<tr class="separator:a549c14a97a2087c744f8bf331e1ead11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb8740cb6652a2d49c1bc1e5eb461e19"><td class="memItemLeft" align="right" valign="top"><a id="abb8740cb6652a2d49c1bc1e5eb461e19"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>scale</b> (Real coeff)</td></tr>
+<tr class="separator:abb8740cb6652a2d49c1bc1e5eb461e19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4100d2d41f30012c57b2dd9269ee5704"><td class="memItemLeft" align="right" valign="top"><a id="a4100d2d41f30012c57b2dd9269ee5704"></a>
+<a class="el" href="classptracey_1_1vec3.html">vec3</a>&#160;</td><td class="memItemRight" valign="bottom"><b>to_rgb</b> () const override</td></tr>
+<tr class="separator:a4100d2d41f30012c57b2dd9269ee5704"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf55b0318a9cfcd968d5aea097b2ae8c"><td class="memItemLeft" align="right" valign="top"><a id="abf55b0318a9cfcd968d5aea097b2ae8c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>Init</b> ()</td></tr>
+<tr class="separator:abf55b0318a9cfcd968d5aea097b2ae8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -162,132 +149,24 @@ static <a class="el" href="classptracey_1_1sampled__spectrum.html">sampled_spect
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a0063d655c170b06068481abda8de9e05"><td class="memItemLeft" align="right" valign="top"><a id="a0063d655c170b06068481abda8de9e05"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>spect</b></td></tr>
-<tr class="separator:a0063d655c170b06068481abda8de9e05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f6c6692bb92706a9f61b0ad111fc72d"><td class="memItemLeft" align="right" valign="top"><a id="a2f6c6692bb92706a9f61b0ad111fc72d"></a>
+<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>spect</b></td></tr>
+<tr class="separator:a2f6c6692bb92706a9f61b0ad111fc72d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa765b4c738f5faa79886ee4fee7bd761"><td class="memItemLeft" align="right" valign="top"><a id="aa765b4c738f5faa79886ee4fee7bd761"></a>
+<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>sX</b></td></tr>
+<tr class="separator:aa765b4c738f5faa79886ee4fee7bd761"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad43be1410c6228dd80a7a7a9e273a37"><td class="memItemLeft" align="right" valign="top"><a id="aad43be1410c6228dd80a7a7a9e273a37"></a>
+<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>sY</b></td></tr>
+<tr class="separator:aad43be1410c6228dd80a7a7a9e273a37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09bc540de7ac0b8ffa3cac24f55e791c"><td class="memItemLeft" align="right" valign="top"><a id="a09bc540de7ac0b8ffa3cac24f55e791c"></a>
+<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>sZ</b></td></tr>
+<tr class="separator:a09bc540de7ac0b8ffa3cac24f55e791c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e128780c722d9815a367e180e3579ee"><td class="memItemLeft" align="right" valign="top"><a id="a3e128780c722d9815a367e180e3579ee"></a>
 SpectrumType&#160;</td><td class="memItemRight" valign="bottom"><b>type</b></td></tr>
 <tr class="separator:a3e128780c722d9815a367e180e3579ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr class="memitem:ab66e46dbaa1054f92658240bd3b8d1ee"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>cie_xbar</b></td></tr>
-<tr class="separator:ab66e46dbaa1054f92658240bd3b8d1ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a974315215a6d6668eceab7420cd8c6d4"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>cie_ybar</b></td></tr>
-<tr class="separator:a974315215a6d6668eceab7420cd8c6d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae159cdfe5c473957d69496b5ab7996ae"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>cie_zbar</b></td></tr>
-<tr class="separator:ae159cdfe5c473957d69496b5ab7996ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69aad53df69cdb305e2fc4048941d4db"><td class="memItemLeft" align="right" valign="top"><a id="a69aad53df69cdb305e2fc4048941d4db"></a>
-static <a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>rho_r</b> = rho_rspd.normalized()</td></tr>
-<tr class="separator:a69aad53df69cdb305e2fc4048941d4db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6376d421054ff92cdadd96a6d07e20b"><td class="memItemLeft" align="right" valign="top"><a id="ab6376d421054ff92cdadd96a6d07e20b"></a>
-static <a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>rho_g</b> = rho_gspd.normalized()</td></tr>
-<tr class="separator:ab6376d421054ff92cdadd96a6d07e20b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a085ef94a64512f5af154bc4b578ec624"><td class="memItemLeft" align="right" valign="top"><a id="a085ef94a64512f5af154bc4b578ec624"></a>
-static <a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>rho_b</b> = rho_bspd.normalized()</td></tr>
-<tr class="separator:a085ef94a64512f5af154bc4b578ec624"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a34fc29a0b49f80aa1fce18953e4033b0"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>standard_d65</b></td></tr>
-<tr class="separator:a34fc29a0b49f80aa1fce18953e4033b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="ab66e46dbaa1054f92658240bd3b8d1ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab66e46dbaa1054f92658240bd3b8d1ee">&#9670;&nbsp;</a></span>cie_xbar</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt; ptracey::sampled_spectrum::cie_xbar</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div>
-<div class="line">    cie_xbarspd.normalized()</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a974315215a6d6668eceab7420cd8c6d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a974315215a6d6668eceab7420cd8c6d4">&#9670;&nbsp;</a></span>cie_ybar</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt; ptracey::sampled_spectrum::cie_ybar</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div>
-<div class="line">    cie_ybarspd.normalized()</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="ae159cdfe5c473957d69496b5ab7996ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae159cdfe5c473957d69496b5ab7996ae">&#9670;&nbsp;</a></span>cie_zbar</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt; ptracey::sampled_spectrum::cie_zbar</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div>
-<div class="line">    cie_zbarspd.normalized()</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a34fc29a0b49f80aa1fce18953e4033b0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a34fc29a0b49f80aa1fce18953e4033b0">&#9670;&nbsp;</a></span>standard_d65</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classptracey_1_1spd.html">spd</a>&lt; Real &gt; ptracey::sampled_spectrum::standard_d65</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div>
-<div class="line">    stand_d65.normalized()</div>
-</div><!-- fragment -->
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="spectrum_8hpp_source.html">spectrum.hpp</a></li>
+<li><a class="el" href="sampled__spectrum_8hpp_source.html">sampled_spectrum.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

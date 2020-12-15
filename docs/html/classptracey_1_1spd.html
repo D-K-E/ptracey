@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.19"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Path Tracer: ptracey::spd&lt; T &gt; Class Template Reference</title>
+<title>Path Tracer: ptracey::spd Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -72,181 +72,263 @@ $(function() {
 <a href="#friends">Friends</a> &#124;
 <a href="classptracey_1_1spd-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">ptracey::spd&lt; T &gt; Class Template Reference</div>  </div>
+<div class="title">ptracey::spd Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af972d63c756d064e40c7271ee59ca686"><td class="memItemLeft" align="right" valign="top"><a id="af972d63c756d064e40c7271ee59ca686"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>spd</b> (unsigned int size=471/SPD_STRIDE)</td></tr>
-<tr class="separator:af972d63c756d064e40c7271ee59ca686"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac89e7d280708f21ae427669af319f5b8"><td class="memItemLeft" align="right" valign="top"><a id="ac89e7d280708f21ae427669af319f5b8"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>spd</b> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&lt; T &gt; &amp;sampled_powers, unsigned int wstart, unsigned int stride=SPD_STRIDE)</td></tr>
-<tr class="separator:ac89e7d280708f21ae427669af319f5b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1654f9a6154c940b759622c35f121d4"><td class="memItemLeft" align="right" valign="top"><a id="ab1654f9a6154c940b759622c35f121d4"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>spd</b> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&lt; T &gt; &amp;sampled_powers, std::vector&lt; unsigned int &gt; wlengths, unsigned int stride=SPD_STRIDE)</td></tr>
-<tr class="separator:ab1654f9a6154c940b759622c35f121d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3dcd7e393bb2008d9cb1a27e67229c2"><td class="memTemplParams" colspan="2"><a id="ab3dcd7e393bb2008d9cb1a27e67229c2"></a>
-template&lt;typename U &gt; </td></tr>
-<tr class="memitem:ab3dcd7e393bb2008d9cb1a27e67229c2"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>fill_with_stride</b> (std::vector&lt; U &gt; &amp;dest, const std::vector&lt; U &gt; &amp;srcv, unsigned int stride)</td></tr>
-<tr class="separator:ab3dcd7e393bb2008d9cb1a27e67229c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:accd0d08ce515cf6c6752730990d7372f"><td class="memItemLeft" align="right" valign="top"><a id="accd0d08ce515cf6c6752730990d7372f"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>spd</b> (const path &amp;csv_path, const std::string &amp;wave_col_name=&quot;wavelength&quot;, const std::string &amp;power_col_name=&quot;power&quot;, const std::string &amp;sep=&quot;,&quot;, const unsigned int stride=SPD_STRIDE)</td></tr>
-<tr class="separator:accd0d08ce515cf6c6752730990d7372f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7809286e291b6f509414d657542481ab"><td class="memItemLeft" align="right" valign="top"><a id="a7809286e291b6f509414d657542481ab"></a>
-<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>power</b> () const</td></tr>
-<tr class="separator:a7809286e291b6f509414d657542481ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adfe1f7d72ca8a90ae79a79e41ef31709"><td class="memItemLeft" align="right" valign="top"><a id="adfe1f7d72ca8a90ae79a79e41ef31709"></a>
-std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>wavelengths</b> () const</td></tr>
-<tr class="separator:adfe1f7d72ca8a90ae79a79e41ef31709"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c684df7f755fa1bf0e03f786c867618"><td class="memItemLeft" align="right" valign="top"><a id="a3c684df7f755fa1bf0e03f786c867618"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>normalized</b> () const</td></tr>
-<tr class="separator:a3c684df7f755fa1bf0e03f786c867618"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb9dc41160b652b8877cf9436a641f99"><td class="memItemLeft" align="right" valign="top"><a id="acb9dc41160b652b8877cf9436a641f99"></a>
+<tr class="memitem:a297e0cae208430caf385bf22a26ec630"><td class="memItemLeft" align="right" valign="top"><a id="a297e0cae208430caf385bf22a26ec630"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>spd</b> (uint size=471/SPD_STRIDE)</td></tr>
+<tr class="separator:a297e0cae208430caf385bf22a26ec630"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6807661e52341f99bd2c298db0c4e5fa"><td class="memItemLeft" align="right" valign="top"><a id="a6807661e52341f99bd2c298db0c4e5fa"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>spd</b> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&lt; Power &gt; &amp;sampled_powers, WaveLength wstart)</td></tr>
+<tr class="separator:a6807661e52341f99bd2c298db0c4e5fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1a43d8a219aec2b6187049f3d08f19e"><td class="memItemLeft" align="right" valign="top"><a id="ad1a43d8a219aec2b6187049f3d08f19e"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>spd</b> (const <a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&lt; Power &gt; &amp;sampled_powers, const std::vector&lt; WaveLength &gt; &amp;wlengths)</td></tr>
+<tr class="separator:ad1a43d8a219aec2b6187049f3d08f19e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76781a0e717b3cd2a35a4f8c37fc771e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1spd.html#a76781a0e717b3cd2a35a4f8c37fc771e">spd</a> (uint wave_range, const std::function&lt; WaveLength(uint)&gt; &amp;wavelength_generator, const std::function&lt; Power(WaveLength)&gt; &amp;power_generator)</td></tr>
+<tr class="separator:a76781a0e717b3cd2a35a4f8c37fc771e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2dfe06c2f91b4e3f18f023128c0e9011"><td class="memTemplParams" colspan="2"><a id="a2dfe06c2f91b4e3f18f023128c0e9011"></a>
+template&lt;typename V &gt; </td></tr>
+<tr class="memitem:a2dfe06c2f91b4e3f18f023128c0e9011"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>fill_with_stride</b> (std::vector&lt; V &gt; &amp;dest, const std::vector&lt; V &gt; &amp;srcv, unsigned int stride)</td></tr>
+<tr class="separator:a2dfe06c2f91b4e3f18f023128c0e9011"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b2f8ac56ffe51f694f11631e9bd123b"><td class="memItemLeft" align="right" valign="top"><a id="a2b2f8ac56ffe51f694f11631e9bd123b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>spd</b> (const path &amp;csv_path, const std::string &amp;wave_col_name=&quot;wavelength&quot;, const std::string &amp;power_col_name=&quot;power&quot;, const char &amp;sep=',', const unsigned int stride=SPD_STRIDE, const std::function&lt; WaveLength(WaveLength)&gt; &amp;wave_transform=[](auto j) { return j;}, const std::function&lt; Power(Power)&gt; &amp;power_transform=[](auto j) { return j;})</td></tr>
+<tr class="separator:a2b2f8ac56ffe51f694f11631e9bd123b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a300e4c9f4ebbd87201e6c471b9193ef3"><td class="memItemLeft" align="right" valign="top"><a id="a300e4c9f4ebbd87201e6c471b9193ef3"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>resample</b> (const <a class="el" href="classptracey_1_1spd.html">spd</a> &amp;s)</td></tr>
+<tr class="separator:a300e4c9f4ebbd87201e6c471b9193ef3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa908d8045421e55a0938a20a36b71f60"><td class="memItemLeft" align="right" valign="top"><a id="aa908d8045421e55a0938a20a36b71f60"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>resample</b> (const WaveLength &amp;waveLStart, const WaveLength &amp;waveLEnd, const uint &amp;outSize)</td></tr>
+<tr class="separator:aa908d8045421e55a0938a20a36b71f60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9cf9b88ff99b8acd38edbed199ce519e"><td class="memItemLeft" align="right" valign="top"><a id="a9cf9b88ff99b8acd38edbed199ce519e"></a>
+<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>resample_c</b> (const <a class="el" href="classptracey_1_1spd.html">spd</a> &amp;s) const</td></tr>
+<tr class="separator:a9cf9b88ff99b8acd38edbed199ce519e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6516a6c2787fc72901476f75190ac5ff"><td class="memItemLeft" align="right" valign="top"><a id="a6516a6c2787fc72901476f75190ac5ff"></a>
+<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>resample_c</b> (const uint &amp;outSize) const</td></tr>
+<tr class="separator:a6516a6c2787fc72901476f75190ac5ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8cf2c17d7933398e7da2c0c928ae1e3"><td class="memItemLeft" align="right" valign="top"><a id="af8cf2c17d7933398e7da2c0c928ae1e3"></a>
+<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>resample_c</b> (const WaveLength &amp;waveLStart, const WaveLength &amp;waveLEnd, const uint &amp;outSize) const</td></tr>
+<tr class="separator:af8cf2c17d7933398e7da2c0c928ae1e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0bb1bb4c182e1c1fe52e88cc757e4c10"><td class="memItemLeft" align="right" valign="top"><a id="a0bb1bb4c182e1c1fe52e88cc757e4c10"></a>
+<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&lt; Power &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>powers</b> () const</td></tr>
+<tr class="separator:a0bb1bb4c182e1c1fe52e88cc757e4c10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9725b0bac34e50736e7c929a5a981e05"><td class="memItemLeft" align="right" valign="top"><a id="a9725b0bac34e50736e7c929a5a981e05"></a>
+std::vector&lt; WaveLength &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>wavelengths</b> () const</td></tr>
+<tr class="separator:a9725b0bac34e50736e7c929a5a981e05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdf72d55d345d7e60dd63085e15fa1ea"><td class="memItemLeft" align="right" valign="top"><a id="abdf72d55d345d7e60dd63085e15fa1ea"></a>
+<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>interpolate</b> (Real low=0.0, Real high=FLT_MAX) const</td></tr>
+<tr class="separator:abdf72d55d345d7e60dd63085e15fa1ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57e50560bd7ebc859a61182933f9bd59"><td class="memItemLeft" align="right" valign="top"><a id="a57e50560bd7ebc859a61182933f9bd59"></a>
+<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>clamp</b> (Power low=0.0, Power high=FLT_MAX) const</td></tr>
+<tr class="separator:a57e50560bd7ebc859a61182933f9bd59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7027bdb4fed5e646a2953cb6c9068620"><td class="memItemLeft" align="right" valign="top"><a id="a7027bdb4fed5e646a2953cb6c9068620"></a>
+<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>normalized</b> () const</td></tr>
+<tr class="separator:a7027bdb4fed5e646a2953cb6c9068620"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e50b5b68440b0b383427e4c816e51a3"><td class="memItemLeft" align="right" valign="top"><a id="a7e50b5b68440b0b383427e4c816e51a3"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>normalize</b> ()</td></tr>
-<tr class="separator:acb9dc41160b652b8877cf9436a641f99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19a3ce740279553442829ba3c3f8f515"><td class="memItemLeft" align="right" valign="top"><a id="a19a3ce740279553442829ba3c3f8f515"></a>
+<tr class="separator:a7e50b5b68440b0b383427e4c816e51a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa87e146b1e2fc98657b286cb32317465"><td class="memItemLeft" align="right" valign="top"><a id="aa87e146b1e2fc98657b286cb32317465"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>min_wave</b> () const</td></tr>
-<tr class="separator:a19a3ce740279553442829ba3c3f8f515"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42a458e7d28609839e8d0a357c34da34"><td class="memItemLeft" align="right" valign="top"><a id="a42a458e7d28609839e8d0a357c34da34"></a>
+<tr class="separator:aa87e146b1e2fc98657b286cb32317465"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a064276a39548997e345507d2a66604cd"><td class="memItemLeft" align="right" valign="top"><a id="a064276a39548997e345507d2a66604cd"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>max_wave</b> () const</td></tr>
-<tr class="separator:a42a458e7d28609839e8d0a357c34da34"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a626e09043ebcfd7da6af01647ae19d1d"><td class="memItemLeft" align="right" valign="top"><a id="a626e09043ebcfd7da6af01647ae19d1d"></a>
-T&#160;</td><td class="memItemRight" valign="bottom"><b>min_power</b> () const</td></tr>
-<tr class="separator:a626e09043ebcfd7da6af01647ae19d1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5995ac0bf5566f4add89aea0444b5bd8"><td class="memItemLeft" align="right" valign="top"><a id="a5995ac0bf5566f4add89aea0444b5bd8"></a>
-T&#160;</td><td class="memItemRight" valign="bottom"><b>max_power</b> () const</td></tr>
-<tr class="separator:a5995ac0bf5566f4add89aea0444b5bd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11e002efb1f7588a18a54653e906cdd5"><td class="memItemLeft" align="right" valign="top"><a id="a11e002efb1f7588a18a54653e906cdd5"></a>
-std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> () const</td></tr>
-<tr class="separator:a11e002efb1f7588a18a54653e906cdd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65efea484d52c05b2dbb70b5f3fbfdd9"><td class="memItemLeft" align="right" valign="top"><a id="a65efea484d52c05b2dbb70b5f3fbfdd9"></a>
-Real&#160;</td><td class="memItemRight" valign="bottom"><b>integrate</b> (const <a class="el" href="classptracey_1_1spd.html">spd</a>&lt; T &gt; &amp;nspd) const</td></tr>
-<tr class="separator:a65efea484d52c05b2dbb70b5f3fbfdd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8bd3bd8e85b3ad0f871406e3f4bd7a51"><td class="memItemLeft" align="right" valign="top"><a id="a8bd3bd8e85b3ad0f871406e3f4bd7a51"></a>
-T&#160;</td><td class="memItemRight" valign="bottom"><b>power_average</b> (unsigned int w1, unsigned int w2) const</td></tr>
-<tr class="separator:a8bd3bd8e85b3ad0f871406e3f4bd7a51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a108c038fdf37d1cbcef081dc1db692ca"><td class="memItemLeft" align="right" valign="top"><a id="a108c038fdf37d1cbcef081dc1db692ca"></a>
-T&#160;</td><td class="memItemRight" valign="bottom"><b>power_average</b> (const std::vector&lt; unsigned int &gt; &amp;ws, int lbound_pos) const</td></tr>
-<tr class="separator:a108c038fdf37d1cbcef081dc1db692ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a129bc518ac61c2462c55031d0f7ee028"><td class="memItemLeft" align="right" valign="top"><a id="a129bc518ac61c2462c55031d0f7ee028"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>eval_wavelength</b> (unsigned int wave_length, T &amp;power_value) const</td></tr>
-<tr class="separator:a129bc518ac61c2462c55031d0f7ee028"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa55a82f109bb8e340c36764ce58322ac"><td class="memItemLeft" align="right" valign="top"><a id="aa55a82f109bb8e340c36764ce58322ac"></a>
-T&#160;</td><td class="memItemRight" valign="bottom"><b>eval_wavelength</b> (unsigned int wave_length) const</td></tr>
-<tr class="separator:aa55a82f109bb8e340c36764ce58322ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8a2bee873ef5c2eaac2d21c0afd6c3f"><td class="memItemLeft" align="right" valign="top"><a id="ac8a2bee873ef5c2eaac2d21c0afd6c3f"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator+=</b> (const <a class="el" href="classptracey_1_1spd.html">spd</a> &amp;s) const</td></tr>
-<tr class="separator:ac8a2bee873ef5c2eaac2d21c0afd6c3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa827757a6eff6d5bdf13896b9a04346"><td class="memItemLeft" align="right" valign="top"><a id="aaa827757a6eff6d5bdf13896b9a04346"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator+=</b> (const Real &amp;s) const</td></tr>
-<tr class="separator:aaa827757a6eff6d5bdf13896b9a04346"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1be677d3b708dde7c7ca8c5d90945ea4"><td class="memItemLeft" align="right" valign="top"><a id="a1be677d3b708dde7c7ca8c5d90945ea4"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator+</b> (const <a class="el" href="classptracey_1_1spd.html">spd</a> &amp;s) const</td></tr>
-<tr class="separator:a1be677d3b708dde7c7ca8c5d90945ea4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:accbc99512247d172b24b0acd8e6c2c39"><td class="memItemLeft" align="right" valign="top"><a id="accbc99512247d172b24b0acd8e6c2c39"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator+</b> (const Real &amp;s) const</td></tr>
-<tr class="separator:accbc99512247d172b24b0acd8e6c2c39"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ed4b6c2adc0b347fb6774bc50f11048"><td class="memItemLeft" align="right" valign="top"><a id="a8ed4b6c2adc0b347fb6774bc50f11048"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator-=</b> (const <a class="el" href="classptracey_1_1spd.html">spd</a> &amp;s) const</td></tr>
-<tr class="separator:a8ed4b6c2adc0b347fb6774bc50f11048"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ea768c83642d4c7814ff2ff417d5219"><td class="memItemLeft" align="right" valign="top"><a id="a5ea768c83642d4c7814ff2ff417d5219"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator-=</b> (const Real &amp;s) const</td></tr>
-<tr class="separator:a5ea768c83642d4c7814ff2ff417d5219"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05f79198cfde28bb1b106d8e3e197bdc"><td class="memItemLeft" align="right" valign="top"><a id="a05f79198cfde28bb1b106d8e3e197bdc"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator-</b> (const <a class="el" href="classptracey_1_1spd.html">spd</a> &amp;s) const</td></tr>
-<tr class="separator:a05f79198cfde28bb1b106d8e3e197bdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5f803e71ed1e5d50eabb281d0cde0d7"><td class="memItemLeft" align="right" valign="top"><a id="af5f803e71ed1e5d50eabb281d0cde0d7"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator-</b> (const Real &amp;s) const</td></tr>
-<tr class="separator:af5f803e71ed1e5d50eabb281d0cde0d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5aea51e8e54ecc0ef83b07bf02e6ee8a"><td class="memItemLeft" align="right" valign="top"><a id="a5aea51e8e54ecc0ef83b07bf02e6ee8a"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator*=</b> (const <a class="el" href="classptracey_1_1spd.html">spd</a> &amp;s) const</td></tr>
-<tr class="separator:a5aea51e8e54ecc0ef83b07bf02e6ee8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9072db38042532b80412314b31f560e9"><td class="memItemLeft" align="right" valign="top"><a id="a9072db38042532b80412314b31f560e9"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator*=</b> (const Real &amp;s) const</td></tr>
-<tr class="separator:a9072db38042532b80412314b31f560e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9111d177ebb2f2135f5feebbaa70055c"><td class="memItemLeft" align="right" valign="top"><a id="a9111d177ebb2f2135f5feebbaa70055c"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (const <a class="el" href="classptracey_1_1spd.html">spd</a> &amp;s) const</td></tr>
-<tr class="separator:a9111d177ebb2f2135f5feebbaa70055c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a521f2b07b16e3b63b16cd8abeb9e65e9"><td class="memItemLeft" align="right" valign="top"><a id="a521f2b07b16e3b63b16cd8abeb9e65e9"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (const Real &amp;s) const</td></tr>
-<tr class="separator:a521f2b07b16e3b63b16cd8abeb9e65e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a38f10e7562fe5fbcd412c49ea8f56701"><td class="memItemLeft" align="right" valign="top"><a id="a38f10e7562fe5fbcd412c49ea8f56701"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator/=</b> (const <a class="el" href="classptracey_1_1spd.html">spd</a> &amp;s) const</td></tr>
-<tr class="separator:a38f10e7562fe5fbcd412c49ea8f56701"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16e726cd852a39aad2a4237878e8abff"><td class="memItemLeft" align="right" valign="top"><a id="a16e726cd852a39aad2a4237878e8abff"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator/=</b> (const Real &amp;s) const</td></tr>
-<tr class="separator:a16e726cd852a39aad2a4237878e8abff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f31430824f8779ad3919cfdabfeca28"><td class="memItemLeft" align="right" valign="top"><a id="a8f31430824f8779ad3919cfdabfeca28"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator/</b> (const <a class="el" href="classptracey_1_1spd.html">spd</a> &amp;s) const</td></tr>
-<tr class="separator:a8f31430824f8779ad3919cfdabfeca28"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad483432f6f144fb26a40107ec5a2cf14"><td class="memItemLeft" align="right" valign="top"><a id="ad483432f6f144fb26a40107ec5a2cf14"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator/</b> (const Real &amp;s) const</td></tr>
-<tr class="separator:ad483432f6f144fb26a40107ec5a2cf14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4176df479ea11df107abbe518b3917b"><td class="memItemLeft" align="right" valign="top"><a id="ac4176df479ea11df107abbe518b3917b"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>add</b> (const <a class="el" href="classptracey_1_1spd.html">spd</a> &amp;s) const</td></tr>
-<tr class="separator:ac4176df479ea11df107abbe518b3917b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae83ebafb0a71c92fdf13f3b4ebfed795"><td class="memItemLeft" align="right" valign="top"><a id="ae83ebafb0a71c92fdf13f3b4ebfed795"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>add</b> (const Real &amp;s) const</td></tr>
-<tr class="separator:ae83ebafb0a71c92fdf13f3b4ebfed795"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af82f8f573c98802746cd7c1b0c9683c0"><td class="memItemLeft" align="right" valign="top"><a id="af82f8f573c98802746cd7c1b0c9683c0"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>subt</b> (const <a class="el" href="classptracey_1_1spd.html">spd</a> &amp;s) const</td></tr>
-<tr class="separator:af82f8f573c98802746cd7c1b0c9683c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad317989868fddc6e75d4df9f64085e78"><td class="memItemLeft" align="right" valign="top"><a id="ad317989868fddc6e75d4df9f64085e78"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>subt</b> (const Real &amp;s) const</td></tr>
-<tr class="separator:ad317989868fddc6e75d4df9f64085e78"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa07596539d048cdfff90f6257c39544b"><td class="memItemLeft" align="right" valign="top"><a id="aa07596539d048cdfff90f6257c39544b"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>multip</b> (const <a class="el" href="classptracey_1_1spd.html">spd</a> &amp;s) const</td></tr>
-<tr class="separator:aa07596539d048cdfff90f6257c39544b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae68fdfb40a841e005fc95cd8a0171e88"><td class="memItemLeft" align="right" valign="top"><a id="ae68fdfb40a841e005fc95cd8a0171e88"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>multip</b> (const Real &amp;s) const</td></tr>
-<tr class="separator:ae68fdfb40a841e005fc95cd8a0171e88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad62ddd6ff00f8a786a9dc92c2ab11145"><td class="memItemLeft" align="right" valign="top"><a id="ad62ddd6ff00f8a786a9dc92c2ab11145"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>div</b> (const <a class="el" href="classptracey_1_1spd.html">spd</a> &amp;s) const</td></tr>
-<tr class="separator:ad62ddd6ff00f8a786a9dc92c2ab11145"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a947a72e913d7977f3c406f0327d39ada"><td class="memItemLeft" align="right" valign="top"><a id="a947a72e913d7977f3c406f0327d39ada"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>div</b> (const Real &amp;s) const</td></tr>
-<tr class="separator:a947a72e913d7977f3c406f0327d39ada"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a064276a39548997e345507d2a66604cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a829a9a46c8a729d72fb48fe9667210e1"><td class="memItemLeft" align="right" valign="top"><a id="a829a9a46c8a729d72fb48fe9667210e1"></a>
+Power&#160;</td><td class="memItemRight" valign="bottom"><b>min_power</b> () const</td></tr>
+<tr class="separator:a829a9a46c8a729d72fb48fe9667210e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb75be1d215227f8d65bc9db147cd99c"><td class="memItemLeft" align="right" valign="top"><a id="afb75be1d215227f8d65bc9db147cd99c"></a>
+Power&#160;</td><td class="memItemRight" valign="bottom"><b>max_power</b> () const</td></tr>
+<tr class="separator:afb75be1d215227f8d65bc9db147cd99c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d582c36f8bac384e600e2d1326779ba"><td class="memItemLeft" align="right" valign="top"><a id="a6d582c36f8bac384e600e2d1326779ba"></a>
+uint&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> () const</td></tr>
+<tr class="separator:a6d582c36f8bac384e600e2d1326779ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a380d87b2a9404025b7ddb7656a0dad76"><td class="memItemLeft" align="right" valign="top"><a id="a380d87b2a9404025b7ddb7656a0dad76"></a>
+Power&#160;</td><td class="memItemRight" valign="bottom"><b>integrate</b> (const <a class="el" href="classptracey_1_1spd.html">spd</a> &amp;nspd) const</td></tr>
+<tr class="separator:a380d87b2a9404025b7ddb7656a0dad76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2bc6e7d69d7b22af0022fcd7a7759051"><td class="memItemLeft" align="right" valign="top"><a id="a2bc6e7d69d7b22af0022fcd7a7759051"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>apply</b> (Power pvalue, const std::function&lt; Power(Power, Power)&gt; &amp;fn)</td></tr>
+<tr class="separator:a2bc6e7d69d7b22af0022fcd7a7759051"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af82180f9c0ea8cb7faee91fd31f7a503"><td class="memItemLeft" align="right" valign="top"><a id="af82180f9c0ea8cb7faee91fd31f7a503"></a>
+<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>apply_c</b> (Power pvalue, const std::function&lt; Power(Power, Power)&gt; &amp;fn) const</td></tr>
+<tr class="separator:af82180f9c0ea8cb7faee91fd31f7a503"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21fff6e92a61385819cb2a728f462abd"><td class="memItemLeft" align="right" valign="top"><a id="a21fff6e92a61385819cb2a728f462abd"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>apply</b> (WaveLength wave_length, Power pvalue, const std::function&lt; Power(Power, Power)&gt; &amp;fn)</td></tr>
+<tr class="separator:a21fff6e92a61385819cb2a728f462abd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85f25f11692e1b32f786df78e0489cb9"><td class="memItemLeft" align="right" valign="top"><a id="a85f25f11692e1b32f786df78e0489cb9"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>apply</b> (const <a class="el" href="classptracey_1_1spd.html">spd</a> &amp;s, const std::function&lt; <a class="el" href="classptracey_1_1spd.html">spd</a>(<a class="el" href="classptracey_1_1spd.html">spd</a>, <a class="el" href="classptracey_1_1spd.html">spd</a>)&gt; &amp;fn, <a class="el" href="classptracey_1_1spd.html">spd</a> &amp;ss) const</td></tr>
+<tr class="separator:a85f25f11692e1b32f786df78e0489cb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af807a9d94f610393a4fe87edba6bb597"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1spd.html#af807a9d94f610393a4fe87edba6bb597">rapply</a> (const <a class="el" href="classptracey_1_1spd.html">spd</a> &amp;s, const std::function&lt; <a class="el" href="classptracey_1_1spd.html">spd</a>(<a class="el" href="classptracey_1_1spd.html">spd</a>, <a class="el" href="classptracey_1_1spd.html">spd</a>)&gt; &amp;eqfn, const std::function&lt; bool(<a class="el" href="classptracey_1_1spd.html">spd</a>, WaveLength, Power)&gt; &amp;uneqfn) const</td></tr>
+<tr class="separator:af807a9d94f610393a4fe87edba6bb597"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85834bfcc883e05cf32acac2f296fb38"><td class="memItemLeft" align="right" valign="top"><a id="a85834bfcc883e05cf32acac2f296fb38"></a>
+Power&#160;</td><td class="memItemRight" valign="bottom"><b>interpolate_wave_power</b> (WaveLength wl) const</td></tr>
+<tr class="separator:a85834bfcc883e05cf32acac2f296fb38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92a803f1f6e011d63ca600dafaccea4e"><td class="memItemLeft" align="right" valign="top"><a id="a92a803f1f6e011d63ca600dafaccea4e"></a>
+Power&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (WaveLength wave_length) const</td></tr>
+<tr class="separator:a92a803f1f6e011d63ca600dafaccea4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabd232da2febd4515a1bedcb5780aa05"><td class="memItemLeft" align="right" valign="top"><a id="aabd232da2febd4515a1bedcb5780aa05"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>in</b> (WaveLength wave_length) const</td></tr>
+<tr class="separator:aabd232da2febd4515a1bedcb5780aa05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f74df011c5f2bf716710048f2e876b0"><td class="memItemLeft" align="right" valign="top"><a id="a0f74df011c5f2bf716710048f2e876b0"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>insert</b> (WaveLength wave_length, Power pvalue)</td></tr>
+<tr class="separator:a0f74df011c5f2bf716710048f2e876b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb81a43f461f009ae368a0227788bc3f"><td class="memItemLeft" align="right" valign="top"><a id="adb81a43f461f009ae368a0227788bc3f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>update</b> (WaveLength wave_length, Power pvalue)</td></tr>
+<tr class="separator:adb81a43f461f009ae368a0227788bc3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98c6ba414023ec97ed25f3a9d8e4b5e0"><td class="memItemLeft" align="right" valign="top"><a id="a98c6ba414023ec97ed25f3a9d8e4b5e0"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>add</b> (WaveLength wave_length, Power pvalue)</td></tr>
+<tr class="separator:a98c6ba414023ec97ed25f3a9d8e4b5e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a519f43f2879a35190e45c674797af5a8"><td class="memItemLeft" align="right" valign="top"><a id="a519f43f2879a35190e45c674797af5a8"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>scale</b> (Power pvalue)</td></tr>
+<tr class="separator:a519f43f2879a35190e45c674797af5a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a973d29ad55ca60b8af0e7714730e17a6"><td class="memItemLeft" align="right" valign="top"><a id="a973d29ad55ca60b8af0e7714730e17a6"></a>
+<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (Power pvalue) const</td></tr>
+<tr class="separator:a973d29ad55ca60b8af0e7714730e17a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3ad6d554c9fb5167235c9790c26abd8"><td class="memItemLeft" align="right" valign="top"><a id="aa3ad6d554c9fb5167235c9790c26abd8"></a>
+<a class="el" href="classptracey_1_1spd.html">spd</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator*=</b> (Power pvalue)</td></tr>
+<tr class="separator:aa3ad6d554c9fb5167235c9790c26abd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d337861c2f4c664446bf8676d457ee1"><td class="memItemLeft" align="right" valign="top"><a id="a9d337861c2f4c664446bf8676d457ee1"></a>
+<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator-</b> (Power pvalue) const</td></tr>
+<tr class="separator:a9d337861c2f4c664446bf8676d457ee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7797c8dab912b76d1e74f56647a64bf1"><td class="memItemLeft" align="right" valign="top"><a id="a7797c8dab912b76d1e74f56647a64bf1"></a>
+<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator+</b> (Power pvalue) const</td></tr>
+<tr class="separator:a7797c8dab912b76d1e74f56647a64bf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fadaca1c3bb3ea245642f65f822f4ac"><td class="memItemLeft" align="right" valign="top"><a id="a7fadaca1c3bb3ea245642f65f822f4ac"></a>
+<a class="el" href="classptracey_1_1spd.html">spd</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator+=</b> (Power pvalue)</td></tr>
+<tr class="separator:a7fadaca1c3bb3ea245642f65f822f4ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8687eab4432cb789b5348616415c75a4"><td class="memItemLeft" align="right" valign="top"><a id="a8687eab4432cb789b5348616415c75a4"></a>
+<a class="el" href="classptracey_1_1spd.html">spd</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator+=</b> (const <a class="el" href="classptracey_1_1spd.html">spd</a> &amp;s)</td></tr>
+<tr class="separator:a8687eab4432cb789b5348616415c75a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a0fb69046ec11a349735f7c9c2c029d4d"><td class="memItemLeft" align="right" valign="top"><a id="a0fb69046ec11a349735f7c9c2c029d4d"></a>
+<tr class="memitem:a3e7a420e6b5f1f8f74db8152fa32eb72"><td class="memItemLeft" align="right" valign="top"><a id="a3e7a420e6b5f1f8f74db8152fa32eb72"></a>
 static <a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>random</b> ()</td></tr>
-<tr class="separator:a0fb69046ec11a349735f7c9c2c029d4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9668a5bdb860cd2973f10e80b4982ea6"><td class="memItemLeft" align="right" valign="top"><a id="a9668a5bdb860cd2973f10e80b4982ea6"></a>
+<tr class="separator:a3e7a420e6b5f1f8f74db8152fa32eb72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16280659ae12ea3dd57ed3c3559a8f0e"><td class="memItemLeft" align="right" valign="top"><a id="a16280659ae12ea3dd57ed3c3559a8f0e"></a>
 static <a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>random</b> (Real mn, Real mx)</td></tr>
-<tr class="separator:a9668a5bdb860cd2973f10e80b4982ea6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a16280659ae12ea3dd57ed3c3559a8f0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6343021ad773533f6a9d9dfe25963e48"><td class="memItemLeft" align="right" valign="top"><a id="a6343021ad773533f6a9d9dfe25963e48"></a>
+static <a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>zeros_like</b> (const <a class="el" href="classptracey_1_1spd.html">spd</a> &amp;s)</td></tr>
+<tr class="separator:a6343021ad773533f6a9d9dfe25963e48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a68d08bf1cc2583d60969696cef48d80e"><td class="memItemLeft" align="right" valign="top"><a id="a68d08bf1cc2583d60969696cef48d80e"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>wave_start</b></td></tr>
-<tr class="separator:a68d08bf1cc2583d60969696cef48d80e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a87dbd0d979db9f032c7222b8482371"><td class="memItemLeft" align="right" valign="top"><a id="a2a87dbd0d979db9f032c7222b8482371"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>wave_end</b></td></tr>
-<tr class="separator:a2a87dbd0d979db9f032c7222b8482371"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2303ba4b2cc1effb8a2dd280b83df9c0"><td class="memItemLeft" align="right" valign="top"><a id="a2303ba4b2cc1effb8a2dd280b83df9c0"></a>
-std::map&lt; unsigned int, T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>wavelength_power</b></td></tr>
-<tr class="separator:a2303ba4b2cc1effb8a2dd280b83df9c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af209d8800a845f2025249d32c7be68ff"><td class="memItemLeft" align="right" valign="top"><a id="af209d8800a845f2025249d32c7be68ff"></a>
+WaveLength&#160;</td><td class="memItemRight" valign="bottom"><b>wave_start</b></td></tr>
+<tr class="separator:af209d8800a845f2025249d32c7be68ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a516d8c3a64d840d3f89e5c6dcb026c1a"><td class="memItemLeft" align="right" valign="top"><a id="a516d8c3a64d840d3f89e5c6dcb026c1a"></a>
+WaveLength&#160;</td><td class="memItemRight" valign="bottom"><b>wave_end</b></td></tr>
+<tr class="separator:a516d8c3a64d840d3f89e5c6dcb026c1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ade2903acfa397e905ea374efb9a7ff"><td class="memItemLeft" align="right" valign="top"><a id="a3ade2903acfa397e905ea374efb9a7ff"></a>
+std::map&lt; WaveLength, Power &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>wavelength_power</b></td></tr>
+<tr class="separator:a3ade2903acfa397e905ea374efb9a7ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
-<tr class="memitem:a46755e13c0a541730f76a8662808664e"><td class="memItemLeft" align="right" valign="top"><a id="a46755e13c0a541730f76a8662808664e"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator+</b> (const Real &amp;s, const <a class="el" href="classptracey_1_1spd.html">spd</a> &amp;ss)</td></tr>
-<tr class="separator:a46755e13c0a541730f76a8662808664e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31a8d90a5683c72d5d62ad0f222a06f6"><td class="memItemLeft" align="right" valign="top"><a id="a31a8d90a5683c72d5d62ad0f222a06f6"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator-</b> (const Real &amp;s, const <a class="el" href="classptracey_1_1spd.html">spd</a> &amp;ss)</td></tr>
-<tr class="separator:a31a8d90a5683c72d5d62ad0f222a06f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acdc03e3f8def968476a83abceca0aca0"><td class="memItemLeft" align="right" valign="top"><a id="acdc03e3f8def968476a83abceca0aca0"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (const Real &amp;s, const <a class="el" href="classptracey_1_1spd.html">spd</a> &amp;ss)</td></tr>
-<tr class="separator:acdc03e3f8def968476a83abceca0aca0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f41b0f820a9c0841b56fb28896ac598"><td class="memItemLeft" align="right" valign="top"><a id="a1f41b0f820a9c0841b56fb28896ac598"></a>
-<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator/</b> (const Real &amp;s, const <a class="el" href="classptracey_1_1spd.html">spd</a> &amp;ss)</td></tr>
-<tr class="separator:a1f41b0f820a9c0841b56fb28896ac598"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6cc628a1c1b27f6313bab9e785f52156"><td class="memItemLeft" align="right" valign="top"><a id="a6cc628a1c1b27f6313bab9e785f52156"></a>
+<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (Power pvalue, const <a class="el" href="classptracey_1_1spd.html">spd</a> &amp;s)</td></tr>
+<tr class="separator:a6cc628a1c1b27f6313bab9e785f52156"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58e23a4050be5dd08116754cee967513"><td class="memItemLeft" align="right" valign="top"><a id="a58e23a4050be5dd08116754cee967513"></a>
+<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator-</b> (Power pvalue, const <a class="el" href="classptracey_1_1spd.html">spd</a> &amp;s)</td></tr>
+<tr class="separator:a58e23a4050be5dd08116754cee967513"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fc497adc43c1dc84d7dc46ec6b669aa"><td class="memItemLeft" align="right" valign="top"><a id="a0fc497adc43c1dc84d7dc46ec6b669aa"></a>
+<a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator+</b> (Power pvalue, const <a class="el" href="classptracey_1_1spd.html">spd</a> &amp;s)</td></tr>
+<tr class="separator:a0fc497adc43c1dc84d7dc46ec6b669aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a76781a0e717b3cd2a35a4f8c37fc771e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76781a0e717b3cd2a35a4f8c37fc771e">&#9670;&nbsp;</a></span>spd()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ptracey::spd::spd </td>
+          <td>(</td>
+          <td class="paramtype">uint&#160;</td>
+          <td class="paramname"><em>wave_range</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::function&lt; WaveLength(uint)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>wavelength_generator</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::function&lt; Power(WaveLength)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>power_generator</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Slightly more correct way of making a spds. If the user knows exact functions that generate corresponding power for a given wavelength. That function should be passed in the body of power generator. @power_generator: takes a wavelength as input and generates the corresponding power. @wavelength_generator: maps a discreet range of numbers [0,1,2,...,n] to wavelengths. @wave_range: gives the size of the discreet range of numbers. If the desired range of numbers is [0,1,2,...,n] then n+1 should be given. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="af807a9d94f610393a4fe87edba6bb597"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af807a9d94f610393a4fe87edba6bb597">&#9670;&nbsp;</a></span>rapply()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classptracey_1_1spd.html">spd</a> ptracey::spd::rapply </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classptracey_1_1spd.html">spd</a> &amp;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::function&lt; <a class="el" href="classptracey_1_1spd.html">spd</a>(<a class="el" href="classptracey_1_1spd.html">spd</a>, <a class="el" href="classptracey_1_1spd.html">spd</a>)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>eqfn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::function&lt; bool(<a class="el" href="classptracey_1_1spd.html">spd</a>, WaveLength, Power)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>uneqfn</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Slightly more robust implementation of apply.</p>
+<p>The idea is to give two functions: 1 for matching spds, two for not matching spds. If they match we apply the first function if they don't match. We apply the second function for each wavelength and power value. If the wavelength is not present in the spd we insert it with the given power value. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="spd_8hpp_source.html">spd.hpp</a></li>
+<li><a class="el" href="pbr__spectrum_8hpp_source.html">pbr_spectrum.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

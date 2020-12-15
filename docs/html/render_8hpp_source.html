@@ -70,70 +70,76 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &lt;common.hpp&gt;</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;hittable.hpp&gt;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;material.hpp&gt;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;ray.hpp&gt;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;spectrum.hpp&gt;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">using namespace </span>ptracey;</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">namespace </span>ptracey {</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;shared_ptr&lt;spectrum&gt;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;ray_color(<span class="keyword">const</span> <a class="code" href="classptracey_1_1ray.html">ray</a> &amp;r,</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;          <span class="keyword">const</span> shared_ptr&lt;spectrum&gt; &amp;background,</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;          <span class="keyword">const</span> <a class="code" href="classptracey_1_1hittable.html">hittable</a> &amp;world, <span class="keywordtype">int</span> depth) {</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  <a class="code" href="structptracey_1_1hit__record.html">hit_record</a> rec;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  <span class="comment">// If we&#39;ve exceeded the ray bounce limit, no more light</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  <span class="comment">// is gathered.</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  <span class="keywordflow">if</span> (depth &lt;= 0)</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keywordflow">return</span> make_shared&lt;spectrum&gt;(0.0);</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="comment">// If the ray hits nothing, return the background color.</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keywordflow">if</span> (!world.hit(r, 0.001, FLT_MAX, rec))</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordflow">return</span> background;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <a class="code" href="structptracey_1_1scatter__record.html">scatter_record</a> srec;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  shared_ptr&lt;spectrum&gt; emitted =</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;      rec.mat_ptr-&gt;emitted(r, rec, rec.u, rec.v, rec.p);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="keywordflow">if</span> (!rec.mat_ptr-&gt;scatter(r, rec, srec))</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordflow">return</span> emitted;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="keywordflow">if</span> (srec.is_specular) {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    shared_ptr&lt;spectrum&gt; rs = ray_color(</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        srec.specular_ray, background, world, depth - 1);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordflow">return</span> srec.attenuation-&gt;multip(rs);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  }</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <a class="code" href="classptracey_1_1ray.html">ray</a> scattered = <a class="code" href="classptracey_1_1ray.html">ray</a>(rec.p, srec.pdf_ptr-&gt;generate(),</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                      r.time(), r.wavelength());</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keyword">auto</span> pdf_val = srec.pdf_ptr-&gt;value(scattered.direction());</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keyword">auto</span> scatter_pdf =</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      rec.mat_ptr-&gt;scattering_pdf(r, rec, scattered);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="comment">//</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  shared_ptr&lt;spectrum&gt; recs = srec.attenuation-&gt;multip(</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;      make_shared&lt;Real&gt;(scatter_pdf));</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &lt;color/spectrum.hpp&gt;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;common.hpp&gt;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;hittable/hittable.hpp&gt;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;material/material.hpp&gt;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;camera/ray.hpp&gt;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">using namespace </span>ptracey;</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">namespace </span>ptracey {</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<a class="code" href="structptracey_1_1color.html">color</a> ray_color(<span class="keyword">const</span> <a class="code" href="classptracey_1_1ray.html">ray</a> &amp;r, <span class="keyword">const</span> <a class="code" href="classptracey_1_1sampled__spectrum.html">spectrum</a> background,</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;                <span class="keyword">const</span> <a class="code" href="classptracey_1_1hittable.html">hittable</a> &amp;world, <span class="keywordtype">int</span> depth) {</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <a class="code" href="structptracey_1_1hit__record.html">hit_record</a> rec;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">auto</span> wlength = r.wavelength();</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="comment">// add the wavelength if it is not already present</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="comment">// If we&#39;ve exceeded the ray bounce limit, no more light</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="comment">// is gathered.</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keywordflow">if</span> (depth &lt;= 0) {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="comment">// L_e + L_r = 0 = L_o</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="structptracey_1_1color.html">color</a>(0.0);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  }</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="comment">// If the ray hits nothing, return the background color.</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="keywordflow">if</span> (!world.hit(r, 0.001, FLT_MAX, rec)) {</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="comment">// L_e + L_r = background = L_o</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="structptracey_1_1color.html">color</a> back_lambda = background.evaluate(wlength);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordflow">return</span> back_lambda;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  }</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <a class="code" href="structptracey_1_1scatter__record.html">scatter_record</a> srec;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <a class="code" href="structptracey_1_1color.html">color</a> emitted =</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      rec.mat_ptr-&gt;emitted(r, rec, rec.u, rec.v, rec.p);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keywordflow">if</span> (!rec.mat_ptr-&gt;scatter(r, rec, srec)) {</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="comment">// L_e + 0 = L_o</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordflow">return</span> emitted;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  }</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  shared_ptr&lt;spectrum&gt; rcolor =</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      ray_color(scattered, background, world, depth - 1);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="comment">//</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  recs = recs-&gt;multip(rcolor);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keyword">auto</span> pval = make_shared&lt;Real&gt;(pdf_val);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="comment">//</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  recs = recs-&gt;div(pval);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keywordflow">return</span> emitted-&gt;add(recs);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;}</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="keywordflow">if</span> (srec.is_specular) {</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="comment">// f_r * L_i + 0 = L_r + L_e = 0</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="comment">// TODO what if the material changes the wavelength of</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="comment">// the ray ??</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <a class="code" href="structptracey_1_1color.html">color</a> atten_color = srec.attenuation;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <a class="code" href="structptracey_1_1color.html">color</a> r_col = ray_color(srec.specular_ray, background,</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                            world, depth - 1);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keyword">auto</span> spec_color = atten_color * r_col;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordflow">return</span> spec_color;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  }</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="comment">// w_o</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <a class="code" href="classptracey_1_1ray.html">ray</a> scattered = <a class="code" href="classptracey_1_1ray.html">ray</a>(rec.p, srec.pdf_ptr-&gt;generate(),</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                      r.time(), wlength);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  Real pdf_val = srec.pdf_ptr-&gt;value(scattered.direction());</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  Real scatter_pdf =</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;      rec.mat_ptr-&gt;scattering_pdf(r, rec, scattered);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <a class="code" href="structptracey_1_1color.html">color</a> r_color =</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;      ray_color(scattered, background, world, depth - 1);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <a class="code" href="structptracey_1_1color.html">color</a> f_r = srec.attenuation;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="comment">//</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keywordflow">return</span> emitted + f_r * scatter_pdf * r_color / pdf_val;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;}</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclassptracey_1_1ray_html"><div class="ttname"><a href="classptracey_1_1ray.html">ptracey::ray</a></div><div class="ttdef"><b>Definition:</b> ray.hpp:6</div></div>
-<div class="ttc" id="astructptracey_1_1hit__record_html"><div class="ttname"><a href="structptracey_1_1hit__record.html">ptracey::hit_record</a></div><div class="ttdef"><b>Definition:</b> hittable.hpp:12</div></div>
-<div class="ttc" id="aclassptracey_1_1hittable_html"><div class="ttname"><a href="classptracey_1_1hittable.html">ptracey::hittable</a></div><div class="ttdef"><b>Definition:</b> hittable.hpp:37</div></div>
+<div class="ttc" id="aclassptracey_1_1ray_html"><div class="ttname"><a href="classptracey_1_1ray.html">ptracey::ray</a></div><div class="ttdef"><b>Definition:</b> ray.hpp:8</div></div>
+<div class="ttc" id="astructptracey_1_1hit__record_html"><div class="ttname"><a href="structptracey_1_1hit__record.html">ptracey::hit_record</a></div><div class="ttdef"><b>Definition:</b> hittable.hpp:11</div></div>
+<div class="ttc" id="aclassptracey_1_1hittable_html"><div class="ttname"><a href="classptracey_1_1hittable.html">ptracey::hittable</a></div><div class="ttdef"><b>Definition:</b> hittable.hpp:35</div></div>
 <div class="ttc" id="astructptracey_1_1scatter__record_html"><div class="ttname"><a href="structptracey_1_1scatter__record.html">ptracey::scatter_record</a></div><div class="ttdef"><b>Definition:</b> material.hpp:11</div></div>
+<div class="ttc" id="aclassptracey_1_1sampled__spectrum_html"><div class="ttname"><a href="classptracey_1_1sampled__spectrum.html">ptracey::sampled_spectrum</a></div><div class="ttdef"><b>Definition:</b> sampled_spectrum.hpp:126</div></div>
+<div class="ttc" id="astructptracey_1_1color_html"><div class="ttname"><a href="structptracey_1_1color.html">ptracey::color</a></div><div class="ttdef"><b>Definition:</b> color.hpp:9</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">
