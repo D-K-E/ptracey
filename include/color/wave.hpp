@@ -127,14 +127,14 @@ samples.
     return wave;
   }
   /**
-      \brief apply a function to all power values.
+    \brief apply a function to all power values.
 
-      \param fn function to be applied to power values
-      \return a new wave
+    \param fn function to be applied to power values
+    \return a new wave
 
- \todo for basic arithmetic operations it might be
-enough to check for
-minimum and maximum power values for the given function.
+    \todo for basic arithmetic operations it might be enough
+    to check for minimum and maximum power values for the
+    given function.
    */
   sampled_wave
   apply(T value, const std::function<T(T, T)> &fn) const {
