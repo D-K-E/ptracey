@@ -44,6 +44,10 @@ public:
   sampled_wave(const std::vector<T> &vals) : values(vals) {
     D_CHECK(!has_nans());
   }
+  sampled_wave(const T &v = 0.0) {
+    values.clear();
+    values.push_back(v);
+  }
   /**
     \brief gives the maximum value among sampled points
    */
