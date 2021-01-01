@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['r_8678',['r',['../structaiColor3D.html#a9244c589dc4c8d95e4107951f2a9a386',1,'aiColor3D']]],
-  ['readproc_8679',['ReadProc',['../structaiFile.html#a52287e81ca67b9d43cc1ce6142f781fa',1,'aiFile']]],
-  ['rowmajorbit_8680',['RowMajorBit',['../group__flags.html#gae4f56c2a60bbe4bd2e44c5b19cbe8762',1,'Eigen']]]
+  ['tellproc_1740',['TellProc',['../structaiFile.html#aaf2d88a3b2fcbdacf51119658283d27e',1,'aiFile']]],
+  ['textures_1741',['textures',['../structaiMemoryInfo.html#a32817d13f0e280777e49769f8c46f168',1,'aiMemoryInfo']]],
+  ['total_1742',['total',['../structaiMemoryInfo.html#a590739a4cef4876901d1cf6ff48f01b3',1,'aiMemoryInfo']]]
 ];

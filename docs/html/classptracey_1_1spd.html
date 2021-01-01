@@ -117,6 +117,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>resample</b> (const W
 <tr class="memitem:a9725b0bac34e50736e7c929a5a981e05"><td class="memItemLeft" align="right" valign="top"><a id="a9725b0bac34e50736e7c929a5a981e05"></a>
 std::vector&lt; WaveLength &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>wavelengths</b> () const</td></tr>
 <tr class="separator:a9725b0bac34e50736e7c929a5a981e05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7463f75d8d66d88720a8ccf87bb64e9"><td class="memItemLeft" align="right" valign="top"><a id="ae7463f75d8d66d88720a8ccf87bb64e9"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>power_index</b> (WaveLength w) const</td></tr>
+<tr class="separator:ae7463f75d8d66d88720a8ccf87bb64e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abdf72d55d345d7e60dd63085e15fa1ea"><td class="memItemLeft" align="right" valign="top"><a id="abdf72d55d345d7e60dd63085e15fa1ea"></a>
 <a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class="memItemRight" valign="bottom"><b>interpolate</b> (Real low=0.0, Real high=FLT_MAX) const</td></tr>
 <tr class="separator:abdf72d55d345d7e60dd63085e15fa1ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -129,12 +132,12 @@ std::vector&lt; WaveLength &gt;&#160;</td><td class="memItemRight" valign="botto
 <tr class="memitem:a7e50b5b68440b0b383427e4c816e51a3"><td class="memItemLeft" align="right" valign="top"><a id="a7e50b5b68440b0b383427e4c816e51a3"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>normalize</b> ()</td></tr>
 <tr class="separator:a7e50b5b68440b0b383427e4c816e51a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa87e146b1e2fc98657b286cb32317465"><td class="memItemLeft" align="right" valign="top"><a id="aa87e146b1e2fc98657b286cb32317465"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>min_wave</b> () const</td></tr>
-<tr class="separator:aa87e146b1e2fc98657b286cb32317465"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a064276a39548997e345507d2a66604cd"><td class="memItemLeft" align="right" valign="top"><a id="a064276a39548997e345507d2a66604cd"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>max_wave</b> () const</td></tr>
-<tr class="separator:a064276a39548997e345507d2a66604cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86cc9b6350cd835b89e975a68d83e386"><td class="memItemLeft" align="right" valign="top"><a id="a86cc9b6350cd835b89e975a68d83e386"></a>
+WaveLength&#160;</td><td class="memItemRight" valign="bottom"><b>min_wave</b> () const</td></tr>
+<tr class="separator:a86cc9b6350cd835b89e975a68d83e386"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa42e3afd5e2a6b93e0473bacb63f516a"><td class="memItemLeft" align="right" valign="top"><a id="aa42e3afd5e2a6b93e0473bacb63f516a"></a>
+WaveLength&#160;</td><td class="memItemRight" valign="bottom"><b>max_wave</b> () const</td></tr>
+<tr class="separator:aa42e3afd5e2a6b93e0473bacb63f516a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a829a9a46c8a729d72fb48fe9667210e1"><td class="memItemLeft" align="right" valign="top"><a id="a829a9a46c8a729d72fb48fe9667210e1"></a>
 Power&#160;</td><td class="memItemRight" valign="bottom"><b>min_power</b> () const</td></tr>
 <tr class="separator:a829a9a46c8a729d72fb48fe9667210e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -170,6 +173,12 @@ Power&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (Wave
 <tr class="memitem:aabd232da2febd4515a1bedcb5780aa05"><td class="memItemLeft" align="right" valign="top"><a id="aabd232da2febd4515a1bedcb5780aa05"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>in</b> (WaveLength wave_length) const</td></tr>
 <tr class="separator:aabd232da2febd4515a1bedcb5780aa05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e797c691fd24566c99a83548d299479"><td class="memItemLeft" align="right" valign="top"><a id="a8e797c691fd24566c99a83548d299479"></a>
+std::map&lt; WaveLength, Power &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>spd_map</b> () const</td></tr>
+<tr class="separator:a8e797c691fd24566c99a83548d299479"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21ddc7b6aad3499f95c1ea92c7c317e1"><td class="memItemLeft" align="right" valign="top"><a id="a21ddc7b6aad3499f95c1ea92c7c317e1"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set_from_map</b> (const std::map&lt; WaveLength, Power &gt; &amp;wpws)</td></tr>
+<tr class="separator:a21ddc7b6aad3499f95c1ea92c7c317e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f74df011c5f2bf716710048f2e876b0"><td class="memItemLeft" align="right" valign="top"><a id="a0f74df011c5f2bf716710048f2e876b0"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>insert</b> (WaveLength wave_length, Power pvalue)</td></tr>
 <tr class="separator:a0f74df011c5f2bf716710048f2e876b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -215,15 +224,19 @@ static <a class="el" href="classptracey_1_1spd.html">spd</a>&#160;</td><td class
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:af209d8800a845f2025249d32c7be68ff"><td class="memItemLeft" align="right" valign="top"><a id="af209d8800a845f2025249d32c7be68ff"></a>
-WaveLength&#160;</td><td class="memItemRight" valign="bottom"><b>wave_start</b></td></tr>
+<tr class="memitem:af209d8800a845f2025249d32c7be68ff"><td class="memItemLeft" align="right" valign="top">WaveLength&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1spd.html#af209d8800a845f2025249d32c7be68ff">wave_start</a></td></tr>
 <tr class="separator:af209d8800a845f2025249d32c7be68ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a516d8c3a64d840d3f89e5c6dcb026c1a"><td class="memItemLeft" align="right" valign="top"><a id="a516d8c3a64d840d3f89e5c6dcb026c1a"></a>
-WaveLength&#160;</td><td class="memItemRight" valign="bottom"><b>wave_end</b></td></tr>
+<tr class="memitem:a516d8c3a64d840d3f89e5c6dcb026c1a"><td class="memItemLeft" align="right" valign="top">WaveLength&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classptracey_1_1spd.html#a516d8c3a64d840d3f89e5c6dcb026c1a">wave_end</a></td></tr>
 <tr class="separator:a516d8c3a64d840d3f89e5c6dcb026c1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ade2903acfa397e905ea374efb9a7ff"><td class="memItemLeft" align="right" valign="top"><a id="a3ade2903acfa397e905ea374efb9a7ff"></a>
 std::map&lt; WaveLength, Power &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>wavelength_power</b></td></tr>
 <tr class="separator:a3ade2903acfa397e905ea374efb9a7ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fbca3e11a9ac949bf82804bdddf42a3"><td class="memItemLeft" align="right" valign="top"><a id="a5fbca3e11a9ac949bf82804bdddf42a3"></a>
+std::vector&lt; WaveLength &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>wave_lengths</b></td></tr>
+<tr class="separator:a5fbca3e11a9ac949bf82804bdddf42a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b05b494a9914adc920beddb7020386b"><td class="memItemLeft" align="right" valign="top"><a id="a9b05b494a9914adc920beddb7020386b"></a>
+<a class="el" href="classptracey_1_1sampled__wave.html">sampled_wave</a>&lt; Power &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>power_values</b></td></tr>
+<tr class="separator:a9b05b494a9914adc920beddb7020386b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -323,6 +336,37 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 <p>Slightly more robust implementation of apply.</p>
 <p>The idea is to give two functions: 1 for matching spds, two for not matching spds. If they match we apply the first function if they don't match. We apply the second function for each wavelength and power value. If the wavelength is not present in the spd we insert it with the given power value. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a516d8c3a64d840d3f89e5c6dcb026c1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a516d8c3a64d840d3f89e5c6dcb026c1a">&#9670;&nbsp;</a></span>wave_end</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">WaveLength ptracey::spd::wave_end</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>end of the wave length range </p>
+
+</div>
+</div>
+<a id="af209d8800a845f2025249d32c7be68ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af209d8800a845f2025249d32c7be68ff">&#9670;&nbsp;</a></span>wave_start</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">WaveLength ptracey::spd::wave_start</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>start of the wave length range </p>
 
 </div>
 </div>

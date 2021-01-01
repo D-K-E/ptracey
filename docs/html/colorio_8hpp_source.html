@@ -179,7 +179,7 @@ $(function() {
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keywordtype">int</span> samples_per_pixel) {</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  Real anti_aliasing_scale = 1.0 / (Real)samples_per_pixel;</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <a class="code" href="classptracey_1_1SpdJsonIo.html">SpdJsonIo</a> sio(specs, anti_aliasing_scale);</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <a class="code" href="classnlohmann_1_1basic__json.html">nlohmann::json</a> jdata = sio.data();</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  nlohmann::json jdata = sio.data();</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  std::ofstream o(fpath);</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  o &lt;&lt; std::setw(2) &lt;&lt; jdata &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;}</div>
@@ -243,7 +243,6 @@ $(function() {
 <div class="ttc" id="aclassptracey_1_1SpdCsvIo_html"><div class="ttname"><a href="classptracey_1_1SpdCsvIo.html">ptracey::SpdCsvIo</a></div><div class="ttdef"><b>Definition:</b> spdio.hpp:162</div></div>
 <div class="ttc" id="aclassptracey_1_1SpbIo_html"><div class="ttname"><a href="classptracey_1_1SpbIo.html">ptracey::SpbIo</a></div><div class="ttdef"><b>Definition:</b> spdio.hpp:16</div></div>
 <div class="ttc" id="aclassptracey_1_1vec3_html"><div class="ttname"><a href="classptracey_1_1vec3.html">ptracey::vec3</a></div><div class="ttdef"><b>Definition:</b> vec3.hpp:7</div></div>
-<div class="ttc" id="aclassnlohmann_1_1basic__json_html"><div class="ttname"><a href="classnlohmann_1_1basic__json.html">nlohmann::basic_json</a></div><div class="ttdoc">a class to store JSON values</div><div class="ttdef"><b>Definition:</b> json.hpp:16736</div></div>
 <div class="ttc" id="aclassptracey_1_1sampled__spectrum_html"><div class="ttname"><a href="classptracey_1_1sampled__spectrum.html">ptracey::sampled_spectrum</a></div><div class="ttdef"><b>Definition:</b> sampled_spectrum.hpp:126</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

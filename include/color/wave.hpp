@@ -71,20 +71,30 @@ public:
     }
     return false;
   }
-  /**
-      \brief check if sampled power values contain 0
-     value.
-  */
-  bool has_zeros() const {
+  bool apply_value_condition(
+      const std::function<bool(T)> &fn) const {
     for (auto val : values) {
-      if (val == 0.0)
+      if (fn(val))
         return true;
     }
     return false;
   }
   /**
-        \brief check if sampled power values contain only 0
-       value.
+      \brief check if sampled power values contain 0
+     value.
+  */
+  bool has_zeros() const {
+    apply_value_condition([](T v) { return v == 0.0; });
+  }
+  bool has_negatives() const {
+    apply_value_condition([](T v) { return v < 0.0; });
+  }
+  bool has_positives() const {
+    apply_value_condition([](T v) { return v > 0.0; });
+  }
+  /**
+     \brief check if sampled power values contain only 0
+      value.
     */
   bool is_black() const {
     for (auto val : values) {
@@ -117,17 +127,16 @@ index.
 \todo This operation is probably very costly for large
 samples.
    */
-  sampled_wave
-  apply(unsigned int index, T value,
-        const std::function<T(T, T)> &fn) const {
+  sampled_wave apply(uint index,
+                     const std::function<T(T)> &fn) const {
     std::vector<T> vs;
     vs.resize(values.size());
     std::copy(values.begin(), values.end(), vs.begin());
-    auto val = fn(values[index], value);
+    auto val = fn(values[index]);
     COMP_CHECK_MSG(val < 0.0, val, 0.0,
                    "operation produces negative value");
     vs[index] = val;
-    auto wave = sampled_wave(values);
+    auto wave = sampled_wave(vs);
     return wave;
   }
   /**
@@ -140,12 +149,11 @@ samples.
     to check for minimum and maximum power values for the
     given function.
    */
-  sampled_wave
-  apply(T value, const std::function<T(T, T)> &fn) const {
+  sampled_wave apply(const std::function<T(T)> &fn) const {
     std::vector<T> vs;
     vs.resize(values.size());
     for (std::size_t i = 0; i < values.size(); i++) {
-      auto val = fn(values[i], value);
+      auto val = fn(values[i]);
       COMP_CHECK_MSG(val < 0.0, val, 0.0,
                      "operation produces a negative value");
       vs[i] = val;
@@ -169,8 +177,6 @@ samples.
 
     for (std::size_t i = 0; i < values.size(); i++) {
       auto val = fn(values[i], s.values[i]);
-      COMP_CHECK_MSG(val < 0.0, val, 0.0,
-                     "operation produces a negative value");
       vs[i] = val;
     }
     auto wave = sampled_wave(vs);
@@ -179,45 +185,40 @@ samples.
 
   /**
     \brief add and assign values of given sampled wave
-
-\todo this pointer changes value after this operation.
-This
-is probably not
-the intention of the user if she is using += operator.
    */
-  sampled_wave &operator+=(const sampled_wave &s) const {
+  sampled_wave &operator+=(const sampled_wave &s) {
     auto wave =
-        apply(s, [](auto i, auto j) { return i + j; });
-    return wave;
+        apply(s, [](auto thiswave, auto secondwave) {
+          return thiswave + secondwave;
+        });
+    *this = wave;
+    return *this;
   }
   /**
       \brief add and the given power value to this wave.
-
-  \todo this pointer changes value after this
-  operation.
-  This is probably not
-  the intention of the user if she is using += operator.
-     */
-  sampled_wave &operator+=(const T &s) const {
+   */
+  sampled_wave &operator+=(const T &s) {
     auto wave =
-        apply(s, [](auto i, auto j) { return i + j; });
-    return wave;
+        apply([s](auto swave) { return swave + s; });
+    *this = wave;
+    return *this;
   }
   /**
       \brief add two same sized sampled waves
   */
   sampled_wave operator+(const sampled_wave &s) const {
-    auto wave =
-        apply(s, [](auto i, auto j) { return i + j; });
+    auto wave = apply(s, [](auto firstw, auto secondw) {
+      return firstw + secondw;
+    });
     return wave;
   }
   /**
-      \brief add given power value to all of the elements of
+     \brief add given power value to all of the elements of
      the sampled wave.
   */
   sampled_wave operator+(const T &s) const {
     auto wave =
-        apply(s, [](auto i, auto j) { return i + j; });
+        apply([s](auto firstw) { return firstw + s; });
     return wave;
   }
   /**
@@ -230,53 +231,50 @@ the intention of the user if she is using += operator.
 
   /**
     \brief subtract and assign values of given sampled wave
-
-\todo this pointer changes value after this operation.
-This is probably not the intention of the user if she is
-using -= operator.
    */
-  sampled_wave &operator-=(const sampled_wave &s) const {
-    auto wave =
-        apply(s, [](auto i, auto j) { return i - j; });
-    return wave;
+  sampled_wave &operator-=(const sampled_wave &s) {
+    auto wave = apply(s, [](auto firstw, auto secondw) {
+      return firstw - secondw;
+    });
+    *this = wave;
+    return *this;
   }
   /**
-      \brief subtract and the given power value to this
-  wave.
-
-  \todo this pointer changes value after this
-  operation.  This is
-  probably not the intention of the user if she is using -=
-  operator.
-     */
-  sampled_wave &operator-=(const T &s) const {
+    \brief subtract and the given power value to this wave.
+   */
+  sampled_wave &operator-=(const T &s) {
     auto wave =
-        apply(s, [](auto i, auto j) { return i - j; });
-    return wave;
+        apply([s](auto firstw) { return firstw - s; });
+    *this = wave;
+    return *this;
   }
   /**
-      \brief subtract two same sized sampled waves
+    \brief subtract two same sized sampled waves
   */
   sampled_wave operator-(const sampled_wave &s) const {
-    auto wave =
-        apply(s, [](auto i, auto j) { return i - j; });
+
+    auto wave = apply(
+        s, [](auto i, auto argval) { return i - argval; });
+
+    D_CHECK_MSG(wave.has_negatives(),
+                "given wave would have negative powers");
+
     return wave;
   }
   /**
-      \brief subtract power value from this wave
+    \brief subtract power value from this wave
 
-      We check whether the new value is producing negative
-     power values.
+    We check whether the new value is producing negative
+    power values.
   */
   sampled_wave operator-(const T &s) const {
     auto minval = min();
     COMP_CHECK_MSG(
         minval <= s, minval, s,
         "given value would produce negative powers");
-    auto wave =
-        apply(s, [](auto this_wave_value, auto value) {
-          return this_wave_value - value;
-        });
+    auto wave = apply([s](auto this_wave_value) {
+      return this_wave_value - s;
+    });
     return wave;
   }
   /** \brief subtract every element of given sampled_wave
@@ -297,40 +295,33 @@ using -= operator.
   /**
       \brief multiply and assign values of given sampled
   wave
-
-  \todo this pointer changes value after this
-  operation.
-  This
-  is probably not
-  the intention of the user if she is using *= operator.
      */
 
-  sampled_wave &operator*=(const sampled_wave &s) const {
-    auto wave =
-        apply(s, [](auto i, auto j) { return i * j; });
-    return wave;
+  sampled_wave &operator*=(const sampled_wave &s) {
+    auto wave = apply(s, [](auto firstw, auto secondw) {
+      return firstw * secondw;
+    });
+    *this = wave;
+    return *this;
   }
   /**
     \brief multiply and the given power value to this
   wave.
-
-  \todo this pointer changes value after this
-  operation.
-  This is probably not
-  the intention of the user if she is using *= operator.
      */
-  sampled_wave &operator*=(const T &s) const {
+  sampled_wave &operator*=(const T &s) {
     auto wave =
-        apply(s, [](auto i, auto j) { return i * j; });
-    return wave;
+        apply([s](auto firstw) { return firstw * s; });
+    *this = wave;
+    return *this;
   }
 
   /**
-      \brief multiply two same sized sampled waves
+    \brief multiply two same sized sampled waves
   */
   sampled_wave operator*(const sampled_wave &s) const {
-    auto wave =
-        apply(s, [](auto i, auto j) { return i * j; });
+    auto wave = apply(s, [](auto firstw, auto secondw) {
+      return firstw * secondw;
+    });
     return wave;
   }
   /**
@@ -339,7 +330,7 @@ using -= operator.
   */
   sampled_wave operator*(const T &s) const {
     auto wave =
-        apply(s, [](auto i, auto j) { return i * j; });
+        apply([s](auto firstw) { return firstw * s; });
     return wave;
   }
   /**
@@ -352,29 +343,23 @@ using -= operator.
   /**
     \brief divide and assign values of given sampled wave
 
-    \todo this pointer changes value after this operation.
-    This is probably not the intention of the user if she is
-    using /= operator.
-   */
+    */
   sampled_wave &operator/=(const sampled_wave &s) {
     D_CHECK(!s.has_zeros());
-    auto wave =
-        apply(s, [](auto i, auto j) { return i / j; });
-    return wave;
+    auto wave = apply(
+        s, [](auto i, auto argval) { return i / argval; });
+    *this = wave;
+    return *this;
   }
   /**
-      \brief divide and the given power value to this
-  wave.
+    \brief divide and the given power value to this wave.
 
-  \todo this pointer changes value after this
-  operation. This is probably not the intention of the user
-  if she is using /= operator.
-  */
-  sampled_wave &operator/=(const T &s) const {
+   */
+  sampled_wave &operator/=(const T &s) {
     D_CHECK(s != 0.0);
-    auto wave =
-        apply(s, [](auto i, auto j) { return i / j; });
-    return wave;
+    auto wave = apply([s](auto i) { return i / s; });
+    *this = wave;
+    return *this;
   }
 
   /**
@@ -394,8 +379,7 @@ using -= operator.
   */
   sampled_wave operator/(const T &s) const {
     D_CHECK(s != 0.0);
-    auto wave =
-        apply(s, [](auto i, auto j) { return i / j; });
+    auto wave = apply([s](auto i) { return i / s; });
     return wave;
   }
   /**
@@ -463,7 +447,7 @@ using -= operator.
            T counter_value) const {
     T s = counter_value;
     for (auto v : values)
-      s = fn(s, v);
+      s = fn(v, s);
     return s;
   }
   /** \brief reduce sampled wave by summation*/

@@ -78,7 +78,7 @@ $(function() {
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;common.hpp&gt;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">using namespace </span>ptracey;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">using</span> <a class="code" href="classnlohmann_1_1basic__json.html">json</a> = <a class="code" href="namespacenlohmann.html#a2bfd99e845a2e5cd90aeaf1b1431f474">nlohmann::json</a>;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">using</span> json = nlohmann::json;</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">namespace </span>ptracey {</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
@@ -201,22 +201,22 @@ $(function() {
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;  <a class="code" href="classptracey_1_1SpdJsonIo.html">SpdJsonIo</a>(<span class="keyword">const</span> imspec &amp;img, Real coeff)</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;      : imgspec(img), antialiasing_coeff(coeff) {}</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  <a class="code" href="classnlohmann_1_1basic__json.html">json</a> pixel_obj(<span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y, <a class="code" href="classptracey_1_1sampled__spectrum.html">sampled_spectrum</a> &amp;s) {</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  json pixel_obj(<span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y, <a class="code" href="classptracey_1_1sampled__spectrum.html">sampled_spectrum</a> &amp;s) {</div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    s.scale(antialiasing_coeff);</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <a class="code" href="classnlohmann_1_1basic__json.html">json</a> j_map(s.spect.wavelength_power);</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <a class="code" href="classnlohmann_1_1basic__json.html">json</a> pixkey = <a class="code" href="classnlohmann_1_1basic__json.html#a9a4df356e05415438fadf8a15e583903">json::object</a>(</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    json j_map(s.spect.wavelength_power);</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    json pixkey = json::object(</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        {{<span class="stringliteral">&quot;x&quot;</span>, x}, {<span class="stringliteral">&quot;y&quot;</span>, y}, {<span class="stringliteral">&quot;values&quot;</span>, j_map}});</div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <span class="keywordflow">return</span> pixkey;</div>
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;  }</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;  <a class="code" href="classnlohmann_1_1basic__json.html">json</a> data() {</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="keywordtype">int</span> imrownb = (int)imgspec.<a class="code" href="classnlohmann_1_1basic__json.html#a33c7c8638bb0b12e6d1b69d8106dd2e0">size</a>();</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;  json data() {</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="keywordtype">int</span> imrownb = (int)imgspec.size();</div>
 <div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <span class="keywordtype">int</span> imcolnb = (int)imgspec[0].size();</div>
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    <span class="keywordtype">int</span> i = 0;</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <a class="code" href="classnlohmann_1_1basic__json.html">json</a> obj = <a class="code" href="classnlohmann_1_1basic__json.html#a9a4df356e05415438fadf8a15e583903">json::object</a>();</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    json obj = json::object();</div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; imrownb; x++) {</div>
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; imcolnb; y++) {</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        <a class="code" href="classnlohmann_1_1basic__json.html">json</a> pixval = pixel_obj(x, y, imgspec[x][y]);</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        obj.<a class="code" href="classnlohmann_1_1basic__json.html#ab9e0253c92736db021840105d374c4c4">push_back</a>({std::to_string(i), pixval});</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        json pixval = pixel_obj(x, y, imgspec[x][y]);</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        obj.push_back({std::to_string(i), pixval});</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        i++;</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;      }</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    }</div>
@@ -299,18 +299,13 @@ $(function() {
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;};</div>
 <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclassptracey_1_1sampled__wave_html"><div class="ttname"><a href="classptracey_1_1sampled__wave.html">ptracey::sampled_wave</a></div><div class="ttdoc">a wave sample representing a continuous wave in discreet form</div><div class="ttdef"><b>Definition:</b> wave.hpp:12</div></div>
-<div class="ttc" id="anamespacenlohmann_html_a2bfd99e845a2e5cd90aeaf1b1431f474"><div class="ttname"><a href="namespacenlohmann.html#a2bfd99e845a2e5cd90aeaf1b1431f474">nlohmann::json</a></div><div class="ttdeci">basic_json&lt;&gt; json</div><div class="ttdoc">default JSON class</div><div class="ttdef"><b>Definition:</b> json.hpp:3000</div></div>
-<div class="ttc" id="aclassnlohmann_1_1basic__json_html_a9a4df356e05415438fadf8a15e583903"><div class="ttname"><a href="classnlohmann_1_1basic__json.html#a9a4df356e05415438fadf8a15e583903">nlohmann::basic_json::object</a></div><div class="ttdeci">static JSON_HEDLEY_WARN_UNUSED_RESULT basic_json object(initializer_list_t init={})</div><div class="ttdoc">explicitly create an object from an initializer list</div><div class="ttdef"><b>Definition:</b> json.hpp:18397</div></div>
+<div class="ttc" id="aclassptracey_1_1sampled__wave_html"><div class="ttname"><a href="classptracey_1_1sampled__wave.html">ptracey::sampled_wave&lt; Power &gt;</a></div></div>
 <div class="ttc" id="aclassptracey_1_1SpdJsonIo_html"><div class="ttname"><a href="classptracey_1_1SpdJsonIo.html">ptracey::SpdJsonIo</a></div><div class="ttdef"><b>Definition:</b> spdio.hpp:125</div></div>
 <div class="ttc" id="aclassptracey_1_1SpdCsvIo_html"><div class="ttname"><a href="classptracey_1_1SpdCsvIo.html">ptracey::SpdCsvIo</a></div><div class="ttdef"><b>Definition:</b> spdio.hpp:162</div></div>
 <div class="ttc" id="aclassptracey_1_1SpbIo_html"><div class="ttname"><a href="classptracey_1_1SpbIo.html">ptracey::SpbIo</a></div><div class="ttdef"><b>Definition:</b> spdio.hpp:16</div></div>
-<div class="ttc" id="aclassnlohmann_1_1basic__json_html_a33c7c8638bb0b12e6d1b69d8106dd2e0"><div class="ttname"><a href="classnlohmann_1_1basic__json.html#a33c7c8638bb0b12e6d1b69d8106dd2e0">nlohmann::basic_json::size</a></div><div class="ttdeci">size_type size() const noexcept</div><div class="ttdoc">returns the number of elements</div><div class="ttdef"><b>Definition:</b> json.hpp:21577</div></div>
-<div class="ttc" id="aclassnlohmann_1_1basic__json_html"><div class="ttname"><a href="classnlohmann_1_1basic__json.html">nlohmann::basic_json</a></div><div class="ttdoc">a class to store JSON values</div><div class="ttdef"><b>Definition:</b> json.hpp:16736</div></div>
-<div class="ttc" id="aclassnlohmann_1_1basic__json_html_ab9e0253c92736db021840105d374c4c4"><div class="ttname"><a href="classnlohmann_1_1basic__json.html#ab9e0253c92736db021840105d374c4c4">nlohmann::basic_json::push_back</a></div><div class="ttdeci">void push_back(basic_json &amp;&amp;val)</div><div class="ttdoc">add an object to an array</div><div class="ttdef"><b>Definition:</b> json.hpp:21796</div></div>
 <div class="ttc" id="astructptracey_1_1CsvData_html"><div class="ttname"><a href="structptracey_1_1CsvData.html">ptracey::CsvData</a></div><div class="ttdef"><b>Definition:</b> spdio.hpp:156</div></div>
 <div class="ttc" id="aclassptracey_1_1sampled__spectrum_html"><div class="ttname"><a href="classptracey_1_1sampled__spectrum.html">ptracey::sampled_spectrum</a></div><div class="ttdef"><b>Definition:</b> sampled_spectrum.hpp:126</div></div>
-<div class="ttc" id="aclassptracey_1_1spd_html"><div class="ttname"><a href="classptracey_1_1spd.html">ptracey::spd</a></div><div class="ttdef"><b>Definition:</b> spd.hpp:13</div></div>
+<div class="ttc" id="aclassptracey_1_1spd_html"><div class="ttname"><a href="classptracey_1_1spd.html">ptracey::spd</a></div><div class="ttdef"><b>Definition:</b> spd.hpp:14</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

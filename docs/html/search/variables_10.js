@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['undefinedincr_8688',['UndefinedIncr',['../namespaceEigen.html#a06808a853a9baa38b23a5368e7491abd',1,'Eigen']]],
-  ['user_8689',['user',['../structaiLogStream.html#a3382042e4171a6dd5a71d7f98741f86e',1,'aiLogStream']]],
-  ['userdata_8690',['UserData',['../structaiFileIO.html#a9c62b7f3d70fbb2f41e33ad0b9933139',1,'aiFileIO::UserData()'],['../structaiFile.html#aec528fa18f4755fe4f28d604fde28aad',1,'aiFile::UserData()']]]
+  ['wave_5fend_1746',['wave_end',['../classptracey_1_1spd.html#a516d8c3a64d840d3f89e5c6dcb026c1a',1,'ptracey::spd']]],
+  ['wave_5fstart_1747',['wave_start',['../classptracey_1_1spd.html#af209d8800a845f2025249d32c7be68ff',1,'ptracey::spd']]],
+  ['writeproc_1748',['WriteProc',['../structaiFile.html#ab9fca3a62e34a33592c13a6f31db7d1d',1,'aiFile']]]
 ];

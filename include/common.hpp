@@ -14,12 +14,21 @@ using namespace std::filesystem;
 namespace ptracey {
 path RUNTIME_PATH = current_path();
 
+/** real number value */
 typedef double Real;
 // typedef float Real;
+/** power value type for spectral distributions */
 typedef Real Power;
 // typedef unsigned int WaveLength;
+/** Wave length type for spectral distributions */
 typedef float WaveLength;
+/** indexing type for spectral distributions */
 typedef WaveLength Index;
+
+/** short hand for unsigned int */
 typedef unsigned int uint;
+
+/** 2d spectral distribution value with its index and power
+ * value */
 typedef std::pair<WaveLength, Power> WavePower;
 }

@@ -2,29 +2,132 @@
 #include <common.hpp>
 
 namespace ptracey {
-Real random_real(unsigned int seed) {
+/**
+  \brief linear interpolation of one range to another
+
+  \param input_start start of the input range
+  \param input_end end of the input range
+  \param output_start start of the input range
+  \param output_end end of the input range
+  \param t value whose is going to be interpolated
+
+  \return value in output range
+ */
+template <typename T>
+T interp(T t, T input_start, T input_end, T output_start,
+         T output_end) {
+  return (t - input_start) / (input_end - input_start) *
+             (output_end - output_start) +
+         output_start;
+}
+template <typename T>
+std::vector<T> interp(const std::vector<T> &vs,
+                      T input_start, T input_end,
+                      T output_start, T output_end) {
+  std::vector<T> dst;
+  dst.resiz(vs.size());
+  for (std::size_t i = 0; i < vs.size(); i++) {
+    dst[i] = interp(vs[i], input_start, input_end,
+                    output_start, output_end);
+  }
+  return dst;
+}
+template <typename T>
+std::vector<T> interp(const std::vector<T> &vs,
+                      T output_start, T output_end) {
+  T input_start = *std::min_element(vs.begin(), vs.end());
+  T input_end = *std::max_element(vs.begin(), vs.end());
+  return interp(vs, input_start, input_end, output_start,
+                output_end);
+}
+
+template <typename T> T interp(T t, T s1, T s2) {
+  // interpolate from glsl reference
+  // https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/mix.xhtml
+  return interp(t, 0.0, 1.0, s1, s2);
+}
+/**
+  \brief linear interpolation between two values
+
+  \param v1 start of interpolation range
+  \param v2 end of interpolation range
+  \param t value whose is going to be interpolated
+ */
+template <typename T, typename U, typename V>
+T mix(T t, U v1, V v2) {
+  return (1 - t) * v1 + t * v2;
+}
+
+/**
+  \brief thread safe random number generator with a seed
+
+  \param uint seed
+
+  \return Real
+ */
+Real random_real(uint seed) {
   static std::uniform_real_distribution<Real> distribution(
       0.0f, 1.0f);
   static std::mt19937 generator(seed);
   return distribution(generator);
 }
+/**
+  \brief thread safe random number generator whose seed is
+  calculated from chrono library.
+
+  \param uint seed
+
+  \return Real
+
+ */
 Real random_real() {
   auto now1 = std::chrono::high_resolution_clock::now();
   auto now2 = std::chrono::high_resolution_clock::now();
   auto d1 = now2 - now1;
   return random_real(static_cast<unsigned int>(d1.count()));
 }
+/**
+  \brief real random number between given range
+
+  \param mn start of range
+  \param mx end of range
+
+  \return random value in given range
+ */
 Real random_real(Real mn, Real mx) {
-  return mn + (mx - mn) * random_real();
+  return interp<Real>(random_real(), mn, mx);
 }
+/**
+  \brief thread safe random integer between 0 1
+ */
 int random_int() { return static_cast<int>(random_real()); }
+/**
+  \brief thread safe random integer between given range
+ */
 int random_int(int mn, int mx) {
   return static_cast<int>(random_real(mn, mx));
 }
+/**
+  \brief transform degree to radian
+ */
 inline Real degrees_to_radians(Real degrees) {
   return degrees * M_PI / 180.0;
 }
+/**
+  \brief transform radian to degrees
+ */
+inline Real radians_to_degrees(Real radian) {
+  return radian * 180.0 / M_PI;
+}
 
+/**
+  \brief clamp value to given range
+  \param x value to be clamped
+  \param min minimum value of the range
+  \param max maximum value of the range
+
+  \return either x, min or the max
+ */
 template <typename T, typename U, typename V>
 T clamp(T x, U min, V max) {
   if (x < min)
@@ -33,29 +136,30 @@ T clamp(T x, U min, V max) {
     return max;
   return x;
 }
+
+/**
+  \brief clamp value to given range
+  \param x value to be clamped
+  \param min minimum value of the range
+  \param max maximum value of the range
+
+  \return either x, min or the max all in the same type
+ */
 template <typename T> T dclamp(T x, T mn, T mx) {
   return clamp<T, T, T>(x, mn, mx);
 }
 
-template <typename T>
-T interp(T t, T input_start, T input_end, T output_start,
-         T output_end) {
-  return (t - input_start) / (input_end - input_start) *
-             (output_end - output_start) +
-         output_start;
-}
-template <typename T> T interp(T t, T s1, T s2) {
-  // interpolate from glsl reference
-  // https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/mix.xhtml
-  return interp(t, 0.0, 1.0, s1, s2);
-}
-template <typename T, typename U, typename V>
-T mix(T t, U v1, V v2) {
-  return (1 - t) * v1 + t * v2;
-}
+/**
+  \brief even spaced vector between given range
 
+  \param start start of the range
+  \param end end of the range
+  \param size of the resulting vector
+
+  \return lspaced evenly spaced vector
+ */
 template <typename T>
-std::vector<T> linspace(T start, T end, unsigned int size) {
+std::vector<T> linspace(T start, T end, uint size) {
   // from: https://stackoverflow.com/a/27030598/7330813
   std::vector<T> lspaced;
   if (size == 0)
@@ -101,6 +205,20 @@ void get_uvwprims(T x, T y, T &uprim, T &vprim, T &wprim) {
           << "false"                                       \
           << " :: " << __FILE__ << " :: " << __LINE__      \
           << std::endl;                                    \
+      throw std::runtime_error(txt.str());                 \
+    }                                                      \
+  } while (0)
+
+#define D_CHECK_MSG(call, msg)                             \
+  do {                                                     \
+    bool res = call;                                       \
+    if (!res) {                                            \
+      std::stringstream txt;                               \
+      txt << #call << " :: "                               \
+          << "false"                                       \
+          << " :: " << __FILE__ << " :: " << __LINE__      \
+          << std::endl                                     \
+          << msg << std::endl;                             \
       throw std::runtime_error(txt.str());                 \
     }                                                      \
   } while (0)
@@ -159,6 +277,14 @@ int findInterval(int size, const fn &f) {
   return clamp<int>(first - 1, 0, size - 2);
 }
 
+/**
+  \brief print vector values to terminal
+
+  \param out output stream normally terminal
+  \param ss vector whose elements are going to be printed
+
+  \return out output stream
+ */
 template <typename T>
 inline std::ostream &operator<<(std::ostream &out,
                                 const std::vector<T> &ss) {
@@ -170,25 +296,38 @@ inline std::ostream &operator<<(std::ostream &out,
   out << s_str << std::endl;
   return out;
 }
+/**
+  \brief cast vector values to DestType type
+
+  \param vs vector whose values are going to be cast
+  \param fn cast, transform function
+
+  \return ds vector in DestType
+ */
 template <typename SrcType, typename DestType>
 inline std::vector<DestType>
 cast_vec(const std::vector<SrcType> &vs,
          const std::function<DestType(SrcType)> &fn) {
   std::vector<DestType> ds;
-  for (auto &v : vs) {
-    ds.push_back(fn(v));
+  ds.resize(vs.size());
+  for (std::size_t i = 0; i < vs.size(); i++) {
+    ds[i] = fn(vs[i]);
   }
   return ds;
 }
 
-//
+/**
+  \brief cast vector values to DestType type
+
+  \param vs vector whose values are going to be cast
+  \param fn cast, transform function
+
+  \return vector in DestType
+ */
 template <typename SrcType, typename DestType>
 inline std::vector<DestType>
 cast_vec(const std::vector<SrcType> &vs) {
-  std::vector<DestType> ds;
-  for (auto &v : vs) {
-    ds.push_back(static_cast<DestType>(v));
-  }
-  return ds;
+  return cast_vec<SrcType, DestType>(
+      vs, [](auto i) { return static_cast<DestType>(i); });
 }
 }

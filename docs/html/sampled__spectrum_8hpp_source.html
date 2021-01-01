@@ -311,7 +311,7 @@ $(function() {
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;      xyz.e[2] += sZ[wave] * spect[wave];</div>
 <div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    }</div>
 <div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    <span class="keyword">auto</span> wsize = (uint)waves.size();</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <span class="keyword">auto</span> scale = (spect.wave_end - spect.wave_start) /</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <span class="keyword">auto</span> scale = (spect.<a class="code" href="classptracey_1_1spd.html#a516d8c3a64d840d3f89e5c6dcb026c1a">wave_end</a> - spect.<a class="code" href="classptracey_1_1spd.html#af209d8800a845f2025249d32c7be68ff">wave_start</a>) /</div>
 <div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;                 Real(CIE_Y_integral * wsize);</div>
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    xyz *= scale;</div>
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    <span class="keywordflow">return</span> xyz;</div>
@@ -341,8 +341,8 @@ $(function() {
 <div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;  <span class="keywordtype">void</span> Init() {</div>
 <div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    <span class="comment">//</span></div>
 <div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    <span class="keyword">auto</span> wsize = (uint)spect.wavelengths().size();</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    <span class="keyword">auto</span> wstart = spect.wave_start;</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    <span class="keyword">auto</span> wend = spect.wave_end;</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    <span class="keyword">auto</span> wstart = spect.<a class="code" href="classptracey_1_1spd.html#af209d8800a845f2025249d32c7be68ff">wave_start</a>;</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    <span class="keyword">auto</span> wend = spect.<a class="code" href="classptracey_1_1spd.html#a516d8c3a64d840d3f89e5c6dcb026c1a">wave_end</a>;</div>
 <div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    sX = Xspd.resample_c(wstart, wend, wsize).normalized();</div>
 <div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    sY = Yspd.resample_c(wstart, wend, wsize).normalized();</div>
 <div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    sZ = Zspd.resample_c(wstart, wend, wsize).normalized();</div>
@@ -396,9 +396,11 @@ $(function() {
 <div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassptracey_1_1colorable_html"><div class="ttname"><a href="classptracey_1_1colorable.html">ptracey::colorable</a></div><div class="ttdef"><b>Definition:</b> colorable.hpp:9</div></div>
+<div class="ttc" id="aclassptracey_1_1spd_html_af209d8800a845f2025249d32c7be68ff"><div class="ttname"><a href="classptracey_1_1spd.html#af209d8800a845f2025249d32c7be68ff">ptracey::spd::wave_start</a></div><div class="ttdeci">WaveLength wave_start</div><div class="ttdef"><b>Definition:</b> spd.hpp:17</div></div>
+<div class="ttc" id="aclassptracey_1_1spd_html_a516d8c3a64d840d3f89e5c6dcb026c1a"><div class="ttname"><a href="classptracey_1_1spd.html#a516d8c3a64d840d3f89e5c6dcb026c1a">ptracey::spd::wave_end</a></div><div class="ttdeci">WaveLength wave_end</div><div class="ttdef"><b>Definition:</b> spd.hpp:19</div></div>
 <div class="ttc" id="aclassptracey_1_1vec3_html"><div class="ttname"><a href="classptracey_1_1vec3.html">ptracey::vec3</a></div><div class="ttdef"><b>Definition:</b> vec3.hpp:7</div></div>
 <div class="ttc" id="aclassptracey_1_1sampled__spectrum_html"><div class="ttname"><a href="classptracey_1_1sampled__spectrum.html">ptracey::sampled_spectrum</a></div><div class="ttdef"><b>Definition:</b> sampled_spectrum.hpp:126</div></div>
-<div class="ttc" id="aclassptracey_1_1spd_html"><div class="ttname"><a href="classptracey_1_1spd.html">ptracey::spd</a></div><div class="ttdef"><b>Definition:</b> spd.hpp:13</div></div>
+<div class="ttc" id="aclassptracey_1_1spd_html"><div class="ttname"><a href="classptracey_1_1spd.html">ptracey::spd</a></div><div class="ttdef"><b>Definition:</b> spd.hpp:14</div></div>
 <div class="ttc" id="astructptracey_1_1color_html"><div class="ttname"><a href="structptracey_1_1color.html">ptracey::color</a></div><div class="ttdef"><b>Definition:</b> color.hpp:9</div></div>
 <div class="ttc" id="aclassptracey_1_1rgb__model_html"><div class="ttname"><a href="classptracey_1_1rgb__model.html">ptracey::rgb_model</a></div><div class="ttdef"><b>Definition:</b> rgb_model.hpp:13</div></div>
 <!-- start footer part -->

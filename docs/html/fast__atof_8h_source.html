@@ -134,20 +134,20 @@ $(function() {
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">// ------------------------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keyword">inline</span></div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> strtoul10( <span class="keyword">const</span> <span class="keywordtype">char</span>* in, <span class="keyword">const</span> <span class="keywordtype">char</span>** out=0) {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a> = 0;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> value = 0;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordflow">for</span> ( ;; ) {</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="keywordflow">if</span> ( *in &lt; &#39;0&#39; || *in &gt; <span class="charliteral">&#39;9&#39;</span> ) {</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        }</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a> = ( <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a> * 10 ) + ( *in - <span class="charliteral">&#39;0&#39;</span> );</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        value = ( value * 10 ) + ( *in - <span class="charliteral">&#39;0&#39;</span> );</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        ++in;</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    }</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordflow">if</span> ( out ) {</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        *out = in;</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    }</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordflow">return</span> value;</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;}</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">// ------------------------------------------------------------------------------------</span></div>
@@ -155,19 +155,19 @@ $(function() {
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment">// ------------------------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="keyword">inline</span></div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> strtoul8( <span class="keyword">const</span> <span class="keywordtype">char</span>* in, <span class="keyword">const</span> <span class="keywordtype">char</span>** out=0) {</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a>( 0 );</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> value( 0 );</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordflow">for</span> ( ;; ) {</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordflow">if</span> ( *in &lt; &#39;0&#39; || *in &gt; <span class="charliteral">&#39;7&#39;</span> ) {</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        }</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a> = ( <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a> &lt;&lt; 3 ) + ( *in - <span class="charliteral">&#39;0&#39;</span> );</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        value = ( value &lt;&lt; 3 ) + ( *in - <span class="charliteral">&#39;0&#39;</span> );</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        ++in;</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    }</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordflow">if</span> ( out ) {</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        *out = in;</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    }</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a>;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keywordflow">return</span> value;</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;}</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="comment">// ------------------------------------------------------------------------------------</span></div>
@@ -175,14 +175,14 @@ $(function() {
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="comment">// ------------------------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="keyword">inline</span></div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> strtoul16( <span class="keyword">const</span> <span class="keywordtype">char</span>* in, <span class="keyword">const</span> <span class="keywordtype">char</span>** out=0) {</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a>( 0 );</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> value( 0 );</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keywordflow">for</span> ( ;; ) {</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <span class="keywordflow">if</span> ( *in &gt;= <span class="charliteral">&#39;0&#39;</span> &amp;&amp; *in &lt;= <span class="charliteral">&#39;9&#39;</span> ) {</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a> = ( <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a> &lt;&lt; 4u ) + ( *in - <span class="charliteral">&#39;0&#39;</span> );</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            value = ( value &lt;&lt; 4u ) + ( *in - <span class="charliteral">&#39;0&#39;</span> );</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (*in &gt;= <span class="charliteral">&#39;A&#39;</span> &amp;&amp; *in &lt;= <span class="charliteral">&#39;F&#39;</span>) {</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a> = ( <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a> &lt;&lt; 4u ) + ( *in - <span class="charliteral">&#39;A&#39;</span> ) + 10;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            value = ( value &lt;&lt; 4u ) + ( *in - <span class="charliteral">&#39;A&#39;</span> ) + 10;</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (*in &gt;= <span class="charliteral">&#39;a&#39;</span> &amp;&amp; *in &lt;= <span class="charliteral">&#39;f&#39;</span>) {</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a> = ( <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a> &lt;&lt; 4u ) + ( *in - <span class="charliteral">&#39;a&#39;</span> ) + 10;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            value = ( value &lt;&lt; 4u ) + ( *in - <span class="charliteral">&#39;a&#39;</span> ) + 10;</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        } <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        }</div>
@@ -191,7 +191,7 @@ $(function() {
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="keywordflow">if</span> ( out ) {</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        *out = in;</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    }</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a>;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="keywordflow">return</span> value;</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;}</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="comment">// ------------------------------------------------------------------------------------</span></div>
@@ -231,11 +231,11 @@ $(function() {
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        ++in;</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    }</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="keywordtype">int</span> <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a> = strtoul10(in,out);</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="keywordtype">int</span> value = strtoul10(in,out);</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="keywordflow">if</span> (inv) {</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a> = -<a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a>;</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        value = -value;</div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    }</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a>;</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="keywordflow">return</span> value;</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;}</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160; </div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="comment">// ------------------------------------------------------------------------------------</span></div>
@@ -260,7 +260,7 @@ $(function() {
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;<span class="keyword">inline</span></div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;uint64_t strtoul10_64( <span class="keyword">const</span> <span class="keywordtype">char</span>* in, <span class="keyword">const</span> <span class="keywordtype">char</span>** out=0, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>* max_inout=0) {</div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> cur = 0;</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    uint64_t <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a> = 0;</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    uint64_t value = 0;</div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160; </div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <span class="keywordflow">if</span> ( *in &lt; &#39;0&#39; || *in &gt; <span class="charliteral">&#39;9&#39;</span> ) {</div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        <span class="comment">// The string is known to be bad, so don&#39;t risk printing the whole thing.</span></div>
@@ -272,7 +272,7 @@ $(function() {
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;            <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        }</div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160; </div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        <span class="keyword">const</span> uint64_t new_value = ( <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a> * (uint64_t) 10 ) + ( (uint64_t) ( *in - <span class="charliteral">&#39;0&#39;</span> ) );</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        <span class="keyword">const</span> uint64_t new_value = ( value * (uint64_t) 10 ) + ( (uint64_t) ( *in - <span class="charliteral">&#39;0&#39;</span> ) );</div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160; </div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        <span class="comment">// numeric overflow, we rely on you</span></div>
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        <span class="keywordflow">if</span> ( new_value &lt; value ) {</div>
@@ -280,7 +280,7 @@ $(function() {
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;            <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        }</div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160; </div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a> = new_value;</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        value = new_value;</div>
 <div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160; </div>
 <div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;        ++in;</div>
 <div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        ++cur;</div>
@@ -293,7 +293,7 @@ $(function() {
 <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;                *out = in;</div>
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;            }</div>
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160; </div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a>;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;            <span class="keywordflow">return</span> value;</div>
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        }</div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    }</div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <span class="keywordflow">if</span> ( out ) {</div>
@@ -304,7 +304,7 @@ $(function() {
 <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        *max_inout = cur;</div>
 <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    }</div>
 <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160; </div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a>;</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    <span class="keywordflow">return</span> value;</div>
 <div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;}</div>
 <div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160; </div>
 <div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;<span class="comment">// ------------------------------------------------------------------------------------</span></div>
@@ -318,11 +318,11 @@ $(function() {
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        ++in;</div>
 <div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    }</div>
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160; </div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    int64_t <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a> = strtoul10_64&lt;ExceptionType&gt;(in, out, max_inout);</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    int64_t value = strtoul10_64&lt;ExceptionType&gt;(in, out, max_inout);</div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <span class="keywordflow">if</span> (inv) {</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a> = -<a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a>;</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        value = -value;</div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    }</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">value</a>;</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    <span class="keywordflow">return</span> value;</div>
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;}</div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160; </div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="comment">// Number of relevant decimals for floating-point parsing.</span></div>
@@ -453,7 +453,6 @@ $(function() {
 <div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;<span class="preprocessor">#endif // FAST_A_TO_F_H_INCLUDED</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="anamespaceAssimp_html_a892dd1437bf1e84dd0b9fbf16ac6073d"><div class="ttname"><a href="namespaceAssimp.html#a892dd1437bf1e84dd0b9fbf16ac6073d">Assimp::ASSIMP_strincmp</a></div><div class="ttdeci">AI_FORCE_INLINE int ASSIMP_strincmp(const char *s1, const char *s2, unsigned int n)</div><div class="ttdoc">Helper function to do platform independent string comparison.</div><div class="ttdef"><b>Definition:</b> StringComparison.h:188</div></div>
-<div class="ttc" id="anamespacenlohmann_1_1detail_html_a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26"><div class="ttname"><a href="namespacenlohmann_1_1detail.html#a2fb6dae6578e06ae73ca0d7cc8512b1aae73f17027cb0acbb537f29d0a6944b26">nlohmann::detail::parse_event_t::object_start</a></div><div class="ttdeci">@ object_start</div><div class="ttdoc">the parser read { and started to process a JSON object</div></div>
 <div class="ttc" id="adefs_8h_html"><div class="ttname"><a href="defs_8h.html">defs.h</a></div><div class="ttdoc">Assimp build configuration setup. See the notes in the comment blocks to find out how to customize yo...</div></div>
 <div class="ttc" id="anamespaceAssimp_html_aeb01ca0019835b52ca0ffe6d0f5d6a7b"><div class="ttname"><a href="namespaceAssimp.html#aeb01ca0019835b52ca0ffe6d0f5d6a7b">Assimp::fast_atoreal_move</a></div><div class="ttdeci">const char * fast_atoreal_move(const char *c, Real &amp;out, bool check_comma=true)</div><div class="ttdef"><b>Definition:</b> fast_atof.h:267</div></div>
 <div class="ttc" id="anamespaceAssimp_html"><div class="ttname"><a href="namespaceAssimp.html">Assimp</a></div><div class="ttdef"><b>Definition:</b> ai_assert.h:50</div></div>
